@@ -1,0 +1,38 @@
+---
+// STUB – Person B replaces the markup below. Person A owns this frontmatter.
+import SiteHeader from '../components/SiteHeader.astro';
+
+const error = Astro.url.searchParams.get('error');
+const loggedOut = Astro.url.searchParams.get('loggedOut');
+const next = Astro.url.searchParams.get('next') ?? '';
+
+const invalidMessage = "That email and password don't match. Check them and try again.";
+const rateMessage = 'Too many attempts. Wait 15 minutes, then try again.';
+const loggedOutMessage = "You've been logged out.";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Log in · HelpingHand</title>
+  </head>
+  <body>
+    <SiteHeader user={Astro.locals.user} />
+    <main id="main">
+      <h1>Log in to HelpingHand</h1>
+      {error === 'invalid' && <p role="alert">{invalidMessage}</p>}
+      {error === 'rate' && <p role="alert">{rateMessage}</p>}
+      {loggedOut === '1' && <p>{loggedOutMessage}</p>}
+      <form method="post" action="/api/auth/login">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="username" required />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+        <input type="hidden" name="next" value={next} />
+        <button type="submit">Log in</button>
+      </form>
+      <p>Accounts are provided by your teacher.</p>
+    </main>
+  </body>
+</html>

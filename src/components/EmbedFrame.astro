@@ -1,0 +1,16 @@
+---
+// STUB – Person B replaces this
+interface Props {
+  kind: 'tinkercad' | 'wokwi' | 'onshape' | 'form';
+  src: string;
+  title: string;
+  aspect?: string;
+}
+const { kind, src, title, aspect = '16 / 9' } = Astro.props;
+---
+
+<div style={`aspect-ratio: ${aspect}`}>
+  <iframe src={src} title={title} loading="lazy" allowfullscreen></iframe>
+</div>
+<a href={src} target="_blank" rel="noopener noreferrer">Open in a new tab</a>
+<p data-embed={kind}>{kind}</p>

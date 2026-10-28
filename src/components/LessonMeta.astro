@@ -1,0 +1,15 @@
+---
+// STUB – Person B replaces this
+interface Props {
+  level: 'beginner' | 'intermediate' | 'advanced';
+  durationMinutes: number;
+  lessonNumber: number;
+}
+const { level, durationMinutes, lessonNumber } = Astro.props;
+---
+
+<p>
+  Lesson {lessonNumber}
+  <span>{level}</span>
+  <span>{durationMinutes} min</span>
+</p>

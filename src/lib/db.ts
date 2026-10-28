@@ -1,8 +1,9 @@
 import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 
-const url = import.meta.env.DATABASE_URL ?? process.env.DATABASE_URL!;
-const authToken = import.meta.env.DATABASE_AUTH_TOKEN ?? process.env.DATABASE_AUTH_TOKEN;
+// import.meta.env exists in Astro. The seed script runs in Node, where it does not.
+const url = import.meta.env?.DATABASE_URL ?? process.env.DATABASE_URL!;
+const authToken = import.meta.env?.DATABASE_AUTH_TOKEN ?? process.env.DATABASE_AUTH_TOKEN;
 
 const client = createClient({
   url,

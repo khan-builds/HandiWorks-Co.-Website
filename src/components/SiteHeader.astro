@@ -1,0 +1,23 @@
+---
+// STUB – Person B replaces this
+interface Props {
+  user: SessionUser | null;
+}
+const { user } = Astro.props;
+---
+
+<header>
+  <a href="/">HelpingHand</a>
+  {user && <a href="/lessons">Lessons</a>}
+  {
+    user ? (
+      <form method="post" action="/api/auth/logout">
+        <span>{user.name}</span>
+        {user.role === 'teacher' && <span>Teacher</span>}
+        <button type="submit">Log out</button>
+      </form>
+    ) : (
+      <a href="/login">Log in</a>
+    )
+  }
+</header>
