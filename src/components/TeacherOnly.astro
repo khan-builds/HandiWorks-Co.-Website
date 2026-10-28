@@ -1,0 +1,8 @@
+---
+import Callout from './Callout.astro';
+
+const { title = 'Teacher note' } = Astro.props;
+const isTeacher = Astro.locals.user?.role === 'teacher';
+---
+
+{isTeacher && <Callout type="teacher" title={title}><slot /></Callout>}

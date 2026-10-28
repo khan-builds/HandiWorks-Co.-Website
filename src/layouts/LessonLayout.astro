@@ -1,0 +1,93 @@
+---
+// STUB – Person B replaces this
+import DownloadList from '../components/DownloadList.astro';
+import LessonMeta from '../components/LessonMeta.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import type { LessonSummary } from '../lib/lessons';
+
+interface Props {
+  lesson: {
+    summary: LessonSummary;
+    data: {
+      title: string;
+      lessonNumber: number;
+      level: LessonSummary['level'];
+      durationMinutes: number;
+      expectedOutcome: string;
+      objectives: string[];
+      materials: { name: string; quantity: number; note?: string }[];
+      downloads: { label: string; file: string; sizeKb?: number }[];
+    };
+    headings: { depth: number; slug: string; text: string }[];
+  };
+  previous: LessonSummary | null;
+  next: LessonSummary | null;
+}
+const { lesson, previous, next } = Astro.props;
+const { summary, data, headings } = lesson;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{data.title} · HelpingHand</title>
+  </head>
+  <body>
+    <SiteHeader user={Astro.locals.user} />
+    <main id="main">
+      <p><a href="/lessons">Lessons</a> / Lesson {data.lessonNumber}</p>
+      <h1>{data.title}</h1>
+      <LessonMeta level={data.level} durationMinutes={data.durationMinutes} lessonNumber={data.lessonNumber} />
+      <section>
+        <h2>Expected outcome</h2>
+        <p>{data.expectedOutcome}</p>
+      </section>
+      <section>
+        <h2>You will be able to</h2>
+        <ul>
+          {data.objectives.map((objective) => <li>{objective}</li>)}
+        </ul>
+      </section>
+      <section>
+        <h2>Materials</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              data.materials.map((item) => (
+                <tr>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.note ?? ''}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </section>
+      <slot />
+      <section>
+        <h2>Downloads</h2>
+        <DownloadList items={data.downloads} />
+      </section>
+      <nav aria-label="Lesson sequence">
+        {previous && <a href={`/lessons/${previous.slug}`}>Previous: {previous.title}</a>}
+        {next && <a href={`/lessons/${next.slug}`}>Next: {next.title}</a>}
+      </nav>
+    </main>
+    <aside aria-label="On this page">
+      <ul>
+        {headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => (
+          <li><a href={`#${heading.slug}`}>{heading.text}</a></li>
+        ))}
+      </ul>
+    </aside>
+  </body>
+</html>

@@ -1,0 +1,187 @@
+---
+title: Build a Finger Module
+lessonNumber: 1
+summary: Assemble one removable robotic finger, wire it to an Arduino and make it open and close with a button.
+level: beginner
+durationMinutes: 90
+status: published
+objectives:
+  - Explain how a four-bar linkage turns one motor's rotation into finger curling
+  - Assemble a finger module from printed parts and fasteners
+  - Wire a button and motor to an Arduino
+  - Upload a sketch and change it to alter the finger's motion
+materials:
+  - { name: "Printed finger kit (phalanges, housing, gears)", quantity: 1 }
+  - { name: "Motor", quantity: 1, note: "per the current parts list" }
+  - { name: "Arduino board + USB cable", quantity: 1 }
+  - { name: "Push button", quantity: 1 }
+  - { name: "Screws, pins and nuts", quantity: 1, note: "kit bag A" }
+expectedOutcome: A finger that curls closed on one button press and opens on the next.
+downloads:
+  - { label: "Finger CAD files (STEP + STL)", file: "/downloads/lesson-1-cad.zip" }
+  - { label: "Arduino sketch", file: "/downloads/lesson-1-sketch.zip" }
+heroImage: /images/lesson-1-hero.jpg
+---
+
+import Callout from '../../components/Callout.astro';
+import TeacherOnly from '../../components/TeacherOnly.astro';
+import EmbedFrame from '../../components/EmbedFrame.astro';
+import StlViewer from '../../components/StlViewer.tsx';
+
+## How a finger moves
+
+A human finger bends at three joints. This module copies that curl with two coupled four-bar linkages driven by one motor. The motor turns a pinion, the pinion drives a rack, and the rack pulls the linkages so the finger closes in one motion.
+
+![A human finger beside the module's two coupled four-bar linkages](/images/lesson-1-linkage.svg)
+
+<Callout type="note" title="Why one motor">
+Both linkages share the same rack, so one motor curls the whole finger. You do not need a servo at every joint.
+</Callout>
+
+## Meet the parts
+
+Look at each printed part before you build. Drag the preview to turn it. The files are stand-ins until the hardware team exports the real CAD.
+
+<StlViewer client:visible src="/models/finger-proximal.stl" title="Proximal phalanx" />
+
+<StlViewer client:visible src="/models/finger-intermediate.stl" title="Intermediate phalanx" />
+
+<StlViewer client:visible src="/models/finger-distal.stl" title="Distal phalanx" />
+
+<StlViewer client:visible src="/models/gear-housing.stl" title="Gear housing" />
+
+## Safety first
+
+<Callout type="safety">
+Unplug the battery before you adjust any part of the finger. Keep fingers clear of the pinch points where the linkages cross, and let hot glue cool before you touch it.
+</Callout>
+
+The motor can stall and heat up if the finger binds. If it stops moving, unplug power first, then find the tight joint.
+
+## Assemble the finger
+
+Work on a clear table. Do not apply power until step 9.
+
+1. Lay out the phalanges, gear housing, rack, pinion, pins, screws, and nuts. Match each part to the viewers above.
+2. Press the pinion onto the motor shaft until it sits flush. It should not wobble.
+3. Seat the motor in the gear housing and fasten it with the screws from kit bag A.
+4. Slide the rack into the housing so its teeth meet the pinion. Move it by hand. It should travel without skipping.
+5. Pin the proximal phalanx to the housing. The pin should turn freely. Do not overtighten.
+6. Connect the intermediate link between the rack and the proximal phalanx.
+7. Pin the intermediate phalanx to the proximal phalanx.
+8. Connect the distal link, then pin the distal phalanx in place.
+9. Check free movement by hand before powering. The finger should curl and open with light finger pressure and no grinding.
+10. Only then connect the battery or USB power.
+
+![The finger parts laid out in assembly order](/images/lesson-1-assembly.svg)
+
+<Callout type="tip">
+If a joint feels gritty, loosen that pin a quarter turn and try again. Forcing it will oval the printed hole.
+</Callout>
+
+## Wire it up
+
+The button uses pin 2. One leg of the button goes to pin 2, the other leg goes to GND. The motor driver input goes to pin 9, and the motor power leads follow the driver board's labels.
+
+![Button, motor driver, and motor wiring on the Arduino](/images/lesson-1-wiring.svg)
+
+<EmbedFrame kind="tinkercad" src="https://www.tinkercad.com/" title="Finger wiring in Tinkercad" />
+
+The Tinkercad link above is a placeholder until the hardware team publishes the class circuit. Use Open in a new tab if the embed is blocked.
+
+## Program it
+
+The sketch closes the finger on one press and opens it on the next. Read the comments with the code. Each line says what that line is for.
+
+```cpp
+// finger-toggle.ino
+// One button press closes the finger. The next press opens it.
+
+const int buttonPin = 2; // Button leg. The other leg goes to GND.
+const int motorPin = 9;  // Motor driver input. HIGH closes the finger.
+
+bool fingerClosed = false;  // false means the finger is open
+bool buttonWasDown = false; // remembers the last reading so we toggle once per press
+
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP); // HIGH at rest, LOW when the button connects the pin to ground
+  pinMode(motorPin, OUTPUT);        // this pin drives the motor
+  digitalWrite(motorPin, LOW);      // start with the finger open
+}
+
+void loop() {
+  bool buttonDown = digitalRead(buttonPin) == LOW; // pressed reads LOW because of INPUT_PULLUP
+
+  if (buttonDown && !buttonWasDown) { // the button just went down
+    fingerClosed = !fingerClosed;      // flip between open and closed
+    digitalWrite(motorPin, fingerClosed ? HIGH : LOW); // HIGH closes, LOW opens
+  }
+
+  buttonWasDown = buttonDown; // store this reading for the next loop
+  delay(20);                   // wait so a bouncing contact counts as one press
+}
+```
+
+Upload it from the Arduino IDE with the board and port your teacher names. Then press the button once. The finger should close and stay closed until you press again.
+
+<EmbedFrame kind="wokwi" src="https://wokwi.com/" title="Finger sketch in Wokwi" />
+
+The Wokwi link is a placeholder until the class project is published.
+
+## Test your finger
+
+Run this checklist before you call the build done.
+
+- The finger opens fully and closes fully.
+- No joint binds or skips a tooth.
+- It completes 10 cycles in a row without stalling.
+- The button toggles once per press, not continuously while held.
+
+<Callout type="tip">
+If the finger sticks, unplug power, then move it by hand to find the tight joint. Loosen that pin before you power it again.
+</Callout>
+
+## Check your understanding
+
+Answer these five questions in the form. Your teacher can see the scores.
+
+1. What does the four-bar linkage do with the motor's rotation?
+2. Which Arduino pin is the button on?
+3. Why does the sketch use INPUT_PULLUP?
+4. What do you do before you adjust a part?
+5. How many cycles does the test ask for?
+
+<EmbedFrame kind="form" src="https://docs.google.com/forms/" title="Lesson 1 check your understanding" />
+
+The form link is a placeholder until the class quiz is published.
+
+## Teacher notes
+
+<TeacherOnly title="Timing guide">
+- Parts tour: 10 min
+- Assembly: 40 min
+- Wiring and code: 30 min
+- Testing and quiz: 10 min
+</TeacherOnly>
+
+<TeacherOnly title="Common mistakes">
+The usual miss is forgetting INPUT_PULLUP, so the button floats and the motor chatters. Students also power the finger before the hand-check in step 9.
+</TeacherOnly>
+
+<TeacherOnly title="Quiz answer key">
+1. It turns the motor's rotation into finger curling.
+2. Pin 2.
+3. So the pin reads HIGH until the button connects it to ground.
+4. Unplug the power.
+5. 10 cycles.
+</TeacherOnly>
+
+<TeacherOnly title="Assessment and differentiation">
+Award full credit when the finger completes 10 cycles without binding. Students who finish early change the sketch so the finger stops halfway.
+</TeacherOnly>
+
+## Go further
+
+<Callout type="tip" title="Halfway close">
+Change the sketch so a third press, or a changed delay, stops the finger halfway closed. Lesson 2 couples this finger to the next one.
+</Callout>

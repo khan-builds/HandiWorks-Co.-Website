@@ -1,0 +1,33 @@
+---
+// STUB – Person B replaces this
+import type { LessonSummary } from '../lib/lessons';
+
+interface Props {
+  lesson: LessonSummary;
+}
+const { lesson } = Astro.props;
+const comingSoon = lesson.status === 'coming-soon';
+---
+
+<article
+  data-status={lesson.status}
+  aria-disabled={comingSoon ? 'true' : undefined}
+  style={lesson.status === 'draft' ? 'border: 1px dashed' : comingSoon ? 'opacity: 0.6' : undefined}
+>
+  {lesson.heroImage && <img src={lesson.heroImage} alt="" width="320" height="180" />}
+  <p>Lesson {lesson.lessonNumber}</p>
+  <h2>
+    {
+      comingSoon ? (
+        lesson.title
+      ) : (
+        <a href={`/lessons/${lesson.slug}`}>{lesson.title}</a>
+      )
+    }
+  </h2>
+  <p>{lesson.level}</p>
+  <p>{lesson.durationMinutes} min</p>
+  <p>{lesson.summary}</p>
+  {comingSoon && <p>Coming soon</p>}
+  {lesson.status === 'draft' && <p>Draft</p>}
+</article>

@@ -1,0 +1,20 @@
+---
+// STUB – Person B replaces this
+interface Props {
+  items: { label: string; file: string; sizeKb?: number }[];
+}
+const { items } = Astro.props;
+---
+
+<ul>
+  {
+    items.map((item) => (
+      <li>
+        <a href={item.file} download>
+          {item.label}
+        </a>
+        {item.sizeKb != null && <span>{item.sizeKb} KB</span>}
+      </li>
+    ))
+  }
+</ul>
