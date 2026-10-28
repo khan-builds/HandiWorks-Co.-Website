@@ -30,6 +30,7 @@ const lessons = (await getLessons(Astro.locals.user!)).filter(
       lessons.map((lesson) =>
         lesson.status === 'coming-soon' ? (
           <article class="card disabled" aria-disabled="true">
+            <div class="num">0{lesson.lessonNumber} <span aria-hidden="true">◇</span></div>
             <p class="eyebrow">Lesson {lesson.lessonNumber}</p>
             <h2>{lesson.title}</h2>
             <span class="badge">{lesson.level}</span> <span>{lesson.durationMinutes} min</span>
@@ -38,11 +39,12 @@ const lessons = (await getLessons(Astro.locals.user!)).filter(
           </article>
         ) : (
           <a class:list={['card', lesson.status === 'draft' && 'draft']} href={`/lessons/${lesson.slug}`}>
+            <div class="num">0{lesson.lessonNumber} <span aria-hidden="true">↗</span></div>
             <p class="eyebrow">Lesson {lesson.lessonNumber}</p>
             <h2>{lesson.title}</h2>
             <span class="badge">{lesson.level}</span> <span>{lesson.durationMinutes} min</span>
             <p>{lesson.summary}</p>
-            {lesson.status === 'draft' && <strong>Draft</strong>}
+            {lesson.status === 'draft' ? <strong>Draft</strong> : <strong>Open lesson →</strong>}
           </a>
         ),
       )

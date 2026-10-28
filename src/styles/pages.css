@@ -1,0 +1,319 @@
+/* Inner pages use the same type, panels, and buttons as the landing page. */
+
+body:not(:has(.home)) {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body:not(:has(.home)) main:not(:has(.home)) {
+  flex: 1;
+}
+
+main:not(:has(.home)) {
+  width: min(1180px, calc(100% - 64px));
+  margin: 36px auto 72px;
+  padding: 0;
+  color: #f4f4f4;
+  font-family: 'Share Tech Mono', ui-monospace, monospace;
+}
+
+main:not(:has(.home)) h1,
+main:not(:has(.home)) h2,
+main:not(:has(.home)) h3 {
+  color: #f7f9ff;
+  font-family: Orbitron, 'Share Tech Mono', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+main:not(:has(.home)) h1 {
+  max-width: 14em;
+  margin: 0 0 18px;
+  font-size: clamp(36px, 4.4vw, 56px);
+  line-height: 1.12;
+}
+
+main:not(:has(.home)) h2 { font-size: 22px; line-height: 1.3; }
+main:not(:has(.home)) h3 { font-size: 18px; }
+
+main:not(:has(.home)) p,
+main:not(:has(.home)) li,
+main:not(:has(.home)) label {
+  color: #c8c8c8;
+  font-family: 'Share Tech Mono', ui-monospace, monospace;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+main:not(:has(.home)) .eyebrow {
+  margin: 0 0 14px;
+  color: #f4f4f4;
+  font-family: 'Share Tech Mono', ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+main:not(:has(.home)) .auth,
+main:not(:has(.home)) .toc,
+main:not(:has(.home)) .callout {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+main:not(:has(.home)) .auth { max-width: 440px; }
+
+main:not(:has(.home)) .auth label {
+  display: block;
+  margin: 22px 0 8px;
+  color: #f4f4f4;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+main:not(:has(.home)) input {
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f7f7f7;
+  font-family: 'Share Tech Mono', ui-monospace, monospace;
+  font-size: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+main:not(:has(.home)) .auth button,
+main:not(:has(.home)) .page-cta,
+main:not(:has(.home)) .filters a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin-top: 18px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: #f5f5f5;
+  font-family: 'Share Tech Mono', ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+main:not(:has(.home)) .auth button[type='submit'],
+main:not(:has(.home)) .page-cta {
+  gap: 8px;
+  margin-top: 28px;
+  border-color: #f4f4f4;
+  background: #f4f4f4;
+  box-shadow: none;
+  color: #111111;
+}
+
+main:not(:has(.home)) .auth button svg,
+main:not(:has(.home)) .page-cta svg {
+  width: 14px;
+  height: 14px;
+}
+
+main:not(:has(.home)) .auth button[type='submit']:hover,
+main:not(:has(.home)) .page-cta:hover {
+  background: #ffffff;
+  color: #111111;
+}
+
+main:not(:has(.home)) .filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 28px 0 8px;
+}
+
+main:not(:has(.home)) .filters a { margin-top: 0; }
+
+main:not(:has(.home)) .filters [aria-current] {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+main:not(:has(.home)) .grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+main:not(:has(.home)) .card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 28px 24px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  color: inherit;
+  text-decoration: none;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+main:not(:has(.home)) .card:hover {
+  transform: none;
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+main:not(:has(.home)) .card h2 {
+  margin: 12px 0 0;
+  font-size: 22px;
+}
+
+main:not(:has(.home)) .card p,
+main:not(:has(.home)) .card .badge,
+main:not(:has(.home)) .card strong {
+  font-size: 14px;
+}
+
+main:not(:has(.home)) .num {
+  color: #d5e2ff;
+  font-family: Orbitron, 'Share Tech Mono', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(120, 160, 230, 0.4);
+}
+
+main:not(:has(.home)) .badge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 0;
+  border: 0;
+  color: #9eb6ef;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+main:not(:has(.home)) .lesson-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 48px;
+  align-items: start;
+  margin-top: 12px;
+}
+
+main:not(:has(.home)) .lesson {
+  max-width: 68ch;
+  color: #e4e4e4;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+main:not(:has(.home)) .lesson p,
+main:not(:has(.home)) .lesson li,
+main:not(:has(.home)) .lesson td,
+main:not(:has(.home)) .lesson th {
+  max-width: none;
+  color: #e4e4e4;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+main:not(:has(.home)) .lesson h2,
+main:not(:has(.home)) .lesson h3 {
+  margin-top: 36px;
+  font-family: Orbitron, 'Share Tech Mono', sans-serif;
+}
+
+main:not(:has(.home)) .callout {
+  margin: 0 0 28px;
+  padding: 22px 22px 22px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 3px solid #234e9b;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+main:not(:has(.home)) .toc {
+  position: sticky;
+  top: 24px;
+  color: #c8c8c8;
+  font-size: 13px;
+}
+
+main:not(:has(.home)) .toc strong {
+  display: block;
+  margin-bottom: 12px;
+  color: #f4f4f4;
+  font-family: 'Share Tech Mono', ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+main:not(:has(.home)) .toc a {
+  display: block;
+  margin: 10px 0;
+  color: #c8c8c8;
+  font-family: 'Share Tech Mono', ui-monospace, monospace;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+main:not(:has(.home)) .toc a:hover { color: #ffffff; }
+
+main:not(:has(.home)) .back-link {
+  color: #c8c8c8;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+main:not(:has(.home)) table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+main:not(:has(.home)) td,
+main:not(:has(.home)) th {
+  padding: 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  text-align: left;
+}
+
+@media (max-width: 860px) {
+  main:not(:has(.home)) {
+    width: min(100% - 40px, 560px);
+  }
+
+  main:not(:has(.home)) .grid,
+  main:not(:has(.home)) .lesson-grid {
+    grid-template-columns: 1fr;
+  }
+
+  main:not(:has(.home)) .toc { position: static; }
+}

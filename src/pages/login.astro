@@ -17,17 +17,25 @@ const message =
 
 <Base title="Log in">
   <section class="auth">
-    <p class="eyebrow">Welcome back</p>
-    <h1>Log in to HelpingHand</h1>
+    <p class="eyebrow">Welcome to HelpingHand</p>
+    <h1>Enter the learning lab.</h1>
+    <p>Use the account your teacher gave you. Teachers see the extra notes. Students do not.</p>
     {message && <p role={error ? 'alert' : 'status'} class={error ? 'error' : 'muted'}>{message}</p>}
     <form method="post" action="/api/auth/login" id="login">
       <label for="email">Email</label>
       <input id="email" name="email" type="email" autocomplete="username" required maxlength="254" />
       <label for="password">Password</label>
       <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200" />
-      <button type="button" id="show" aria-pressed="false">Show password</button>
+      <button type="button" id="show" class="secondary" aria-pressed="false">Show password</button>
       <input type="hidden" name="next" value={next} />
-      <button type="submit">Log in →</button>
+      <div class="actions">
+        <button type="submit">
+          Log in
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
     </form>
     <p class="muted">Accounts are provided by your teacher.</p>
   </section>

@@ -1,56 +1,188 @@
 ---
+import '../styles/home.css';
 import Base from '../layouts/BaseLayout.astro';
-
-const features = [
-  ['01 / Build', 'Discover the mechanics', 'Explore how linkages turn movement into a curling finger.'],
-  ['02 / Code', 'Make your ideas move', 'Connect Arduino programming to a physical response.'],
-  ['03 / Design', 'Shape what comes next', 'Explore CAD parts and think through your own modifications.'],
-];
 ---
 
-<Base>
-  <section class="hero">
-    <div>
-      <p class="eyebrow">Engineering starts in your hands</p>
-      <h1>Big ideas.<br />One finger<br />at a time.</h1>
-      <p>Build, code and design a robotic hand, one finger at a time.</p>
-      <a class="button" href="/login">Log in to start learning →</a>
-      <p class="muted">For curious minds, ages 11 and up.</p>
-    </div>
-    <div class="hero-art">
-      <svg viewBox="0 0 360 350" role="img" aria-label="Illustrative modular robotic hand">
-        <g fill="var(--hh-part)" stroke="var(--hh-primary)" stroke-width="3">
-          <rect x="90" y="180" width="180" height="120" rx="20"></rect>
-          {
-            [0, 1, 2, 3].map((i) => (
-              <g>
-                <rect x={92 + i * 45} y={40 + Math.abs(i - 1) * 15} width="34" height="130" rx="12" />
-                <circle cx={109 + i * 45} cy="125" r="7" fill="var(--hh-accent)" />
-                <path d={`M${109 + i * 45} 170v25`} />
-              </g>
-            ))
-          }
-          <rect x="270" y="155" width="37" height="100" rx="14" transform="rotate(30 270 155)"></rect>
-        </g>
-        <text x="180" y="250" text-anchor="middle" fill="var(--hh-bg)" font-size="22">HW / 01</text>
-      </svg>
-      <p class="muted">HelpingHand · concept illustration</p>
-    </div>
-  </section>
-  <div class="grid">
-    {
-      features.map(([number, title, description]) => (
-        <article class="card">
-          <p class="eyebrow">{number}</p>
-          <h2>{title}</h2>
-          <p>{description}</p>
-        </article>
-      ))
-    }
+<Base title="HelpingHand">
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-glow"></div>
+    <div class="ambient-grid"></div>
+    <div class="ambient-spot"></div>
   </div>
-  <section class="strip">
-    <h2>Built for hands-on teaching.</h2>
-    <p>Teacher accounts include lesson notes, assessment criteria, and troubleshooting guidance alongside the student experience.</p>
-    <a href="/login">Explore with your teacher account →</a>
+  <section class="home">
+    <div class="home-copy">
+      <p class="kicker">Modular robotics</p>
+      <h1 data-text="HelpingHand">HelpingHand</h1>
+      <p class="lede">A robotic hand students build, wire, and program. Mechanics, circuits, and code, one lesson at a time.</p>
+      <div class="home-actions">
+        <a class="home-btn solid" href="/lessons">Go to lessons</a>
+        <a class="home-btn glass" href="/lessons/01-finger-module">Start lesson 1</a>
+      </div>
+    </div>
+    <figure class="home-visual">
+      <img src="/images/hand-placeholder.svg" alt="Placeholder for the HelpingHand robotic hand. Replace this image later." />
+    </figure>
   </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Build. Code. Discover.</span>
+      <span>Engineering in your hands.</span>
+      <span>Build. Code. Discover.</span>
+      <span>Engineering in your hands.</span>
+      <span>Build. Code. Discover.</span>
+      <span>Engineering in your hands.</span>
+      <span>Build. Code. Discover.</span>
+      <span>Engineering in your hands.</span>
+    </div>
+  </div>
+
+  <section class="band about reveal" id="about">
+    <div class="stagger">
+      <p class="kicker">01 / A helping hand</p>
+      <h2>Big ideas start with a little <em>hands-on thinking.</em></h2>
+      <p>HelpingHand brings mechanics, electronics, and programming together in one modular robotics project. A tangible way for students to explore how engineering turns an idea into movement.</p>
+    </div>
+  </section>
+
+  <section class="band reveal" id="product">
+    <div class="band-head stagger">
+      <p class="kicker">02 / Meet the mechanism</p>
+      <h2>Engineered for hands-on learning.</h2>
+    </div>
+    <div class="card-grid stagger">
+      <article class="panel">
+        <p class="kicker">01 / Mechanics</p>
+        <h3>Small links. Coordinated movement.</h3>
+        <p>The proposed fingers use a scissor mechanism. Explore how connected links translate motion through each finger.</p>
+      </article>
+      <article class="panel">
+        <p class="kicker">02 / Electronics</p>
+        <h3>A little power. A lot to explore.</h3>
+        <p>An Arduino Mega, six positional servos, and a three-axis gyroscope and accelerometer form the planned electronic system.</p>
+      </article>
+      <article class="panel">
+        <p class="kicker">03 / Programming</p>
+        <h3>From your code to its fingertips.</h3>
+        <p>Open and close inputs guide the hand toward its target position. The proposed control logic includes fault checks and LED status feedback.</p>
+      </article>
+    </div>
+    <div class="stagger">
+      <a class="home-btn solid" href="/lessons">Start learning</a>
+    </div>
+  </section>
+
+  <section class="band learn reveal" id="learn">
+    <div class="stagger">
+      <p class="kicker">03 / Learning through making</p>
+      <h2>Learn through experimentation.</h2>
+      <p>Designed for students learning engineering and robotics. Follow the connections from physical parts to circuits to the code that brings them together.</p>
+    </div>
+    <ol class="steps stagger">
+      <li>
+        <span>01</span>
+        <div>
+          <h3>Discover the parts.</h3>
+          <p>Get to know the fingers, palm, base, and mechanical linkages.</p>
+        </div>
+      </li>
+      <li>
+        <span>02</span>
+        <div>
+          <h3>Connect the ideas.</h3>
+          <p>Explore how the controller, power supply, sensors, and servos work together.</p>
+        </div>
+      </li>
+      <li>
+        <span>03</span>
+        <div>
+          <h3>Make your next move.</h3>
+          <p>Investigate the control logic. Test, observe, and use what you learn to improve the design.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="band reveal" id="team">
+    <div class="band-head stagger">
+      <p class="kicker">04 / The hands behind the hand</p>
+      <h2>Meet HandiWorks.</h2>
+      <p>Four students. One shared curiosity. Created for EG-UY 1004 at NYU Tandon School of Engineering.</p>
+    </div>
+    <div class="team-grid stagger">
+      <article>
+        <p class="initial">BJ</p>
+        <h3>Billy Jin</h3>
+        <p>Programming Lead</p>
+      </article>
+      <article>
+        <p class="initial">GK</p>
+        <h3>Golam Khan</h3>
+        <p>Design Lead</p>
+      </article>
+      <article>
+        <p class="initial">CL</p>
+        <h3>Clarence Li</h3>
+        <p>Circuitry Lead</p>
+      </article>
+      <article>
+        <p class="initial">LZ</p>
+        <h3>Lingbo Zhang</h3>
+        <p>Project Manager</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="band close reveal">
+    <div class="stagger">
+      <p class="kicker">Your next big idea starts here.</p>
+      <h2>Your next idea. In your hands.</h2>
+      <a class="home-btn solid" href="/login">
+        Enter learning lab
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <script>
+    const spot = document.querySelector('.ambient-spot');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (spot && !reduce) {
+      let x = window.innerWidth * 0.7;
+      let y = window.innerHeight * 0.3;
+      let tx = x;
+      let ty = y;
+      window.addEventListener('pointermove', (event) => {
+        tx = event.clientX;
+        ty = event.clientY;
+        spot.style.opacity = '1';
+      });
+      const tick = () => {
+        x += (tx - x) * 0.08;
+        y += (ty - y) * 0.08;
+        spot.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        requestAnimationFrame(tick);
+      };
+      tick();
+    }
+
+    const reveal = document.querySelectorAll('.reveal');
+    if (reduce) {
+      reveal.forEach((section) => section.classList.add('in'));
+    } else if (reveal.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        },
+        { threshold: 0.16, rootMargin: '0px 0px -8% 0px' },
+      );
+      reveal.forEach((section) => observer.observe(section));
+    }
+  </script>
 </Base>
