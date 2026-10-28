@@ -1,38 +1,60 @@
 ---
-// STUB – Person B replaces the markup below. Person A owns this frontmatter.
-import SiteHeader from '../components/SiteHeader.astro';
+import Base from '../layouts/BaseLayout.astro';
+import { safeNext } from '../lib/auth';
 
 const error = Astro.url.searchParams.get('error');
 const loggedOut = Astro.url.searchParams.get('loggedOut');
-const next = Astro.url.searchParams.get('next') ?? '';
-
-const invalidMessage = "That email and password don't match. Check them and try again.";
-const rateMessage = 'Too many attempts. Wait 15 minutes, then try again.';
-const loggedOutMessage = "You've been logged out.";
+const next = safeNext(Astro.url.searchParams.get('next') ?? undefined) ?? '';
+const message =
+  error === 'rate'
+    ? 'Too many attempts. Wait 15 minutes, then try again.'
+    : error === 'invalid'
+      ? "That email and password don't match. Check them and try again."
+      : loggedOut === '1'
+        ? "You've been logged out."
+        : '';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Log in · HelpingHand</title>
-  </head>
-  <body>
-    <SiteHeader user={Astro.locals.user} />
-    <main id="main">
-      <h1>Log in to HelpingHand</h1>
-      {error === 'invalid' && <p role="alert">{invalidMessage}</p>}
-      {error === 'rate' && <p role="alert">{rateMessage}</p>}
-      {loggedOut === '1' && <p>{loggedOutMessage}</p>}
-      <form method="post" action="/api/auth/login">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" autocomplete="username" required />
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required />
-        <input type="hidden" name="next" value={next} />
-        <button type="submit">Log in</button>
-      </form>
-      <p>Accounts are provided by your teacher.</p>
-    </main>
-  </body>
-</html>
+<Base title="Log in">
+  <section class="auth">
+    <p class="eyebrow">Welcome to HelpingHand</p>
+    <h1>Enter the learning lab.</h1>
+    <p>Use the account your teacher gave you. Teachers see the extra notes. Students do not.</p>
+    {message && <p role={error ? 'alert' : 'status'} class={error ? 'error' : 'muted'}>{message}</p>}
+    <form method="post" action="/api/auth/login" id="login">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="username" required maxlength="254" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200" />
+      <button type="button" id="show" class="secondary" aria-pressed="false">Show password</button>
+      <input type="hidden" name="next" value={next} />
+      <div class="actions">
+        <button type="submit">
+          Log in
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </form>
+    <p class="muted">Accounts are provided by your teacher.</p>
+  </section>
+</Base>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('#show');
+  const password = document.querySelector<HTMLInputElement>('#password');
+  const form = document.querySelector<HTMLFormElement>('#login');
+  toggle?.addEventListener('click', () => {
+    if (!password || !toggle) return;
+    const show = password.type === 'password';
+    password.type = show ? 'text' : 'password';
+    toggle.textContent = show ? 'Hide password' : 'Show password';
+    toggle.setAttribute('aria-pressed', String(show));
+  });
+  form?.addEventListener('submit', () => {
+    const button = form.querySelector<HTMLButtonElement>('[type=submit]');
+    if (!button) return;
+    button.disabled = true;
+    button.textContent = 'Logging in…';
+  });
+</script>

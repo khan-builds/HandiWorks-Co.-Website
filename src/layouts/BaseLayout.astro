@@ -1,0 +1,81 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/glass.css';
+import '../styles/pages.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'HelpingHand' } = Astro.props;
+const user = Astro.locals.user;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} · HandiWorks Co.</title>
+    <meta name="description" content="A modular robotic hand for the next generation of engineers." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="HelpingHand home">
+        <span class="brand-symbol" aria-hidden="true">H<span>H</span></span>
+        <span class="brand-lockup">HelpingHand</span>
+        <span class="brand-company">HandiWorks Co.</span>
+      </a>
+      <button class="menu-toggle secondary" id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav">
+        Menu
+      </button>
+      <nav id="nav" aria-label="Main navigation">
+        <a class="button" href="/" aria-current={path === '/' ? 'page' : undefined}>Home</a>
+        <a class="button" href="/#product">The product</a>
+        <a class="button" href="/lessons" aria-current={path.startsWith('/lessons') ? 'page' : undefined}>Lessons</a>
+        <a class="button" href="/#team">Our team</a>
+        {
+          user ? (
+            <>
+              <span class="account-role">{user.role === 'teacher' ? 'Teacher' : user.name}</span>
+              <form method="post" action="/api/auth/logout">
+                <button class="button secondary" type="submit">Log out</button>
+              </form>
+            </>
+          ) : (
+            <a class="button nav-cta" href="/login" aria-current={path === '/login' ? 'page' : undefined}>
+              Enter learning lab
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          )
+        }
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <a class="brand" href="/" aria-label="HelpingHand home">
+        <span class="brand-lockup">HelpingHand</span>
+        <span class="brand-company">HandiWorks Co.</span>
+      </a>
+      <p class="footer-meta">EG-UY 1004 Section B2 · NYU Tandon · 2026</p>
+    </footer>
+    <script>
+      const header = document.querySelector('.site-header');
+      const toggle = document.querySelector('#menu-toggle');
+      toggle?.addEventListener('click', () => {
+        const open = header?.classList.toggle('menu-open');
+        toggle.setAttribute('aria-expanded', String(Boolean(open)));
+      });
+    </script>
+  </body>
+</html>

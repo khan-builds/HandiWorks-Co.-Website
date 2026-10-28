@@ -1,51 +1,54 @@
 ---
-// STUB – Person B replaces the markup below. Person A owns this frontmatter.
-// Do not set prerender = true. This page depends on the logged-in user.
 export const prerender = false;
 
-import LessonCard from '../../components/LessonCard.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
+import Base from '../../layouts/BaseLayout.astro';
 import { getLessons } from '../../lib/lessons';
 
-const lessons = await getLessons(Astro.locals.user!);
-const requested = Astro.url.searchParams.get('level');
+const requested = Astro.url.searchParams.get('level') || 'all';
 const level =
-  requested === 'beginner' || requested === 'intermediate' || requested === 'advanced'
-    ? requested
-    : null;
-const visible = level ? lessons.filter((lesson) => lesson.level === level) : lessons;
+  requested === 'beginner' || requested === 'intermediate' || requested === 'advanced' ? requested : 'all';
+const lessons = (await getLessons(Astro.locals.user!)).filter(
+  (lesson) => level === 'all' || lesson.level === level,
+);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Lessons · HelpingHand</title>
-  </head>
-  <body>
-    <SiteHeader user={Astro.locals.user} />
-    <main id="main">
-      <h1>Lessons</h1>
-      <p>Start with Lesson 1. Each lesson builds on the one before.</p>
-      <nav aria-label="Filter by level">
-        <a href="/lessons">All</a>
-        <a href="/lessons?level=beginner">Beginner</a>
-        <a href="/lessons?level=intermediate">Intermediate</a>
-        <a href="/lessons?level=advanced">Advanced</a>
-      </nav>
-      {
-        visible.length === 0 ? (
-          <p>No lessons at this level yet.</p>
+<Base title="Lessons">
+  <p class="eyebrow">Your robotics journey</p>
+  <h1>Lessons</h1>
+  <p>Start with Lesson 1. Each lesson builds on the one before.</p>
+  <nav class="filters" aria-label="Filter by level">
+    {
+      (['all', 'beginner', 'intermediate', 'advanced'] as const).map((item) => (
+        <a href={item === 'all' ? '/lessons' : `?level=${item}`} aria-current={level === item ? 'page' : undefined}>
+          {item[0].toUpperCase() + item.slice(1)}
+        </a>
+      ))
+    }
+  </nav>
+  <div class="grid">
+    {
+      lessons.map((lesson) =>
+        lesson.status === 'coming-soon' ? (
+          <article class="card disabled" aria-disabled="true">
+            <div class="num">0{lesson.lessonNumber} <span aria-hidden="true">◇</span></div>
+            <p class="eyebrow">Lesson {lesson.lessonNumber}</p>
+            <h2>{lesson.title}</h2>
+            <span class="badge">{lesson.level}</span> <span>{lesson.durationMinutes} min</span>
+            <p>{lesson.summary}</p>
+            <strong>Coming soon</strong>
+          </article>
         ) : (
-          <ul>
-            {visible.map((lesson) => (
-              <li>
-                <LessonCard lesson={lesson} />
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </main>
-  </body>
-</html>
+          <a class:list={['card', lesson.status === 'draft' && 'draft']} href={`/lessons/${lesson.slug}`}>
+            <div class="num">0{lesson.lessonNumber} <span aria-hidden="true">↗</span></div>
+            <p class="eyebrow">Lesson {lesson.lessonNumber}</p>
+            <h2>{lesson.title}</h2>
+            <span class="badge">{lesson.level}</span> <span>{lesson.durationMinutes} min</span>
+            <p>{lesson.summary}</p>
+            {lesson.status === 'draft' ? <strong>Draft</strong> : <strong>Open lesson →</strong>}
+          </a>
+        ),
+      )
+    }
+  </div>
+  {!lessons.length && <p>No lessons at this level yet.</p>}
+</Base>

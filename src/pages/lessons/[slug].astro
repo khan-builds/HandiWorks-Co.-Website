@@ -1,21 +1,73 @@
 ---
-// STUB – Person B replaces the markup below. Person A owns this frontmatter.
-// Do not set prerender = true. Teacher-only blocks are removed per request.
 export const prerender = false;
 
-import LessonLayout from '../../layouts/LessonLayout.astro';
+import Base from '../../layouts/BaseLayout.astro';
+import DownloadList from '../../components/DownloadList.astro';
 import { getLesson, getLessons } from '../../lib/lessons';
 
 const lesson = await getLesson(Astro.params.slug!, Astro.locals.user!);
 if (!lesson) return Astro.rewrite('/404');
 
+const { Content, data, headings } = lesson;
 const openable = (await getLessons(Astro.locals.user!)).filter((item) => item.status !== 'coming-soon');
 const index = openable.findIndex((item) => item.slug === lesson.summary.slug);
 const previous = index > 0 ? openable[index - 1] : null;
 const nextLesson = index !== -1 && index < openable.length - 1 ? openable[index + 1] : null;
-const { Content } = lesson;
+const toc = headings.filter(
+  (heading) =>
+    heading.depth === 2 && (Astro.locals.user?.role === 'teacher' || heading.text !== 'Teacher notes'),
+);
 ---
 
-<LessonLayout lesson={lesson} previous={previous} next={nextLesson}>
-  <Content />
-</LessonLayout>
+<Base title={data.title}>
+  <p><a class="back-link" href="/lessons">← Lessons</a></p>
+  <p class="eyebrow">Lesson {data.lessonNumber}</p>
+  <h1>{data.title}</h1>
+  <p>{data.level} · {data.durationMinutes} min</p>
+  <div class="lesson-grid">
+    <article class="lesson">
+      <aside class="callout">
+        <h2>Expected outcome</h2>
+        <p>{data.expectedOutcome}</p>
+      </aside>
+      <h2>You will be able to</h2>
+      <ul>
+        {data.objectives.map((objective) => <li>{objective}</li>)}
+      </ul>
+      <h2>Materials</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            data.materials.map((item) => (
+              <tr>
+                <td>{item.name}</td>
+                <td>{item.quantity}</td>
+                <td>{item.note}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <Content />
+      <h2>Downloads</h2>
+      <DownloadList items={data.downloads} />
+      <p>
+        {previous && <a href={`/lessons/${previous.slug}`}>← {previous.title}</a>}
+        {previous && nextLesson && ' · '}
+        {nextLesson && <a href={`/lessons/${nextLesson.slug}`}>{nextLesson.title} →</a>}
+        {!nextLesson && <a href="/lessons">← Back to lessons</a>}
+      </p>
+    </article>
+    <aside class="toc">
+      <strong>On this page</strong>
+      {toc.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+    </aside>
+  </div>
+</Base>

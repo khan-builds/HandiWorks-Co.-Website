@@ -1,18 +1,10 @@
 ---
+import Base from '../layouts/BaseLayout.astro';
 Astro.response.status = 404;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Not found · HelpingHand</title>
-  </head>
-  <body>
-    <main id="main">
-      <h1>That page is not available</h1>
-      <p>The lesson may be missing, still coming soon, or a draft you cannot open.</p>
-      <p><a href="/lessons">Back to lessons</a></p>
-    </main>
-  </body>
-</html>
+<Base title="Not found">
+  <h1>That page is not available</h1>
+  <p>The lesson may be missing, still coming soon, or a draft you cannot open.</p>
+  <p><a class="page-cta" href="/lessons">Back to lessons</a></p>
+</Base>
