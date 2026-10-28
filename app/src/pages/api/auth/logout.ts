@@ -1,0 +1,1 @@
+import type {APIRoute} from 'astro';import {deleteSession} from '../../../lib/auth';export const POST:APIRoute=async({cookies,redirect})=>{const t=cookies.get('hh_session')?.value;if(t)await deleteSession(t);cookies.delete('hh_session',{path:'/'});return redirect('/login?loggedOut=1',303)};

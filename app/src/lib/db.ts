@@ -1,0 +1,1 @@
+import {createClient} from '@libsql/client';import {drizzle} from 'drizzle-orm/libsql';export const db=drizzle(createClient({url:process.env.DATABASE_URL||import.meta.env?.DATABASE_URL||'file:local.db',authToken:process.env.DATABASE_AUTH_TOKEN||import.meta.env?.DATABASE_AUTH_TOKEN}));

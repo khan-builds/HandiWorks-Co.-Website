@@ -1,0 +1,91 @@
+---
+title: Build a Finger Module
+lessonNumber: 1
+summary: Explore a removable robotic finger and the steps from mechanical assembly to Arduino control.
+level: beginner
+durationMinutes: 90
+status: published
+objectives:
+  - Identify the links and joints in a finger module
+  - Check a mechanism for free movement before powering it
+  - Explain how a button changes the requested finger position
+materials:
+  - { name: Printed finger kit, quantity: 1, note: Final CAD pending }
+  - { name: Motor and driver, quantity: 1, note: Confirm against final parts list }
+  - { name: Arduino board and USB cable, quantity: 1 }
+  - { name: Push button, quantity: 1 }
+expectedOutcome: A finger that curls closed on one button press and opens on the next, after the final hardware and sketch are validated.
+---
+import TeacherOnly from '../../components/TeacherOnly.astro';
+import StlViewer from '../../components/StlViewer';
+
+> **Lesson draft for hardware review:** Assembly photos, final CAD, pin assignments, simulator projects, and the validated Arduino sketch are pending. Use the concept preview for orientation only.
+
+## How a finger moves
+A linkage connects rigid parts at pivot points. Moving one link can change the position of the others. The proposed lesson explores two coupled four-bar linkages. Compare the joints with the knuckles of your own finger.
+
+## Meet the parts
+The final kit will include phalanges, a gear housing, and rack-and-pinion components. The preview below is a simple demonstration block, not a printable HelpingHand part.
+
+<StlViewer client:visible src="/models/demo-block.stl" title="Demonstration block — not a production part" />
+
+## Safety first
+<aside className="callout safety">Disconnect power before adjusting parts. Keep fingers clear of pinch points. Use tools and hot glue with your teacher’s supervision.</aside>
+
+## Assemble the finger
+The following planning sequence needs the hardware team's photos and exact fastener specifications before classroom use.
+
+1. Identify the kit parts against the final bill of materials.
+2. Inspect printed parts for damage or obstructed holes.
+3. Identify the proximal and distal finger sections.
+4. Locate the linkage pivot positions in the approved drawing.
+5. Fit the linkage hardware specified by the hardware team.
+6. Fit the drive housing and approved drive components.
+7. Check that fasteners retain the joints without clamping them rigidly.
+8. Move the mechanism gently by hand with power disconnected.
+9. Stop and correct any rubbing or binding.
+10. Ask your teacher to review the assembly before connecting power.
+
+## Wire it up
+The wiring diagram and Tinkercad project will be added after the motor, driver, supply voltage, and pin assignments are confirmed. Do not infer wiring from the concept illustration.
+
+## Program it
+This pseudocode describes the intended behavior; it is not an uploadable sketch.
+
+```text
+start with an open target
+read the debounced button
+when a new press is detected:
+    switch between open and closed targets
+if a fault is detected:
+    stop the motor
+otherwise:
+    move toward the target within validated limits
+```
+
+The tested Arduino download and Wokwi project are pending hardware validation.
+
+## Test your finger
+With the approved wiring and sketch installed, check full travel, smooth movement, and ten consecutive open/close cycles. Disconnect power immediately if the mechanism binds, overheats, or moves unexpectedly.
+
+## Check your understanding
+1. What is the purpose of a pivot joint?
+2. Why should you check free movement before powering the motor?
+3. What does button debouncing prevent?
+4. Why must the motor stop when a fault occurs?
+5. What would you change to request a halfway position?
+
+The Google Forms quiz link is pending.
+
+<TeacherOnly title="Timing guide">
+Allow 10 minutes for the parts tour, 40 for assembly, 30 for wiring and code, and 10 for testing and reflection. Confirm timing with Lingbo before classroom use.
+</TeacherOnly>
+<TeacherOnly title="Answer key and assessment">
+A pivot allows relative rotation. A free-movement check catches binding. Debouncing prevents multiple events from one press. Fault handling limits unsafe motion. A halfway target must remain inside validated travel limits. Assess explanation, careful assembly, safe testing, and the student's interpretation of results.
+</TeacherOnly>
+
+## Go further
+Explain how a halfway target would differ from an open or closed target. Lesson 2 will explore linkage geometry.
+
+## Downloads
+Final CAD and the validated Arduino sketch are awaiting the hardware team. The demonstration block can be downloaded below the viewer.

@@ -1,0 +1,6 @@
+import {createHash,randomBytes} from 'node:crypto';import {eq} from 'drizzle-orm';import {db} from './db';import {users,sessions} from './schema';
+export const hash=(s:string)=>createHash('sha256').update(s).digest('hex');
+export function safeNext(value:unknown){if(typeof value!=='string'||!value.startsWith('/')||value.startsWith('//')||/[\\\r\n]/.test(value))return '/lessons';try{const u=new URL(value,'https://helpinghand.test');return u.origin==='https://helpinghand.test'?u.pathname+u.search:'/lessons'}catch{return '/lessons'}}
+export async function createSession(userId:string){const token=randomBytes(32).toString('hex');await db.insert(sessions).values({id:hash(token),userId,expiresAt:Date.now()+7*86400000});return token}
+export async function validateSession(token:string){const [row]=await db.select({id:users.id,email:users.email,name:users.name,role:users.role,expiresAt:sessions.expiresAt}).from(sessions).innerJoin(users,eq(users.id,sessions.userId)).where(eq(sessions.id,hash(token)));if(!row||row.expiresAt<Date.now())return null;const {expiresAt,...user}=row;return user}
+export async function deleteSession(token:string){await db.delete(sessions).where(eq(sessions.id,hash(token)))}

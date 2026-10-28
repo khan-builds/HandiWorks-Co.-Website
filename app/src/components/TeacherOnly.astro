@@ -1,0 +1,4 @@
+---
+const {title='Teacher notes'}=Astro.props;
+---
+{Astro.locals.user?.role==='teacher'&&<aside class="callout teacher" aria-label={title}><span class="badge">Teacher only</span><h3>{title}</h3><slot/></aside>}
