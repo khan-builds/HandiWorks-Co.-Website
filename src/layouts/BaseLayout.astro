@@ -1,0 +1,47 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'HelpingHand' } = Astro.props;
+const user = Astro.locals.user;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} · HandiWorks Co.</title>
+    <meta name="description" content="Build, code and design a robotic hand, one finger at a time." />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header>
+      <a class="brand" href="/">HelpingHand<span style="color:var(--hh-accent)">.</span></a>
+      <nav>
+        {
+          user ? (
+            <>
+              <a href="/lessons">Lessons</a>
+              <span>{user.name}</span>
+              {user.role === 'teacher' && <span class="badge">Teacher</span>}
+              <form method="post" action="/api/auth/logout">
+                <button type="submit">Log out</button>
+              </form>
+            </>
+          ) : (
+            <a class="button" href="/login">Log in</a>
+          )
+        }
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer>HandiWorks Co. · EG-UY 1004 Section B2 · NYU Tandon · 2026</footer>
+  </body>
+</html>

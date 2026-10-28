@@ -1,16 +1,56 @@
 ---
+import Base from '../layouts/BaseLayout.astro';
+
+const features = [
+  ['01 / Build', 'Discover the mechanics', 'Explore how linkages turn movement into a curling finger.'],
+  ['02 / Code', 'Make your ideas move', 'Connect Arduino programming to a physical response.'],
+  ['03 / Design', 'Shape what comes next', 'Explore CAD parts and think through your own modifications.'],
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Engineering starts in your hands</p>
+      <h1>Big ideas.<br />One finger<br />at a time.</h1>
+      <p>Build, code and design a robotic hand, one finger at a time.</p>
+      <a class="button" href="/login">Log in to start learning →</a>
+      <p class="muted">For curious minds, ages 11 and up.</p>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 360 350" role="img" aria-label="Illustrative modular robotic hand">
+        <g fill="var(--hh-part)" stroke="var(--hh-primary)" stroke-width="3">
+          <rect x="90" y="180" width="180" height="120" rx="20"></rect>
+          {
+            [0, 1, 2, 3].map((i) => (
+              <g>
+                <rect x={92 + i * 45} y={40 + Math.abs(i - 1) * 15} width="34" height="130" rx="12" />
+                <circle cx={109 + i * 45} cy="125" r="7" fill="var(--hh-accent)" />
+                <path d={`M${109 + i * 45} 170v25`} />
+              </g>
+            ))
+          }
+          <rect x="270" y="155" width="37" height="100" rx="14" transform="rotate(30 270 155)"></rect>
+        </g>
+        <text x="180" y="250" text-anchor="middle" fill="var(--hh-bg)" font-size="22">HW / 01</text>
+      </svg>
+      <p class="muted">HelpingHand · concept illustration</p>
+    </div>
+  </section>
+  <div class="grid">
+    {
+      features.map(([number, title, description]) => (
+        <article class="card">
+          <p class="eyebrow">{number}</p>
+          <h2>{title}</h2>
+          <p>{description}</p>
+        </article>
+      ))
+    }
+  </div>
+  <section class="strip">
+    <h2>Built for hands-on teaching.</h2>
+    <p>Teacher accounts include lesson notes, assessment criteria, and troubleshooting guidance alongside the student experience.</p>
+    <a href="/login">Explore with your teacher account →</a>
+  </section>
+</Base>
