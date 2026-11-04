@@ -1,6 +1,14 @@
 
-.motion-track{height:250svh;position:relative}.motion-track .home{position:sticky;top:95px;min-height:calc(100svh - 95px);box-sizing:border-box;align-items:center}
-.motion-track .home-visual{background:none;border:0;box-shadow:none;width:100%;margin:0;overflow:visible;filter:drop-shadow(0 25px 35px #0008);will-change:transform}
-.home-visual svg{display:block;width:100%;height:auto;overflow:visible}.motion-label{position:absolute;bottom:28px;right:12%;font:12px 'Share Tech Mono',monospace;letter-spacing:2px;color:#ddd}.motion-label p{font-size:12px;margin:8px 0}.motion-meter{height:2px;background:#ffffff25;width:170px}.motion-meter span{height:100%;display:block;background:#9bb6f0;transform-origin:left}
-@media(max-width:800px){.motion-track .home{top:75px;min-height:calc(100svh - 75px);padding-top:30px;padding-bottom:80px}.motion-label{bottom:15px;right:8%}.motion-track .home-visual{max-width:400px;margin:auto}}
-@media(prefers-reduced-motion:reduce){.motion-track{height:auto}.motion-track .home{position:relative;top:0}}
+body:has(.home) header.site-header{position:sticky;top:0;z-index:40}
+body:has(.home) main{padding:0}
+.motion-track{height:250svh;position:relative}
+.motion-track .home{position:sticky;top:var(--hand-stick,70px);min-height:calc(100svh - var(--hand-stick,70px));box-sizing:border-box;align-items:center;width:min(1280px,calc(100% - 48px));grid-template-columns:minmax(0,.9fr) minmax(420px,1.2fr);gap:16px}
+.motion-track .home-visual{background:none;border:0;box-shadow:none;width:108%;margin:0;justify-self:end;overflow:hidden;filter:drop-shadow(0 25px 35px #0008);will-change:transform}
+.motion-track .home-visual::after{content:none;animation:none}
+.hand-frame{position:relative;overflow:hidden}
+.home-visual svg{display:block;width:100%;height:auto;overflow:hidden}
+.hand-glint{pointer-events:none}
+.hand-glint-bar{transform:translateX(0);animation:hand-glint 9s ease-in-out infinite}
+@keyframes hand-glint{0%,66%{transform:translateX(0)}84%,100%{transform:translateX(1100px)}}
+@media(max-width:800px){.motion-track .home{padding-top:30px;padding-bottom:80px;grid-template-columns:1fr;width:min(100% - 40px,560px)}.motion-track .home-visual{width:100%;max-width:none;margin:auto}}
+@media(prefers-reduced-motion:reduce){.motion-track{height:auto}.motion-track .home{position:relative;top:0}.hand-glint-bar{animation:none;opacity:0}}
