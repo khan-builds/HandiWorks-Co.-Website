@@ -2,7 +2,7 @@ name: Website preview
 on:
   push:
     branches: [main]
-    paths: ['index.html', '.github/workflows/preview.yml']
+    paths: ['index.html', 'version-1/**', '.github/workflows/preview.yml']
   workflow_dispatch:
 
 permissions:
@@ -21,6 +21,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/index.html
+          cp -R version-1 _site/version-1
           touch _site/.nojekyll
           node -e "const fs=require('fs');const s=fs.readFileSync('_site/index.html','utf8');const match=s.match(/<script>([\\s\\S]*)<\\/script>/);if(!match)throw Error('Missing preview script');new Function(match[1]);"
       - name: Downloadable preview
