@@ -1,5 +1,6 @@
 ---
 import '../styles/home.css';
+import '../styles/hand-motion.css';
 import Base from '../layouts/BaseLayout.astro';
 ---
 
@@ -20,7 +21,7 @@ import Base from '../layouts/BaseLayout.astro';
       </div>
     </div>
     <figure class="home-visual">
-      <img src="/images/hand-placeholder.svg" alt="Placeholder for the HelpingHand robotic hand. Replace this image later." />
+      <div aria-label="Animated mechanical hand"></div>
     </figure>
   </section>
 
@@ -185,4 +186,5 @@ import Base from '../layouts/BaseLayout.astro';
       reveal.forEach((section) => observer.observe(section));
     }
   </script>
+<script is:inline src="/hand-motion.js"></script>
 </Base>
