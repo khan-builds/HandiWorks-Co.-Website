@@ -53,6 +53,11 @@ import Base from '../layouts/BaseLayout.astro';
       <p class="kicker">02 / Meet the mechanism</p>
       <h2>Engineered for hands-on learning.</h2>
     </div>
+    <figure class="finger-stage stagger" aria-label="Animated finger linkage">
+      <video autoplay muted loop playsinline preload="metadata">
+        <source src="/videos/finger-hero-transparent.webm" type="video/webm" />
+      </video>
+    </figure>
     <div class="card-grid stagger">
       <article class="panel">
         <p class="kicker">01 / Mechanics</p>
@@ -169,6 +174,13 @@ import Base from '../layouts/BaseLayout.astro';
         requestAnimationFrame(tick);
       };
       tick();
+    }
+
+    if (reduce) {
+      document.querySelectorAll('.finger-stage video').forEach((video) => {
+        video.removeAttribute('autoplay');
+        video.pause();
+      });
     }
 
     const reveal = document.querySelectorAll('.reveal');

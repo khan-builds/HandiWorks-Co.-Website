@@ -101,6 +101,7 @@ main:has(.home) {
   .home-copy > *,
   .home-visual,
   .home-visual::after,
+  .finger-stage video,
   .home h1,
   .home h1::before,
   .home h1::after,
@@ -535,12 +536,30 @@ header.site-header #nav > a.button.nav-cta svg {
 
 .band-head { max-width: none; }
 
+.finger-stage {
+  width: min(920px, 78%);
+  margin: -148px 0 -36px auto;
+  pointer-events: none;
+}
+
+.finger-stage video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent;
+  filter: drop-shadow(0 30px 28px rgba(0, 0, 0, 0.35));
+}
+
 .card-grid,
 .team-grid {
   display: grid;
   gap: 16px;
   margin-top: 36px;
 }
+
+#product .card-grid { margin-top: 0; position: relative; z-index: 1; }
+#product .band-head { position: relative; z-index: 1; }
+#product .band-head h2 { max-width: 11em; }
 
 .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
@@ -673,6 +692,13 @@ header.site-header #nav > a.button.nav-cta svg {
 
   .card-grid,
   .team-grid { grid-template-columns: 1fr; }
+
+  .finger-stage {
+    width: min(520px, 100%);
+    margin: 4px auto 0;
+  }
+
+  #product .band-head { max-width: none; }
 }
 
 @media (max-width: 1100px) {
