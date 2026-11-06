@@ -17,11 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: db788016c4027638b609ae072f6f459d213647e7
+          path: _version-source
       - name: Prepare static demo only
         run: |
           mkdir -p _site
           cp index.html _site/index.html
           cp -R version-1 _site/version-1
+          cp -R _version-source/public/videos _site/version-1/videos
           touch _site/.nojekyll
           node -e "const fs=require('fs');const s=fs.readFileSync('_site/index.html','utf8');const match=s.match(/<script>([\\s\\S]*)<\\/script>/);if(!match)throw Error('Missing preview script');new Function(match[1]);"
       - name: Downloadable preview
