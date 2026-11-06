@@ -1,187 +1,237 @@
 ---
-title: Build a Finger Module
+title: Build a Finger
 lessonNumber: 1
-summary: Assemble one removable robotic finger, wire it to an Arduino and make it open and close with a button.
+summary: Draw one finger in five CAD steps, wire a servo to an Arduino Mega, and make the finger open and close.
 level: beginner
-durationMinutes: 90
+durationMinutes: 120
 status: published
 objectives:
-  - Explain how a four-bar linkage turns one motor's rotation into finger curling
-  - Assemble a finger module from printed parts and fasteners
-  - Wire a button and motor to an Arduino
-  - Upload a sketch and change it to alter the finger's motion
+  - Grow the finger in five CAD steps and compare each step to the example file
+  - Point to the base, the drive bar, the joints, and the fingertip
+  - Wire one servo and one button to an Arduino Mega
+  - Upload a sketch that opens the finger on one press and closes it on the next
 materials:
-  - { name: "Printed finger kit (phalanges, housing, gears)", quantity: 1 }
-  - { name: "Motor", quantity: 1, note: "per the current parts list" }
-  - { name: "Arduino board + USB cable", quantity: 1 }
+  - { name: "Arduino Mega 2560", quantity: 1, note: "with a USB cable" }
+  - { name: "Positional servo", quantity: 1, note: "signal, power, and ground wires" }
   - { name: "Push button", quantity: 1 }
-  - { name: "Screws, pins and nuts", quantity: 1, note: "kit bag A" }
-expectedOutcome: A finger that curls closed on one button press and opens on the next.
+  - { name: "Jumper wires", quantity: 6 }
+  - { name: "Computer", quantity: 1, note: "Arduino IDE and a CAD tool that opens STL files, such as Tinkercad" }
+expectedOutcome: A finger model that matches the finished example, and a Mega that opens and closes a servo when the button is pressed.
 downloads:
-  - { label: "Finger CAD files (STEP + STL)", file: "/downloads/lesson-1-cad.zip" }
-  - { label: "Arduino sketch", file: "/downloads/lesson-1-sketch.zip" }
-heroImage: /images/lesson-1-hero.jpg
+  - { label: "All five CAD steps (zip)", file: "/downloads/lesson-1-cad.zip", sizeKb: 3790 }
+  - { label: "Figure 1. The base", file: "/models/lesson-1/01-base.stl", sizeKb: 403 }
+  - { label: "Figure 2. The drive bar", file: "/models/lesson-1/02-drive.stl", sizeKb: 2132 }
+  - { label: "Figure 3. The first joints", file: "/models/lesson-1/03-first-joints.stl", sizeKb: 2641 }
+  - { label: "Figure 4. The links", file: "/models/lesson-1/04-links.stl", sizeKb: 2995 }
+  - { label: "Figure 5. The finished finger", file: "/models/lesson-1/05-finished-finger.stl", sizeKb: 3248 }
+  - { label: "Arduino Mega sketch", file: "/downloads/lesson-1-finger.ino", sizeKb: 2 }
 ---
 
 import Callout from '../../components/Callout.astro';
 import TeacherOnly from '../../components/TeacherOnly.astro';
-import EmbedFrame from '../../components/EmbedFrame.astro';
 import StlViewer from '../../components/StlViewer.tsx';
 
-## How a finger moves
+This lesson has three parts. First you draw the finger. Then you wire it. Then you program it.
 
-A human finger bends at three joints. This module copies that curl with two coupled four-bar linkages driven by one motor. The motor turns a pinion, the pinion drives a rack, and the rack pulls the linkages so the finger closes in one motion.
+The finished finger is about 11 inches long (288 mm). The example files are saved in **inches**. If your CAD tool asks for units, choose inches. If you choose millimeters, the finger will look tiny.
 
-![A human finger beside the module's two coupled four-bar linkages](/images/lesson-1-linkage.svg)
-
-<Callout type="note" title="Why one motor">
-Both linkages share the same rack, so one motor curls the whole finger. You do not need a servo at every joint.
+<Callout type="note" title="New words">
+A **joint** is a round hole with a pin through it. A **link** is a bar that swings on a joint. The **servo** is the motor that moves the links.
 </Callout>
 
-## Meet the parts
+## Part 1: Draw the finger
 
-Look at each printed part before you build. Drag the preview to turn it. The files are stand-ins until the hardware team exports the real CAD.
+You will build the finger in five steps. Each step adds the next piece of the real finger. Do one step at a time.
 
-<StlViewer client:visible src="/models/finger-proximal.stl" title="Proximal phalanx" />
+For every step:
 
-<StlViewer client:visible src="/models/finger-intermediate.stl" title="Intermediate phalanx" />
+1. Open the example and drag it to turn it around.
+2. In your own CAD file, add only the new piece.
+3. Put your model next to the example. The shapes should match before you continue.
 
-<StlViewer client:visible src="/models/finger-distal.stl" title="Distal phalanx" />
-
-<StlViewer client:visible src="/models/gear-housing.stl" title="Gear housing" />
-
-## Safety first
-
-<Callout type="safety">
-Unplug the battery before you adjust any part of the finger. Keep fingers clear of the pinch points where the linkages cross, and let hot glue cool before you touch it.
+<Callout type="tip" title="In Tinkercad">
+Start a new 3D design. Use boxes for bars and cylinders for round holes. Import the example STL when you want to check your work. Set the import unit to inches.
 </Callout>
 
-The motor can stall and heat up if the finger binds. If it stops moving, unplug power first, then find the tight joint.
+### Step 1 — The base
 
-## Assemble the finger
+The base is the end the finger mounts on. You can see round holes and flat plates. Nothing sticks out to the right yet.
 
-Work on a clear table. Do not apply power until step 9.
+<StlViewer client:visible src="/models/lesson-1/01-base.stl" title="Figure 1. The base" />
 
-1. Lay out the phalanges, gear housing, rack, pinion, pins, screws, and nuts. Match each part to the viewers above.
-2. Press the pinion onto the motor shaft until it sits flush. It should not wobble.
-3. Seat the motor in the gear housing and fasten it with the screws from kit bag A.
-4. Slide the rack into the housing so its teeth meet the pinion. Move it by hand. It should travel without skipping.
-5. Pin the proximal phalanx to the housing. The pin should turn freely. Do not overtighten.
-6. Connect the intermediate link between the rack and the proximal phalanx.
-7. Pin the intermediate phalanx to the proximal phalanx.
-8. Connect the distal link, then pin the distal phalanx in place.
-9. Check free movement by hand before powering. The finger should curl and open with light finger pressure and no grinding.
-10. Only then connect the battery or USB power.
+In your CAD file, make the mounting plates and the round holes. Leave the rest of the screen empty.
 
-![The finger parts laid out in assembly order](/images/lesson-1-assembly.svg)
+### Step 2 — The drive bar
+
+Add the long bar that comes out of the base. This is the part the servo will push and pull. The finger cannot curl without it.
+
+<StlViewer client:visible src="/models/lesson-1/02-drive.stl" title="Figure 2. The drive bar" />
+
+Keep the base from step 1. Add the long bar onto it. Do not add the finger links yet.
+
+### Step 3 — The first joints
+
+Add the first round joints above the drive bar. Each circle is a hole a pin will pass through. A link will swing on that pin.
+
+<StlViewer client:visible src="/models/lesson-1/03-first-joints.stl" title="Figure 3. The first joints" />
+
+Add those holes to your model. A joint that is too tight will not turn. A joint that is too loose will wobble. Match the example.
+
+### Step 4 — The links
+
+Add the rest of the folding links. They are the bars that reach toward the fingertip. Each new link needs its own joint.
+
+<StlViewer client:visible src="/models/lesson-1/04-links.stl" title="Figure 4. The links" />
+
+Count the round holes in the example, then count the holes in your model. The numbers should match.
+
+### Step 5 — The fingertip
+
+Add the tip. This file is the whole finger. Your model should look like this one when you are done.
+
+<StlViewer client:visible src="/models/lesson-1/05-finished-finger.stl" title="Figure 5. The finished finger" />
+
+Turn both models all the way around. Check the base, the drive bar, every joint, and the tip.
 
 <Callout type="tip">
-If a joint feels gritty, loosen that pin a quarter turn and try again. Forcing it will oval the printed hole.
+If a piece looks wrong, go back one step and fix that piece only. Do not start the whole finger over.
 </Callout>
 
-## Wire it up
+## Part 2: Wire the Arduino Mega
 
-The button uses pin 2. One leg of the button goes to pin 2, the other leg goes to GND. The motor driver input goes to pin 9, and the motor power leads follow the driver board's labels.
+The Mega is the board that will tell the servo how far to turn. Unplug the USB cable before you move any wire.
 
-![Button, motor driver, and motor wiring on the Arduino](/images/lesson-1-wiring.svg)
+<Callout type="safety">
+A moving link can pinch. Keep your fingers off the joints while the servo is powered. If a part feels hot or the finger stops halfway, unplug the USB cable first.
+</Callout>
 
-<EmbedFrame kind="tinkercad" src="https://www.tinkercad.com/" title="Finger wiring in Tinkercad" />
+Use these connections. The servo has three wires. The button has two legs.
 
-The Tinkercad link above is a placeholder until the hardware team publishes the class circuit. Use Open in a new tab if the embed is blocked.
+| Wire | Connect it to |
+| --- | --- |
+| Servo ground (brown or black) | Mega GND |
+| Servo power (red) | Mega 5V |
+| Servo signal (orange or yellow) | Mega pin 9 |
+| One button leg | Mega pin 2 |
+| Other button leg | Mega GND |
 
-## Program it
+Pin 9 sends the angle. Pin 2 listens to the button. GND is the shared ground. The button does not need a resistor, because the sketch turns on the Mega's built-in pull-up.
 
-The sketch closes the finger on one press and opens it on the next. Read the comments with the code. Each line says what that line is for.
+One small servo can run from the Mega's 5V pin. If the Mega restarts when the servo moves, the servo needs its own 5V supply. Connect that supply's ground to a Mega GND pin too.
+
+Plug in the USB cable only after every wire is in the right hole.
+
+## Part 3: Program the finger
+
+The sketch closes the finger on one press and opens it on the next. Read the note at the end of each line. It says what that line is for.
 
 ```cpp
-// finger-toggle.ino
-// One button press closes the finger. The next press opens it.
+#include <Servo.h> // The Servo library moves a positional servo to an angle.
 
-const int buttonPin = 2; // Button leg. The other leg goes to GND.
-const int motorPin = 9;  // Motor driver input. HIGH closes the finger.
+const int buttonPin = 2;      // Button wire. The other button leg goes to GND.
+const int servoPin = 9;       // Servo signal wire. It is usually orange or yellow.
+const int openAngle = 30;     // How far the finger opens. Make this bigger to open more.
+const int closedAngle = 120;  // How far the finger closes. Lower it if the servo strains.
 
-bool fingerClosed = false;  // false means the finger is open
-bool buttonWasDown = false; // remembers the last reading so we toggle once per press
+Servo finger; // The servo that moves the finger.
+
+bool fingerClosed = false;  // false means the finger is open.
+bool buttonWasDown = false; // Remembers the last reading so one press counts once.
 
 void setup() {
-  pinMode(buttonPin, INPUT_PULLUP); // HIGH at rest, LOW when the button connects the pin to ground
-  pinMode(motorPin, OUTPUT);        // this pin drives the motor
-  digitalWrite(motorPin, LOW);      // start with the finger open
+  finger.attach(servoPin);          // Pin 9 talks to the servo.
+  pinMode(buttonPin, INPUT_PULLUP); // HIGH at rest, LOW when the button connects the pin to GND.
+  finger.write(openAngle);          // Start with the finger open.
 }
 
 void loop() {
-  bool buttonDown = digitalRead(buttonPin) == LOW; // pressed reads LOW because of INPUT_PULLUP
+  bool buttonDown = digitalRead(buttonPin) == LOW; // A press reads LOW because of INPUT_PULLUP.
 
-  if (buttonDown && !buttonWasDown) { // the button just went down
-    fingerClosed = !fingerClosed;      // flip between open and closed
-    digitalWrite(motorPin, fingerClosed ? HIGH : LOW); // HIGH closes, LOW opens
+  if (buttonDown && !buttonWasDown) { // The button just went down.
+    fingerClosed = !fingerClosed;      // Flip between open and closed.
+    if (fingerClosed) {
+      finger.write(closedAngle);       // Move to the closed angle.
+    } else {
+      finger.write(openAngle);         // Move back to the open angle.
+    }
   }
 
-  buttonWasDown = buttonDown; // store this reading for the next loop
-  delay(20);                   // wait so a bouncing contact counts as one press
+  buttonWasDown = buttonDown; // Save this reading for the next loop.
+  delay(20);                   // Wait a little so one press is not counted many times.
 }
 ```
 
-Upload it from the Arduino IDE with the board and port your teacher names. Then press the button once. The finger should close and stay closed until you press again.
+Upload it like this:
 
-<EmbedFrame kind="wokwi" src="https://wokwi.com/" title="Finger sketch in Wokwi" />
+1. Open the Arduino IDE.
+2. Go to **Tools → Board** and choose **Arduino Mega or Mega 2560**.
+3. Go to **Tools → Port** and choose the port that appears when the Mega is plugged in.
+4. Paste the sketch, or open `lesson-1-finger.ino` from the downloads.
+5. Click Upload. Wait until it says "Done uploading."
 
-The Wokwi link is a placeholder until the class project is published.
+Press the button once. The servo should move to the closed angle and stay there. Press it again. The servo should move back.
 
-## Test your finger
+<Callout type="tip" title="Change the movement">
+`openAngle` and `closedAngle` are the only numbers you need at first. Change one number, upload again, and watch what the finger does. Stay away from an angle that makes the servo buzz. Buzzing means it is pushing against a stop.
+</Callout>
 
-Run this checklist before you call the build done.
+## Test it
 
-- The finger opens fully and closes fully.
-- No joint binds or skips a tooth.
-- It completes 10 cycles in a row without stalling.
-- The button toggles once per press, not continuously while held.
+The build is done when all of these are true.
+
+- Your CAD model shows the base, the drive bar, the joints, and the tip.
+- The servo ground, power, and signal wires match the table.
+- The Mega board is set to **Arduino Mega or Mega 2560**.
+- One press closes the finger, and the next press opens it.
+- Holding the button does not make the finger flap.
 
 <Callout type="tip">
-If the finger sticks, unplug power, then move it by hand to find the tight joint. Loosen that pin before you power it again.
+If the finger jitters without a press, the button pin is probably not using `INPUT_PULLUP`. If it never moves, check that the signal wire is in pin 9 and that you chose the Mega board before uploading.
 </Callout>
 
 ## Check your understanding
 
-Answer these five questions in the form. Your teacher can see the scores.
+Say the answers out loud, or write them down for your teacher.
 
-1. What does the four-bar linkage do with the motor's rotation?
-2. Which Arduino pin is the button on?
-3. Why does the sketch use INPUT_PULLUP?
-4. What do you do before you adjust a part?
-5. How many cycles does the test ask for?
-
-<EmbedFrame kind="form" src="https://docs.google.com/forms/" title="Lesson 1 check your understanding" />
-
-The form link is a placeholder until the class quiz is published.
+1. What do you add in step 2, after the base?
+2. What is a joint?
+3. Which Mega pin is the servo signal wire on?
+4. Which Mega pin is the button on?
+5. Why does the sketch use `INPUT_PULLUP`?
+6. What do you do before you move a wire?
 
 ## Teacher notes
 
 <TeacherOnly title="Timing guide">
-- Parts tour: 10 min
-- Assembly: 40 min
-- Wiring and code: 30 min
-- Testing and quiz: 10 min
+- CAD, steps 1–5: 45 min
+- Wiring: 25 min
+- Sketch, upload, and angle tuning: 35 min
+- Test and questions: 15 min
+</TeacherOnly>
+
+<TeacherOnly title="What the model is">
+The five STL files are slices of `Finger 1.stl`, cut along the finger from the base to the tip. Units are inches (the 15 mm features export as 0.59055 in). Students who import as millimeters will see an 11 mm finger. The long bar in step 2 is the drive. The circles after that are the pivot joints. Do not describe a rack and pinion unless you have confirmed that on the hardware.
 </TeacherOnly>
 
 <TeacherOnly title="Common mistakes">
-The usual miss is forgetting INPUT_PULLUP, so the button floats and the motor chatters. Students also power the finger before the hand-check in step 9.
+The usual code miss is forgetting `INPUT_PULLUP`, so the pin floats and the servo chatters. The usual IDE miss is leaving the board on Uno, so the upload fails or the pins do not match. Students also power the servo before the wiring is checked.
 </TeacherOnly>
 
-<TeacherOnly title="Quiz answer key">
-1. It turns the motor's rotation into finger curling.
-2. Pin 2.
-3. So the pin reads HIGH until the button connects it to ground.
-4. Unplug the power.
-5. 10 cycles.
+<TeacherOnly title="Answer key">
+1. The drive bar.
+2. A round hole with a pin that a link swings on.
+3. Pin 9.
+4. Pin 2.
+5. So the pin reads HIGH until the button connects it to ground.
+6. Unplug the USB cable.
 </TeacherOnly>
 
-<TeacherOnly title="Assessment and differentiation">
-Award full credit when the finger completes 10 cycles without binding. Students who finish early change the sketch so the finger stops halfway.
+<TeacherOnly title="If the servo resets the Mega">
+USB 5V is enough for one unloaded micro servo. A finger that binds will brown out the Mega. Have the student lower `closedAngle` first. If it still resets, move servo power to a separate 5V supply and tie the grounds together. Do not power the servo from a Mega pin other than 5V.
 </TeacherOnly>
 
 ## Go further
 
-<Callout type="tip" title="Halfway close">
-Change the sketch so a third press, or a changed delay, stops the finger halfway closed. Lesson 2 couples this finger to the next one.
+<Callout type="tip" title="A smaller move">
+Add a third angle, `halfAngle`, and make every third press stop between open and closed. Lesson 2 connects this finger to the next one.
 </Callout>

@@ -15,7 +15,7 @@ function Part({ src, color }: { src: string; color: string }) {
   const geometry = useLoader(STLLoader, src);
   return (
     <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]}>
-      <meshStandardMaterial color={color} roughness={0.6} metalness={0.05} />
+      <meshStandardMaterial color={color} roughness={0.5} metalness={0} />
     </mesh>
   );
 }
@@ -32,14 +32,13 @@ class LoadError extends Component<{ fallback: ReactNode; children: ReactNode }, 
 
 export default function StlViewer({ src, title, color, height = 360, autoRotate = false }: Props) {
   const [key, setKey] = useState(0);
-  const partColor =
-    color ??
-    (typeof window !== 'undefined'
-      ? getComputedStyle(document.documentElement).getPropertyValue('--hh-part').trim() || '#4F7CAC'
-      : '#4F7CAC');
+  const partColor = color ?? '#ffffff';
   const fallback = (
     <p>
-      Could not load the 3D preview. <a href={src} download>Download {title} (STL)</a>
+      Could not load the 3D preview.{' '}
+      <a className="button" href={src} download>
+        Download STL
+      </a>
     </p>
   );
 
@@ -48,8 +47,9 @@ export default function StlViewer({ src, title, color, height = 360, autoRotate 
       <div style={{ height }} role="img" aria-label={`3D model: ${title}. Drag to rotate, scroll to zoom.`}>
         <LoadError fallback={fallback}>
           <Canvas key={key} camera={{ fov: 40, position: [0, 0, 100] }} dpr={[1, 1.5]}>
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[50, 80, 60]} intensity={1.2} />
+            <ambientLight intensity={0.85} />
+            <directionalLight position={[40, 70, 50]} intensity={1.15} />
+            <directionalLight position={[-60, -10, -30]} intensity={0.4} />
             <Suspense fallback={<Html center>Loading 3D part…</Html>}>
               <Bounds fit clip observe margin={1.2}>
                 <Center>
@@ -62,11 +62,15 @@ export default function StlViewer({ src, title, color, height = 360, autoRotate 
         </LoadError>
       </div>
       <figcaption>
-        {title} ·{' '}
-        <button type="button" onClick={() => setKey((value) => value + 1)}>
-          Reset view
-        </button>{' '}
-        · <a href={src} download>Download STL</a>
+        <span className="stl-caption">{title}</span>
+        <span className="stl-actions">
+          <button type="button" className="button" onClick={() => setKey((value) => value + 1)}>
+            Reset view
+          </button>
+          <a className="button" href={src} download>
+            Download STL
+          </a>
+        </span>
       </figcaption>
     </figure>
   );
