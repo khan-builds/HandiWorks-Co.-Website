@@ -28,7 +28,7 @@ jobs:
           cp -R version-1 _site/version-1
           cp -R _version-source/public/videos _site/version-1/videos
           touch _site/.nojekyll
-          node -e "const fs=require('fs');const s=fs.readFileSync('_site/index.html','utf8');const match=s.match(/<script>([\\s\\S]*)<\\/script>/);if(!match)throw Error('Missing preview script');new Function(match[1]);"
+          node -e "const fs=require('fs');const s=fs.readFileSync('_site/index.html','utf8');const scripts=[...s.matchAll(/<script>([\\s\\S]*?)<\\/script>/g)];if(!scripts.length)throw Error('Missing preview script');for(const match of scripts)new Function(match[1]);"
       - name: Downloadable preview
         uses: actions/upload-artifact@v4
         with:
