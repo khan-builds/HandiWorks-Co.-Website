@@ -2058,8 +2058,12 @@ async function loadHand(){
  }
  p=vec3(p.y,-p.z,-p.x);
  lightNormal=vec3(lightNormal.y,-lightNormal.z,-lightNormal.x);
- p.xz=rot(angle.x)*p.xz;p.yz=rot(angle.y)*p.yz;
- lightNormal.xz=rot(angle.x)*lightNormal.xz;n=lightNormal;n.yz=rot(angle.y)*n.yz;
+ // Face the palm forward, then spin around the hand's lengthwise axis.
+ p.yz=rot(angle.y)*p.yz;
+ lightNormal.yz=rot(angle.y)*lightNormal.yz;
+ p.yz=rot(angle.x)*p.yz;
+ n=lightNormal;
+ n.yz=rot(angle.x)*n.yz;
  p.xy=rot(bank)*p.xy; n.xy=rot(bank)*n.xy;
  gl_Position=vec4(p.xy*scale,-p.z*.065,1.);}`);
  shader(gl.FRAGMENT_SHADER,`precision mediump float;varying vec3 n;varying mediump vec3 paint;
