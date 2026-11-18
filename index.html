@@ -2039,7 +2039,7 @@ async function loadHand(){
     vec2 hinge=j==2?vec2(4.55,-.49):j==1?vec2(2.86,-.54):vec2(.59,-.52);
     float travel=j==2?1.15:j==1?1.22:.86;
     float phase=float(j)*.10;
-    mat2 rotation=rot(travel*smoothstep(phase,1.,curl));
+    mat2 rotation=rot(-travel*smoothstep(phase,1.,curl));
     p.yz=hinge+rotation*(p.yz-hinge);
     lightNormal.yz=rotation*lightNormal.yz;
    }
@@ -2051,7 +2051,7 @@ async function loadHand(){
   for(int j=2;j>=0;j--){
    if(segment>float(j)){
     vec2 pivot=j==2?vec2(4.2,1.5):j==1?vec2(3.25,-.15):vec2(1.45,-3.35);
-    mat2 turn=rot(curl*(j==0?.58:.46));
+    mat2 turn=rot(-curl*(j==0?.58:.46));
     p.xy=pivot+turn*(p.xy-pivot);
     lightNormal.xy=turn*lightNormal.xy;
    }
