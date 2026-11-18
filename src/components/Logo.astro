@@ -1,0 +1,13 @@
+---
+/** The HandiWorks Co. mark: two white blocks and a sky link, traced from the team poster.
+    It is a stand-in until Golam sends the logo file (docs/README.md, Who owes what). For navy
+    bands only: the blocks are white. The holes are cut out, so the band shows through.
+    The homepage (index.html) and public/favicon.svg carry copies of these three paths. */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<svg class:list={['logo-mark', cls]} viewBox="0 0 72 100" aria-hidden="true" focusable="false">
+  <path fill="#FFFFFF" d="M1.5 11.5 23 2v24L1.5 35.5Z" />
+  <path fill="#FFFFFF" fill-rule="evenodd" d="M1.5 41.5 38 25.5v23.7L23 55.8V74L1.5 83.5ZM8.2 50.8a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0Z" />
+  <path fill="#70D0F0" fill-rule="evenodd" d="M41 22A10.75 10.75 0 0 1 62.5 22V64.87L69.94 82.9A10.75 10.75 0 0 1 50.06 91.1L41.81 71.1A10.75 10.75 0 0 1 41 67ZM47.75 22a4 4 0 1 0 8 0a4 4 0 1 0-8 0ZM56 87a4 4 0 1 0 8 0a4 4 0 1 0-8 0Z" />
+</svg>

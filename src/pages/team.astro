@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import { asset, mailto, CONTACT_EMAIL } from '../lib/url';
+
+/* Names and roles as on the team poster. `bio` and `photo` (a path under public/) are filled
+   in as each person sends theirs; until then the page shows initials and says so. */
+const team: { name: string; role: string; bio?: string; photo?: string }[] = [
+  { name: 'Billy Jin', role: 'Programming Lead' },
+  { name: 'Golam Khan', role: 'Design Lead' },
+  { name: 'Clarence Li', role: 'Circuitry Lead' },
+  { name: 'Lingbo Zhang', role: 'Project Manager' },
+];
+const initials = (name: string) => name.split(' ').map((w) => w[0]).join('');
+const missing = team.some((m) => !m.bio || !m.photo);
+---
+<Base title="Team" description="The four people behind HelpingHand and HandiWorks Co.">
+  <PageHeader title="Meet HandiWorks." lede="Four engineers who think the best way to learn how something works is to build it, break it, and build it again." />
+
+  <section class="section">
+    <SectionLabel>The team</SectionLabel>
+    {missing && <p class="mt-6"><span class="badge badge-draft">Photos and bios to come</span></p>}
+    <ul class="columns mt-8">
+      {team.map((m) => (
+        <li class="flex items-center gap-5 md:block">
+          {m.photo
+            ? <img class="h-24 w-24 shrink-0 object-cover md:aspect-square md:h-auto md:w-full" src={asset(m.photo)} alt={`Portrait of ${m.name}`} />
+            : <div class="grid h-24 w-24 shrink-0 place-items-center bg-panel text-3xl font-bold tracking-tight text-navy md:aspect-square md:h-auto md:w-full md:text-5xl" aria-hidden="true">{initials(m.name)}</div>}
+          <div class="md:mt-5">
+            <h3 class="text-xl">{m.name}</h3>
+            <p class="mt-1 font-semibold">{m.role}</p>
+            {m.bio && <p class="mt-3 text-[0.9375rem] text-rule">{m.bio}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Where we started</SectionLabel>
+    <p class="statement mt-8 max-w-[34ch]">Founded at NYU Tandon, 2026, as a <span class="whitespace-nowrap">Semester-Long</span> Design Project.</p>
+    <p class="lede mt-4">HelpingHand started as the answer to a simple question: why does learning robotics cost so much, and why is it taught as three separate subjects?</p>
+  </section>
+
+  <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
+    <div class="wrap py-14 md:py-20">
+      <SectionLabel>Talk to us</SectionLabel>
+      <div class="mt-8 grid gap-x-16 gap-y-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+        <p class="statement text-white">Teachers, schools, and makers: we want to hear what you would do with a hand like this.</p>
+        <div class="flex flex-wrap gap-3 lg:justify-end">
+          <a class="btn btn-primary" href={mailto('HelpingHand question')}>{CONTACT_EMAIL}</a>
+          <a class="btn btn-secondary" href={mailto('HelpingHand kit request')}>Request a kit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,13 @@
+---
+/** Strip under the nav on both dashboards: says the data is made up before anything else. */
+import { p } from '../lib/url';
+interface Props { role: 'student' | 'teacher' }
+const { role } = Astro.props;
+---
+<div class="border-b border-edge bg-panel">
+  <p class="wrap flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 text-sm">
+    <span class="badge badge-demo">Demo data</span>
+    <span>{role === 'teacher' ? 'A made-up class. Assigning is switched off.' : 'A made-up student. Nothing here is saved.'}</span>
+    <a class="link md:ml-auto" href={p('/roadmap/')}>Real accounts are on the roadmap</a>
+  </p>
+</div>

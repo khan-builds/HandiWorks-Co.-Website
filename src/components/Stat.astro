@@ -1,0 +1,35 @@
+---
+/** One sourced figure. "panel" is the poster's navy stat panel, for the two or three figures a
+    page leads with: put several in a `stat-group` to make them one block. "row" is the same
+    figure as a ruled line, for the lists underneath.
+    A plain percentage draws a bar to that length. Other figures get no bar: a bar that
+    measures nothing is decoration. */
+import type { Figure } from '../data/evidence';
+interface Props { figure: Figure; variant?: 'panel' | 'row'; caption?: string; plain?: boolean }
+const { figure, variant = 'row', caption, plain = false } = Astro.props;
+const percent = figure.value.match(/^(\d+(?:\.\d+)?)%$/);
+const fill = percent ? `--stat-fill:${Math.min(100, Number(percent[1]))}%` : undefined;
+const older = figure.tag === 'verified-older';
+---
+{variant === 'panel' ? (
+  <div class="stat-panel" data-reveal>
+    {caption && <p class="stat-caption mb-5">{caption}</p>}
+    <p class:list={['stat-number', plain && 'stat-number-plain']}>{figure.value}</p>
+    <p class="stat-label">{figure.label}</p>
+    {fill && <div class="stat-bar" aria-hidden="true"><span style={fill}></span></div>}
+    {figure.detail && <p class="stat-detail">{figure.detail}</p>}
+    <p class="stat-source"><a href={figure.url} target="_blank" rel="noopener">{figure.source}</a>, {figure.year}</p>
+  </div>
+) : (
+  <div class="figure-row">
+    <p class="figure-value">{figure.value}</p>
+    <div>
+      <p class="figure-label">{figure.label}</p>
+      {figure.detail && <p class="figure-detail">{figure.detail}</p>}
+    </div>
+    <p class="figure-source">
+      <a class="link" href={figure.url} target="_blank" rel="noopener">{figure.source}</a>, {figure.year}
+      {older && <span class="badge badge-draft ml-1 align-middle">Older data</span>}
+    </p>
+  </div>
+)}

@@ -1,0 +1,13 @@
+---
+import { p } from '../lib/url';
+interface Props { role: 'student' | 'teacher' }
+const { role } = Astro.props;
+---
+<div data-role-gate data-role={role} data-signin={p('/signin/')} hidden></div>
+<script>
+  const el = document.querySelector<HTMLElement>('[data-role-gate]')!;
+  const have = localStorage.getItem('hh-role');
+  if (have !== el.dataset.role) {
+    location.replace(`${el.dataset.signin}?role=${el.dataset.role}`);
+  }
+</script>

@@ -1,0 +1,449 @@
+@import "tailwindcss";
+
+/* HelpingHand theme, from the team poster. The written version is the Theme section of
+   docs/README.md and every block below is shown at /styleguide/. Light only. Square corners:
+   circles are kept for numbered points, timeline nodes and status dots, and a stat bar has
+   round ends, as on the poster. Three weights only, as on the poster: 400 for text, 600 for
+   labels and small headings, 700 for titles and the words that matter. */
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin-opsz-normal.woff2") format("woff2");
+}
+
+@theme {
+  /* The poster's eight colours and nothing else: Tailwind's own palette is switched off. */
+  --color-*: initial;
+  --color-white: #FFFFFF;
+  --color-navy: #133476;
+  --color-panel: #F5F5F5;
+  --color-edge: #ECEEF2;
+  --color-lime: #E5FEC3;
+  --color-sky: #70D0F0;
+  --color-ink: #000000;
+  --color-rule: #595959;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  /* States and hairlines mixed from the palette, never new colours. */
+  --navy-deep: color-mix(in oklab, var(--color-navy) 82%, black);
+  --navy-tint: color-mix(in oklab, var(--color-navy) 7%, white);
+  --navy-line: color-mix(in oklab, white 24%, var(--color-navy));
+  --on-navy-soft: color-mix(in oklab, white 82%, var(--color-navy));
+  --lime-edge: color-mix(in oklab, var(--color-lime) 68%, var(--color-navy));
+  /* The poster's table lines: thin and dark enough to read as a grid. */
+  --table-line: color-mix(in oklab, var(--color-rule) 48%, white);
+  --nav-height: 4rem;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: calc(var(--nav-height) + 1.5rem);
+    scrollbar-color: color-mix(in oklab, var(--color-navy) 55%, white) var(--color-white);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-white);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    font-optical-sizing: auto;
+    caret-color: var(--color-navy);
+  }
+  h1, h2, h3, h4 {
+    color: var(--color-navy);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  h3, h4 { font-weight: 600; letter-spacing: -0.01em; }
+  strong, b { font-weight: 700; }
+  p, li, dd, figcaption { text-wrap: pretty; }
+  a { text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+  table { font-variant-numeric: tabular-nums; }
+  ::selection { background: var(--color-navy); color: var(--color-white); }
+  :focus-visible { outline: 3px solid var(--color-navy); outline-offset: 2px; }
+}
+
+@layer components {
+  /* ---------- Layout ---------- */
+  .wrap, .section { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1.25rem; }
+  @media (min-width: 48rem) { .wrap, .section { padding-inline: 2rem; } }
+
+  /* A section only pushes down from what is above it; main closes the page. */
+  .section { padding-top: clamp(3.25rem, 2.25rem + 4vw, 5.25rem); }
+  /* A section is often a grid: let its columns shrink, so a wide table or code block scrolls
+     inside its own box instead of pushing the page sideways. */
+  .section > * { min-width: 0; }
+  main { padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
+  main:has(> .band:last-child) { padding-bottom: 0; }
+
+  .skip { @apply sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:bg-white focus:px-4 focus:py-3 focus:font-semibold focus:text-navy; }
+
+  /* ---------- Band: full-width navy, white text ---------- */
+  .band { background: var(--color-navy); color: var(--color-white); }
+  .band :is(h1, h2, h3, h4) { color: var(--color-white); }
+  .band ::selection { background: var(--color-sky); color: var(--color-navy); }
+  .band :focus-visible { outline-color: var(--color-white); }
+  .band .lede, .band .statement { color: var(--color-white); }
+  .band .meta { color: var(--on-navy-soft); }
+  .band .link { color: var(--color-white); }
+
+  /* ---------- Type ---------- */
+  .page-title { font-size: clamp(2.25rem, 1.45rem + 3.1vw, 3.5rem); font-weight: 700; line-height: 1.07; letter-spacing: -0.02em; max-width: 21ch; }
+  .page-title-compact { font-size: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem); line-height: 1.1; letter-spacing: -0.018em; max-width: 26ch; }
+  .page-lede { margin-top: 1.25rem; max-width: 58ch; font-size: clamp(1.0625rem, 0.98rem + 0.42vw, 1.3125rem); line-height: 1.5; color: var(--color-white); }
+  /* The sentence under a section label. The poster has no display headlines on white: it says
+     the thing in black, bold where it matters. `statement-plain` is the poster's own voice, a
+     regular sentence with its key words in bold. */
+  .statement { max-width: 34ch; font-size: clamp(1.25rem, 1.08rem + 0.8vw, 1.625rem); font-weight: 700; line-height: 1.25; letter-spacing: -0.014em; color: var(--color-ink); text-wrap: balance; }
+  .statement-plain { max-width: 36ch; font-weight: 400; line-height: 1.4; letter-spacing: -0.008em; text-wrap: pretty; }
+  .lede { max-width: 62ch; font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); line-height: 1.55; color: var(--color-ink); }
+  .meta { font-size: 0.8125rem; font-weight: 500; line-height: 1.45; color: var(--color-rule); }
+  .link { color: var(--color-navy); text-decoration-line: underline; transition: text-decoration-thickness 120ms; }
+  .link:hover { text-decoration-thickness: 2px; }
+
+  .crumbs { margin-bottom: 1.125rem; font-size: 0.875rem; font-weight: 500; color: var(--on-navy-soft); }
+  .crumbs a { text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 160ms, color 160ms; }
+  .crumbs a:hover { color: var(--color-white); text-decoration-color: currentColor; }
+
+  /* ---------- Section label: the heading of every section ----------
+     <h2 class="section-label"><span>Background</span></h2> */
+  .section-label { display: flex; align-items: center; gap: 1.5rem; font-size: clamp(1.125rem, 1rem + 0.55vw, 1.375rem); font-weight: 600; line-height: 1; letter-spacing: 0.012em; text-transform: uppercase; text-wrap: nowrap; }
+  .section-label > span { flex: 0 1 auto; min-width: 0; padding: 0.36em 0.6em 0.34em; background: var(--color-navy); color: var(--color-white); text-wrap: balance; white-space: normal; line-height: 1.15; }
+  .section-label::after { content: ''; flex: 1 1 2rem; min-width: 1.5rem; height: 2px; background: var(--color-rule); transform-origin: left center; }
+  .section-label-sm { gap: 0.875rem; font-size: 0.8125rem; letter-spacing: 0.04em; }
+  .section-label-sm > span { padding: 0.45em 0.7em 0.42em; }
+  .section-label-sm::after { height: 1px; }
+  .band .section-label > span { background: var(--color-white); color: var(--color-navy); }
+  .band .section-label::after { background: var(--navy-line); }
+
+  /* ---------- Buttons ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 1.25rem; border: 1px solid transparent; font-size: 0.9375rem; font-weight: 600; line-height: 1.2; text-align: center; cursor: pointer; transition: background-color 160ms, color 160ms, border-color 160ms, transform 160ms var(--ease-out-expo); }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--color-navy); color: var(--color-white); }
+  .btn-primary:hover { background: var(--navy-deep); }
+  .btn-secondary { border-color: var(--color-navy); color: var(--color-navy); }
+  .btn-secondary:hover { background: var(--navy-tint); }
+  .btn-ghost { min-height: 0; padding: 0; color: var(--color-navy); text-decoration: underline; text-underline-offset: 0.2em; }
+  .btn-ghost:hover { text-decoration-thickness: 2px; }
+  /* On a navy band the fill flips, so the same markup works in both places. */
+  .btn-on-navy, .band .btn-primary { background: var(--color-white); color: var(--color-navy); }
+  .btn-on-navy:hover, .band .btn-primary:hover { background: color-mix(in oklab, white 88%, var(--color-sky)); }
+  .band .btn-secondary { border-color: var(--color-white); color: var(--color-white); }
+  .band .btn-secondary:hover { background: color-mix(in oklab, white 14%, var(--color-navy)); }
+  .band .btn-ghost { color: var(--color-white); }
+  .btn[aria-disabled="true"] { cursor: not-allowed; border: 1px dashed var(--color-rule); background: var(--color-panel); color: var(--color-rule); transform: none; }
+  .band .btn[aria-disabled="true"] { border-color: var(--on-navy-soft); background: transparent; color: var(--on-navy-soft); }
+
+  /* ---------- Panel: grey block for supporting content ---------- */
+  .panel { background: var(--color-panel); padding: 1.5rem; }
+  :where(a, button).panel { display: block; width: 100%; text-align: left; outline: 1px solid transparent; outline-offset: -1px; transition: background-color 160ms, outline-color 160ms; }
+  a.panel:hover, button.panel:hover { background: var(--navy-tint); outline-color: var(--color-navy); }
+  a.panel:focus-visible, button.panel:focus-visible { outline: 3px solid var(--color-navy); outline-offset: 2px; }
+
+  /* Columns split by hairlines, as on the poster. One column on a phone. */
+  .columns { display: grid; gap: 2rem; }
+  @media (min-width: 48rem) {
+    /* Every column keeps the same padding, so their contents are the same width; the outer
+       padding is pulled back into the page margin. */
+    .columns { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; margin-inline: -1.75rem; }
+    .columns > * { padding-inline: 1.75rem; border-left: 1px solid var(--color-edge); }
+    .columns > :first-child { border-left: 0; }
+    .band .columns > * { border-left-color: var(--navy-line); }
+  }
+
+  /* A lime block for the one thing on a page that needs saying. */
+  .note { background: var(--color-lime); color: var(--color-ink); padding: 1rem 1.25rem; font-size: 0.9375rem; }
+  .note strong { color: var(--color-navy); }
+
+  /* ---------- Stat panel: navy block, as on the poster ----------
+     Top to bottom: small caption, big number, what it counts, a bar as long as the number,
+     source. The number the page is arguing against is sky and lighter; the one it is arguing
+     for is white and bold (`stat-number-plain`). A bar is drawn only for a percentage. */
+  .stat-panel { display: flex; flex-direction: column; height: 100%; padding: 1.5rem 1.5rem 1.25rem; background: var(--color-navy); color: var(--color-white); }
+  .stat-caption { font-size: 0.8125rem; font-weight: 700; line-height: 1.3; letter-spacing: 0.02em; text-transform: uppercase; }
+  .stat-number { font-size: clamp(2.75rem, 2rem + 2.6vw, 4rem); font-weight: 600; line-height: 1; letter-spacing: -0.025em; color: var(--color-sky); font-variant-numeric: tabular-nums; }
+  .stat-number-plain { font-weight: 700; color: var(--color-white); }
+  .stat-label { margin-top: 0.75rem; font-size: 1rem; font-weight: 600; line-height: 1.35; }
+  /* The poster's short label: capitals, in the colour of its number. */
+  .stat-label-caps { font-size: 0.75rem; font-weight: 700; line-height: 1.35; letter-spacing: 0.02em; text-transform: uppercase; color: var(--color-sky); }
+  .stat-number-plain ~ .stat-label-caps { color: var(--color-white); }
+  .stat-bar { margin-top: 1rem; height: 6px; }
+  .stat-bar > span { display: block; height: 100%; width: var(--stat-fill, 3rem); border-radius: 9999px; background: var(--color-sky); transform-origin: left center; }
+  .stat-number-plain ~ .stat-bar > span { background: var(--color-white); }
+  .stat-detail { margin-top: 0.875rem; font-size: 0.875rem; line-height: 1.5; color: var(--on-navy-soft); }
+  /* Several figures in one navy block, split by hairlines, like the two on the poster. */
+  .stat-group { display: grid; background: var(--color-navy); }
+  .stat-group > * + * { border-top: 1px solid var(--navy-line); }
+  @media (min-width: 48rem) {
+    .stat-group { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+    .stat-group > * + * { border-top: 0; border-left: 1px solid var(--navy-line); }
+  }
+  .stat-source { margin-top: auto; padding-top: 1.25rem; font-size: 0.75rem; line-height: 1.45; color: var(--on-navy-soft); }
+  .stat-source a { color: inherit; text-decoration: underline; }
+  .stat-source a:hover { color: var(--color-white); }
+
+  /* The same figure as a ruled row, for the long lists under a section. */
+  .figure-list { border-top: 1px solid var(--color-navy); }
+  .figure-row { display: grid; gap: 0.25rem 2rem; padding: 1.125rem 0; border-bottom: 1px solid var(--color-edge); }
+  .figure-value { font-size: clamp(1.625rem, 1.4rem + 1vw, 2.125rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-navy); font-variant-numeric: tabular-nums; }
+  .figure-label { font-weight: 600; line-height: 1.4; }
+  .figure-detail { margin-top: 0.25rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-rule); }
+  .figure-source { font-size: 0.8125rem; line-height: 1.45; color: var(--color-rule); }
+  @media (min-width: 48rem) {
+    .figure-row { grid-template-columns: 13.5rem minmax(0, 1fr) minmax(0, 16rem); align-items: baseline; }
+    .figure-source { text-align: right; }
+  }
+
+  /* ---------- Result table: navy header row, lime result cells ---------- */
+  .table-scroll { overflow-x: auto; }
+  .result-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.45; }
+  .result-table th, .result-table td { padding: 0.75rem 1rem; border: 1px solid var(--table-line); text-align: left; vertical-align: top; }
+  .result-table thead th { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-white); font-weight: 500; }
+  .result-table thead th + th { border-left-color: var(--navy-line); }
+  .result-table tbody th { font-weight: 500; color: var(--color-ink); }
+  .result-table .result { background: var(--color-lime); }
+  .result-table-compact th, .result-table-compact td { padding: 0.5rem 0.875rem; }
+
+  /* ---------- Numbered point: navy circle on the edge of a panel row ---------- */
+  .numbered { display: grid; gap: 1.5rem; padding-left: 1.375rem; counter-reset: point; }
+  .numbered > li { position: relative; padding: 1.125rem 1.5rem 1.125rem 2.5rem; background: var(--color-panel); counter-increment: point; }
+  .numbered > li::before { content: counter(point); position: absolute; left: -1.375rem; top: -0.625rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 1.125rem; font-weight: 500; line-height: 1; }
+  .numbered > li > :is(h3, h4, .numbered-title) { font-size: 1.1875rem; font-weight: 700; color: var(--color-navy); }
+
+  /* ---------- Timeline: the poster's "next steps" line ----------
+     <ol class="timeline"><li><p class="timeline-when">…</p><div class="timeline-what">…</div></li></ol>
+     A navy line with open circles. On a wide screen it runs across the page and the two halves
+     of each step swap sides from one step to the next, as on the poster. Below that it runs
+     down the left edge. */
+  .timeline { position: relative; display: grid; gap: 2rem; }
+  .timeline > li { position: relative; padding-left: 2rem; }
+  .timeline > li::before { content: ''; position: absolute; left: 0; top: 0.25rem; width: 0.875rem; height: 0.875rem; border: 1.5px solid var(--color-rule); border-radius: 9999px; background: var(--color-white); z-index: 1; }
+  .timeline > li.is-now::before { border-color: var(--color-navy); background: var(--color-navy); }
+  .timeline::before { content: ''; position: absolute; left: calc(0.4375rem - 1px); top: 0.5rem; bottom: 0.5rem; width: 2px; background: var(--color-navy); }
+  .timeline-when { font-size: 0.875rem; font-weight: 700; line-height: 1.35; color: var(--color-ink); }
+  .timeline-what { margin-top: 0.25rem; }
+  .timeline-what :is(h3, h4) { font-size: 1.125rem; line-height: 1.25; }
+  .timeline-what p { margin-top: 0.375rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-rule); }
+  @media (min-width: 64rem) {
+    .timeline { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: auto 0.875rem auto; gap: 1rem 2rem; }
+    .timeline::before { display: none; }
+    .timeline > li { display: grid; grid-row: 1 / span 3; grid-template-rows: subgrid; justify-items: center; padding: 0; text-align: center; }
+    .timeline > li::before { position: static; grid-area: 2 / 1; }
+    /* The line is drawn step by step, so it starts at the first circle and ends at the last. */
+    .timeline > li::after { content: ''; grid-area: 2 / 1; align-self: center; justify-self: stretch; height: 2px; margin-inline: -1rem; background: var(--color-navy); }
+    .timeline > li:first-child::after { margin-left: 50%; }
+    .timeline > li:last-child::after { margin-right: 50%; }
+    .timeline-when { grid-area: 1 / 1; align-self: end; }
+    .timeline-what { grid-area: 3 / 1; margin-top: 0; }
+    .timeline > li:nth-child(even) .timeline-when { grid-area: 3 / 1; align-self: start; }
+    .timeline > li:nth-child(even) .timeline-what { grid-area: 1 / 1; align-self: end; }
+  }
+
+  /* ---------- Status labels ---------- */
+  .badge { display: inline-flex; align-items: center; min-height: 1.5rem; padding: 0.15rem 0.55rem; border: 1px solid transparent; font-size: 0.75rem; font-weight: 600; line-height: 1.2; letter-spacing: 0.01em; white-space: nowrap; }
+  .badge-live { background: var(--color-lime); border-color: var(--lime-edge); color: var(--color-navy); }
+  .badge-draft, .badge-soon { background: var(--color-panel); border: 1px dashed var(--color-rule); color: var(--color-rule); }
+  .badge-demo { background: var(--color-white); border-color: var(--color-navy); color: var(--color-navy); }
+  .band .badge-draft, .band .badge-soon { background: transparent; border-color: var(--on-navy-soft); color: var(--color-white); }
+  .band .badge-demo { background: transparent; border-color: var(--color-white); color: var(--color-white); }
+
+  /* Progress, said twice: by shape and by the word beside it. */
+  .dot { display: inline-block; flex: none; width: 0.6875rem; height: 0.6875rem; border: 1.5px solid var(--color-navy); border-radius: 9999px; }
+  .dot-done { background: var(--color-navy); }
+  .dot-progress { background: linear-gradient(to right, var(--color-navy) 50%, transparent 50%); }
+  .dot-none { border-color: var(--color-rule); }
+
+  .meter { display: block; height: 6px; width: 100%; background: var(--color-edge); }
+  .meter > span { display: block; height: 100%; background: var(--color-navy); }
+
+  /* Square for an objective the reader has not ticked off yet. */
+  .tick { display: inline-block; flex: none; margin-top: 0.42em; width: 0.8125rem; height: 0.8125rem; border: 1.5px solid var(--color-navy); }
+
+  /* ---------- Lesson row: a numbered point that is also a link ---------- */
+  .lesson-row { position: relative; display: grid; gap: 0.875rem 2rem; margin-left: 1.25rem; padding: 1.25rem 1.5rem 1.25rem 2.5rem; width: auto; }
+  .lesson-num { position: absolute; left: -1.25rem; top: 1.125rem; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 1.0625rem; font-weight: 600; line-height: 1; }
+  .lesson-title { font-size: 1.3125rem; }
+  .lesson-summary { margin-top: 0.375rem; max-width: 58ch; font-size: 0.9375rem; line-height: 1.5; color: var(--color-rule); }
+  .lesson-parts { display: flex; flex-wrap: wrap; gap: 0.375rem 1.125rem; font-size: 0.8125rem; font-weight: 500; }
+  .lesson-parts > li { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .lesson-row > .badge { justify-self: start; }
+  @media (min-width: 56rem) {
+    .lesson-row { grid-template-columns: minmax(0, 1fr) auto 7.5rem; align-items: center; }
+    .lesson-row > .badge { justify-self: end; }
+  }
+
+  /* ---------- Process rail: numbered steps on one navy line ---------- */
+  .process-rail { position: relative; display: grid; gap: 2rem; }
+  .process-rail > li { position: relative; padding-left: 3.5rem; }
+  .process-num { position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 1.0625rem; font-weight: 600; line-height: 1; z-index: 1; }
+  .process-rail::before { content: ''; position: absolute; left: calc(1.25rem - 0.5px); top: 1.25rem; bottom: 1.25rem; width: 1px; background: var(--color-navy); }
+  .process-rail > li.is-todo .process-num { background: var(--color-white); border: 1.5px solid var(--color-navy); color: var(--color-navy); }
+  .process-rail h3 { padding-top: 0.4rem; font-size: 1.25rem; }
+  .process-rail p { margin-top: 0.375rem; color: var(--color-rule); }
+  @media (min-width: 48rem) {
+    .process-rail { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 2.5rem; }
+    .process-rail > li { padding-left: 0; padding-top: 3.5rem; }
+    .process-rail::before { left: 1.25rem; right: 0; top: calc(1.25rem - 0.5px); bottom: auto; width: auto; height: 1px; }
+    .process-rail h3 { padding-top: 0; }
+  }
+
+  /* ---------- Segmented choice between two pages ---------- */
+  .segmented { display: inline-flex; border: 1px solid var(--color-navy); }
+  .segmented a { padding: 0.5rem 1.125rem; font-size: 0.9375rem; font-weight: 600; line-height: 1.3; color: var(--color-navy); transition: background-color 160ms, color 160ms; }
+  .segmented a:hover { background: var(--navy-tint); }
+  .segmented a[aria-current="page"] { background: var(--color-navy); color: var(--color-white); }
+  .band .segmented { border-color: var(--color-white); }
+  .band .segmented a { color: var(--color-white); }
+  .band .segmented a:hover { background: color-mix(in oklab, white 14%, var(--color-navy)); }
+  .band .segmented a[aria-current="page"] { background: var(--color-white); color: var(--color-navy); }
+
+  /* ---------- Model and image frames ---------- */
+  .frame { background: var(--color-panel); border: 1px solid var(--color-edge); }
+  .frame-empty { display: grid; place-items: center; background: var(--color-panel); border: 1px dashed var(--color-rule); color: var(--color-rule); font-size: 0.875rem; font-weight: 500; text-align: center; padding: 1rem; }
+  .caption { margin-top: 0.625rem; font-size: 0.8125rem; line-height: 1.45; color: var(--color-rule); }
+
+  /* ---------- Site nav (navy band) ---------- */
+  .site-nav { position: sticky; top: 0; z-index: 40; border-bottom: 1px solid var(--navy-line); }
+  .site-nav-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; height: var(--nav-height); }
+  .wordmark { display: inline-flex; align-items: center; gap: 0.625rem; color: var(--color-white); white-space: nowrap; }
+  .wordmark-text { display: inline-flex; align-items: baseline; gap: 0.75rem; }
+  /* The HandiWorks mark, traced from the poster: white blocks and a sky link. Navy bands only. */
+  .logo-mark { flex: none; width: auto; height: 2.375rem; }
+  .wordmark-name { font-size: 1.3125rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .wordmark-co { padding-left: 0.75rem; border-left: 1px solid var(--navy-line); font-size: 0.8125rem; font-weight: 500; line-height: 1.2; color: var(--on-navy-soft); }
+  .nav-links { display: none; align-items: center; gap: 0.125rem; }
+  .nav-link { position: relative; display: inline-flex; align-items: center; height: var(--nav-height); padding: 0 0.875rem; font-size: 0.9375rem; font-weight: 500; white-space: nowrap; color: var(--on-navy-soft); transition: color 160ms; }
+  .nav-link:hover, .nav-link.active { color: var(--color-white); }
+  .nav-link::after { content: ''; position: absolute; left: 0.875rem; right: 0.875rem; bottom: -1px; height: 3px; background: var(--color-sky); transform: scaleX(0); transform-origin: left center; transition: transform 320ms var(--ease-out-expo); }
+  .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+  .nav-cta { min-height: 2.25rem; margin-left: 0.75rem; padding: 0.25rem 1rem; font-size: 0.875rem; white-space: nowrap; }
+  .nav-toggle { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.25rem 0.875rem; border: 1px solid var(--color-white); color: var(--color-white); font-size: 0.875rem; font-weight: 600; }
+  /* The row has to hold seven links and "Teacher dashboard" once a role is set: the company
+     name gives way first, then the links fold into the menu. */
+  @media (max-width: 68.74rem) {
+    .wordmark-co { display: none; }
+  }
+  @media (min-width: 64rem) {
+    .nav-links { display: flex; }
+    .nav-toggle { display: none; }
+  }
+  @media (max-width: 63.99rem) {
+    .nav-links.is-open { position: absolute; left: -1.25rem; right: -1.25rem; top: 100%; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0.5rem 1.25rem 1.25rem; background: var(--color-navy); border-top: 1px solid var(--navy-line); border-bottom: 1px solid var(--navy-line); }
+    .nav-links.is-open .nav-link { height: 3rem; padding: 0; border-bottom: 1px solid var(--navy-line); }
+    .nav-links.is-open .nav-link::after { display: none; }
+    .nav-links.is-open .nav-link.active { font-weight: 700; }
+    .nav-links.is-open .nav-cta { margin: 1rem 0 0; min-height: 2.75rem; }
+  }
+
+  /* ---------- Footer (navy band) ---------- */
+  .site-footer { border-top: 1px solid var(--navy-line); font-size: 0.9375rem; }
+  .footer-cols { display: grid; gap: 2.5rem; padding-block: 3.5rem; }
+  /* The poster's lockup: the mark, "HandiWorks", and "Co." tucked under its end. */
+  .lockup { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-white); }
+  .lockup .logo-mark { height: 3.25rem; }
+  .lockup-name { display: grid; justify-items: end; font-size: 1.5rem; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .lockup-name small { margin-top: 0.125rem; font-size: 0.875rem; letter-spacing: 0; }
+  .footer-heading { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-navy-soft); }
+  .footer-links { margin-top: 0.875rem; display: grid; gap: 0.5rem; }
+  .footer-links a { color: var(--color-white); text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 160ms; }
+  .footer-links a:hover { text-decoration-color: currentColor; }
+  .footer-base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1.125rem; border-top: 1px solid var(--navy-line); font-size: 0.8125rem; color: var(--on-navy-soft); }
+  @media (min-width: 48rem) {
+    .footer-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
+    .footer-cols > * + * { padding-left: 2.5rem; border-left: 1px solid var(--navy-line); }
+    .footer-cols > :first-child { padding-right: 2.5rem; }
+  }
+
+  /* ---------- Lesson body (MDX) ---------- */
+  /* Text keeps a readable measure; code, tables, figures and section labels use the whole column. */
+  .prose-hh { font-size: 1.0625rem; line-height: 1.6; }
+  .prose-hh > * { max-width: 68ch; }
+  .prose-hh > :is(pre, table, figure, .section-label, .table-scroll) { max-width: none; }
+  .prose-hh > :first-child { margin-top: 0; }
+  .prose-hh :is(h2, h3, h4) { scroll-margin-top: calc(var(--nav-height) + 1.5rem); }
+  .prose-hh h2:not(.section-label) { margin: 2.75rem 0 0.75rem; font-size: 1.625rem; }
+  .prose-hh .section-label { margin: 3rem 0 1.25rem; }
+  .prose-hh h3 { margin: 2rem 0 0.5rem; font-size: 1.25rem; }
+  .prose-hh h4 { margin: 1.5rem 0 0.5rem; font-size: 1.0625rem; }
+  .prose-hh p { margin: 1rem 0; }
+  .prose-hh ul { margin: 1rem 0; padding-left: 1.25rem; list-style: square; }
+  .prose-hh ul > li::marker { color: var(--color-navy); }
+  .prose-hh ol { margin: 1.25rem 0; padding-left: 0; list-style: none; counter-reset: step; }
+  .prose-hh ol > li { position: relative; margin: 0.75rem 0; padding-left: 2.5rem; counter-increment: step; }
+  .prose-hh ol > li::before { content: counter(step); position: absolute; left: 0; top: 0.05em; display: grid; place-items: center; width: 1.625rem; height: 1.625rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 0.8125rem; font-weight: 600; line-height: 1; }
+  .prose-hh li { margin: 0.375rem 0; }
+  .prose-hh a:not(.btn) { color: var(--color-navy); text-decoration: underline; }
+  .prose-hh a:not(.btn):hover { text-decoration-thickness: 2px; }
+  .prose-hh strong { font-weight: 600; }
+  .prose-hh blockquote { margin: 1.5rem 0; padding: 1rem 1.25rem; background: var(--color-lime); }
+  .prose-hh blockquote p { margin: 0.25rem 0; }
+  .prose-hh code { padding: 0.1em 0.3em; background: var(--color-panel); font-family: var(--font-mono); font-size: 0.875em; }
+  .prose-hh pre { margin: 1.25rem 0; padding: 1rem; overflow-x: auto; background: var(--color-panel) !important; border: 1px solid var(--color-edge); font-family: var(--font-mono); font-size: 0.78125rem; line-height: 1.7; tab-size: 2; }
+  .prose-hh pre code { padding: 0; background: transparent; font-size: inherit; }
+  .prose-hh table { margin: 1.5rem 0; width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .prose-hh th { padding: 0.625rem 0.875rem; background: var(--color-navy); border: 1px solid var(--color-navy); color: var(--color-white); font-weight: 600; text-align: left; }
+  .prose-hh td { padding: 0.625rem 0.875rem; border: 1px solid var(--color-edge); vertical-align: top; }
+  .prose-hh hr { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--color-edge); }
+  .prose-hh img { max-width: 100%; height: auto; }
+  .prose-hh figure { margin: 1.5rem 0; }
+
+  /* Asides, downloads and teacher notes inside lesson text */
+  .lesson-aside { margin: 1.5rem 0; padding: 1rem 1.25rem; background: var(--color-lime); }
+  .lesson-aside-title { margin: 0 0 0.25rem; font-weight: 700; color: var(--color-navy); }
+  .prose-hh .lesson-aside p { margin: 0.25rem 0; }
+  .lesson-aside code { background: color-mix(in oklab, white 65%, transparent); }
+  .lesson-aside-safety { background: var(--color-navy); color: var(--color-white); }
+  .lesson-aside-safety .lesson-aside-title { color: var(--color-white); }
+  .lesson-download { margin: 1.5rem 0; }
+  .teacher-notes { margin-top: 3rem; }
+  .teacher-notes > .section-label { margin: 0 0 1rem; }
+  .prose-hh .teacher-notes-flag { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin: 0 0 1.25rem; }
+  .teacher-note { margin-top: 1rem; }
+  .prose-hh .teacher-note h3 { margin: 0 0 0.5rem; font-size: 1.125rem; }
+  .prose-hh .teacher-note > :last-child { margin-bottom: 0; }
+  .prose-hh .teacher-note code { background: var(--color-white); }
+  .prose-hh .teacher-notes-hint { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--color-edge); }
+}
+
+/* ---------- Motion: lines draw ----------
+   One idea, used wherever a rule or a bar sits beside content: it extends from the left as
+   it comes into view. Everything is visible without scripting and when motion is reduced. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .section-label[data-reveal] > span { clip-path: inset(0 100% 0 0); transition: clip-path 620ms var(--ease-out-expo); }
+  .js .section-label[data-reveal]::after { transform: scaleX(0); transition: transform 1100ms var(--ease-out-expo) 140ms; }
+  .js [data-reveal] .stat-bar > span { transform: scaleX(0); transition: transform 1200ms var(--ease-out-expo) 120ms; }
+  .js .section-label[data-reveal].is-in > span { clip-path: inset(0 0 0 0); }
+  .js .section-label[data-reveal].is-in::after { transform: scaleX(1); }
+  .js [data-reveal].is-in .stat-bar > span { transform: scaleX(1); }
+}
+
+/* Page to page: the nav stays put and the rest cross-fades, so a click never flashes white.
+   Browsers without cross-document view transitions simply load the next page. The homepage
+   (index.html) opts in with the same two rules. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  .site-nav { view-transition-name: site-nav; }
+  ::view-transition-old(root) { animation-duration: 160ms; }
+  ::view-transition-new(root) { animation-duration: 280ms; animation-timing-function: var(--ease-out-expo); }
+}
+
+model-viewer { --poster-color: transparent; }
+/* The models are small and served from this site: no loading bar across the frame. */
+model-viewer::part(default-progress-bar) { display: none; }
+
+@media print {
+  .site-nav { position: static; }
+  .js [data-reveal], .js [data-reveal] *, .js [data-reveal]::after { clip-path: none !important; transform: none !important; }
+}

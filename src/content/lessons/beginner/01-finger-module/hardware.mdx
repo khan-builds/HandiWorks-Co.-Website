@@ -1,0 +1,49 @@
+---
+portion: hardware
+title: Wire the Arduino Mega
+objectives:
+  - Wire one servo and one button to an Arduino Mega
+durationMinutes: 25
+status: published
+---
+import Callout from '../../../../components/Callout.astro';
+import FigurePlaceholder from '../../../../components/FigurePlaceholder.astro';
+import TeacherNotes from '../../../../components/TeacherNotes.astro';
+import TeacherOnly from '../../../../components/TeacherOnly.astro';
+
+The Mega is the board that will tell the servo how far to turn. Unplug the USB cable before you move any wire.
+
+<Callout type="safety">
+A moving link can pinch. Keep your fingers off the joints while the servo is powered. If a part feels hot or the finger stops halfway, unplug the USB cable first.
+</Callout>
+
+## Connections
+
+Use these connections. The servo has three wires. The button has two legs.
+
+| Wire | Connect it to |
+| --- | --- |
+| Servo ground (brown or black) | Mega GND |
+| Servo power (red) | Mega 5V |
+| Servo signal (orange or yellow) | Mega pin 9 |
+| One button leg | Mega pin 2 |
+| Other button leg | Mega GND |
+
+<FigurePlaceholder caption="Wiring diagram: one servo and one button on the Mega." />
+
+Pin 9 sends the angle. Pin 2 listens to the button. GND is the shared ground. The button does not need a resistor, because the sketch turns on the Mega's built-in pull-up.
+
+## Power
+
+One small servo can run from the Mega's 5V pin. If the Mega restarts when the servo moves, the servo needs its own 5V supply. Connect that supply's ground to a Mega GND pin too.
+
+Plug in the USB cable only after every wire is in the right hole.
+
+<TeacherNotes>
+<TeacherOnly title="Timing">
+Wiring: 25 min
+</TeacherOnly>
+<TeacherOnly title="If the servo resets the Mega">
+USB 5V is enough for one unloaded micro servo. A finger that binds will brown out the Mega. Have the student lower `closedAngle` first. If it still resets, move servo power to a separate 5V supply and tie the grounds together. Do not power the servo from a Mega pin other than 5V.
+</TeacherOnly>
+</TeacherNotes>

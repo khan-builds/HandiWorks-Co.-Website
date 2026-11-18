@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import Stat from '../components/Stat.astro';
+import { p } from '../lib/url';
+import { headline, sections, older, arduino, pursuit } from '../data/evidence';
+
+const sources = new Map<string, string>();
+for (const f of [...headline, ...sections.flatMap((s) => s.figures), older]) sources.set(f.source, f.url);
+sources.set(arduino.source, arduino.url);
+sources.set(pursuit.source, pursuit.url);
+const widest = Math.max(pursuit.without.fill, pursuit.withClasses.fill);
+---
+<Base title="The Problem" description="Why hands-on robotics is out of reach for most US students, with a source for every number.">
+  <PageHeader
+    title="Hands-on robotics is still a privilege in American schools."
+    lede="Popular robotics kits for young students can be extremely costly, creating a high barrier for entry for schools that want to invest in engineering programs."
+  >
+    {/* The poster's stat panel: two numbers side by side, each with its label in capitals and
+        a bar. The longer bar is full width and the shorter one is in proportion to it. */}
+    <div slot="aside" class="w-full max-w-md lg:w-[26rem]" data-reveal>
+      <p class="stat-caption">{pursuit.caption}</p>
+      <div class="mt-5 grid grid-cols-2 gap-x-8">
+        {[pursuit.without, pursuit.withClasses].map((g, i) => (
+          <div class="grid grid-rows-subgrid row-span-3">
+            <p class:list={['stat-number', i === 1 && 'stat-number-plain']}>{g.value}</p>
+            <p class="stat-label-caps mt-3" title={g.label}>{g.short}</p>
+            <div class="stat-bar" aria-hidden="true"><span style={`--stat-fill:${(g.fill / widest) * 100}%`}></span></div>
+          </div>
+        ))}
+      </div>
+      <p class="stat-source pt-6!">{pursuit.detail} <a href={pursuit.url} target="_blank" rel="noopener">{pursuit.source}</a>, {pursuit.year}</p>
+    </div>
+  </PageHeader>
+
+  <section class="section">
+    <SectionLabel>Our goal</SectionLabel>
+    <div class="mt-8 grid gap-x-16 gap-y-10 lg:grid-cols-2 lg:items-start">
+      {/* Bold on the same words as the poster. */}
+      <p class="statement statement-plain">To <strong>transform</strong> how robotics is taught in the classroom, fostering the highest level of creativity while prioritizing accessibility.</p>
+      <ol class="numbered">
+        <li>Provide a <strong>scalable</strong> framework that evolves alongside the learner.</li>
+        <li>Offer an <strong>affordable</strong> and <strong>accessible</strong> alternative to traditional robotics kits (FIRST, VEX, LEGO, etc.)</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Where things stand</SectionLabel>
+    <div class="stat-group mt-8">
+      {headline.map((f) => <Stat figure={f} variant="panel" />)}
+    </div>
+    <p class="meta mt-4">Every number on this page links to its source and carries its year.</p>
+  </section>
+
+  {sections.map((s) => (
+    <section class="section">
+      <SectionLabel>{s.label}</SectionLabel>
+      <p class="statement mt-6">{s.title}</p>
+      <p class="lede mt-3">{s.intro}</p>
+      <div class="figure-list mt-8">
+        {s.figures.map((f) => <Stat figure={f} />)}
+      </div>
+    </section>
+  ))}
+
+  <section class="section">
+    <SectionLabel>What nobody counts</SectionLabel>
+    <p class="statement mt-6">How many schools teach robotics specifically? Nobody knows for sure.</p>
+    <p class="lede mt-3">The last national count is more than a decade old. We show it with its date rather than pretend a newer number exists.</p>
+    <div class="figure-list mt-8"><Stat figure={older} /></div>
+  </section>
+
+  <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
+    <div class="wrap py-14 md:py-20">
+      <SectionLabel>What HelpingHand changes</SectionLabel>
+      <p class="statement mt-8 text-white">A modular robotic hand that students CAD, wire, and program themselves.</p>
+      <div class="columns mt-10">
+        <div>
+          <h3 class="text-xl">Printed, not bought</h3>
+          <p class="mt-2 text-(--on-navy-soft)">3D printers provide an affordable alternative that allows multiple students to print an unlimited number of parts.</p>
+        </div>
+        <div>
+          <h3 class="text-xl">A standard controller</h3>
+          <p class="mt-2 text-(--on-navy-soft)">The hand runs on an Arduino Mega 2560, <a class="link" href={arduino.url} target="_blank" rel="noopener">{arduino.value} at the official store</a> in {arduino.year}.</p>
+        </div>
+        <div>
+          <h3 class="text-xl">One lesson at a time</h3>
+          <p class="mt-2 text-(--on-navy-soft)">Students learn mechanics, circuits, and coding concepts one lesson at a time without following a finished kit.</p>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a class="btn btn-primary" href={p('/kit/')}>See the kit</a>
+        <a class="btn btn-secondary" href={p('/lessons/beginner/')}>Browse the lessons</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Sources</SectionLabel>
+    <p class="lede mt-6">Figures were checked against the primary documents in October 2026. Vendor prices change: check again before quoting one in print.</p>
+    <ol class="mt-6 list-decimal gap-x-16 pl-6 text-[0.9375rem] marker:font-semibold marker:text-navy md:columns-2">
+      {[...sources.entries()].map(([name, url]) => (
+        <li class="mb-2 break-inside-avoid pl-1"><a class="link" href={url} target="_blank" rel="noopener">{name}</a></li>
+      ))}
+    </ol>
+  </section>
+</Base>

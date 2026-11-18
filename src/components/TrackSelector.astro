@@ -1,0 +1,14 @@
+---
+/** Beginner or Intermediate. Two links to two pages, so it is a nav, not a tab list. */
+import { p } from '../lib/url';
+import { TRACKS, type TrackKey } from '../lib/lessons';
+
+interface Props { current: TrackKey }
+const { current } = Astro.props;
+const tracks = (Object.keys(TRACKS) as TrackKey[]).map((id) => ({ id, label: TRACKS[id].label }));
+---
+<nav class="segmented" aria-label="Track">
+  {tracks.map((t) => (
+    <a href={p(`/lessons/${t.id}/`)} aria-current={t.id === current ? 'page' : undefined}>{t.label}</a>
+  ))}
+</nav>

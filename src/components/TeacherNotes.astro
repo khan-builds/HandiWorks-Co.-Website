@@ -1,0 +1,21 @@
+---
+/** The teacher-only part of a lesson page. It shows when the demo role in this browser is
+    "teacher" (see /signin/). That is a display switch, not a lock, and the page says so.
+    Put <TeacherOnly title="..."> blocks inside. Everyone else sees one line saying where the
+    notes are. */
+import SectionLabel from './SectionLabel.astro';
+import { p } from '../lib/url';
+---
+<section class="teacher-notes" data-teacher-only hidden>
+  <SectionLabel>Teacher notes</SectionLabel>
+  <p class="meta teacher-notes-flag"><span class="badge badge-demo">Teacher view</span> Shown because you are exploring as a teacher. A display switch, not a lock.</p>
+  <slot />
+</section>
+<p class="meta teacher-notes-hint" data-teacher-hint>Teacher notes for this page appear when you <a class="link" href={p('/signin/')}>explore as a teacher</a>.</p>
+
+<script>
+  if (localStorage.getItem('hh-role') === 'teacher') {
+    document.querySelectorAll('[data-teacher-only]').forEach((el) => el.removeAttribute('hidden'));
+    document.querySelectorAll('[data-teacher-hint]').forEach((el) => el.setAttribute('hidden', ''));
+  }
+</script>

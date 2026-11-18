@@ -1,0 +1,172 @@
+---
+/** The Kit. Every fact on this page comes from the CAD notes (~/workspace/SLDP on the build
+    machine) or from the team poster (docs/README.md, Theme). Do not add a spec, a count or a
+    price that is not in one of those. The models are exported by scripts/step_to_glb.py:
+    when the CAD version changes, re-export and change the captions and the Status row. */
+import Base from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ModelViewer from '../components/ModelViewer.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import ProcessRail from '../components/ProcessRail.astro';
+import FigurePlaceholder from '../components/FigurePlaceholder.astro';
+import { p, mailto } from '../lib/url';
+import { PORTIONS } from '../lib/lessons';
+
+const box = [
+  { item: 'Four finger modules', note: 'Each is a printed three-segment finger on its own motor drive.' },
+  { item: 'Thumb module', note: 'Two motors: one swings the thumb across the palm, one curls it.' },
+  { item: 'Palm', note: 'One printed part with a socket for each finger module.' },
+  { item: 'Electronics box', note: 'Holds the Arduino Mega 2560 and the motor drivers on the back of the hand.' },
+  { item: 'Two push buttons and wiring', note: 'Enough to open and close the grip from the first lesson.' },
+  { item: 'M3 screws and nuts', note: 'The only fasteners in the hand.' },
+];
+
+const specs = [
+  { k: 'Controller', v: 'Arduino Mega 2560' },
+  { k: 'Fingers', v: 'Four finger modules and a thumb' },
+  { k: 'Motors', v: 'Six DC motors: one in each finger, two in the thumb' },
+  { k: 'Finger drive', v: 'The motor turns an M3 threaded rod. No gears.' },
+  { k: 'Finger curl', v: 'Straight to 90°' },
+  { k: 'Finger module', v: '30 mm wide, 282 mm long' },
+  { k: 'Printed parts', v: 'PLA, 0.4 mm nozzle, 0.2 mm layers, no supports' },
+  { k: 'Size', v: 'About 31 × 24 × 13 cm with the electronics box' },
+  { k: 'Ages', v: '11 and up' },
+  { k: 'Status', v: 'CAD v10, 17 Nov 2026. This version is not printed yet.' },
+];
+
+/* Product testing, from the team poster. */
+const trials = [
+  { trial: 'Motor 1: clockwise and counterclockwise', m1: 'Yes. Clockwise and counterclockwise', m2: 'No' },
+  { trial: 'Motor 2: clockwise and counterclockwise', m1: 'No', m2: 'Yes. Clockwise and counterclockwise' },
+  { trial: 'Both motors: clockwise and counterclockwise', m1: 'Yes. Clockwise and counterclockwise', m2: 'Yes. Clockwise and counterclockwise' },
+];
+const ran = (cell: string) => cell.startsWith('Yes');
+
+const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }));
+---
+<Base title="The Kit" description="The HelpingHand kit: a modular robotic hand that students CAD, wire, and program themselves.">
+  <PageHeader
+    title="A robotic hand students build themselves."
+    lede="HelpingHand is a modular robotic hand that students CAD, wire, and program themselves. They learn mechanics, circuits, and coding concepts one lesson at a time, without following a finished kit."
+  />
+
+  <section class="section">
+    <SectionLabel>The hand</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+      <ModelViewer
+        src="/models/hand-v10.glb"
+        alt="3D model of the HelpingHand: four fingers and a thumb on a palm, with the electronics box on the back"
+        label="Hand v10 · CAD of 17 Nov 2026 · not printed yet"
+        height="h-[22rem] md:h-[32rem]"
+      />
+      <div>
+        <p class="statement">Four fingers, a thumb, and everything that drives them.</p>
+        <p class="mt-4">Each finger is its own module with its own motor. The modules sit side by side in the palm, the thumb bolts on beside them, and the electronics ride in a box on the back of the hand.</p>
+        <p class="mt-4 text-rule">This is the team's current design, straight from the CAD. Colours are for display. Grey parts are bought, not printed: motors, the Arduino, screws.</p>
+        <a class="btn btn-primary mt-6" href={mailto('HelpingHand kit request')}>Request a kit</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <SectionLabel>One finger</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]">
+      <div class="lg:order-2">
+        <ModelViewer
+          src="/models/finger-v4.glb"
+          alt="3D model of one finger module: a three-segment finger on a long motor housing"
+          label="Finger module v4 · CAD of 11 Nov 2026"
+          height="h-80 md:h-[26rem]"
+        />
+      </div>
+      <div>
+        <p class="statement">One motor curls three segments.</p>
+        <p class="mt-4">The motor turns a threaded rod. A nut rides along the rod and pulls a link, and the linkage carries that one motion through all three segments of the finger, from straight to a 90° curl.</p>
+        <p class="mt-4">It is the unit of the whole curriculum: small enough to understand completely, real enough to be worth programming.</p>
+        <a class="btn btn-secondary mt-6" href={p('/lessons/beginner/01-finger-module/')}>Open Lesson 1</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <SectionLabel>What is in the box</SectionLabel>
+    <div class="mt-6 flex flex-wrap items-end justify-between gap-4">
+      <p class="statement">The parts of one hand.</p>
+      <span class="badge badge-draft">Draft: contents are set with the first printed kit</span>
+    </div>
+    <ul class="mt-8 border-t border-navy">
+      {box.map((b) => (
+        <li class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[18rem_1fr]">
+          <p class="font-semibold">{b.item}</p>
+          <p class="text-rule">{b.note}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section">
+    <SectionLabel>How a lesson works</SectionLabel>
+    <p class="statement mt-6">Design it, build it, code it.</p>
+    <p class="lede mt-3">Every lesson has three parts. Each part is one class session.</p>
+    <ProcessRail steps={portionSteps} class="mt-10" />
+    <a class="btn btn-secondary mt-10" href={p('/lessons/beginner/')}>Browse the lessons</a>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Testing so far</SectionLabel>
+    <p class="statement mt-6">Two motors, run one at a time and together.</p>
+    <p class="lede mt-3">A bench test of the motor circuit.</p>
+    <div class="table-scroll mt-8">
+      <table class="result-table">
+        <thead>
+          <tr><th scope="col">Trial</th><th scope="col">Motor 1 ran? Direction</th><th scope="col">Motor 2 ran? Direction</th></tr>
+        </thead>
+        <tbody>
+          {trials.map((t) => (
+            <tr>
+              <th scope="row">{t.trial}</th>
+              <td class:list={[ran(t.m1) && 'result']}>{t.m1}</td>
+              <td class:list={[ran(t.m2) && 'result']}>{t.m2}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Circuit</SectionLabel>
+    <div class="mt-6 grid items-start gap-x-12 gap-y-6 md:grid-cols-2">
+      <div>
+        <p class="statement">Six motors on one Arduino.</p>
+        <p class="mt-4">An Arduino Mega 2560 runs six DC motors through motor drivers, with two push buttons for control. The motors have their own power supply, separate from the Arduino's.</p>
+      </div>
+      <FigurePlaceholder class="my-0!" caption="Six-motor circuit layout. Diagram to come." height="h-64" />
+    </div>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Specifications</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+      <div>
+        <p class="statement">Printed parts, an Arduino, and ordinary screws.</p>
+        <p class="mt-4">When a part breaks, print another. When a student wants a different finger, design one.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="result-table">
+          <thead>
+            <tr><th scope="col">Spec</th><th scope="col">Value</th></tr>
+          </thead>
+          <tbody>
+            {specs.map((s) => (
+              <tr>
+                <th scope="row" class="whitespace-nowrap">{s.k}</th>
+                <td>{s.v}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Base>

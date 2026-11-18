@@ -1,0 +1,44 @@
+---
+/** A 3D model the reader can turn, in a grey frame with a caption under it.
+    `label` is the caption: say which CAD version the model is, for example "Hand v10 · 2026-11-17". */
+import { asset } from '../lib/url';
+
+interface Props {
+  src: string;
+  alt: string;
+  label?: string;
+  class?: string;
+  /** Tailwind height classes for the viewer. */
+  height?: string;
+  autoRotate?: boolean;
+  /** Starting view as "turn tilt distance", for example "30deg 72deg 70%". Distance under 100%
+      moves closer than the fit-everything default: use it for long, thin models that stay still. */
+  orbit?: string;
+}
+const { src, alt, label, class: cls = '', height = 'h-80', autoRotate = true, orbit } = Astro.props;
+---
+<figure class={cls}>
+  <div class="frame overflow-hidden">
+    <model-viewer
+      src={asset(src)}
+      alt={alt}
+      camera-controls
+      auto-rotate={autoRotate || undefined}
+      camera-orbit={orbit}
+      rotation-per-second="20deg"
+      shadow-intensity="1"
+      exposure="1.05"
+      interaction-prompt="auto"
+      loading="lazy"
+      class:list={['block w-full', height]}
+    ></model-viewer>
+  </div>
+  <figcaption class="caption flex flex-wrap justify-between gap-x-6 gap-y-1">
+    {label && <span class="font-semibold text-ink">{label}</span>}
+    <span>Drag to turn. Scroll to zoom.</span>
+  </figcaption>
+</figure>
+
+<script>
+  import '@google/model-viewer';
+</script>

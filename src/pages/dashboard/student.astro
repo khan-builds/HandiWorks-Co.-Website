@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import Arrow from '../../components/Arrow.astro';
+import RoleGate from '../../components/RoleGate.astro';
+import DemoBanner from '../../components/DemoBanner.astro';
+import { p } from '../../lib/url';
+import { studentPersona as me, LESSON_1, STATUS_LABEL } from '../../data/mock';
+import { DOT_CLASS } from '../../lib/status';
+import { PORTIONS } from '../../lib/lessons';
+
+const next = PORTIONS.find((pt) => me.progress[pt.key] !== 'done') ?? PORTIONS[PORTIONS.length - 1];
+---
+<Base title="Student dashboard" noindex>
+  <RoleGate role="student" />
+  <PageHeader compact title={`Hi ${me.name}. Next up: ${next.label}.`}>
+    <p class="meta mt-3">{me.className}</p>
+    <a slot="aside" class="btn btn-primary" href={p(`${LESSON_1.path}${next.key}/`)}>Continue with {next.label} <Arrow /></a>
+  </PageHeader>
+  <DemoBanner role="student" />
+
+  <section class="section grid gap-x-14 gap-y-12 pt-12! lg:grid-cols-[1.5fr_1fr] lg:items-start">
+    <div>
+      <SectionLabel>Your progress</SectionLabel>
+      <h3 class="mt-8 text-2xl"><a class="hover:underline" href={p(LESSON_1.path)}>{LESSON_1.title}</a></h3>
+      <ol class="process-rail mt-8">
+        {PORTIONS.map((pt) => {
+          const status = me.progress[pt.key];
+          return (
+            <li class:list={[status === 'not-started' && 'is-todo']}>
+              <span class="process-num" aria-hidden="true">{pt.step}</span>
+              <h3><a class="hover:underline" href={p(`${LESSON_1.path}${pt.key}/`)}>{pt.label}</a></h3>
+              <p class="flex items-center gap-2 text-[0.9375rem]"><span class:list={['dot', DOT_CLASS[status]]} aria-hidden="true"></span>{STATUS_LABEL[status]}</p>
+            </li>
+          );
+        })}
+      </ol>
+
+      <div class="panel mt-12 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p class="meta">After Lesson 1</p>
+          <p class="mt-1 font-semibold text-navy">Lesson 2 · Gears and managing multiple motors</p>
+        </div>
+        <span class="badge badge-soon">Coming soon</span>
+      </div>
+    </div>
+
+    <aside class="grid gap-10">
+      <div>
+        <SectionLabel class="section-label-sm">Due next</SectionLabel>
+        <ul class="mt-1">
+          {me.assigned.map((a) => (
+            <li class="flex items-baseline justify-between gap-4 border-b border-edge py-3.5">
+              <a class="font-semibold text-navy hover:underline" href={p(a.path)}>{a.title}</a>
+              <span class="meta whitespace-nowrap">Due {a.due}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <SectionLabel class="section-label-sm">Bookmarks</SectionLabel>
+        <ul class="mt-4 grid gap-2.5 text-[0.9375rem]">
+          {me.bookmarks.map((b) => (
+            <li><a class="link" href={p(b.path)}>{b.title}</a></li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  </section>
+</Base>

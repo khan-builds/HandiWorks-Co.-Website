@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+.DS_Store
+npm-debug.log*
+
+# Review screenshots written by `npm run shots`
+screenshots/
+
+# Design reference, kept out of the public repo
+reference poster/

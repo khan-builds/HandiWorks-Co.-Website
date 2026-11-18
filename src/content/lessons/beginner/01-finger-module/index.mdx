@@ -1,0 +1,44 @@
+---
+track: beginner
+number: 1
+title: Build a Finger
+summary: Draw one finger in five CAD steps, wire a servo to an Arduino Mega, and make the finger open and close.
+status: published
+durationMinutes: 120
+concepts: [Joints, Links, Servos]
+materials:
+  - { name: "Arduino Mega 2560", quantity: 1, note: "with a USB cable" }
+  - { name: "Positional servo", quantity: 1, note: "signal, power, and ground wires" }
+  - { name: "Push button", quantity: 1 }
+  - { name: "Jumper wires", quantity: 6 }
+  - { name: "Computer", quantity: 1, note: "Arduino IDE and a CAD tool that opens STL files, such as Tinkercad" }
+modelSrc: /models/lesson-1/05-finished-finger.glb
+modelCaption: The finished finger, from step 5 of the CAD part
+---
+import Callout from '../../../../components/Callout.astro';
+import TeacherNotes from '../../../../components/TeacherNotes.astro';
+import TeacherOnly from '../../../../components/TeacherOnly.astro';
+
+{/* Lesson 1 is Billy's, ported from the version-1 branch on 2026-11-17 with his wording.
+    It stays "Draft · under team review" until `reviewed: true` is set above. */}
+
+This lesson has three parts. First you draw the finger. Then you wire it. Then you program it.
+
+The finished finger is about 11 inches long (288 mm).
+
+<Callout type="note" title="New words">
+A **joint** is a round hole with a pin through it. A **link** is a bar that swings on a joint. The **servo** is the motor that moves the links.
+</Callout>
+
+## What you will have
+
+A finger model that matches the finished example, and a Mega that opens and closes a servo when the button is pressed.
+
+<TeacherNotes>
+<TeacherOnly title="Timing guide">
+- CAD, steps 1–5: 45 min
+- Wiring: 25 min
+- Sketch, upload, and angle tuning: 35 min
+- Test and questions: 15 min
+</TeacherOnly>
+</TeacherNotes>

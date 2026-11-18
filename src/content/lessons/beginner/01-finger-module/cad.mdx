@@ -1,0 +1,80 @@
+---
+portion: cad
+title: Draw the finger
+objectives:
+  - Grow the finger in five CAD steps and compare each step to the example
+  - Point to the base, the drive bar, the joints, and the fingertip
+durationMinutes: 45
+status: published
+---
+import ModelViewer from '../../../../components/ModelViewer.astro';
+import Callout from '../../../../components/Callout.astro';
+import TeacherNotes from '../../../../components/TeacherNotes.astro';
+import TeacherOnly from '../../../../components/TeacherOnly.astro';
+
+You will build the finger in five steps. Each step adds the next piece of the real finger. Do one step at a time.
+
+For every step:
+
+1. Open the example and drag it to turn it around.
+2. In your own CAD file, add only the new piece.
+3. Put your model next to the example. The shapes should match before you continue.
+
+Each step below shows its example as a model you can turn. The example files are not offered as downloads yet: the team is choosing a licence for the CAD first.
+
+<Callout type="tip" title="In Tinkercad">
+Start a new 3D design. Use boxes for bars and cylinders for round holes.
+</Callout>
+
+## Step 1 — The base
+
+The base is the end the finger mounts on. You can see round holes and flat plates. Nothing sticks out to the right yet.
+
+<ModelViewer src="/models/lesson-1/01-base.glb" alt="Step 1: the base of the finger, with mounting plates and round holes" label="Figure 1. The base" height="h-64 md:h-96" autoRotate={false} orbit="28deg 70deg 85%" />
+
+In your CAD file, make the mounting plates and the round holes. Leave the rest of the screen empty.
+
+## Step 2 — The drive bar
+
+Add the long bar that comes out of the base. This is the part the servo will push and pull. The finger cannot curl without it.
+
+<ModelViewer src="/models/lesson-1/02-drive.glb" alt="Step 2: the base with the long drive bar added" label="Figure 2. The drive bar" height="h-64 md:h-96" autoRotate={false} orbit="28deg 70deg 85%" />
+
+Keep the base from step 1. Add the long bar onto it. Do not add the finger links yet.
+
+## Step 3 — The first joints
+
+Add the first round joints above the drive bar. Each circle is a hole a pin will pass through. A link will swing on that pin.
+
+<ModelViewer src="/models/lesson-1/03-first-joints.glb" alt="Step 3: the first round joints added above the drive bar" label="Figure 3. The first joints" height="h-64 md:h-96" autoRotate={false} orbit="28deg 70deg 85%" />
+
+Add those holes to your model. A joint that is too tight will not turn. A joint that is too loose will wobble. Match the example.
+
+## Step 4 — The links
+
+Add the rest of the folding links. They are the bars that reach toward the fingertip. Each new link needs its own joint.
+
+<ModelViewer src="/models/lesson-1/04-links.glb" alt="Step 4: the folding links added, reaching toward the fingertip" label="Figure 4. The links" height="h-64 md:h-96" autoRotate={false} orbit="28deg 70deg 85%" />
+
+Count the round holes in the example, then count the holes in your model. The numbers should match.
+
+## Step 5 — The fingertip
+
+Add the tip. This file is the whole finger. Your model should look like this one when you are done.
+
+<ModelViewer src="/models/lesson-1/05-finished-finger.glb" alt="Step 5: the finished finger with its tip" label="Figure 5. The finished finger" height="h-64 md:h-96" autoRotate={false} orbit="28deg 70deg 85%" />
+
+Turn both models all the way around. Check the base, the drive bar, every joint, and the tip.
+
+<Callout type="tip">
+If a piece looks wrong, go back one step and fix that piece only. Do not start the whole finger over.
+</Callout>
+
+<TeacherNotes>
+<TeacherOnly title="Timing">
+CAD, steps 1–5: 45 min
+</TeacherOnly>
+<TeacherOnly title="What the model is">
+The five STL files are slices of `Finger 1.stl`, cut along the finger from the base to the tip. Units are inches (the 15 mm features export as 0.59055 in). Students who import as millimeters will see an 11 mm finger. The long bar in step 2 is the drive. The circles after that are the pivot joints. Do not describe a rack and pinion unless you have confirmed that on the hardware.
+</TeacherOnly>
+</TeacherNotes>

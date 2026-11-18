@@ -1,0 +1,6 @@
+---
+/** The one line that says what this site is. Shown in the footer of every page. */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<p class={cls}>Demo site. Lesson 1 is a draft and the dashboards show made-up data.</p>

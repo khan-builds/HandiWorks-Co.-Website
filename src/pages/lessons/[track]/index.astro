@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import SectionLabel from '../../../components/SectionLabel.astro';
+import TrackSelector from '../../../components/TrackSelector.astro';
+import LessonCard from '../../../components/LessonCard.astro';
+import { TRACKS, type TrackKey } from '../../../lib/lessons';
+
+export function getStaticPaths() {
+  return (Object.keys(TRACKS) as TrackKey[]).map((track) => ({ params: { track } }));
+}
+const track = Astro.params.track as TrackKey;
+const lessons = (await getCollection('lessons', (e) => e.data.track === track)).sort((a, b) => a.data.number - b.data.number);
+const portions = await getCollection('portions');
+const keysFor = (id: string) => portions.filter((x) => x.id.startsWith(id + '/')).map((x) => x.data.portion);
+---
+<Base title={TRACKS[track].label} description="HelpingHand lessons. Every lesson has three parts: CAD, hardware and software.">
+  <PageHeader title="Design it. Build it. Code it." lede={TRACKS[track].tagline}>
+    <div class="mt-8"><TrackSelector current={track} /></div>
+  </PageHeader>
+  <section class="section">
+    <SectionLabel>{TRACKS[track].label}</SectionLabel>
+    {track === 'intermediate' && (
+      <p class="note mt-6 max-w-3xl">The intermediate track is a work in progress. It follows the same CAD, hardware, software structure as the beginner track.</p>
+    )}
+    <ul class="mt-8 grid gap-5">
+      {lessons.map((l) => <li><LessonCard lesson={l} portionKeys={keysFor(l.id)} /></li>)}
+    </ul>
+  </section>
+</Base>
