@@ -6,7 +6,7 @@ HelpingHand by HandiWorks Co.
 
 [Open preview workflow](https://github.com/khan-builds/HandiWorks-Co.-Website/actions/workflows/preview.yml)
 
-The Website preview workflow packages `index.html` on every change to the demo. Download the `helpinghand-preview` artifact from a completed run and open its index.html locally.
+The Website preview workflow packages the homepage and lesson files on every change to the demo. Download and extract the `helpinghand-preview` artifact, open its index.html, and select **Lessons** to try **Build a Finger Module**. The same simulator is part of the signed-in Astro lesson.
 
 For a hosted browser preview:
 1. Open repository **Settings → Pages**.

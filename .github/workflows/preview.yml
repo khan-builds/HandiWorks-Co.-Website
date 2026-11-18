@@ -2,7 +2,7 @@ name: Website preview
 on:
   push:
     branches: [main]
-    paths: ['index.html', 'version-1/**', '.github/workflows/preview.yml']
+    paths: ['index.html', 'lessons/**', 'version-1/**', '.github/workflows/preview.yml']
   workflow_dispatch:
 
 permissions:
@@ -25,6 +25,8 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/index.html
+          cp -R lessons _site/lessons
+          node --check _site/lessons/finger-module/lab.js
           cp -R version-1 _site/version-1
           cp -R _version-source/public/videos _site/version-1/videos
           touch _site/.nojekyll
