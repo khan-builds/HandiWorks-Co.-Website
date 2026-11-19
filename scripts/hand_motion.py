@@ -489,7 +489,8 @@ def body_matrices(info, drive, pull, thumb_swing, thumb_drive, thumb_lift):
     pull[i]      mm    finger module i slid forward out of its socket
     thumb_swing  deg   the thumb unit on the 393's shaft
     thumb_drive  0..1  the thumb's own carriage travel
-    thumb_lift   mm    the thumb module raised off its two rails
+    thumb_lift   mm    the thumb module raised off its two rails (the page no longer plays this;
+                       --check still builds it, so the tables are tested with the module off)
     """
     out = {"palm:palm": np.eye(4)}
     f = info["fingers"]
@@ -604,7 +605,7 @@ def verify_path(P, info):
             worst = max(worst, here)
     if worst > 0.001:
         raise SystemExit(f"hand_motion: parts pass through each other on the way into the pinch ({worst:.2f} mm3). "
-                         "Change the order in index.html's prepareTimeline(), or the pinch pose.")
+                         "Change the order in index.html's prepareStory(), or the pinch pose.")
     print(f"path clear: {len(pairs) - 1} poses on the way with nothing touching; at the pinch the tips meet by {contact:.2f} mm3")
 
 

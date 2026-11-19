@@ -23,15 +23,16 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-18 at 06:50 Pacific.
+Checked against GitHub on 2026-11-18 at 19:00 Pacific.
 
 **The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
-shows the old one-page homepage, now with Clarence's finger simulator beside it.
+shows the old one-page homepage.
 
 ### On GitHub
 
-`main` is at `d06ded1`, "Merge pull request #5", merged by Clarence on 2026-11-18. Its deploy
-run is what the live site shows: <https://khan-builds.github.io/HandiWorks-Co.-Website/>.
+`main` is at `5fb3427`, "Finish removing the interactive finger module page", pushed by
+Clarence on 2026-11-18 at 09:36. Its deploy run is what the live site shows:
+<https://khan-builds.github.io/HandiWorks-Co.-Website/>.
 
 Two teammates changed `main` that morning:
 
@@ -39,10 +40,12 @@ Two teammates changed `main` that morning:
   lines of the hand's script: the fingers and the thumb now curl the other way, toward the
   palm, and the message shown when the 3D hand cannot start is plainer. **These are in this
   branch.**
-- **Clarence** then merged pull request 5: a finger simulator for Lesson 1 that runs with no
-  kit. It is a static page at `lessons/finger-module/` with one script and one stylesheet,
-  and the old homepage's Lessons buttons point at it. **This is not in this branch.** Lingbo
-  chose on 2026-11-18 to push the version from before it. It is in [To do](#to-do).
+- **Clarence** merged pull request 5 at 09:15: a finger simulator for Lesson 1 that runs with
+  no kit, a static page at `lessons/finger-module/` with one script and one stylesheet. By
+  09:36 he had taken it out again in two commits. `main` now holds the same files as
+  `7b2cf6d`, the commit this branch is built on, so **nothing on `main` is missing from this
+  branch**. The simulator is still on his branch `feature/interactive-finger-module`. It is
+  in [To do](#to-do).
 
 Both are still working, so fetch again before a merge.
 
@@ -50,8 +53,8 @@ What the live site is:
 
 - One page: Golam's homepage, a dark stage with the scroll-driven hand. An older preview
   sits at `/version-1/`.
-- "Lessons", "Start learning" and "Enter learning lab" open Clarence's finger simulator at
-  `lessons/finger-module/`, a page in its own look.
+- "Lessons", "Start learning" and "Enter learning lab" jump to the note "Homepage preview.
+  Login and lessons require server hosting."
 - There is no Problem, Kit, Lessons list, Sign in, Roadmap or Team page.
 
 Other branches on GitHub:
@@ -61,7 +64,7 @@ Other branches on GitHub:
 | `version-1` | Billy, 2026-11-06 | His Lesson 1 and its five step models. | Keep it. `scripts/stl_to_glb.py` reads the step models from it. |
 | `nov15-hand-model` | Golam, 2026-11-15 | An earlier take on the Nov 15 homepage update, made a few minutes before the one on `main`. Not merged. | Golam's call. It is in [To do](#to-do). |
 | `LZ-C5.2` | Lingbo, 2026-11-18 | This branch: the whole new site, on top of `main` as it stood at `7b2cf6d`, the commit before Clarence's simulator. | Merge into `main` when the team agrees. The steps are in [To do](#to-do). |
-| `feature/interactive-finger-module` | Clarence, 2026-11-18 | The finger simulator, merged into `main` as pull request 5. | It is in `main` and not in this branch. It is in [To do](#to-do). |
+| `feature/interactive-finger-module` | Clarence, 2026-11-18 | The finger simulator. Merged into `main` as pull request 5, then removed from `main` 20 minutes later. | It is on neither `main` nor this branch. It is in [To do](#to-do). |
 | `a/project-setup`, `a/db-schema`, `a/auth-and-lessons`, `a/wire-frontend` | Billy, 2026-10-28 | A server app with real login, as pull requests 1 to 4. All four are still open. | Set aside by the static-mock decision. Billy's call. It is in [To do](#to-do). |
 
 ### On the build machine
@@ -69,17 +72,18 @@ Other branches on GitHub:
 Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` until Lingbo
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
-It is two commits behind `main`: Clarence's simulator is not in it. Prompts 1 to 9 were run
-on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
-[Design changes](#design-changes)).
+`main` is four commits further on, but those four add the simulator and take it out again,
+so no file differs. Four commits are pushed: the rebuild, the hand from the CAD, the emails
+on the Team page, and the scroll story. Prompts 1 to 9 were run on 2026-11-17, and the look
+was brought closer to the poster on 2026-11-18 (see [Design changes](#design-changes)).
 
 | Page | State | Still open |
 |---|---|---|
-| Home | Golam's four-step scroll story and camera, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. See [The hand on the homepage](#the-hand-on-the-homepage). **Not committed yet.** Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
+| Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story now does what each caption says: one finger module is taken out and shown, its motion is traced from the carriage to the fingertip, and the hand makes its grip. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
 | The Problem | Poster's goal and objectives, the 18% / 42% figure checked against the Gallup report, 15 more sourced figures. | The "250,000 students" and "$500 kit" figures are left off: no source says them. |
 | The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Circuit diagram is a labelled placeholder until the image arrives. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
-| Lesson 1 | Billy's lesson from `version-1`: five CAD steps with their models, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". | Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. Clarence's simulator is not in it. |
+| Lesson 1 | Billy's lesson from `version-1`: five CAD steps with their models, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". | Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. Clarence's simulator is not in it, and no longer on `main` either. |
 | Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. | Nothing. |
 | Roadmap | Four phases as the poster's timeline, and a table of what is live, draft, demo or coming soon. | Nothing. |
 | Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
@@ -92,6 +96,8 @@ Checked on 2026-11-18, after the poster pass, on the built site in headless Chro
 link and file the pages ask for exists; nothing is loaded from another site; no page scrolls
 sideways at 360, 390, 768, 960, 1000, 1024, 1100 or 1280 px wide, signed out or in either
 role; no script errors on any page. What was not checked is in [To do](#not-checked-yet).
+The homepage was built and checked again that evening, after its scroll story changed; the
+other pages were not touched.
 
 Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
@@ -114,6 +120,12 @@ again.**
 
 Screenshots of the new hand are in `screenshots/hand-v11/`: the homepage frame by frame at
 both widths, and `before-after-1440.png`, six frames of the old hand beside the new one.
+They show the scroll story as it was that afternoon.
+
+The scroll story of that evening is in `screenshots/hand-story/`: `story-1440.png` and
+`story-390.png` are the whole scroll on one sheet at each width, `before-1440.png` is the
+same scroll before the change, `opening-1440.png` is the first five seconds, and the
+`home-*.png` files are single frames.
 
 ## To do
 
@@ -132,26 +144,29 @@ Lingbo does these. `main` is the live site, and it changes only when Lingbo merg
   `screenshots/poster-before/` is five pages before the poster pass.
 - [ ] Tell Golam, Billy and Clarence before the merge.
   - Golam: his `index.html` changed. Of its 2,188 lines, 2,042 were removed and 736 added.
-    The hand goes through the same four-step scroll story with his camera moves and his
-    colours. Its model and the code that bends it were replaced on 2026-11-18 by an export
-    from the CAD, hand v11: see [The hand on the homepage](#the-hand-on-the-homepage). His
-    three curl commits of that morning are no longer in the file, because the joints are no
-    longer set by hand. The colours, fonts, nav, buttons and words around the hand changed
-    too: see [Design changes](#design-changes). His logo is on every page as a tracing from
-    the poster, and the real file would replace it.
+    His four captions and his five colours for the hand are kept. Its model and the code
+    that bends it were replaced on 2026-11-18 by an export from the CAD, hand v11, and that
+    evening the scroll story was rewritten to do what each caption says, with his camera
+    moves and the Anime.js library taken out: see
+    [The hand on the homepage](#the-hand-on-the-homepage). His three curl commits of that
+    morning are no longer in the file, because the joints are no longer set by hand. The
+    colours, fonts, nav, buttons and words around the hand changed too: see
+    [Design changes](#design-changes). His logo is on every page as a tracing from the
+    poster, and the real file would replace it.
   - Billy: `app/` leaves the repo, so pull requests 1 to 4 no longer fit `main`. His
     Lesson 1 is on the site as a draft, waiting for his review. His finger video is no
     longer shown on the homepage: a finger drawn from the current CAD is in its place. The
     file is still in `public/videos/`.
-  - Clarence: his simulator is in `main` and not in this branch, which removes `app/` and
-    the old workflow and replaces the homepage his buttons are on. It has to come into this
-    branch before the merge: see [For the team to decide](#for-the-team-to-decide).
+  - Clarence: he took his simulator out of `main` himself on 2026-11-18, so the merge no
+    longer touches it. This branch removes `app/` and the old workflow, which his simulator
+    branch builds on: see [For the team to decide](#for-the-team-to-decide).
   - All three: the `/version-1/` address stops existing. The `version-1` branch stays.
 - [ ] `git fetch`, then `git merge origin/main`, so that edits made there are not lost. This
-  branch holds `main` up to `7b2cf6d`; `main` is two commits ahead with Clarence's simulator.
-  Expect `index.html` to conflict wherever a teammate edits the old nav, buttons or footer:
-  the rebuild replaced that markup, so keep this branch's side there and carry the intent
-  over by hand.
+  branch holds `main` up to `7b2cf6d`. On 2026-11-18 at 19:00 `main` was four commits ahead
+  with no file different, so that merge changes nothing. If a teammate has pushed since,
+  expect `index.html` to conflict wherever they edit the old nav, buttons or footer: the
+  rebuild replaced that markup, so keep this branch's side there and carry the intent over
+  by hand.
 - [ ] Merge into `main`, check that the "Deploy site" run passes under Actions, and open the
   live site.
 
@@ -200,15 +215,17 @@ then goes in with prompt 10.
   finger module as 282 mm. Billy's step models come from an older finger file.
 - [ ] **Light or navy stage on the homepage.** Light is built. Navy with white captions is
   the option not taken, and it has not been built to compare.
-- [ ] **Clarence's finger simulator.** In `main` since 2026-11-18 and not in this branch.
-  It was built on the old site: its page is `lessons/finger-module/`, it points the old
-  homepage's Lessons buttons at that page, and it embeds itself in `app/`. This branch
-  replaces that homepage and removes `app/`, so merging `main` in will conflict on those.
-  The simulator itself is one script and one stylesheet with no server. It was tried in this
-  branch on 2026-11-18 and it works inside Lesson 1's overview page, in the site's look,
-  with his two files untouched. The patch that does it is on the build machine at
-  `~/workspace/HelpingHand-finger-simulator-in-lesson-1.patch`: merge `main`, then apply it.
-  Decide with Clarence whether that is where it goes.
+- [ ] **Clarence's finger simulator.** He merged it into `main` on 2026-11-18 and removed it
+  20 minutes later. It is on his branch `feature/interactive-finger-module` and nowhere
+  else. It was built on the old site: its page is `lessons/finger-module/`, it points the
+  old homepage's Lessons buttons at that page, and it embeds itself in `app/`, which this
+  branch removes. The simulator itself is one script and one stylesheet with no server. It
+  was tried in this branch on 2026-11-18 and it works inside Lesson 1's overview page, in
+  the site's look, with his two files untouched. The patch that does it is on the build
+  machine at `~/workspace/HelpingHand-finger-simulator-in-lesson-1.patch`. It was made
+  against `main` with the simulator in it, so his two files have to be brought over from
+  his branch first. Ask Clarence why he took it out, then decide whether it goes in
+  Lesson 1.
 - [ ] **Pull requests 1 to 4** (Billy, 2026-10-28: the server app with real login). The site
   is a static mock through Dec 1 and real login is a Roadmap item, so they can be closed, or
   left open as the start of that work. Billy's call.
@@ -220,6 +237,8 @@ then goes in with prompt 10.
 - [ ] A real phone. Phone widths were checked in headless Chrome only.
 - [ ] A real Windows laptop, opening the offline copy with no network.
 - [ ] Hover states and the page-to-page cross-fade, which a screenshot cannot show.
+- [ ] How the scroll story feels under a real mouse wheel, trackpad and finger. Its poses
+  were checked frame by frame; its smoothness in motion can only be judged by scrolling it.
 - [ ] `npm run check`. The type check has never run: `@astrojs/check` is not installed.
 
 ### After any change
@@ -234,6 +253,63 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-18: the scroll story does what its captions say
+
+Lingbo asked for the animation to match the text beside it: where a caption speaks of one
+finger, a finger module should come out of the hand and be shown. And for the thumb and the
+fingers to move more smoothly, on the paths the CAD gives them. Only the hand's script on the
+homepage changed. No words and no layout changed. It is in branch `LZ-C5.2`, not in `main`.
+
+| | That afternoon | Now |
+|---|---|---|
+| "Build one finger." | The whole hand closed to the pinch while the view went once round it, close enough that the hand ran off the stage. | The middle finger's module slides 130 mm straight out of its socket and the rest of the hand fades. The module is turned once round, laid across the stage, and curls to its limit and opens. |
+| "See what moves." | The hand opened, four finger modules slid 45 mm out and the thumb module rose, while the view went round again. | The same module from its side. Its colours drain to pale grey, then each link turns navy in the order the motion travels: carriage, link, first segment, bar, middle segment, bar, fingertip. The finger curls as they go. |
+| "Try your own design." | The modules slid back. | The module slides back into its socket, then the whole hand makes its grip, the CAD's pinch, and holds it. |
+| The view | Two full turns round the whole hand, with swings of zoom, tilt and bank on top. | One move to the module and one move back. The whole hand is never turned round. |
+| Scrolling | The hand jumped to the scroll position at once, so each click of a mouse wheel showed as a jump. | The story follows the scroll with a soft lag of about half a second. |
+| Scrolling back up, or jumping | Parts could stay where a later scene had left them. In a test, 331 of 400 jumps to a random point gave a wrong hand. | A scroll position always gives the same hand: 400 of 400. |
+| The first five seconds | Fingers and thumb started and stopped at full speed. Scrolling during them froze the hand part-closed until the grip scene. | They ease in and out, and scrolling away lets go of the pinch over half a second. |
+| Weight of the page | `index.html` 1.41 MB, 88 KB of it the Anime.js library. | 1.33 MB. The library is gone. |
+
+Why jumps went wrong: the library only writes the moves that are running at the moment it is
+asked, so a dial kept whatever the last scene had left in it. The story is now a list of
+moves read by a few lines of the page's own script, which sets every dial every time.
+
+Checked:
+
+- Every part's place as the page works it out, against the export script's own maths, which
+  `--check` holds to the CAD: 0.00005 mm apart at most, in eight poses, three of them with
+  the module 130 mm out.
+- Through the whole scroll, sampled every 5 steps of 10,000: the index and middle fingers
+  are never behind the thumb on the way into the pinch, and a module only slides while its
+  finger is straight and the thumb is at rest. Those are the conditions the CAD checked.
+- A module pulled out alone passes its neighbours: it is 30.2 mm wide at its widest and the
+  sockets are 36.6 mm apart.
+- `scripts/hand_motion.py --check --check-path`, run again that evening, passed, and the
+  data it rebuilt from the CAD is the block already in the page: see
+  [The hand on the homepage](#the-hand-on-the-homepage).
+- On the built site in headless Chrome: no script errors, the homepage does not scroll
+  sideways at 360, 390, 768, 1024, 1280 or 1440 px wide, and with reduced motion the hand
+  stands still at rest beside the four captions.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| The module taken out is the middle finger's, the one already shown beside "The kit". | The index finger, the one the thumb pinches. |
+| It comes out 130 mm: the furthest the CAD checks, and 6.4 mm clear of its 123.6 mm socket. It is not moved again; the view goes to it. | 45 mm, as before, which leaves most of the housing in the socket. Or carrying the module across the stage. |
+| The rest of the hand fades out while the module is shown. | The hand left in view behind it. |
+| The module is turned once round its own length before it curls. | Straight to the three-quarter view. |
+| In "See what moves" the links turn navy on a pale grey module. | Each link in its own CAD colour. The carriage and the bars are grey and pale blue and did not stand out. |
+| No names on the links. | A label naming each link as it turns navy. |
+| The taken-apart view, with all four modules out and the thumb module off its rails, is no longer played: no caption speaks of it. `--check` still builds it. | Keeping it under "See what moves". |
+| The grip comes last, under "Try your own design", for "predict how the grip will move, then test it". | Under "Build one finger", as before. |
+| The captions start at 0, 15, 50 and 80% of the scroll. | Golam's 0, 21, 49 and 86%. |
+| The Anime.js library is taken out. | Keeping it and resetting every dial before each seek. |
+| The scroll is followed with a lag. | The exact scroll position, as before. |
+| The opening leans in less (zoom up by 0.2, was 0.33), so the hand stays on the stage. | As before. |
+| The scroll is as long as it was: six screens. | A longer scroll, to give each move more room. |
 
 ### 2026-11-18: emails on the Team page
 
@@ -425,29 +501,51 @@ the thumb at rest, and writes out:
 - the same for the thumb's own carriage, link, two segments and coupler bar
 - where the thumb's swing shaft is, and the pinch pose the CAD was checked in
 
-**What the page can move.** Five things, and no joint directly:
+**What the page can move.** Four things, and no joint directly:
 
 | In the script | What it is | Range |
 |---|---|---|
 | `poses[i].bend` | Finger `i`'s carriage along its lead screw. The whole finger follows. | 0 to 1 is 0 to 18 mm, a knuckle curl of 0 to 53.5° |
-| `poses[i].lift` | Finger module `i` slid forward out of its socket. | 0 to 1 is 0 to 45 mm (`PULL`). The CAD checks up to 130 mm. |
+| `poses[i].pull` | Finger module `i` slid straight forward out of its socket, the one way it goes in and comes out. | 0 to 1 is 0 to 130 mm (`PULL`). A socket is 123.6 mm deep, and 130 mm is the furthest the CAD checks. |
 | `thumb.reach` | The thumb coming across to the index fingertip: its swing and its curl together. | 0 is at rest, 1 is the pinch: swing 70°, curl 36° |
-| `thumb.lift` | The thumb module raised off its two rails. | 0 to 1 is 0 to 45 mm (`THUMB_LIFT`). The CAD checks up to 60 mm. |
 | the finger beside "The kit" | The middle finger's `bend`, on a 7 second round. | 0 to 1 |
 
-**What the scroll story does with them.** The scenes, their timing and the camera are
-Golam's and can be changed in `prepareTimeline()` and `render()` as before.
+The data also holds the thumb module's own body, so it could be raised off its two rails
+again (the CAD checks up to 60 mm). The page stopped playing that on 2026-11-18.
 
-| Scene | The hand |
-|---|---|
-| Opening, the first 5 seconds | Closes to the pinch and opens again. |
-| Build one finger. | Closes to the pinch while the camera goes round it. |
-| See what moves. | Opens, then the four finger modules slide out of the palm and the thumb module rises off its rails. |
-| Try your own design. | The modules go back in. |
+**What the scroll story does with them.** The four captions are Golam's. Since 2026-11-18
+evening the hand does what each one says.
 
-Keep one rule when changing the timing: on the way into the pinch the fingers lead and the
-thumb arrives last, and on the way out the thumb leaves first. The other order puts the
-index fingertip through the thumb tip.
+| Caption | Share of the scroll | The hand |
+|---|---|---|
+| Before any scrolling, the first 5 seconds | | Closes to the pinch and opens again, once. |
+| HelpingHand | 0 to 15% | The whole hand, at rest, comes a little closer. |
+| Build one finger. | 15 to 50% | The middle finger's module slides 130 mm out of its socket. The view goes to it and the rest of the hand fades. The module is turned once round and laid across the stage, then curls to its limit and opens. |
+| See what moves. | 50 to 80% | The module seen from its side. Its colours drain, then each link turns navy in the order the motion travels (carriage, link, first segment, bar, middle segment, bar, fingertip) while the finger curls again. |
+| Try your own design. | 80 to 100% | The hand comes back, the module slides in the way it came out, and the hand closes to the pinch and holds it. |
+
+**How to change it.** The story is a list of moves in `prepareStory()`. A move takes one
+dial from one value to another: `move(dial, name, from, to, start, length)`. The scroll is
+10,000 steps from top to bottom, and `SCENES` says at which step each caption starts. Three
+kinds of dial:
+
+- the parts, in the table above
+- the view: `story.zoom`, `story.show` (from the whole hand to the module, and the rest of
+  the hand fading), `story.roll` (the view turned about the hand's length), `story.side`
+  (the module from three-quarters on to square from its side)
+- the colours of the trace: `story.wash` and `story.trace`
+
+`HAND_VIEW` and `MODULE_VIEW` say where the two views look from. The page follows the scroll
+with a short lag (`FOLLOW` in `render()`), so a mouse wheel's steps do not show.
+
+Keep three rules when changing the moves:
+
+1. On the way into the pinch the fingers lead and the thumb arrives last, and on the way out
+   the thumb leaves first. The other order puts the index fingertip through the thumb tip.
+2. A module slides only while its finger is straight and the thumb is at rest. That is how
+   the CAD checked it.
+3. List each dial's moves in the order they happen, and do not let two moves of one dial
+   overlap. A dial takes its latest move that has begun.
 
 **When the CAD changes.** With the CAD environment, from the repo folder:
 
@@ -468,7 +566,20 @@ of part names under them up to date. The script stops and names any part it does
   thumb with the index and middle fingers and the palm. On 2026-11-18 nothing touched on the
   way, and at the pinch the two tips met by 0.3 mm³, which is the grasp.
 
+Both were run again on the evening of 2026-11-18, after the scroll story changed: every part
+within 0.04 mm in the five poses, nothing touching in 34 poses on the way into the pinch, the
+tips meeting by 0.28 mm³. The data they rebuilt from the CAD was the same, character for
+character, as the block in the page.
+
+Neither check reads the page's script. What ties the page to them is in
+[Design changes](#design-changes), under "the scroll story does what its captions say": the
+page's own placement of every part was compared with the script's, and the story was sampled
+for the rules above.
+
 **What is not shown.**
+
+- The two screws that hold a finger module to the palm, and its motor's two leads. On the
+  page the module slides out with nothing to undo.
 
 - The lead screws do not turn. A finger's housing is drawn as the CAD has it, one solid
   bar standing in for Lingbo's two printed halves, with no screw inside it.
