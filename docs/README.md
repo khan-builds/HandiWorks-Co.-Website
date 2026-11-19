@@ -23,7 +23,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-19 at 14:10 Pacific.
+Checked against GitHub on 2026-11-19 at 14:37 Pacific.
 
 **The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
 shows the old one-page homepage.
@@ -73,14 +73,15 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 `main` is four commits further on, but those four add the simulator and take it out again,
-so no file differs. Eleven commits are pushed: the rebuild, the hand from the CAD, the emails
+so no file differs. Twelve commits are pushed: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
 people, the homepage story with the flat hand, the receding palm and the littered parts,
 and that story without the turn round the hand, with all four modules sliding out, the
 played coming apart, and the litter kept clear of the page's content, and last the fingers
 taken apart and one rebuilt, a colour for each link in the trace, tumbling pieces, and parts
-down the whole page. Prompts 1 to 9
+down the whole page. The twelfth changes this file only: it names the new offline copy.
+Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
@@ -119,11 +120,13 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 All but the last two were taken again on 2026-11-18.
 
-The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-18.zip` on
-the build machine (6.6 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
-snapshot of the build of 2026-11-18 and replaces the one of the day before. **It was made
-before the homepage hand changed that same day, so it still holds the old hand: run prompt 8
-again.**
+The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-19.zip` on
+the build machine (6.2 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
+snapshot of the build of 2026-11-19 at 14:30, commit `3d721e7`, and replaces the one of
+2026-11-18, which was deleted. That older zip was made before any address was added and
+before the hand changed: its "Talk to us" showed one address, Lingbo's at NYU, and anyone
+opening it saw the site as it was that morning. **Make the zip again after any change, and
+delete the one before it.**
 
 Screenshots of the new hand are in `screenshots/hand-v11/`: the homepage frame by frame at
 both widths, and `before-after-1440.png`, six frames of the old hand beside the new one.
@@ -144,8 +147,10 @@ motion sees.
 **`rehearsal/` and `rehearsal-teacher/` were taken again on 2026-11-19 at 13:37.** Until
 then they were from the morning of 2026-11-18, before any address was added, so they showed
 one address under Contact and in "Talk to us". The site itself has had all four since the
-commits of 2026-11-18 and 2026-11-19. `rehearsal-models/`, `offline-copy/` and the offline
-zip are still from 2026-11-18.
+commits of 2026-11-18 and 2026-11-19. `offline-copy/`, `team-emails/` and
+`contact-emails/` were taken again at 14:30 the same day, the first from the new offline
+zip. `rehearsal-models/` is still from 2026-11-18, and so are `poster-before/` and
+`baseline/`, which are kept as the "before" pictures.
 
 The story as it stood at midday on 2026-11-19, with the turn round the flat hand, is in
 `screenshots/hand-litter/`: `story-1440.png` and `story-390.png` are the whole scroll
