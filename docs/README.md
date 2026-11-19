@@ -23,7 +23,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-19 at 11:30 Pacific.
+Checked against GitHub on 2026-11-19 at 12:07 Pacific.
 
 **The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
 shows the old one-page homepage.
@@ -73,15 +73,17 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 `main` is four commits further on, but those four add the simulator and take it out again,
-so no file differs. Seven commits are pushed: the rebuild, the hand from the CAD, the emails
+so no file differs. Nine commits are pushed: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
-under "Talk to us", and the homepage's new first and last scenes. Prompts 1 to 9
+under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
+people, and the homepage story with the flat hand, the receding palm and the littered parts.
+Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
 | Page | State | Still open |
 |---|---|---|
-| Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and opens toward the visitor, one finger module is taken out and shown, its motion is traced from the carriage to the fingertip, and at the end the whole hand comes apart into its parts. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
+| Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and flat, the view goes round it, and it opens with its fingers toward the visitor; one finger module is taken out and shown; its motion is traced from the carriage to the fingertip; and at the end the whole hand comes apart into its parts, which then lie in pale sky behind the rest of the page. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
 | The Problem | Poster's goal and objectives, the 18% / 42% figure checked against the Gallup report, 15 more sourced figures. | The "250,000 students" and "$500 kit" figures are left off: no source says them. |
 | The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Circuit diagram is a labelled placeholder until the image arrives. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
@@ -129,7 +131,13 @@ The scroll story of that evening is in `screenshots/hand-story/`: `story-1440.pn
 same scroll before the change, `opening-1440.png` is the first five seconds, and the
 `home-*.png` files are single frames.
 
-The story of 2026-11-19, with the hand that opens and the hand in parts, is in
+The story as it stood at the end of 2026-11-19, with the flat hand and the littered parts,
+is in `screenshots/hand-litter/`: `story-1440.png` and `story-390.png` are the whole scroll
+on one sheet at each width, `1-closed.png` to `6-littered.png` are single frames,
+`page-1440.png` and `page-390.png` show the parts behind the rest of the page, and
+`reduced-motion.png` is what a visitor who has asked for less motion sees.
+
+The story of that morning, with the upright hand that opens and the hand in parts, is in
 `screenshots/hand-opens/`: `story-1440.png` and `story-390.png` are the whole scroll on one
 sheet at each width, `1-closed.png` to `6-apart.png` are single frames at 1440 px, and
 `reduced-motion.png` is what a visitor who has asked for less motion sees. The "Talk to us"
@@ -266,6 +274,66 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
 
+### 2026-11-19: a flat hand the view goes round, a palm that moves back, parts down the page
+
+Three more requests from Lingbo the same day, on top of the entry below:
+
+1. At the start, zoom in and go round the hand, so every side is seen.
+2. The hand should end flat and open, facing the visitor, the four fingers pointing at them.
+   When the finger comes out, the palm should move back into the distance.
+3. At the end, scatter the parts and litter them across the rest of the homepage in light blue.
+
+| | That morning | Now |
+|---|---|---|
+| HelpingHand | The hand stood upright, seen from the little finger's side, and turned its palm to the visitor as it opened. | The hand lies flat, palm up. The view comes in and goes once round it, then stops in front of the fingertips. The hand opens on the way and ends with its four fingers pointing at the visitor. Near things are drawn larger, so the fingers reach out. |
+| Build one finger. | The module slid up out of the upright hand and the rest faded where it stood. | The module slides out toward the visitor. The rest of the hand moves back into the distance, growing smaller, and fades. |
+| Try your own design. | The hand came apart and the parts hung there. | The same, then the parts spread over the whole stage and turn pale sky. |
+| The rest of the homepage | Plain white behind the sections. | The 40 parts in pale sky behind the sections, drifting and turning a little as the page scrolls. |
+| The scroll | 6 screens. | 6.9 screens: the first scene has 800 steps more and the last 700 more. |
+
+It is in branch `LZ-C5.2`, not in `main`. How it is built is under
+[The hand on the homepage](#the-hand-on-the-homepage).
+
+Checked in headless Chrome:
+
+- Every step of the story, 2,301 of them: the thumb is never further closed than the index or
+  middle finger, no module slides with a bent finger or with the thumb across, the hand only
+  comes apart when it is whole and open, and the parts only spread once it is fully apart.
+- 400 random jumps in the scroll give the same hand as scrolling there.
+- At 1440 x 900, 1280 x 1024, 1100 x 1000, 1024 x 768 and 390 x 844, in 100 frames of the
+  first, second and last scenes, the hand always has at least 12 px clear of the caption,
+  the nav and the edges of the stage. The spread parts are meant to fill the stage and
+  pass behind the caption.
+- The build passes, the homepage has no script errors, and it does not scroll sideways at
+  390 or 1440 px with the littered parts in place.
+
+Not checked: how any of this feels under a real wheel, trackpad or finger, and how fast it
+runs on a real phone. The CAD checks were not run again: the model and the tables did not
+change.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| The view goes round the hand as the page is scrolled, like every other move. | A turn on a timer when the page arrives. |
+| The hand opens during the last part of the turn and is open when the view stops. | Stay closed for the whole turn, then open. |
+| Near things are drawn larger in the first scene only. The module's two scenes and the parts stay a flat drawing, as they were framed. | Depth everywhere. |
+| After the module's scenes the whole hand comes back upright, the way the coming apart was framed. | Come back flat, as it left. |
+| The littered parts are behind the page's content. Panels and tables cover them. | On top of the content, which would put them over the words. |
+| On a wide screen two parts in three lie in the margins. On a phone they lie anywhere across. | Margins only, which leaves a phone with none. |
+| Beside the caption, a stage squarer than about 3:2 sizes the hand by its width. | Size by height alone, which ran the hand into the caption on a squarer window. |
+
+### 2026-11-19: "Request a kit" goes to all four
+
+Lingbo: for Contact and "Request a kit", everyone's emails, not Lingbo's standing alone.
+"Request a kit" now starts one email to all four people, on every page. Under Contact each
+address is still its own link to that person. It is in branch `LZ-C5.2`, not in `main`.
+
+One thing to know: a mailto link lists several addresses with commas, as the standard says.
+Classic Outlook on Windows may show them as one unknown name until its setting "Commas can
+be used to separate multiple message recipients" is switched on. Other mail programs split
+them.
+
 ### 2026-11-19: the hand opens toward the visitor, and comes apart at the end
 
 Lingbo asked for two new scenes on the homepage. The first caption is about grasp, so the hand
@@ -319,8 +387,8 @@ us", the navy band at the foot of the Team page, had one button with that addres
 now lists all four, each a mailto link to that person, above "Request a kit". It is in branch
 `LZ-C5.2`, not in `main`.
 
-No page on the site now shows one person's address alone. "Request a kit" still starts an
-email to the project manager only: see the entry below for why. Screenshots are in
+No page on the site now shows one person's address alone. "Request a kit" still started an
+email to the project manager only (changed later that day: see the entry above). Screenshots are in
 `screenshots/talk-to-us/`.
 
 | Decision | Option not taken |
@@ -622,33 +690,44 @@ scene: the hand opens toward the visitor, and at the end it comes apart.
 
 | Caption | Share of the scroll | The hand |
 |---|---|---|
-| Before any scrolling | | Closed, in the CAD's pinch, seen from the little finger's side. It does not move until the page is scrolled. |
-| HelpingHand | 0 to 15% | Opens and turns its palm to the visitor, like a hand held out. The thumb leaves first and the fingers follow, index first. It comes a little closer. |
-| Build one finger. | 15 to 50% | The middle finger's module slides 130 mm out of its socket. The view goes to it and the rest of the hand fades. The module is turned once round and laid across the stage, then curls to its limit and opens. |
-| See what moves. | 50 to 78% | The module seen from its side. Its colours drain, then each link turns navy in the order the motion travels (carriage, link, first segment, bar, middle segment, bar, fingertip) while the finger curls again. |
-| Try your own design. | 78 to 100% | The hand comes back and the module slides in the way it came out. Then the whole hand comes apart: all 40 parts leave the middle along their own lines, turning a little, and hang in the air as a kit of parts. |
+| Before any scrolling | | Lying flat, palm up and closed, in the CAD's pinch, seen from a little way off. It does not move until the page is scrolled. |
+| HelpingHand | 0 to 20% | The view comes in and goes once round the hand, so every side is seen, and stops in front of the fingertips. On the way the hand opens: the thumb leaves first and the fingers follow, index first. It ends flat and open, the four fingers pointing at the visitor. |
+| Build one finger. | 20 to 50% | The middle finger's module slides 130 mm out of its socket, toward the visitor, and the rest of the hand moves back into the distance and fades. The view goes to the module. It is turned once round and laid across the stage, then curls to its limit and opens. |
+| See what moves. | 50 to 75% | The module seen from its side. Its colours drain, then each link turns navy in the order the motion travels (carriage, link, first segment, bar, middle segment, bar, fingertip) while the finger curls again. |
+| Try your own design. | 75 to 100% | The hand comes back upright and the module slides in the way it came out. Then the whole hand comes apart: all 40 parts leave the middle along their own lines, turning a little. Last, the parts spread over the whole stage and turn pale sky. |
 
-The last move is the one thing in the story that is **not a motion of the CAD**. No part of the
-real hand flies. `scatter()` moves each part away from `BURST_FROM` by a share of its distance
+**The parts go on down the page.** Below the story, the same 40 parts lie behind the rest of
+the homepage in pale sky, most of them in the margins on a wide screen. `litterPage()` draws
+each part once into a small picture of its own and sets the pictures behind the sections;
+`driftLitter()` lets each drift and turn a little as the page scrolls. Panels and tables
+cover them; text on white sits over them. With less motion asked for they do not move.
+
+The coming apart, the spreading and the litter are the things in the story that are **not
+motions of the CAD**. No part of the real hand flies. `scatter()` moves each part away from `BURST_FROM` by a share of its distance
 (`SPREAD`), adds a push for its kind of part so parts that sit inside one another separate
 (`LIFT`), and turns it by up to `TUMBLE`. The turn is the same every time: it comes from the
 part's number, not from chance.
 
 **How to change it.** The story is a list of moves in `prepareStory()`. A move takes one
 dial from one value to another: `move(dial, name, from, to, start, length)`. The scroll is
-10,000 steps from top to bottom, and `SCENES` says at which step each caption starts. Three
+11,500 steps from top to bottom, and `SCENES` says at which step each caption starts. Three
 kinds of dial:
 
 - the parts, in the table above
 - the view: `story.zoom`, `story.show` (from the whole hand to the module, and the rest of
   the hand fading), `story.roll` (the view turned about the hand's length), `story.lean`
-  (the fingertips tipped toward the viewer), `story.side` (the module from three-quarters on
-  to square from its side)
+  (the fingertips tipped toward the viewer), `story.bank` (the picture turned on the screen),
+  `story.spin` (the hand turned flat on its palm, which is how the view goes round it),
+  `story.depth` (near things drawn larger; 0 is a flat drawing), `story.away` (the rest of
+  the hand moved back into the distance), `story.side` (the module from three-quarters on to
+  square from its side)
 - the colours of the trace: `story.wash` and `story.trace`
-- `story.burst`: how far the hand has come apart
+- `story.burst`: how far the hand has come apart, and `story.litter`: how far the parts have
+  spread over the stage and turned pale
 
-`HAND_VIEW` and `MODULE_VIEW` say where the two views look from. `CLOSED_VIEW` is the closed
-hand the page opens on, and `BURST_VIEW` is the hand in parts. The page follows the scroll
+`HAND_VIEW` and `MODULE_VIEW` say where the two views look from. `OFFER_VIEW` is the flat
+hand the page opens on and holds out, and `BURST_VIEW` is the hand in parts. `REST` is the
+step shown to a visitor who has asked for less motion: the open hand, held out. The page follows the scroll
 with a short lag (`FOLLOW` in `render()`), so a mouse wheel's steps do not show.
 
 Keep four rules when changing the moves:
@@ -661,7 +740,7 @@ Keep four rules when changing the moves:
 3. List each dial's moves in the order they happen, and do not let two moves of one dial
    overlap. A dial takes its latest move that has begun.
 4. The hand comes apart only when it is whole and open: every module in, every finger
-   straight, the thumb at rest.
+   straight, the thumb at rest. The parts spread over the stage only once it is fully apart.
 
 **When the CAD changes.** With the CAD environment, from the repo folder:
 
@@ -902,8 +981,8 @@ The plan covers the demo path and nothing else:
 - **Downloads:** the Arduino sketch only. CAD files are held until a licence is chosen.
 - **Missing content ships as a labelled placeholder.** No prompt waits on a teammate.
   [Who owes what](#who-owes-what) lists it.
-- **Contact** is four mailto links, one per person. "Request a kit" is a mailto link to the
-  project manager. The addresses are in `src/lib/team.ts`.
+- **Contact** is four mailto links, one per person. "Request a kit" is one mailto link to all
+  four. The addresses are in `src/lib/team.ts`.
 - **It must run with no network.** Fonts, scripts, models and video are all in the repo.
 
 ### Rules for every prompt
