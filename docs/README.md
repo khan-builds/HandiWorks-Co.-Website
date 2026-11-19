@@ -23,7 +23,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-18 at 19:00 Pacific.
+Checked against GitHub on 2026-11-18 at 21:50 Pacific.
 
 **The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
 shows the old one-page homepage.
@@ -73,9 +73,10 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 `main` is four commits further on, but those four add the simulator and take it out again,
-so no file differs. Four commits are pushed: the rebuild, the hand from the CAD, the emails
-on the Team page, and the scroll story. Prompts 1 to 9 were run on 2026-11-17, and the look
-was brought closer to the poster on 2026-11-18 (see [Design changes](#design-changes)).
+so no file differs. Five commits are pushed: the rebuild, the hand from the CAD, the emails
+on the Team page, the scroll story, and everyone's address under Contact. Prompts 1 to 9
+were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
+[Design changes](#design-changes)).
 
 | Page | State | Still open |
 |---|---|---|
@@ -87,7 +88,7 @@ was brought closer to the poster on 2026-11-18 (see [Design changes](#design-cha
 | Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. | Nothing. |
 | Roadmap | Four phases as the poster's timeline, and a table of what is live, draft, demo or coming soon. | Nothing. |
 | Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
-| Every page | The HandiWorks mark in the nav, the footer and the browser tab, traced from the poster. | The real logo file. |
+| Every page | The HandiWorks mark in the nav, the footer and the browser tab, traced from the poster. Under Contact in the footer, all four people's addresses. | The real logo file. |
 
 `npm run build` passed on 2026-11-18: the homepage and 23 pages built by Astro, one of them
 a redirect and one a 404 page.
@@ -126,6 +127,10 @@ The scroll story of that evening is in `screenshots/hand-story/`: `story-1440.pn
 `story-390.png` are the whole scroll on one sheet at each width, `before-1440.png` is the
 same scroll before the change, `opening-1440.png` is the first five seconds, and the
 `home-*.png` files are single frames.
+
+The footer with everyone's address is in `screenshots/contact-emails/`: `footer-home-1440.png`,
+`footer-768.png` and `footer-390.png` are the footer alone at three widths, and the `team-*`
+and `kit-*` files are those two pages whole.
 
 ## To do
 
@@ -254,6 +259,36 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
 
+### 2026-11-18: everyone's address under Contact
+
+Lingbo asked for all four addresses under Contact. Contact is the last column of the footer,
+so it is on every page. It is in branch `LZ-C5.2`, not in `main`.
+
+| | Before | Now |
+|---|---|---|
+| Contact, in the footer | One address: Lingbo's at NYU. | Four addresses, one per person, in the Team page's order. Each is a mailto link to that person with the subject "HelpingHand question". |
+| "Request a kit", everywhere | Lingbo's NYU address. | Lingbo's Gmail address. |
+| "Talk to us", on the Team page | A button showing Lingbo's NYU address. | The same button, showing Lingbo's Gmail address. |
+| The NYU address | In the footer and on the Team page. | Nowhere on the site. |
+
+The four people are now listed once, in `src/lib/team.ts`. The Team page and the footer both
+read it. The homepage's footer is a hand-built copy in `index.html`: change both together.
+
+The footer's last column is a quarter wider than the middle one. At 768 px the longest
+address did not fit the old column and broke in two.
+
+Checked on the built site in headless Chrome: on all 23 pages, at 360, 390, 768, 1024, 1280
+and 1440 px wide, nothing scrolls sideways and every address sits on one line.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| The NYU address is replaced, not kept as a fifth. The site now shows one address per person. | Keep it above the four. Lingbo would be listed twice. |
+| "Request a kit" goes to one person, the project manager. Outlook on a school computer may not split a list of addresses in one mailto link. | One link that writes to all four. |
+| The addresses stand alone, with no names beside them. Each one reads as its owner's name. | Name and role on each line. |
+| "Talk to us" on the Team page keeps one button. All four addresses are on the cards above it and in the footer below it. | The four addresses there a third time. |
+
 ### 2026-11-18: the scroll story does what its captions say
 
 Lingbo asked for the animation to match the text beside it: where a caption speaks of one
@@ -321,7 +356,7 @@ Decided during that work:
 | Decision | Option not taken |
 |---|---|
 | On the Team page only. The team teaser on the homepage stays names and roles. | The addresses on the homepage too. |
-| Contact and "Request a kit" still go to Lingbo's NYU address, so the site shows two addresses for Lingbo. | Lingbo's Gmail address there too. |
+| Contact and "Request a kit" still go to Lingbo's NYU address, so the site shows two addresses for Lingbo. (Changed later that day: see "everyone's address under Contact" above.) | Lingbo's Gmail address there too. |
 | In a narrow column an address breaks at the @. | Smaller type, or a break wherever the line ends. |
 
 ### 2026-11-18: the hand moves the way the CAD does
@@ -786,7 +821,8 @@ The plan covers the demo path and nothing else:
 - **Downloads:** the Arduino sketch only. CAD files are held until a licence is chosen.
 - **Missing content ships as a labelled placeholder.** No prompt waits on a teammate.
   [Who owes what](#who-owes-what) lists it.
-- **Contact** and "Request a kit" are mailto links to Lingbo's NYU address.
+- **Contact** is four mailto links, one per person. "Request a kit" is a mailto link to the
+  project manager. The addresses are in `src/lib/team.ts`.
 - **It must run with no network.** Fonts, scripts, models and video are all in the repo.
 
 ### Rules for every prompt

@@ -1,6 +1,7 @@
 ---
 /** Navy band that closes every page. The homepage (index.html) carries a hand-built copy. */
-import { p, mailto, CONTACT_EMAIL } from '../lib/url';
+import { p, mailto } from '../lib/url';
+import { team } from '../lib/team';
 import StatusLine from './StatusLine.astro';
 import Logo from './Logo.astro';
 const year = new Date().getFullYear();
@@ -27,7 +28,10 @@ const year = new Date().getFullYear();
       <div>
         <h2 class="footer-heading">Contact</h2>
         <ul class="footer-links">
-          <li><a href={mailto('HelpingHand question')}>{CONTACT_EMAIL}</a></li>
+          {/* Everyone's address. A narrow column breaks one at the @ before it breaks anywhere else. */}
+          {team.map((m) => (
+            <li><a href={mailto('HelpingHand question', m.email)}>{m.email.split('@')[0]}<wbr />@{m.email.split('@')[1]}</a></li>
+          ))}
           <li><a href={mailto('HelpingHand kit request')}>Request a kit</a></li>
         </ul>
       </div>

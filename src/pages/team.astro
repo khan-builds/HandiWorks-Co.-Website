@@ -2,17 +2,9 @@
 import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
-import { asset, mailto, CONTACT_EMAIL } from '../lib/url';
+import { asset, mailto } from '../lib/url';
+import { team, CONTACT_EMAIL } from '../lib/team';
 
-/* Names and roles as on the team poster; emails as Lingbo gave them on 2026-11-18. `bio` and
-   `photo` (a path under public/) are filled in as each person sends theirs; until then the
-   page shows initials and says so. */
-const team: { name: string; role: string; email: string; bio?: string; photo?: string }[] = [
-  { name: 'Billy Jin', role: 'Programming Lead', email: 'billyjin@gmail.com' },
-  { name: 'Golam Khan', role: 'Design Lead', email: 'gkhan@gmail.com' },
-  { name: 'Clarence Li', role: 'Circuitry Lead', email: 'clarenceli@gmail.com' },
-  { name: 'Lingbo Zhang', role: 'Project Manager', email: 'lingbo.zhang@gmail.com' },
-];
 const initials = (name: string) => name.split(' ').map((w) => w[0]).join('');
 const missing = team.some((m) => !m.bio || !m.photo);
 ---

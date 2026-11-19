@@ -357,11 +357,11 @@
   .lockup-name small { margin-top: 0.125rem; font-size: 0.875rem; letter-spacing: 0; }
   .footer-heading { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-navy-soft); }
   .footer-links { margin-top: 0.875rem; display: grid; gap: 0.5rem; }
-  .footer-links a { color: var(--color-white); text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 160ms; }
+  .footer-links a { color: var(--color-white); text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 160ms; overflow-wrap: anywhere; }
   .footer-links a:hover { text-decoration-color: currentColor; }
   .footer-base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1.125rem; border-top: 1px solid var(--navy-line); font-size: 0.8125rem; color: var(--on-navy-soft); }
   @media (min-width: 48rem) {
-    .footer-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
+    .footer-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.25fr); gap: 0; }
     .footer-cols > * + * { padding-left: 2.5rem; border-left: 1px solid var(--navy-line); }
     .footer-cols > :first-child { padding-right: 2.5rem; }
   }

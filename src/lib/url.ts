@@ -1,4 +1,6 @@
 /** Base-path aware URL helpers. The site deploys under /HandiWorks-Co.-Website/ on GitHub Pages. */
+import { CONTACT_EMAIL } from './team';
+
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
 /** Link to a page. Ensures a trailing slash so static hosting resolves index.html. */
@@ -19,5 +21,5 @@ function splitSuffix(path: string): [string, string] {
   return i === -1 ? [path, ''] : [path.slice(0, i), path.slice(i)];
 }
 
-export const CONTACT_EMAIL = 'lingbo.zhang@nyu.edu';
-export const mailto = (subject: string) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;
+/** A link that starts an email with its subject filled in. With no address it goes to CONTACT_EMAIL. */
+export const mailto = (subject: string, to: string = CONTACT_EMAIL) => `mailto:${to}?subject=${encodeURIComponent(subject)}`;
