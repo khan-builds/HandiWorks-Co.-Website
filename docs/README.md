@@ -23,7 +23,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-19 at 14:37 Pacific.
+Checked against GitHub on 2026-11-19 at 15:17 Pacific.
 
 **The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
 shows the old one-page homepage.
@@ -73,15 +73,16 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 `main` is four commits further on, but those four add the simulator and take it out again,
-so no file differs. Twelve commits are pushed: the rebuild, the hand from the CAD, the emails
+so no file differs. Thirteen commits are pushed: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
 people, the homepage story with the flat hand, the receding palm and the littered parts,
 and that story without the turn round the hand, with all four modules sliding out, the
 played coming apart, and the litter kept clear of the page's content, and last the fingers
 taken apart and one rebuilt, a colour for each link in the trace, tumbling pieces, and parts
-down the whole page. The twelfth changes this file only: it names the new offline copy.
-Prompts 1 to 9
+down the whole page. The twelfth changes this file only: it names the new offline copy. The
+thirteenth is the hand in the poster's colours and a tenth larger, the redrawn second scene,
+fingers that drop into the palm, and the parts gathering into the mark. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
@@ -122,11 +123,13 @@ All but the last two were taken again on 2026-11-18.
 
 The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-19.zip` on
 the build machine (6.2 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
-snapshot of the build of 2026-11-19 at 14:30, commit `3d721e7`, and replaces the one of
-2026-11-18, which was deleted. That older zip was made before any address was added and
-before the hand changed: its "Talk to us" showed one address, Lingbo's at NYU, and anyone
-opening it saw the site as it was that morning. **Make the zip again after any change, and
-delete the one before it.**
+snapshot of the build of 2026-11-19 at 15:12, and holds the same site as the thirteenth
+commit on the branch, "Recolour and enlarge the hand, redraw the second scene, drop the
+fingers in, and end on the logo". The zip of 2026-11-18 was deleted: it was made before
+any address was added and before the hand changed, its "Talk to us" showed one address,
+Lingbo's at NYU, and anyone opening it saw the site as it was that morning. **Lingbo looks
+at the site through this zip and the pictures in `screenshots/`. Make both again after any
+change, and delete the zip before it.**
 
 Screenshots of the new hand are in `screenshots/hand-v11/`: the homepage frame by frame at
 both widths, and `before-after-1440.png`, six frames of the old hand beside the new one.
@@ -140,11 +143,10 @@ same scroll before the change, `opening-1440.png` is the first five seconds, and
 The story as it stands, from the afternoon of 2026-11-19, is in `screenshots/hand-latest/`:
 `story-1440.png` and `story-390.png` are the whole scroll on one sheet at each width,
 `burst-1440.png` is the coming apart frame by frame in time, `1-closed.png` to
-`7-spread.png` are single frames, `page-1440.png` and `page-390.png` show the parts behind
-the rest of the page, and `reduced-motion.png` is what a visitor who has asked for less
-motion sees.
+`9-logo.png` are single frames, and `reduced-motion.png` is what a visitor who has asked for
+less motion sees.
 
-**`rehearsal/` and `rehearsal-teacher/` were taken again on 2026-11-19 at 13:37.** Until
+**`rehearsal/` and `rehearsal-teacher/` were taken again on 2026-11-19 at 15:10.** Until
 then they were from the morning of 2026-11-18, before any address was added, so they showed
 one address under Contact and in "Talk to us". The site itself has had all four since the
 commits of 2026-11-18 and 2026-11-19. `offline-copy/`, `team-emails/` and
@@ -294,6 +296,77 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-19: the poster's colours, a larger hand, a calmer second scene, fingers dropped in, the mark at the end
+
+Five more notes from Lingbo on the entry below:
+
+1. Change the hand's colours to something better looking, and make the hand bigger.
+2. At the end of the fourth animation the pieces should spell out the H logo.
+3. In the fourth animation the fingers pass through the palm again. They should look dropped
+   into it.
+4. The second animation looks clunky. Research it and come back with a new one.
+
+| | Before | Now |
+|---|---|---|
+| The hand's colours | The CAD's: amber housings, a steel-blue palm, navy links, orange fingertips. | The poster's: sky housings, a navy palm and bars, white segments, lime fingertips. The same family as the finger beside "The kit". |
+| The hand's size | As first framed. | A tenth larger on a wide stage. Unchanged on a squarer stage and on a phone, where it already fills its place. |
+| Build one finger. | Modules slid out, fingers flew apart with a spring and a tumble, three slid sideways onto the middle one, it was rebuilt, and the view turned it once round. | One move of the view and nothing spins. The fingers rise together, loosen into tidy lines of parts, three drift in and fade, the view glides to the middle one, and it is built link by link. |
+| The return, in "Try your own design." | The hand came back with one module out, and it slid in as the palm faded in round it. | The hand comes back with all four fingers held above their sockets, clear of the palm. They drop in one after another, land, lift a hair and settle. |
+| The very end | The parts spread over the stage and turned pale sky. | The parts gather into the HandiWorks mark and take its colours, and the mark's own shape comes up behind them. |
+| The scroll | 7.7 screens. | 7.8 screens. |
+
+What the research said about the second scene, and what was taken from it:
+
+- Guides to scroll-driven 3D say gradual moves read well and twisting or spinning does not,
+  and that the camera should move once and stay on the subject. The full turn of the module
+  and the tumbling parts are gone, and the view makes one move.
+- Guides to exploded views give each part a single line to travel, let the outer parts leave
+  first so nothing crosses, and send a part that sits inside another out a different way.
+  `LINE` does that: the carriage and its link lift out of the housing, everything else goes
+  along the finger.
+- Motion-design guides say to ease out on arrival and to let each move start before the
+  last has finished. The finger is built that way, carriage first, with no spring: a spring
+  tied to the scroll shudders when the scroll is slow.
+
+Four colour schemes were drawn side by side before choosing. White housings and a pale palm
+both lost their outline on the white stage. Navy, sky, white and orange was the other one
+that held; lime was chosen over orange because it is the poster's.
+
+It is in branch `LZ-C5.2`, not in `main`.
+
+Checked in headless Chrome:
+
+- Every step of the story, 2,601 of them: the six rules under
+  [The hand on the homepage](#the-hand-on-the-homepage) all hold. The first run found the
+  palm starting back 80 steps before the last module was clear, which is the passing
+  through Lingbo had seen; it now waits.
+- 400 random jumps in the scroll give the same hand as scrolling there.
+- At 1440 x 900, 1100 x 1000, 1024 x 768 and 390 x 844, the hand and its parts keep at least
+  20 px clear of the caption, the nav and the edges of the stage from the first frame to
+  the mark.
+- The build passes, the homepage has no script errors, and it does not scroll sideways from
+  360 to 1440 px.
+
+Not checked: how it feels under a real wheel, trackpad or finger, and how fast it runs on a
+real phone.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| The mark's own shape comes up behind the parts as they arrive. Forty parts alone, many of them thin rods, left the shape too open to read as the logo. | The parts alone. |
+| A part is drawn the size of its cell in the mark, so the palm shrinks and a pin grows. | Parts at their own sizes, which cannot fill the shapes evenly. |
+| The fingers are held 45 mm clear of the palm before they drop, so the gap shows. | Held just clear, 6 mm, which looks as if they are already in. |
+| The larger hand is drawn only where the stage has room. | A tenth larger everywhere, which ran the thumb off a narrow stage. |
+| In parts, and as the mark, the hand is the size it was. | Larger there too, which did not fit. |
+
+Sources for the research: [Scroll-triggered animations: a guide to design and performance](https://www.draftly.space/blog/product/scroll-triggered-animation-guide),
+[Prompting immersive scroll storytelling](https://williamspurlock.com/blog/scroll-storytelling-playbook-motion-conversion/),
+[Three scroll-driven 3D scene patterns for product pages](https://contra.com/community/RJ1v7lWn-three-scroll-driven-3-d-scene-patterns-for),
+[Exploded view animation in code](https://dev.to/mohd_yusufkhan_6c2088c04/exploded-view-animation-in-code-make-how-it-works-explainer-reels-51bd),
+[5 stage exploded view animation workflow](https://rendimension.com/blog/exploded-view-animation/),
+[Motion design principles explained](https://madegooddesigns.com/motion-design-principles/).
 
 ### 2026-11-19: fingers taken apart and one rebuilt, a colour per link, tumbling pieces, parts down the whole page
 
@@ -830,9 +903,9 @@ scene: the hand opens toward the visitor, and at the end it comes apart.
 |---|---|---|
 | Before any scrolling | | Lying flat, palm up and closed, in the CAD's pinch, seen from in front of the fingertips and a little to one side. It does not move until the page is scrolled. |
 | HelpingHand | 0 to 13% | The hand opens and comes closer and square on: the thumb leaves first and the fingers follow, index first. It ends flat and open, the four fingers pointing at the visitor. The view does not go round it. |
-| Build one finger. | 13 to 55% | All four finger modules slide 130 mm out of their sockets, toward the visitor, the outer two first. The palm and the thumb move back into the distance and fade. The four fingers come apart into their parts. The other three fingers' parts slide onto the middle finger's and are gone, and that one finger is built again, the part nearest its module first. The view goes to it. It is turned once round and laid across the stage, then curls to its limit and opens. |
-| See what moves. | 55 to 77% | The module seen from its side. Its colours drain, then each link takes a colour of its own in the order the motion travels: the carriage orange, the link navy, the first segment sky, its bar yellow, the middle segment green, its bar violet, the fingertip coral. The finger curls again as they light. Out of sight, the other three fingers are put back whole and their modules go home. |
-| Try your own design. | 77 to 100% | The hand comes back upright and the module slides in the way it came out. At 86% of the scroll the whole hand comes apart, in about a second and a half, at its own pace, and the pieces tumble as they go. At the very end the parts spread over the stage, clear of the caption, and turn pale sky. |
+| Build one finger. | 13 to 55% | One move of the view, and nothing spins. All four finger modules rise 130 mm out of their sockets together, toward the visitor. Once every module is clear, the palm and thumb sink back and fade. Each finger loosens into a line of its parts, fingertip first. The other three drift toward the middle one and are gone, and the view glides to it, once. Then it is built: the carriage, its link, and each segment and bar in turn out to the fingertip. Then it curls to its limit and opens. |
+| See what moves. | 55 to 76% | The module seen from its side. Its colours drain, then each link takes a colour of its own in the order the motion travels: the carriage orange, the link navy, the first segment sky, its bar yellow, the middle segment green, its bar violet, the fingertip coral. The finger curls again as they light. Out of sight, the other three fingers are put back whole. |
+| Try your own design. | 76 to 100% | The hand comes back upright with its four fingers held above their sockets. They are let go one after another and drop into the palm: each falls faster and faster, lands, lifts a hair and settles. At 87% of the scroll the whole hand comes apart, in about a second and a half, at its own pace, and the pieces tumble as they go. At the very end the parts gather into the HandiWorks mark, its two blocks in navy and its link in sky, and the mark's own shape comes up behind them. |
 
 **The coming apart is played, not scrolled.** Every other move follows the scroll. This one
 starts when the scroll reaches `BURST_AT` and then runs on its own clock for `BURST_SECONDS`,
@@ -847,11 +920,27 @@ times `SPREAD`, plus a push for its kind of part so parts that sit inside one an
 separate (`LIFT`). The turn is the same every time: it comes from the part's number, not
 from chance.
 
-**The fingers taken apart in "Build one finger."** use the second stage of the same thing,
-at `UNBUILD` of its distance: `unbuild()` moves each part of a finger off its module by
-`poses[i].apart` and brings it back by `poses[i].rebuilt`. `story.merge` slides the other
-three fingers sideways onto the middle one while they fade, so four fingers' parts become
-one finger's.
+**The fingers loosened in "Build one finger."** are not the coming apart of the last scene.
+`LINE` gives each link of a finger one line to travel, in mm along the finger and up out of
+it: the carriage and its link lift out of the housing, the segments go along the finger, the
+bars go along it and stand a little above. Nothing turns. `unbuild()` moves the links out by
+`poses[i].apart`, fingertip first so nothing crosses, and home again by `poses[i].rebuilt`,
+carriage first, each link starting before the last has seated. `story.merge` drifts the
+other three fingers part of the way toward the middle one while they fade.
+
+**The mark at the end.** `prepareMark()` cuts the logo's three shapes into 40 cells of about
+the same size, one for each part. As `story.logo` goes from 0 to 1 each part flies to its
+cell, is drawn the size of the cell, and takes the cell's colour. The logo's own shape, an
+SVG behind the canvas, comes up as they arrive, so the story ends on the logo and not only
+near it.
+
+**The hand's colours** are the poster's: the finger housings sky, the palm and the bars navy,
+the finger segments white, the bought parts steel, the fingertips lime. They are one line in
+the shader.
+
+**The hand's size.** `HAND_SIZE` draws the hand a tenth larger on a wide stage, where there
+is room. On a stage squarer than about 3:2, and on a phone, the hand already fills its place
+and is the size it was.
 
 **The parts go on down the page.** Below the story, the same parts lie behind the rest of the
 homepage in pale sky. `litterPage()` draws each part once into a small picture of its own.
@@ -862,14 +951,14 @@ a little wider than themselves, and the panels are solid, so content covers the 
 cleanly and a part shows only in the open space around it. Within its cell each part takes
 the spot furthest from any content. The page is laid again when the window changes size.
 `driftLitter()` turns each part and moves it a little as the page scrolls. With less motion
-asked for they do not move.
+asked for they do not move. These are not the story's own parts: the story ends on the mark.
 
 The coming apart, the spreading and the litter are the things in the story that are **not
 motions of the CAD**. No part of the real hand flies.
 
 **How to change it.** The story is a list of moves in `prepareStory()`. A move takes one
 dial from one value to another: `move(dial, name, from, to, start, length)`. The scroll is
-12,800 steps from top to bottom, and `SCENES` says at which step each caption starts. Three
+13,000 steps from top to bottom, and `SCENES` says at which step each caption starts. Three
 kinds of dial:
 
 - the parts, in the table above
@@ -881,13 +970,15 @@ kinds of dial:
   the hand moved back into the distance), `story.side` (the module from three-quarters on to
   square from its side)
 - the colours of the trace: `story.wash` and `story.trace`. The seven colours are `LIT`.
-- the fingers taken apart: `poses[i].apart`, `poses[i].rebuilt` and `story.merge`
-- `story.litter`: how far the parts have spread over the stage and turned pale. (The coming
-  apart is not a dial: see above.)
+- the fingers loosened into lines: `poses[i].apart`, `poses[i].rebuilt` and `story.merge`
+- the mark at the end: `story.logo`
+- (The coming apart is not a dial: see above.)
 
 `HAND_VIEW` and `MODULE_VIEW` say where the two views look from. `OFFER_VIEW` is the flat
-hand the page opens on and holds out, and `BURST_VIEW` is the hand in parts. `REST` is the
-step shown to a visitor who has asked for less motion: the open hand, held out. The page follows the scroll
+hand the page opens on and holds out, and `BURST_VIEW` is the hand in parts. `HELD_VIEW` is the
+upright hand with its fingers held above their sockets, and `LOOSE_VIEW` the one finger
+while it is still a line of parts. `REST` is the step shown to a visitor who has asked for
+less motion: the open hand, held out. The page follows the scroll
 with a short lag (`FOLLOW` in `render()`), so a mouse wheel's steps do not show.
 
 Keep six rules when changing the moves:
@@ -904,8 +995,8 @@ Keep six rules when changing the moves:
    parts spread over the stage only once it is fully apart.
 5. The palm and thumb move back (`story.away`) only once every module is fully out of its
    socket. Before that, moving back would carry the palm through a module.
-6. A finger comes apart only when its module is out and it is straight, and the fingers
-   slide together (`story.merge`) only once all four are apart.
+6. A finger loosens into its line only when its module is out and it is straight, and the
+   other three drift toward the middle one (`story.merge`) only once they are loose.
 
 **When the CAD changes.** With the CAD environment, from the repo folder:
 

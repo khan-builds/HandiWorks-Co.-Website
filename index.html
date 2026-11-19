@@ -194,7 +194,7 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
    The hand script reads that scroll progress, moves the hand, and fades the four captions.
    The canvas fills the whole stage. --hand-shift moves the hand to the right, so the
    captions always sit on clear space to its left. */
-.motion-track { height: 768svh; }
+.motion-track { height: 780svh; }
 .motion-track .home {
   position: sticky; top: var(--nav-height);
   height: calc(100svh - var(--nav-height));
@@ -204,7 +204,10 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 }
 
 .home-visual { --hand-shift: .17; position: absolute; inset: 0; z-index: 0; }
-.home-visual canvas { width: 100%; height: 100%; }
+.home-visual canvas { position: relative; width: 100%; height: 100%; }
+/* The HandiWorks mark the parts gather into at the end of the story: it comes up behind them as
+   they arrive. The hand script sets its height and --mark, how far the gathering has gone. */
+.story-mark { position: absolute; left: calc(50% + var(--hand-shift) * 100%); top: 50%; translate: -50% -50%; opacity: var(--mark, 0); pointer-events: none; }
 .home-visual::after {
   /* soft shadow on the ground under the hand */
   content: ""; position: absolute; left: 67%; bottom: 5%; width: 34%; height: 5%;
@@ -577,7 +580,7 @@ const clamp=x=>Math.min(1,Math.max(0,x));
 //   story.depth          how strongly near things are drawn larger. 0 is a flat drawing.
 //   story.away     0..1  the palm and the thumb moved back into the distance
 //   story.merge    0..1  the other three fingers' parts slid onto the shown finger's, and gone
-//   story.litter   0..1  at the very end: the parts spread over the stage and turn pale sky
+//   story.logo     0..1  at the very end: the parts gather into the HandiWorks mark
 // One thing is not a dial: the hand coming apart. It is played on its own clock (`apart`, in render).
 //   story.show     0..1  the view leaves the whole hand for the one module that was pulled out,
 //                        and the rest of the hand fades away
@@ -588,7 +591,7 @@ const clamp=x=>Math.min(1,Math.max(0,x));
 //                        carriage, link, first segment, bar, middle segment, bar, fingertip
 const poses=Array.from({length:4},()=>({pull:0,bend:0,apart:0,rebuilt:0}));
 const thumb={reach:0};
-const story={zoom:.82,show:0,roll:0,lean:0,bank:0,spin:0,depth:0,away:0,merge:0,side:0,wash:0,trace:0,litter:0};
+const story={zoom:.82,show:0,roll:0,lean:0,bank:0,spin:0,depth:0,away:0,merge:0,side:0,wash:0,trace:0,logo:0};
 
 // Knuckle angle wanted -> share of the carriage travel that gives it (the tables are even in travel).
 function driveFor(table,curl){
@@ -602,14 +605,21 @@ const THUMB_GRIP=driveFor(THUMB,PINCH.thumbCurl);     // the thumb's own carriag
 const PULL=130;    // mm. A socket is 123.6 mm deep, and 130 is the furthest the CAD checks a module pulled out.
 const SHOWN=2;     // the middle finger: the module the story takes out, and the one beside "The kit"
 const CHAIN=['carriage','link','P','Q','S','R','T'];   // the order the motion travels in, drive to fingertip
-// The story is 12,800 steps long from the top of the scroll to the bottom. A caption starts at each
+// A finger loosened into a line of parts: how far each link stands off its place, in mm, along
+// the finger and up out of it. Each link has one line to travel. The carriage and its link sit
+// inside the housing, so they lift out of it; the segments go along the finger; the two bars
+// go along it and stand a little above. Not a motion of the CAD.
+const LINE={carriage:[-10,52],link:[10,74],P:[30,0],Q:[48,30],S:[72,0],R:[92,30],T:[118,0]};
+// The story is 13,000 steps long from the top of the scroll to the bottom. A caption starts at each
 // of SCENES. REST is the step shown to a visitor who has asked for less motion: the open hand, held
 // out. At BURST_AT the hand comes apart, in BURST_SECONDS, however fast the page is scrolled.
-const LENGTH=12800, SCENES=[0,1700,7100,9900], REST=1500, BURST_AT=10950, BURST_SECONDS=1.4;
+const LENGTH=13000, SCENES=[0,1700,7100,9900], REST=1500, BURST_AT=11300, BURST_SECONDS=1.4;
 
 // The story is a list of moves. A move takes one dial from one value to another: it starts at a
 // step and lasts a number of steps. A dial's moves are listed in the order they happen.
 const soft=x=>x<.5?2*x*x:1-2*(1-x)*(1-x), softer=x=>x<.5?4*x*x*x:1-4*(1-x)**3, even=x=>x;   // slow away and slow home, twice as gently, or at one speed
+const arrive=x=>1-(1-x)**3;   // fast in and slow to its seat, for a part coming home
+const drop=x=>x<.7?(x/.7)**2:1-.06*Math.sin(Math.PI*(x-.7)/.3);   // let go: it falls faster and faster, lands, lifts a hair and settles
 const DIALS=[];
 function move(dial,key,from,to,start,length,ease=softer){
  let entry=DIALS.find(d=>d.dial===dial&&d.key===key);
@@ -636,26 +646,25 @@ function prepareStory(){
  move(story,'zoom',OFFER_VIEW.far,OFFER_VIEW.zoom,0,1300,soft);
  move(thumb,'reach',1,0,150,650);
  poses.forEach((part,i)=>move(part,'bend',GRIP,0,215+(3-i)*45,650));
- // Build one finger. All four finger modules slide out of their sockets, toward the viewer, the
- // outer two first, and the view draws back to keep them on the stage. The palm and the thumb
- // move back into the distance and fade: nothing moves back until every module is clear of its
- // socket, so no part passes through another. The four fingers come apart into their parts.
- // The other three fingers' parts slide onto the middle finger's and are gone, and that one
- // finger is built again, the part nearest its module first. The view goes to it: it is turned
- // once round and comes to rest three-quarters on. Then it curls to its limit and opens.
- [0,3,1,2].forEach((finger,place)=>move(poses[finger],'pull',0,1,1700+place*90,650));
+ // Build one finger. One move of the view, and nothing spins. All four finger modules rise out
+ // of their sockets together, toward the viewer, and the palm and thumb sink back and fade once
+ // every module is clear. Each finger loosens into a line of its parts, fingertip first. The
+ // other three drift toward the middle one and are gone, and the view glides to it, once. Then
+ // it is built: the carriage that drives it, its link, and each segment and bar in turn out to
+ // the fingertip, each starting before the last has seated. Then it curls to its limit and opens.
+ [0,3,1,2].forEach((finger,place)=>move(poses[finger],'pull',0,1,1700+place*60,700));
  move(story,'zoom',OFFER_VIEW.zoom,OFFER_VIEW.out,1700,800,soft);
- move(story,'zoom',OFFER_VIEW.out,OFFER_VIEW.apart,2750,750,soft);
- move(story,'away',0,1,2650,1100,soft);
- [0,3,1,2].forEach((finger,place)=>move(poses[finger],'apart',0,1,2650+place*70,640,even));
- move(story,'merge',0,1,3500,750,soft);
- move(story,'show',0,1,3900,1750,soft);
- move(one,'rebuilt',0,1,4000,900,even);
- move(story,'depth',OFFER_VIEW.depth,0,4300,900,soft);
- move(story,'lean',OFFER_VIEW.lean,0,4350,1000,soft);
- move(story,'roll',PALM,MODULE_VIEW.roll-turn,4850,1200,soft);
- move(one,'bend',0,1,6050,500);
- move(one,'bend',1,0,6650,400);
+ move(story,'away',0,1,2600,1000,soft);
+ [0,3,1,2].forEach((finger,place)=>move(poses[finger],'apart',0,1,2600+place*50,850,even));
+ move(story,'zoom',OFFER_VIEW.out,OFFER_VIEW.apart,2700,800,soft);
+ move(story,'merge',0,1,3350,800,soft);
+ move(story,'show',0,1,3500,1500,soft);
+ move(story,'depth',OFFER_VIEW.depth,0,3500,900,soft);
+ move(story,'lean',OFFER_VIEW.lean,0,3600,1200,soft);
+ move(story,'roll',PALM,MODULE_VIEW.roll,3700,1300,soft);
+ move(one,'rebuilt',0,1,4900,1250,even);
+ move(one,'bend',0,1,6200,480);
+ move(one,'bend',1,0,6700,360);
  // See what moves. Square from the side, the colours drain, then each link of the chain takes a
  // colour of its own in the order the motion travels, carriage to fingertip, while the finger
  // curls again.
@@ -663,25 +672,27 @@ function prepareStory(){
  move(story,'wash',0,1,7150,300);
  move(story,'trace',0,7,7450,1750,even);
  move(one,'bend',0,1,7450,1750,soft);
- // Out of sight meanwhile, the other three fingers are put back whole and their modules go home,
+ // Out of sight meanwhile, the other three fingers are put back whole, still out of the palm,
  // and the whole hand is stood upright for when it comes back.
- for(const finger of [0,1,3]){move(poses[finger],'pull',1,0,7800,1);move(poses[finger],'apart',1,0,7800,1);}
+ for(const finger of [0,1,3]){move(poses[finger],'apart',1,0,7800,1);move(poses[finger],'pull',1,HELD_VIEW.pull,7800,1);}
  move(story,'merge',1,0,7800,1);
  move(story,'bank',OFFER_VIEW.bank,HAND_VIEW.bank,7800,1);
- move(story,'zoom',OFFER_VIEW.apart,.94,7800,1);
+ move(story,'zoom',OFFER_VIEW.apart,HELD_VIEW.zoom,7800,1);
  move(one,'bend',1,0,9200,500);
  move(story,'wash',1,0,9300,350);
  move(story,'side',1,0,9350,400);
- // Try your own design. The view goes back the short way and the module slides in the way it
- // came out. The view draws back, and at BURST_AT the whole hand comes apart into its parts:
- // what there is to build with. At the very end the parts spread over the stage and turn pale
- // sky, and lie that way down the rest of the page.
+ // Try your own design. The view goes back to the hand, upright, with its four fingers held
+ // above their sockets. They are let go one after another and drop into the palm. The view
+ // draws back, and at BURST_AT the whole hand comes apart into its parts: what there is to
+ // build with. At the very end the parts gather into the HandiWorks mark: its two blocks in
+ // navy and its link in sky.
  move(story,'show',1,0,9700,900,soft);
  move(story,'away',1,0,9700,600,soft);
- move(story,'roll',MODULE_VIEW.roll-turn,PALM-turn,9750,700,soft);
- move(one,'pull',1,0,9950,650);
- move(story,'zoom',.94,BURST_VIEW.zoom,10400,500,soft);
- move(story,'litter',0,1,11800,800,soft);
+ move(story,'roll',MODULE_VIEW.roll,PALM,9750,700,soft);
+ move(one,'pull',1,HELD_VIEW.pull,9750,450);
+ poses.forEach((part,i)=>move(part,'pull',HELD_VIEW.pull,0,10350+i*110,400,drop));
+ move(story,'zoom',HELD_VIEW.zoom,BURST_VIEW.zoom,10900,380,soft);
+ move(story,'logo',0,1,12000,850,soft);
 }
 
 // ---- where every part is, from the CAD's tables (4 x 4 matrices, column by column, in mm) ----
@@ -722,9 +733,7 @@ const FINGER_LINKS=['carriage','link','P','S','T','Q','R'], THUMB_LINKS=['carria
 // mm, so that parts which sit inside one another come apart too. WHIRL is how far a part of each
 // kind may turn on the way, in radians: the small ones go round more than once, the large ones
 // only lean. SQUEEZE is how far everything is first drawn in, as a share of its way out.
-// UNBUILD is how far a finger's parts go when the story takes the fingers apart, as a share of
-// how far they go here.
-const BURST_FROM=[95,8,4], SPREAD=[.62,.62,1.15], SQUEEZE=.06, UNBUILD=.62;
+const BURST_FROM=[95,8,4], SPREAD=[.62,.62,1.15], SQUEEZE=.06;
 const LIFT={palm:[-55,0,-70], module:[0,0,-22], carriage:[-34,0,74], link:[-8,0,98], P:[0,0,0], Q:[-8,0,58], S:[12,0,4], R:[4,0,60], T:[24,0,8],
  mount:[-34,14,-24], unit:[0,10,0], prox:[10,12,6], bar:[4,12,50], distal:[26,18,10]};
 const WHIRL={palm:.22, module:.7, mount:1.1, unit:.6, carriage:5, link:8, P:4.4, Q:7.5, S:5.2, R:8.5, T:6.5, prox:4.6, bar:7.5, distal:6};
@@ -772,18 +781,17 @@ function scatter(placed,i,played){
  const spin=[t*x*x+co,t*x*y+si*z,t*x*z-si*y,0, t*x*y-si*z,t*y*y+co,t*y*z+si*x,0, t*x*z+si*y,t*y*z-si*x,t*z*z+co,0, 0,0,0,1];
  return mul(mul(mul(slide(mx+group[0]*a+own[0]*b,my+group[1]*a+own[1]*b,mz+group[2]*a+own[2]*b),spin),slide(-mx,-my,-mz)),placed);
 }
-// One part of a finger the story has taken apart: moved off its module along its own line and
-// turned a little, the part nearest the module first. `rebuilt` brings it back the same way,
-// nearest first again, a hair past its seat and home. `across` slides the whole finger sideways
-// onto another finger's place.
-function unbuild(placed,i,pose,across){
- const {own,axis:[x,y,z],order}=SCATTER[i], c=CENTRES[i], lag=.5;
- const out=spring(pose.apart*(1+lag)-lag*order)*(1-spring(pose.rebuilt*(1+lag)-lag*order))*UNBUILD;
+// One link of a finger the story has loosened: moved off its place along its own line, with no
+// turning. Going out, the fingertip leaves first and the rest follow, so nothing crosses.
+// `rebuilt` brings them home the other way round: the carriage first, then each link out to the
+// fingertip, each one starting before the last has seated. `across` slides the whole finger
+// sideways, toward another finger's place.
+function unbuild(placed,name,pose,across){
+ const kind=name.split(':')[1], k=CHAIN.indexOf(kind), last=CHAIN.length-1;
+ const out=k<0?0:softer(clamp(pose.apart*1.6-.6*(last-k)/last))*(1-arrive(clamp(pose.rebuilt*3.4-2.4*k/last)));
  if(!out&&!across[0]&&!across[1])return placed;
- const mx=placed[0]*c[0]+placed[4]*c[1]+placed[8]*c[2]+placed[12], my=placed[1]*c[0]+placed[5]*c[1]+placed[9]*c[2]+placed[13], mz=placed[2]*c[0]+placed[6]*c[1]+placed[10]*c[2]+placed[14];
- const angle=1.1*out*(chance(i,6)-.5), co=Math.cos(angle), si=Math.sin(angle), t=1-co;
- const spin=[t*x*x+co,t*x*y+si*z,t*x*z-si*y,0, t*x*y-si*z,t*y*y+co,t*y*z+si*x,0, t*x*z+si*y,t*y*z-si*x,t*z*z+co,0, 0,0,0,1];
- return mul(mul(mul(slide(mx+own[0]*out+across[0],my+own[1]*out+across[1],mz+own[2]*out),spin),slide(-mx,-my,-mz)),placed);
+ const [along,up]=LINE[kind]||[0,0];
+ return mul(slide(along*out+across[0],across[1],up*out),placed);
 }
 function placeBodies(poses,thumb,burst=0,merge=0){
  const at={'palm:palm':IDENTITY,'thumb:mount':IDENTITY};
@@ -792,9 +800,9 @@ function placeBodies(poses,thumb,burst=0,merge=0){
    at['finger'+i+':module']=slide(out,0,0);
    for(const body of FINGER_LINKS)at['finger'+i+':'+body]=mul(mul(seat,link(FINGERS,body,poses[i].bend)),home);
    // Taken apart, and for the other three fingers slid onto the shown one.
-   if(SCATTER&&(poses[i].apart||(merge&&i!==SHOWN))){
-     const across=i===SHOWN?[0,0]:[(FINGERS.x[SHOWN]-x)*merge,(FINGERS.y[SHOWN]-FINGERS.y[i])*merge];
-     for(const body of ['module',...FINGER_LINKS]){const name='finger'+i+':'+body;at[name]=unbuild(at[name],HAND_INFO.bodies.indexOf(name),poses[i],across);}
+   if(poses[i].apart||(merge&&i!==SHOWN)){
+     const across=i===SHOWN?[0,0]:[(FINGERS.x[SHOWN]-x)*merge*.4,(FINGERS.y[SHOWN]-FINGERS.y[i])*merge*.4];   // part of the way: they fade before they arrive
+     for(const body of ['module',...FINGER_LINKS]){const name='finger'+i+':'+body;at[name]=unbuild(at[name],name,poses[i],across);}
    }
  });
  const now=thumbFrame(thumb.reach*PINCH.thumbSwing);
@@ -831,7 +839,9 @@ function prepare(canvas,data){
  // The view works in inches: x across the hand, y along the fingers, z out of its back.
  vec3 p=vec3(hand.y,hand.x,-hand.z)/25.4;
  vec3 lightNormal=vec3(turned.y,turned.x,-turned.z);
- paint=colour<.5?vec3(.85,.59,.035):colour<1.5?vec3(.52,.70,.78):colour<2.5?vec3(.13,.22,.40):colour<3.5?vec3(.61,.63,.65):vec3(.98,.53,.055);
+ // The poster's colours: the finger housings sky, the palm and the bars navy, the finger
+ // segments white, the bought parts steel, the fingertips lime.
+ paint=colour<.5?vec3(.40,.78,.93):colour<1.5?vec3(.09,.22,.48):colour<2.5?vec3(.93,.95,.98):colour<3.5?vec3(.60,.65,.72):vec3(.78,.93,.42);
  paint=mix(paint,tint.rgb,tint.a);
  p=vec3(p.y,-p.z,-p.x);
  lightNormal=vec3(lightNormal.y,-lightNormal.z,-lightNormal.x);
@@ -896,7 +906,7 @@ function paint(view,chunks,bodies,look,tints,fades,spin,tip,bank,scaleX,scaleY,m
 async function loadHand(){
  const bytes=Uint8Array.from(atob(HAND_MESH),c=>c.charCodeAt(0));
  const data=await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
- prepareScatter(data);
+ prepareScatter(data);prepareMark();
  handView=prepare(canvas,data);
  if(fingerCanvas)fingerView=prepare(fingerCanvas,data);
  litterPage();
@@ -921,15 +931,24 @@ const MODULE_VIEW={look:[FINGERS.x[SHOWN]+PULL+140,FINGERS.y[SHOWN],8],roll:.52,
 // `out` is how small it is drawn once all four modules are out, and `follow` how many mm the
 // view moves toward the fingertips with them, so they stay on the stage. `apart` and `further`
 // are the same two for the fingers taken apart, once the palm has gone and left them the room.
-const OFFER_VIEW={lean:.92,bank:-Math.PI/2,depth:.04,zoom:1,far:.8,from:.5,out:.72,follow:95,apart:1,further:70};
+const OFFER_VIEW={lean:.92,bank:-Math.PI/2,depth:.04,zoom:1,far:.8,from:.5,out:.72,follow:95,apart:.7,further:95};
 // How far back the rest of the hand goes while one module is out, in inches.
 const AWAY=46;
+// How much larger the whole hand is drawn than the views below were first framed for.
+const HAND_SIZE=1.1;
+// The one finger while it is still a line of parts: drawn this much smaller, and looked at this
+// many mm further along, because the line is longer than the finger.
+const LOOSE_VIEW={smaller:.34,along:62};
+// The upright hand with its four fingers held above their sockets, before they are let go: how
+// far above (1 is just clear of the socket), how small it is drawn, and how many mm further up
+// the fingers it is looked at, so the raised fingers stay on the stage.
+const HELD_VIEW={pull:1.35,zoom:.58,rise:82};
 // The hand in parts: drawn smaller so the parts stay on the stage, turned a little so the ones
 // lifted out of the palm show beside it, and looked at `rise` mm further up the fingers,
 // because the parts travel further that way.
 const BURST_VIEW={zoom:.58,roll:-.42,lean:.12,rise:34};
-// The parts as litter: pale sky, part see-through.
-const SKY=[.44,.82,.94], LITTER_ALPHA=.5;
+// The sky the parts take when they lie behind the rest of the page.
+const SKY=[.44,.82,.94];
 // Where a point of the hand (mm) lands on the stage, -1 to 1 each way, worked out the way the
 // shader does it for a flat drawing with the hand not turned on its palm.
 function onStage(at,view,scaleX,scaleY){
@@ -939,33 +958,76 @@ function onStage(at,view,scaleX,scaleY){
  const cb=Math.cos(view.bank), sb=Math.sin(view.bank);
  return [(cb*x1-sb*y1)*scaleX,(sb*x1+cb*y1)*scaleY];
 }
-// Where each part lies when the parts are spread over the stage: one to a cell of a grid, off
-// its middle by a little, the same every time. `left` is where the grid starts, -1 to 1 across
-// the stage: beside the caption it starts past the words, so no part lies over them.
-function litterSpots(wide,left){
- const cols=wide?7:5, rows=Math.ceil(HAND_INFO.bodies.length/cols);
- const order=HAND_INFO.bodies.map((_,i)=>i).sort((a,b)=>chance(a,7)-chance(b,7));
- const spots=[];
- order.forEach((body,k)=>{
-   const col=k%cols, row=Math.floor(k/cols);
-   spots[body]=[left+(col+.5+(chance(body,8)-.5)*.6)/cols*(.94-left),((row+.5+(chance(body,9)-.5)*.6)/rows*2-1)*.88];
+// ---- the very end: the parts make the HandiWorks mark ----
+// The mark is the logo's three shapes, 72 units wide and 100 tall (the same paths as the logo in
+// the nav, without their holes): two blocks, drawn navy here, and the link, sky. Each shape is
+// cut into cells of about the same size, one for each part, as many cells as its share of the
+// mark's area. A part flies to its cell, shrinks or grows to fill it, and takes its colour.
+const MARK_SHAPES=[[[.075,.204,.463],'M1.5 11.5 23 2v24L1.5 35.5Z'],[[.075,.204,.463],'M1.5 41.5 38 25.5v23.7L23 55.8V74L1.5 83.5Z'],
+ [[.44,.82,.94],'M41 22A10.75 10.75 0 0 1 62.5 22V64.87L69.94 82.9A10.75 10.75 0 0 1 50.06 91.1L41.81 71.1A10.75 10.75 0 0 1 41 67Z']];
+const MARK_FILL=2.1;   // a part is drawn this many times its cell's width, so the cells close up into one shape
+const MARK_HIGH=.74;   // the mark's height, as a share of the stage's
+let MARK=null, MARK_CELL=1;   // each part's cell {at, colour}, and the width of a cell, in the mark's units
+function prepareMark(){
+ const fine=4, w=72*fine, h=100*fine, pad=document.createElement('canvas');pad.width=w;pad.height=h;
+ const pen=pad.getContext('2d',{willReadFrequently:true}), count=HAND_INFO.bodies.length;
+ // Every other pixel of each shape, as points in the mark's units.
+ const shapes=MARK_SHAPES.map(([,path])=>{
+   pen.setTransform(1,0,0,1,0,0);pen.clearRect(0,0,w,h);pen.setTransform(fine,0,0,fine,0,0);pen.fill(new Path2D(path));
+   const ink=pen.getImageData(0,0,w,h).data, points=[];
+   for(let y=1;y<h;y+=2)for(let x=1;x<w;x+=2)if(ink[(y*w+x)*4+3]>128)points.push([x/fine,y/fine]);
+   return points;
  });
- return spots;
+ const all=shapes.reduce((sum,points)=>sum+points.length,0);
+ let left=count;
+ const cells=[];
+ shapes.forEach((points,k)=>{
+   const share=k===shapes.length-1?left:Math.max(1,Math.round(count*points.length/all));left-=share;
+   // Start the cells evenly through the shape, then move each to the middle of the points nearest it, a few times over.
+   let mids=Array.from({length:share},(_,j)=>points[Math.floor((j+.5)/share*points.length)]);
+   for(let round=0;round<14;round++){
+     const sums=mids.map(()=>[0,0,0]);
+     for(const p of points){let near=0, least=1e9;for(let j=0;j<mids.length;j++){const d=(mids[j][0]-p[0])**2+(mids[j][1]-p[1])**2;if(d<least){least=d;near=j;}}sums[near][0]+=p[0];sums[near][1]+=p[1];sums[near][2]++;}
+     mids=mids.map((mid,j)=>sums[j][2]?[sums[j][0]/sums[j][2],sums[j][1]/sums[j][2]]:mid);
+   }
+   for(const mid of mids)cells.push({at:mid,colour:MARK_SHAPES[k][0]});
+ });
+ MARK_CELL=Math.sqrt(all*4/(fine*fine)/count);
+ // The parts take the cells in a shuffled order that is the same every time.
+ const order=HAND_INFO.bodies.map((_,i)=>i).sort((a,b)=>chance(a,22)-chance(b,22));
+ MARK=[];order.forEach((body,k)=>MARK[body]=cells[k]);
 }
+// Screen pixels to one unit of the mark: it stands MARK_HIGH of the stage high, or less on a narrow stage.
+const markUnit=(w,h)=>Math.min(h*MARK_HIGH,w*.92)/100;
+// The mark's own shape, the logo as it is in the nav but navy and sky on white, set behind the
+// parts. It comes up as they arrive, so the parts end as the logo and not only near it.
+const markShape=document.createElementNS('http://www.w3.org/2000/svg','svg');
+markShape.setAttribute('class','story-mark');markShape.setAttribute('viewBox','0 0 72 100');markShape.setAttribute('aria-hidden','true');
+markShape.innerHTML='<path fill="#133476" d="M1.5 11.5 23 2v24L1.5 35.5Z"/><path fill="#133476" fill-rule="evenodd" d="M1.5 41.5 38 25.5v23.7L23 55.8V74L1.5 83.5ZM8.2 50.8a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0Z"/><path fill="#70D0F0" fill-rule="evenodd" d="M41 22A10.75 10.75 0 0 1 62.5 22V64.87L69.94 82.9A10.75 10.75 0 0 1 50.06 91.1L41.81 71.1A10.75 10.75 0 0 1 41 67ZM47.75 22a4 4 0 1 0 8 0a4 4 0 1 0-8 0ZM56 87a4 4 0 1 0 8 0a4 4 0 1 0-8 0Z"/>';
+stage.prepend(markShape);
+// How far part i has gone to its cell when the gathering is `logo` of the way: they do not all leave at once.
+const gathered=(i,logo)=>smooth(clamp(logo*1.4-.4*chance(i,21)));
 function drawHand(view,poses,thumb,burst,tints,fades,w,h,shift){
  if(!handView||!w||!h)return;
  // Beside the caption the hand has about two thirds of the width, so a stage squarer than about
  // 3:2 sizes it by its width. Stacked above the caption it is sized by the shorter side.
- const fit=(shift?Math.min(h,w*.68):Math.min(w,h))*.138*view.zoom, mm=fit/50.8*canvas.width/w;   // canvas pixels to a mm of the hand
+ // Beside the caption a wide stage sizes the hand by its height, HAND_SIZE larger than it was
+ // first framed for; a squarer one sizes it by its width, where it already fills its place.
+ const fit=(shift?Math.min(h*HAND_SIZE,w*.7):Math.min(w,h))*.138*view.zoom, mm=fit/50.8*canvas.width/w;   // canvas pixels to a mm of the hand
  handView.gl.viewport(Math.round(canvas.width*shift),Math.round(-view.drop*mm),canvas.width,canvas.height);
  const bodies=placeBodies(poses,thumb,burst,view.merge);
- // Spreading over the stage: each part is moved on the screen from where it hangs to its spot.
+ // Gathering into the mark: each part is moved on the screen from where it hangs to its cell,
+ // and made the size of the cell. The mark stands in the middle of the hand's place, about two
+ // thirds of the stage high.
  let nudges=null;
- if(view.litter&&CENTRES){
-   const spots=litterSpots(w>h,view.clear);
+ if(view.logo&&MARK){
+   const unit=markUnit(w,h), grain=fit/50.8;   // screen pixels to one unit of the mark, and to one mm of the hand
    nudges=bodies.map((placed,i)=>{
-     const c=CENTRES[i], now=onStage([placed[0]*c[0]+placed[4]*c[1]+placed[8]*c[2]+placed[12],placed[1]*c[0]+placed[5]*c[1]+placed[9]*c[2]+placed[13],placed[2]*c[0]+placed[6]*c[1]+placed[10]*c[2]+placed[14]],view,fit/w,fit/h);
-     return [(spots[i][0]-2*shift-now[0])*view.litter,(spots[i][1]-now[1])*view.litter];
+     const c=CENTRES[i], at=[placed[0]*c[0]+placed[4]*c[1]+placed[8]*c[2]+placed[12],placed[1]*c[0]+placed[5]*c[1]+placed[9]*c[2]+placed[13],placed[2]*c[0]+placed[6]*c[1]+placed[10]*c[2]+placed[14]];
+     const now=onStage(at,view,fit/w,fit/h), cell=MARK[i], go=gathered(i,view.logo);
+     const size=mix(1,MARK_FILL*MARK_CELL*unit/(2*RADII[i]*grain),go);
+     bodies[i]=mul(mul(mul(slide(at[0],at[1],at[2]),[size,0,0,0, 0,size,0,0, 0,0,size,0, 0,0,0,1]),slide(-at[0],-at[1],-at[2])),placed);
+     return [((cell.at[0]-36)*unit/(w/2)-now[0])*go,(-(cell.at[1]-50)*unit/(h/2)-now[1])*go];
    });
  }
  paint(handView,HAND_INFO.chunks,bodies,view.look,tints,fades,view.roll,view.lean,view.bank,fit/w,fit/h,{turn:view.spin,depth:view.depth,backs:view.backs,nudges});
@@ -1030,8 +1092,10 @@ function render(now=performance.now()){
  // On the way out one finger is all that is left and it is pointing at the viewer, so it is laid
  // across sooner and the view hardly draws back; on the way back the whole hand is upright, as it was.
  const show=story.show, out=story.bank<0, lay=out?smooth((show-.15)/.5):smooth((show-.45)/.55);
+ // How far the shown finger is still a line of parts: as far as its fingertip, the last link home, is still out.
+ const loose=poses[SHOWN].apart*(1-smooth(poses[SHOWN].rebuilt*3.4-2.4));
  const view={
-   look:HAND_VIEW.look.map((at,k)=>mix(at,MODULE_VIEW.look[k],show)+(k?0:BURST_VIEW.rise*smooth(apart*1.6)+(out?(OFFER_VIEW.follow*Math.max(...poses.map(part=>part.pull))+OFFER_VIEW.further*Math.max(...poses.map(part=>part.apart)))*(1-show):0))),
+   look:HAND_VIEW.look.map((at,k)=>mix(at,MODULE_VIEW.look[k],show)+(k?0:BURST_VIEW.rise*smooth(apart*1.6)+LOOSE_VIEW.along*loose*show+(out?(OFFER_VIEW.follow*Math.max(...poses.map(part=>part.pull))+OFFER_VIEW.further*Math.max(...poses.map(part=>part.apart)))*(1-show):HELD_VIEW.rise*Math.max(...poses.map(part=>part.pull))/HELD_VIEW.pull*(1-show)))),
    roll:story.roll+(MODULE_VIEW.sideRoll-MODULE_VIEW.roll)*story.side+BURST_VIEW.roll*settled,
    lean:story.lean+BURST_VIEW.lean*settled,
    bank:mix(story.bank,MODULE_VIEW.bank,lay),
@@ -1039,18 +1103,18 @@ function render(now=performance.now()){
    // While one module is out, the rest of the hand is set back into the distance.
    merge:smooth(story.merge),
    backs:story.away?OF_FINGER.map(finger=>finger?0:AWAY*story.away):null,
-   zoom:mix(story.zoom,MODULE_VIEW.zoom,show)-(out?.1:.3)*Math.sin(Math.PI*show),
+   zoom:mix(story.zoom,MODULE_VIEW.zoom*(1-LOOSE_VIEW.smaller*loose),show)-(out?.06:.3)*Math.sin(Math.PI*show),
    drop:MODULE_VIEW.drop*show
  };
  // The rest of the hand fades as the view leaves it. In the trace the module is pale, and each
  // link of the chain turns navy as the trace reaches it.
- // At the very end the parts lose their colours, then take the sky's. They only spread once apart.
- const rest=1-smooth((show-.3)/.4), pale=story.litter*settled, sky=smooth(pale*2-1);
- view.litter=pale;
+ // At the very end the parts gather into the mark and take its colours. They only gather once apart.
+ const rest=1-smooth((show-.3)/.4), logo=story.logo*settled;
+ view.logo=logo;
  // The palm and thumb fade as they move back. The other three fingers fade as they slide onto the shown one.
- const behind=Math.min(rest,1-smooth((story.away-.25)/.6)), others=Math.min(rest,1-smooth((story.merge-.35)/.65));
- const fades=OF_SHOWN.map((mine,body)=>(mine?1:OF_FINGER[body]?others:behind)*mix(1,LITTER_ALPHA,pale));
- const tints=pale?OF_SHOWN.map(()=>[mix(WASH[0],SKY[0],sky),mix(WASH[1],SKY[1],sky),mix(WASH[2],SKY[2],sky),smooth(pale*2)]):story.wash?OF_SHOWN.map((mine,body)=>{
+ const behind=Math.min(rest,1-smooth((story.away-.25)/.6)), others=Math.min(rest,1-smooth((story.merge-.1)/.75));
+ const fades=OF_SHOWN.map((mine,body)=>mine?1:OF_FINGER[body]?others:behind);
+ const tints=logo&&MARK?OF_SHOWN.map((_,body)=>[...MARK[body].colour,gathered(body,logo)]):story.wash?OF_SHOWN.map((mine,body)=>{
    if(!mine)return NO_TINT;
    const lit=LINK_OF[body]<0?0:clamp(story.trace-LINK_OF[body]);
    const colour=LIT[Math.max(0,LINK_OF[body])];
@@ -1060,13 +1124,14 @@ function render(now=performance.now()){
  // In parts the hand is wider. Beside the caption, a stage squarer than about 3:2 has less width
  // to give, so there the parts are drawn smaller and stay clear of the words.
  if(shift)view.zoom*=mix(1,Math.min(1,width/(1.45*Math.min(height,width*.68))),smooth(apart*1.6));
- // Beside the caption, the spread parts start past the words.
- view.clear=shift?Math.max(-.92,(hero.querySelector('.home-copy').getBoundingClientRect().right-bounds.left)/width*2-1+.04):-.92;
+ if(apart&&shift)view.zoom/=mix(1,Math.min(height*HAND_SIZE,width*.7)/Math.min(height,width*.68),smooth(apart*1.6));   // in parts the hand fills the stage already, so it is not drawn larger
  drawHand(view,poses,thumb,apart,tints,fades,width,height,shift);
  // The room behind turns with the view. --paper tells the stylesheet how far the view has gone to the module.
  drum.style.transform='translateZ(220px) rotateX(-8deg) rotateY('+(view.roll-PALM)*180/Math.PI+'deg)';
  hero.style.setProperty('--paper',show);
  hero.style.setProperty('--apart',smooth(apart*2.5));
+ markShape.style.height=markUnit(width,height)*100+'px';
+ hero.style.setProperty('--mark',smooth((logo-.55)/.45)*.9);
  hero.style.setProperty('--bank',(story.bank-view.bank)*9+'deg');
  scenes.forEach((scene,i)=>{
    const opacity=reduced.matches?1:Math.min(i===0?1:clamp((p-starts[i])/.03),clamp(((starts[i+1]??2)-p)/.03));
