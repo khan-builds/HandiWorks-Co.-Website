@@ -23,7 +23,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-18 at 21:50 Pacific.
+Checked against GitHub on 2026-11-19 at 11:30 Pacific.
 
 **The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
 shows the old one-page homepage.
@@ -73,14 +73,15 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 `main` is four commits further on, but those four add the simulator and take it out again,
-so no file differs. Five commits are pushed: the rebuild, the hand from the CAD, the emails
-on the Team page, the scroll story, and everyone's address under Contact. Prompts 1 to 9
+so no file differs. Seven commits are pushed: the rebuild, the hand from the CAD, the emails
+on the Team page, the scroll story, everyone's address under Contact, all four addresses
+under "Talk to us", and the homepage's new first and last scenes. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
 | Page | State | Still open |
 |---|---|---|
-| Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story now does what each caption says: one finger module is taken out and shown, its motion is traced from the carriage to the fingertip, and the hand makes its grip. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
+| Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and opens toward the visitor, one finger module is taken out and shown, its motion is traced from the carriage to the fingertip, and at the end the whole hand comes apart into its parts. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
 | The Problem | Poster's goal and objectives, the 18% / 42% figure checked against the Gallup report, 15 more sourced figures. | The "250,000 students" and "$500 kit" figures are left off: no source says them. |
 | The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Circuit diagram is a labelled placeholder until the image arrives. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
@@ -127,6 +128,12 @@ The scroll story of that evening is in `screenshots/hand-story/`: `story-1440.pn
 `story-390.png` are the whole scroll on one sheet at each width, `before-1440.png` is the
 same scroll before the change, `opening-1440.png` is the first five seconds, and the
 `home-*.png` files are single frames.
+
+The story of 2026-11-19, with the hand that opens and the hand in parts, is in
+`screenshots/hand-opens/`: `story-1440.png` and `story-390.png` are the whole scroll on one
+sheet at each width, `1-closed.png` to `6-apart.png` are single frames at 1440 px, and
+`reduced-motion.png` is what a visitor who has asked for less motion sees. The "Talk to us"
+band with all four addresses is in `screenshots/talk-to-us/`.
 
 The footer with everyone's address is in `screenshots/contact-emails/`: `footer-home-1440.png`,
 `footer-768.png` and `footer-390.png` are the footer alone at three widths, and the `team-*`
@@ -259,6 +266,67 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
 
+### 2026-11-19: the hand opens toward the visitor, and comes apart at the end
+
+Lingbo asked for two new scenes on the homepage. The first caption is about grasp, so the hand
+should start closed and open toward the visitor as they scroll, as if offering something. The
+last should be "like an explosion", for what a student could go on to build. The two scenes
+between them stay as they were. It is in branch `LZ-C5.2`, not in `main`.
+
+| | Before | Now |
+|---|---|---|
+| On arrival | The hand was open. It closed to the pinch and opened once, on a 5 second timer. | The hand is closed, in the CAD's pinch, and still. Nothing runs on a timer. |
+| HelpingHand | The open hand came a little closer. | The hand opens and turns its palm to the visitor. The thumb leaves first, then the fingers, index first. |
+| Build one finger. See what moves. | | The same moves. "See what moves." gives up 2% of the scroll. |
+| Try your own design. | The module went back in and the hand closed to the pinch. | The module goes back in, the view draws back, and the hand comes apart into its 40 parts. |
+| Less motion asked for | The open hand. | The open hand, as before. |
+
+The opening is the CAD's way into the pinch run backward, so the poses are the ones already
+checked for collisions. The coming apart is the one move that is not from the CAD. See
+[The hand on the homepage](#the-hand-on-the-homepage).
+
+Checked in headless Chrome:
+
+- Every step of the story, 2,001 of them: the thumb is never further closed than the index or
+  middle finger, no module slides with a bent finger or with the thumb across, and the hand
+  only comes apart when it is whole and open.
+- 400 random jumps in the scroll give the same hand as scrolling there.
+- At 1440 x 900, 1280 x 640, 1024 x 768, 1100 x 1000, 1280 x 1024 and 390 x 844, no part of
+  the hand touches the caption, the nav or the edge of the stage in either new scene. The
+  least clear space is 8 px, at 1100 x 1000.
+- The build passes, the homepage has no script errors, and it does not scroll sideways from
+  360 to 1440 px.
+
+Not checked: how the two new scenes feel under a real wheel, trackpad or finger. The CAD
+checks (`--check`, `--check-path`) were not run again: the model and the tables did not
+change.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| The closed hand is seen from the little finger's side, where the thumb and fingers show as one closed grip. | From the thumb's side, where the electronics box fills the view. |
+| "Toward the visitor" is a turn of the palm to face them, a lean of the fingertips toward them and a small step closer. The fingers stay pointing up. | The hand turned over, fingers pointing at the visitor. Without perspective they would shrink to stubs. |
+| The timed pinch on arrival is gone. The hand waits, closed, for the scroll. | Keep it. It would open the hand before the visitor did. |
+| The parts fly apart and stay apart at the end of the scroll. They turn a little, each the same way every time. | A tidy exploded drawing with nothing turned, or parts that fall. |
+| The module goes back in before the hand comes apart. | The hand coming apart with one module already out. |
+| On a stage squarer than about 3:2 the parts are drawn smaller. | One size, which put the thumb's parts over the caption on a squarer window. |
+
+### 2026-11-19: everyone's address under "Talk to us"
+
+Lingbo: the place to reach out showed only Lingbo's address, and that read oddly. "Talk to
+us", the navy band at the foot of the Team page, had one button with that address on it. It
+now lists all four, each a mailto link to that person, above "Request a kit". It is in branch
+`LZ-C5.2`, not in `main`.
+
+No page on the site now shows one person's address alone. "Request a kit" still starts an
+email to the project manager only: see the entry below for why. Screenshots are in
+`screenshots/talk-to-us/`.
+
+| Decision | Option not taken |
+|---|---|
+| The four addresses go in the band that had the one. | A separate Contact page with its own link in the nav. It was built and taken out again: with a demo role set the nav has no room for one more link. |
+
 ### 2026-11-18: everyone's address under Contact
 
 Lingbo asked for all four addresses under Contact. Contact is the last column of the footer,
@@ -268,7 +336,7 @@ so it is on every page. It is in branch `LZ-C5.2`, not in `main`.
 |---|---|---|
 | Contact, in the footer | One address: Lingbo's at NYU. | Four addresses, one per person, in the Team page's order. Each is a mailto link to that person with the subject "HelpingHand question". |
 | "Request a kit", everywhere | Lingbo's NYU address. | Lingbo's Gmail address. |
-| "Talk to us", on the Team page | A button showing Lingbo's NYU address. | The same button, showing Lingbo's Gmail address. |
+| "Talk to us", on the Team page | A button showing Lingbo's NYU address. | The same button, showing Lingbo's Gmail address. (All four addresses since 2026-11-19: see the entry above.) |
 | The NYU address | In the footer and on the Team page. | Nowhere on the site. |
 
 The four people are now listed once, in `src/lib/team.ts`. The Team page and the footer both
@@ -287,7 +355,7 @@ Decided during that work:
 | The NYU address is replaced, not kept as a fifth. The site now shows one address per person. | Keep it above the four. Lingbo would be listed twice. |
 | "Request a kit" goes to one person, the project manager. Outlook on a school computer may not split a list of addresses in one mailto link. | One link that writes to all four. |
 | The addresses stand alone, with no names beside them. Each one reads as its owner's name. | Name and role on each line. |
-| "Talk to us" on the Team page keeps one button. All four addresses are on the cards above it and in the footer below it. | The four addresses there a third time. |
+| "Talk to us" on the Team page keeps one button. All four addresses are on the cards above it and in the footer below it. (Changed on 2026-11-19: see the entry above.) | The four addresses there a third time. |
 
 ### 2026-11-18: the scroll story does what its captions say
 
@@ -549,15 +617,22 @@ The data also holds the thumb module's own body, so it could be raised off its t
 again (the CAD checks up to 60 mm). The page stopped playing that on 2026-11-18.
 
 **What the scroll story does with them.** The four captions are Golam's. Since 2026-11-18
-evening the hand does what each one says.
+evening the hand does what each one says. On 2026-11-19 Lingbo asked for a new first and last
+scene: the hand opens toward the visitor, and at the end it comes apart.
 
 | Caption | Share of the scroll | The hand |
 |---|---|---|
-| Before any scrolling, the first 5 seconds | | Closes to the pinch and opens again, once. |
-| HelpingHand | 0 to 15% | The whole hand, at rest, comes a little closer. |
+| Before any scrolling | | Closed, in the CAD's pinch, seen from the little finger's side. It does not move until the page is scrolled. |
+| HelpingHand | 0 to 15% | Opens and turns its palm to the visitor, like a hand held out. The thumb leaves first and the fingers follow, index first. It comes a little closer. |
 | Build one finger. | 15 to 50% | The middle finger's module slides 130 mm out of its socket. The view goes to it and the rest of the hand fades. The module is turned once round and laid across the stage, then curls to its limit and opens. |
-| See what moves. | 50 to 80% | The module seen from its side. Its colours drain, then each link turns navy in the order the motion travels (carriage, link, first segment, bar, middle segment, bar, fingertip) while the finger curls again. |
-| Try your own design. | 80 to 100% | The hand comes back, the module slides in the way it came out, and the hand closes to the pinch and holds it. |
+| See what moves. | 50 to 78% | The module seen from its side. Its colours drain, then each link turns navy in the order the motion travels (carriage, link, first segment, bar, middle segment, bar, fingertip) while the finger curls again. |
+| Try your own design. | 78 to 100% | The hand comes back and the module slides in the way it came out. Then the whole hand comes apart: all 40 parts leave the middle along their own lines, turning a little, and hang in the air as a kit of parts. |
+
+The last move is the one thing in the story that is **not a motion of the CAD**. No part of the
+real hand flies. `scatter()` moves each part away from `BURST_FROM` by a share of its distance
+(`SPREAD`), adds a push for its kind of part so parts that sit inside one another separate
+(`LIFT`), and turns it by up to `TUMBLE`. The turn is the same every time: it comes from the
+part's number, not from chance.
 
 **How to change it.** The story is a list of moves in `prepareStory()`. A move takes one
 dial from one value to another: `move(dial, name, from, to, start, length)`. The scroll is
@@ -566,21 +641,27 @@ kinds of dial:
 
 - the parts, in the table above
 - the view: `story.zoom`, `story.show` (from the whole hand to the module, and the rest of
-  the hand fading), `story.roll` (the view turned about the hand's length), `story.side`
-  (the module from three-quarters on to square from its side)
+  the hand fading), `story.roll` (the view turned about the hand's length), `story.lean`
+  (the fingertips tipped toward the viewer), `story.side` (the module from three-quarters on
+  to square from its side)
 - the colours of the trace: `story.wash` and `story.trace`
+- `story.burst`: how far the hand has come apart
 
-`HAND_VIEW` and `MODULE_VIEW` say where the two views look from. The page follows the scroll
+`HAND_VIEW` and `MODULE_VIEW` say where the two views look from. `CLOSED_VIEW` is the closed
+hand the page opens on, and `BURST_VIEW` is the hand in parts. The page follows the scroll
 with a short lag (`FOLLOW` in `render()`), so a mouse wheel's steps do not show.
 
-Keep three rules when changing the moves:
+Keep four rules when changing the moves:
 
-1. On the way into the pinch the fingers lead and the thumb arrives last, and on the way out
-   the thumb leaves first. The other order puts the index fingertip through the thumb tip.
+1. On the way out of the pinch the thumb leaves first, and on any way into it the fingers
+   lead and the thumb arrives last. The other order puts the index fingertip through the
+   thumb tip.
 2. A module slides only while its finger is straight and the thumb is at rest. That is how
    the CAD checked it.
 3. List each dial's moves in the order they happen, and do not let two moves of one dial
    overlap. A dial takes its latest move that has begun.
+4. The hand comes apart only when it is whole and open: every module in, every finger
+   straight, the thumb at rest.
 
 **When the CAD changes.** With the CAD environment, from the repo folder:
 

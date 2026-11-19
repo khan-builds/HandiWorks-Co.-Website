@@ -561,6 +561,8 @@ const clamp=x=>Math.min(1,Math.max(0,x));
 //                        motor's shaft while its own carriage curls it. 1 is the CAD's pinch pose.
 // The story's own dials. They move the view and the colours, never a part.
 //   story.zoom           how large the whole hand is drawn
+//   story.lean           the view tipped, in radians: above 0 the fingertips come toward the viewer
+//   story.burst    0..1  the last scene: how far the hand has come apart (see scatter below)
 //   story.show     0..1  the view leaves the whole hand for the one module that was pulled out,
 //                        and the rest of the hand fades away
 //   story.roll           the view turned about the hand's length, in radians (see PALM below)
@@ -570,7 +572,7 @@ const clamp=x=>Math.min(1,Math.max(0,x));
 //                        carriage, link, first segment, bar, middle segment, bar, fingertip
 const poses=Array.from({length:4},()=>({pull:0,bend:0}));
 const thumb={reach:0};
-const story={zoom:.82,show:0,roll:0,side:0,wash:0,trace:0};
+const story={zoom:.82,show:0,roll:0,lean:0,side:0,wash:0,trace:0,burst:0};
 
 // Knuckle angle wanted -> share of the carriage travel that gives it (the tables are even in travel).
 function driveFor(table,curl){
@@ -585,7 +587,7 @@ const PULL=130;    // mm. A socket is 123.6 mm deep, and 130 is the furthest the
 const SHOWN=2;     // the middle finger: the module the story takes out, and the one beside "The kit"
 const CHAIN=['carriage','link','P','Q','S','R','T'];   // the order the motion travels in, drive to fingertip
 // The story is 10,000 steps long from the top of the scroll to the bottom. A caption starts at each of SCENES.
-const LENGTH=10000, SCENES=[0,1500,5000,8000];
+const LENGTH=10000, SCENES=[0,1500,5000,7800];
 
 // The story is a list of moves. A move takes one dial from one value to another: it starts at a
 // step and lasts a number of steps. A dial's moves are listed in the order they happen.
@@ -608,11 +610,18 @@ function seek(step){
 }
 function prepareStory(){
  const one=poses[SHOWN], turn=2*Math.PI;
- // HelpingHand. The whole hand comes a little closer.
- move(story,'zoom',.82,.94,0,1300);
+ // HelpingHand. The hand starts closed, in the CAD's pinch, turned part away. Scrolling opens it
+ // toward the viewer, like a hand held out: the thumb leaves first and the fingers follow, index
+ // first. That is the CAD's way into the pinch run backward, so nothing touches on the way.
+ move(thumb,'reach',1,0,100,650);
+ poses.forEach((part,i)=>move(part,'bend',GRIP,0,165+(3-i)*45,650));
+ move(story,'roll',CLOSED_VIEW.roll,PALM,0,1250,soft);
+ move(story,'lean',CLOSED_VIEW.lean,OPEN_LEAN,0,1250,soft);
+ move(story,'zoom',CLOSED_VIEW.zoom,.94,0,1250,soft);
  // Build one finger. Its module slides out of its socket and the view goes to it while the rest
  // of the hand fades. It is turned once round, so every side is seen, and comes to rest three-
  // quarters on. Then it curls to its limit and opens: one carriage moves, every joint follows.
+ move(story,'lean',OPEN_LEAN,0,1400,500,soft);
  move(one,'pull',0,1,1500,1000);
  move(story,'show',0,1,1500,1750,soft);
  move(story,'roll',PALM,MODULE_VIEW.roll-turn,2350,1650,soft);
@@ -622,20 +631,20 @@ function prepareStory(){
  // navy in the order the motion travels, carriage to fingertip, while the finger curls again.
  move(story,'side',0,1,5000,400);
  move(story,'wash',0,1,5050,300);
- move(story,'trace',0,7,5350,1950,even);
- move(one,'bend',0,1,5350,1950,soft);
- move(one,'bend',1,0,7300,550);
- move(story,'wash',1,0,7400,400);
- move(story,'side',1,0,7450,450);
+ move(story,'trace',0,7,5350,1750,even);
+ move(one,'bend',0,1,5350,1750,soft);
+ move(one,'bend',1,0,7100,500);
+ move(story,'wash',1,0,7200,350);
+ move(story,'side',1,0,7250,400);
  // Try your own design. The view goes back the short way and the module slides in the way it
- // came out. Then the hand makes its grip, the CAD's pinch. The fingers come down first and the
- // thumb arrives last: on that path nothing in the CAD touches until the two tips meet. With the
- // thumb in place first, the index fingertip grazes it on the way down.
- move(story,'show',1,0,7800,1000,soft);
- move(story,'roll',MODULE_VIEW.roll-turn,PALM-turn,7850,750,soft);
- move(one,'pull',1,0,8350,750);
- poses.forEach((part,i)=>move(part,'bend',0,GRIP,9050+i*45,700));
- move(thumb,'reach',0,1,9250,700);
+ // came out. Then the whole hand comes apart into its parts: what there is to build with.
+ move(story,'show',1,0,7600,900,soft);
+ move(story,'roll',MODULE_VIEW.roll-turn,PALM-turn,7650,700,soft);
+ move(one,'pull',1,0,8050,650);
+ move(story,'burst',0,1,8750,1050,even);
+ move(story,'zoom',.94,BURST_VIEW.zoom,8600,550,soft);   // the view draws back first, so no part leaves the stage
+ move(story,'roll',PALM-turn,PALM-turn+BURST_VIEW.roll,8750,1250,soft);
+ move(story,'lean',0,BURST_VIEW.lean,8750,1250,soft);
 }
 
 // ---- where every part is, from the CAD's tables (4 x 4 matrices, column by column, in mm) ----
@@ -667,7 +676,45 @@ function undo(m){   // the reverse of a placement (a turn and a shift, no scalin
 }
 const THUMB_REST=undo(thumbFrame(0));
 const FINGER_LINKS=['carriage','link','P','S','T','Q','R'], THUMB_LINKS=['carriage','link','prox','distal','bar'];
-function placeBodies(poses,thumb){
+// ---- the last scene: the hand comes apart. This one is not a motion of the CAD. ----
+// Every part leaves the middle of the hand along its own line and turns a little as it goes.
+// SPREAD is how far, as a share of the part's distance from BURST_FROM: along the fingers, across
+// the hand, and out of the palm. LIFT is what each kind of part adds to that, in mm, so that
+// parts which sit inside one another come apart too. TUMBLE is the most a part may turn, in radians.
+const BURST_FROM=[95,8,4], SPREAD=[.6,.6,1.1];
+const LIFT={palm:[-55,0,-70], module:[0,0,-22], carriage:[-34,0,74], link:[-8,0,98], P:[0,0,0], Q:[-8,0,58], S:[12,0,4], R:[4,0,60], T:[24,0,8],
+ mount:[-34,14,-24], unit:[0,10,0], prox:[10,12,6], bar:[4,12,50], distal:[26,18,10]};
+const TUMBLE={palm:.1, module:.2, mount:.3, unit:.22};
+let CENTRES=null, SCATTER=null;   // each part's middle in the model, and where the scatter sends it
+// Find the middle of every part from the model's own corners, then set each part's line.
+function prepareScatter(data){
+ const corners=new Int16Array(data,0,HAND_INFO.vertices*5), chunks=HAND_INFO.chunks;
+ CENTRES=HAND_INFO.bodies.map(()=>[0,0,0]);
+ chunks.forEach(([body,first],k)=>{
+   const last=k+1<chunks.length?chunks[k+1][1]:HAND_INFO.vertices, low=[1e9,1e9,1e9], high=[-1e9,-1e9,-1e9];
+   for(let v=first;v<last;v++)for(let a=0;a<3;a++){const at=corners[v*5+a];if(at<low[a])low[a]=at;if(at>high[a])high[a]=at;}
+   CENTRES[body]=low.map((at,a)=>(at+high[a])/2/HAND_INFO.unitsPerMm+HAND_INFO.centre[a]);
+ });
+ const chance=(i,k)=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x);};   // the same "random" numbers every time
+ const reach=CENTRES.map(c=>Math.hypot(c[0]-BURST_FROM[0],c[1]-BURST_FROM[1],c[2]-BURST_FROM[2])), far=Math.max(...reach);
+ SCATTER=HAND_INFO.bodies.map((name,i)=>{
+   const kind=name.split(':')[1], lift=LIFT[kind]||[0,0,0];
+   const axis=[chance(i,1)-.5,chance(i,2)-.5,chance(i,3)-.5], size=Math.hypot(...axis)||1;
+   return {shift:CENTRES[i].map((c,a)=>(c-BURST_FROM[a])*SPREAD[a]+lift[a]), axis:axis.map(x=>x/size),
+     turn:(chance(i,4)*2-1)*(TUMBLE[kind]??.5), wait:.22*(1-reach[i]/far)};   // the outside leaves first
+ });
+}
+// One part's placement, `burst` of the way apart: turned about its own middle, then moved along its line.
+function scatter(placed,i,burst){
+ const {shift,axis:[x,y,z],turn,wait}=SCATTER[i], c=CENTRES[i];
+ const gone=1-(1-clamp((burst-wait)/(1-wait)))**3;   // fast away, slow to rest
+ if(!gone)return placed;
+ const mx=placed[0]*c[0]+placed[4]*c[1]+placed[8]*c[2]+placed[12], my=placed[1]*c[0]+placed[5]*c[1]+placed[9]*c[2]+placed[13], mz=placed[2]*c[0]+placed[6]*c[1]+placed[10]*c[2]+placed[14];
+ const a=turn*gone, co=Math.cos(a), si=Math.sin(a), t=1-co;
+ const spin=[t*x*x+co,t*x*y+si*z,t*x*z-si*y,0, t*x*y-si*z,t*y*y+co,t*y*z+si*x,0, t*x*z+si*y,t*y*z-si*x,t*z*z+co,0, 0,0,0,1];
+ return mul(mul(mul(slide(mx+shift[0]*gone,my+shift[1]*gone,mz+shift[2]*gone),spin),slide(-mx,-my,-mz)),placed);
+}
+function placeBodies(poses,thumb,burst=0){
  const at={'palm:palm':IDENTITY,'thumb:mount':IDENTITY};
  FINGERS.x.forEach((x,i)=>{
    const out=poses[i].pull*PULL, seat=slide(x+out,0,0), home=slide(-x,0,0);
@@ -677,7 +724,7 @@ function placeBodies(poses,thumb){
  const now=thumbFrame(thumb.reach*PINCH.thumbSwing);
  at['thumb:unit']=mul(now,THUMB_REST);
  for(const body of THUMB_LINKS)at['thumb:'+body]=mul(mul(now,link(THUMB,body,thumb.reach*THUMB_GRIP)),THUMB_REST);
- return HAND_INFO.bodies.map(name=>at[name]);
+ return HAND_INFO.bodies.map((name,i)=>burst&&SCATTER?scatter(at[name],i,burst):at[name]);
 }
 
 const hero=document.querySelector('.motion-track .home'),track=hero.parentElement;
@@ -685,7 +732,7 @@ const stage=hero.querySelector('.home-visual');
 stage.innerHTML='<canvas role="img" aria-label="HelpingHand CAD assembly"></canvas>';
 const canvas=stage.firstElementChild;
 const fingerStage=document.querySelector('.finger-stage'), fingerCanvas=fingerStage&&fingerStage.querySelector('canvas');
-let handView=null, fingerView=null, openingTime=null;
+let handView=null, fingerView=null;
 // Compile the shaders and load the hand's triangles into one canvas.
 function prepare(canvas,data){
  const gl=canvas.getContext('webgl',{alpha:true,antialias:true});
@@ -710,12 +757,11 @@ function prepare(canvas,data){
  paint=mix(paint,tint.rgb,tint.a);
  p=vec3(p.y,-p.z,-p.x);
  lightNormal=vec3(lightNormal.y,-lightNormal.z,-lightNormal.x);
- // Face the palm forward, then spin around the hand's lengthwise axis.
- p.yz=rot(angle.y)*p.yz;
- lightNormal.yz=rot(angle.y)*lightNormal.yz;
+ // Turn about the hand's lengthwise axis, then tip the fingertips toward the viewer or away.
  p.yz=rot(angle.x)*p.yz;
  n=lightNormal;
  n.yz=rot(angle.x)*n.yz;
+ p.xz=rot(angle.y)*p.xz; n.xz=rot(angle.y)*n.xz;
  p.xy=rot(bank)*p.xy; n.xy=rot(bank)*n.xy;
  gl_Position=vec4(p.xy*scale,-p.z*.065,1.);}`);
  shader(gl.FRAGMENT_SHADER,`precision mediump float;varying vec3 n;varying mediump vec3 paint;uniform float alpha;
@@ -739,11 +785,11 @@ function prepare(canvas,data){
 // Draw some of the hand's parts, each rigid part with its own placement and, where it has them,
 // its own tint (r, g, b, how much of it) and its own opacity. A chunk is [part, first corner,
 // first index, index count].
-function paint(view,chunks,bodies,look,tints,fades,spin,tilt,bank,scaleX,scaleY){
+function paint(view,chunks,bodies,look,tints,fades,spin,tip,bank,scaleX,scaleY){
  const {gl,uniforms,attributes}=view;
  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
  gl.uniform3fv(uniforms.look,look);
- gl.uniform1f(uniforms.bank,bank);gl.uniform2f(uniforms.scale,scaleX,scaleY);gl.uniform2f(uniforms.angle,spin,tilt);
+ gl.uniform1f(uniforms.bank,bank);gl.uniform2f(uniforms.scale,scaleX,scaleY);gl.uniform2f(uniforms.angle,spin,tip);
  const opacity=([body])=>fades[body]??1;
  function draw([body,first,start,count],alpha){
   gl.uniformMatrix4fv(uniforms.body,false,bodies[body]);gl.uniform4fv(uniforms.tint,tints[body]||NO_TINT);gl.uniform1f(uniforms.alpha,alpha);
@@ -764,14 +810,16 @@ function paint(view,chunks,bodies,look,tints,fades,spin,tilt,bank,scaleX,scaleY)
 async function loadHand(){
  const bytes=Uint8Array.from(atob(HAND_MESH),c=>c.charCodeAt(0));
  const data=await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+ prepareScatter(data);
  handView=prepare(canvas,data);
  if(fingerCanvas)fingerView=prepare(fingerCanvas,data);
- openingTime=performance.now();schedule();scheduleFinger();
+ schedule();scheduleFinger();
 }
 // The two views. Each looks square on to the hand's length. `look` is the point of the hand, in
 // mm, that sits at the middle of the stage; `roll` turns the view about the hand's length (at
-// PALM the palm faces the viewer, at 0 the view is from the little finger's side); `bank` turns
-// the picture on the screen (a quarter turn stands the fingers upright).
+// PALM the palm faces the viewer, at 0 the view is from the little finger's side); `lean` tips
+// the fingertips toward the viewer; `bank` turns the picture on the screen (a quarter turn
+// stands the fingers upright).
 const PALM=.08+82*Math.PI/180, NO_TINT=[0,0,0,0], NO_TINTS=[];
 // The whole hand, about a point a little off its middle, where the first model's centre was.
 const HAND_VIEW={look:[HAND_INFO.centre[0]-.18*25.4,HAND_INFO.centre[1]-.27*25.4,HAND_INFO.centre[2]+.91*25.4],bank:Math.PI/2};
@@ -779,11 +827,19 @@ const HAND_VIEW={look:[HAND_INFO.centre[0]-.18*25.4,HAND_INFO.centre[1]-.27*25.4
 // It is looked at along its own centre line, so it turns in place; `drop` then sets the picture
 // down by that many mm, because the finger curls upward and needs the room above.
 const MODULE_VIEW={look:[FINGERS.x[SHOWN]+PULL+140,FINGERS.y[SHOWN],8],roll:.52,sideRoll:.1,bank:.56,zoom:1.15,drop:22};
-function drawHand(view,poses,thumb,tints,fades,w,h,shift){
+// The closed hand the page opens on: seen from the little finger's side and tipped back, where
+// the thumb and the fingers show as one closed grip. It opens to PALM with OPEN_LEAN, the palm
+// held out toward the viewer.
+const CLOSED_VIEW={roll:PALM-.95,lean:-.28,zoom:.8}, OPEN_LEAN=.22;
+// The hand in parts: drawn smaller so the parts stay on the stage, turned a little so the ones
+// lifted out of the palm show beside it, and looked at `rise` mm further up the fingers,
+// because the parts travel further that way.
+const BURST_VIEW={zoom:.58,roll:-.42,lean:.12,rise:34};
+function drawHand(view,poses,thumb,burst,tints,fades,w,h,shift){
  if(!handView||!w||!h)return;
  const fit=Math.min(w,h)*.138*view.zoom, mm=fit/50.8*canvas.width/w;   // canvas pixels to a mm of the hand
  handView.gl.viewport(Math.round(canvas.width*shift),Math.round(-view.drop*mm),canvas.width,canvas.height);
- paint(handView,HAND_INFO.chunks,placeBodies(poses,thumb),view.look,tints,fades,view.roll,0,view.bank,fit/w,fit/h);
+ paint(handView,HAND_INFO.chunks,placeBodies(poses,thumb,burst),view.look,tints,fades,view.roll,view.lean,view.bank,fit/w,fit/h);
 }
 loadHand().catch(()=>{for(const place of [stage,fingerCanvas&&fingerStage])if(place)place.textContent='The 3D preview needs WebGL and a current browser.'});
 
@@ -809,7 +865,7 @@ const WASH=[.9,.92,.95], LIT=[.075,.204,.463];   // the pale grey a part takes w
 // as jumps in the hand. `shown` is where the story is, 0 to 1; it settles on the scroll position
 // in about half a second.
 const FOLLOW=11;
-let shown=null, speed=0, lastTime=0, cut=null;
+let shown=null, speed=0, lastTime=0;
 function render(now=performance.now()){
  const target=reduced.matches?0:clamp(((parseFloat(getComputedStyle(hero).top)||0)-track.getBoundingClientRect().top)/Math.max(1,track.offsetHeight-hero.offsetHeight));
  if(shown===null||reduced.matches){shown=target;speed=0;}
@@ -833,33 +889,13 @@ function render(now=performance.now()){
  // stage while it is still coming out.
  const show=story.show, lay=smooth((show-.45)/.55);
  const view={
-   look:HAND_VIEW.look.map((at,k)=>mix(at,MODULE_VIEW.look[k],show)),
+   look:HAND_VIEW.look.map((at,k)=>mix(at,MODULE_VIEW.look[k],show)+(k?0:BURST_VIEW.rise*smooth(story.burst*1.6))),
    roll:story.roll+(MODULE_VIEW.sideRoll-MODULE_VIEW.roll)*story.side,
+   lean:story.lean,
    bank:mix(HAND_VIEW.bank,MODULE_VIEW.bank,lay),
    zoom:mix(story.zoom,MODULE_VIEW.zoom,show)-.3*Math.sin(Math.PI*show),
    drop:MODULE_VIEW.drop*show
  };
- // On arrival, before any scrolling: the hand makes its pinch once and the view leans in. The
- // fingers come down first, the thumb crosses to the index fingertip, and the thumb leaves first.
- // It is drawn from its own pose, so it never writes into the story's dials.
- let drawn=poses, drawnThumb=thumb;
- if(openingTime!==null){
-   const elapsed=(now-openingTime)/1000;
-   // Scrolling away lets go of the pinch over half a second, not at once.
-   if(cut===null&&target>.002)cut=now;
-   const hold=cut===null?1:1-smooth((now-cut)/450);
-   if(reduced.matches||elapsed>4.9||hold<=0)openingTime=null;
-   else{
-     const arc=hold*Math.sin(Math.PI*clamp(elapsed/4.9))**2;
-     view.roll+=arc*.6;view.bank+=arc*.14;view.zoom+=arc*.2;
-     drawn=poses.map((part,i)=>{
-       const t=elapsed-i*.09;
-       return {pull:part.pull,bend:Math.max(part.bend,hold*GRIP*smooth((t-.65)/1.35)*(1-smooth((t-3.15)/1.35)))};
-     });
-     drawnThumb={reach:Math.max(thumb.reach,hold*smooth((elapsed-.95)/1.35)*(1-smooth((elapsed-3.1)/1.3)))};
-     schedule();
-   }
- }
  // The rest of the hand fades as the view leaves it. In the trace the module is pale, and each
  // link of the chain turns navy as the trace reaches it.
  const rest=1-smooth((show-.3)/.4);
@@ -870,7 +906,10 @@ function render(now=performance.now()){
    return [mix(WASH[0],LIT[0],lit),mix(WASH[1],LIT[1],lit),mix(WASH[2],LIT[2],lit),story.wash*mix(.86,1,lit)];
  }):NO_TINTS;
  const shift=parseFloat(getComputedStyle(stage).getPropertyValue('--hand-shift'))||0;
- drawHand(view,drawn,drawnThumb,tints,fades,width,height,shift);
+ // In parts the hand is wider. Beside the caption, a stage squarer than about 3:2 has less width
+ // to give, so there the parts are drawn smaller and stay clear of the words.
+ if(shift)view.zoom*=mix(1,Math.min(1,width/height/1.45),smooth(story.burst*1.6));
+ drawHand(view,poses,thumb,story.burst,tints,fades,width,height,shift);
  // The room behind turns with the view. --paper tells the stylesheet how far the view has gone to the module.
  drum.style.transform='translateZ(220px) rotateX(-8deg) rotateY('+(view.roll-PALM)*180/Math.PI+'deg)';
  hero.style.setProperty('--paper',show);

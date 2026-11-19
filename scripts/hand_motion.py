@@ -561,12 +561,14 @@ def verify(P, info, order, by_body, meshes):
 
 
 def verify_path(P, info):
-    """The way into the pinch, as the page plays it: fingers down first, the thumb arriving last.
+    """The way between the open hand and the pinch, with the fingers always at least as far closed
+    as the thumb. Since 2026-11-19 the page plays it outward only: it starts in the pinch and the
+    thumb leaves first.
 
     Builds the CAD at a grid of poses on that way and intersects every outer part of the thumb with
     the index and middle fingers, the palm, the plate and the thumb module. Shares are of the pinch:
     f for the fingers' carriage travel, g for the thumb's swing and its carriage travel together.
-    The page keeps f >= g on the way in and on the way out, so only that half is tested.
+    The page keeps f >= g all the way, so only that half is tested.
     """
     fingers, thumb = info["fingers"], info["thumb"]
     pinch = info["pinch"]
