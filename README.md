@@ -39,13 +39,13 @@ Roadmap page.
 
 | Path | What |
 |---|---|
-| `index.html` | The homepage with the scroll-driven 3D hand. One hand-edited file; it has no build step of its own. |
+| `index.html` | The homepage with the scroll-driven 3D hand. One hand-edited file; it has no build step of its own. The hand's shape and motion inside it are written by `scripts/hand_motion.py`. |
 | `src/pages/` | Every other page: The Problem, The Kit, Lessons, Sign in, the two dashboards, Roadmap, Team. |
 | `src/content/lessons/` | Lesson text. One folder per lesson, with a CAD, a hardware and a software part. |
 | `src/data/` | `evidence.ts`: every figure on The Problem page with its source. `mock.ts`: the fictional class for the dashboards. |
 | `src/components/`, `src/layouts/`, `src/styles/` | Shared nav, footer, page shell and styles for the inner pages. |
-| `public/` | Files served as they are: the hero video, 3D models, fonts, downloads. |
-| `scripts/` | `check-homepage.mjs` checks the homepage's scripts before a build. `screenshots.mjs` takes review screenshots. `step_to_glb.py` exports the hand and finger models from the CAD. `stl_to_glb.py` converts Lesson 1's step models from the `version-1` branch. |
+| `public/` | Files served as they are: 3D models, fonts, downloads, and a finger video no page uses since 2026-11-18. |
+| `scripts/` | `check-homepage.mjs` checks the homepage's scripts before a build. `screenshots.mjs` takes review screenshots. `hand_motion.py` exports the homepage's moving hand from the CAD: its parts and how each one moves. `step_to_glb.py` exports the still hand and finger models on The Kit page from the CAD. `stl_to_glb.py` converts Lesson 1's step models from the `version-1` branch. |
 | `docs/README.md` | One file: where the site stands, the to-do list, the log of design changes, the theme (colours, type, building blocks, the wording from the team poster), and the plan with its prompts. |
 | `.github/workflows/deploy.yml` | Builds and publishes the site on every push to `main`. |
 
@@ -78,9 +78,13 @@ They land in `screenshots/my-label/`, which git ignores.
 Edit `index.html` directly. The build copies it to the root of the site unchanged.
 
 - Link to other pages and files with relative paths: `lessons/`, `team/`,
-  `videos/finger-hero-transparent.webm`. They then work on the live site and locally.
+  `fonts/inter-latin-opsz-normal.woff2`. They then work on the live site and locally.
 - The hand model and the animation code are inside the file. `npm run build` stops if one of
   its scripts no longer parses.
+- The hand's model and its joint tables sit between two `HAND-DATA` comments. They come from
+  the CAD: do not edit them, run `scripts/hand_motion.py` (`docs/README.md`, "The hand on
+  the homepage"). The scroll scenes, their timing, the camera and the colours are ordinary
+  code around that block and can be edited as before.
 
 ## Adding or changing a lesson
 

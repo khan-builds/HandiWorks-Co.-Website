@@ -16,6 +16,7 @@ as branch `LZ-C5.2`.
 | [Where things stand](#where-things-stand) | What is on GitHub, and what is on the build machine, page by page. |
 | [To do](#to-do) | Every open item, with who owes it. |
 | [Design changes](#design-changes) | A dated log of what changed, and the choices made without asking. |
+| [The hand on the homepage](#the-hand-on-the-homepage) | Where its shape and its motion come from, and how to rebuild it when the CAD changes. |
 | [Theme](#theme) | Colours, type, building blocks, motion, and the wording from the team poster. |
 | [The plan](#the-plan) | What the site has to do, the decisions, the rules, and the prompts still in use. |
 | [Prompts already run](#prompts-already-run) | Prompts 1 to 7, kept for the record. |
@@ -74,7 +75,7 @@ on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 
 | Page | State | Still open |
 |---|---|---|
-| Home | Golam's scroll-driven hand with his curl changes of 2026-11-18, in the poster theme, with the shared nav and footer. Every button leads to a real page. | The stage is light. A navy stage is the option not taken. |
+| Home | Golam's four-step scroll story and camera, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. See [The hand on the homepage](#the-hand-on-the-homepage). **Not committed yet.** Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
 | The Problem | Poster's goal and objectives, the 18% / 42% figure checked against the Gallup report, 15 more sourced figures. | The "250,000 students" and "$500 kit" figures are left off: no source says them. |
 | The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Circuit diagram is a labelled placeholder until the image arrives. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
@@ -107,7 +108,12 @@ All but the last two were taken again on 2026-11-18.
 
 The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-18.zip` on
 the build machine (6.6 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
-snapshot of the build of 2026-11-18 and replaces the one of the day before.
+snapshot of the build of 2026-11-18 and replaces the one of the day before. **It was made
+before the homepage hand changed that same day, so it still holds the old hand: run prompt 8
+again.**
+
+Screenshots of the new hand are in `screenshots/hand-v11/`: the homepage frame by frame at
+both widths, and `before-after-1440.png`, six frames of the old hand beside the new one.
 
 ## To do
 
@@ -125,13 +131,18 @@ Lingbo does these. `main` is the live site, and it changes only when Lingbo merg
   the 3D models. `screenshots/baseline/` is the site on GitHub, and
   `screenshots/poster-before/` is five pages before the poster pass.
 - [ ] Tell Golam, Billy and Clarence before the merge.
-  - Golam: his `index.html` changed. Of its 2,188 lines, 1,975 were removed and 566 added.
-    The hand's model data is byte for byte the same, his curl changes of 2026-11-18 are in,
-    and the hand moves through the same four-step scroll story. The colours, fonts, nav,
-    buttons and words around it changed: see [Design changes](#design-changes). His logo is
-    on every page as a tracing from the poster, and the real file would replace it.
+  - Golam: his `index.html` changed. Of its 2,188 lines, 2,042 were removed and 736 added.
+    The hand goes through the same four-step scroll story with his camera moves and his
+    colours. Its model and the code that bends it were replaced on 2026-11-18 by an export
+    from the CAD, hand v11: see [The hand on the homepage](#the-hand-on-the-homepage). His
+    three curl commits of that morning are no longer in the file, because the joints are no
+    longer set by hand. The colours, fonts, nav, buttons and words around the hand changed
+    too: see [Design changes](#design-changes). His logo is on every page as a tracing from
+    the poster, and the real file would replace it.
   - Billy: `app/` leaves the repo, so pull requests 1 to 4 no longer fit `main`. His
-    Lesson 1 is on the site as a draft, waiting for his review.
+    Lesson 1 is on the site as a draft, waiting for his review. His finger video is no
+    longer shown on the homepage: a finger drawn from the current CAD is in its place. The
+    file is still in `public/videos/`.
   - Clarence: his simulator is in `main` and not in this branch, which removes `app/` and
     the old workflow and replaces the homepage his buttons are on. It has to come into this
     branch before the merge: see [For the team to decide](#for-the-team-to-decide).
@@ -166,6 +177,23 @@ then goes in with prompt 10.
 
 ### For the team to decide
 
+- [ ] **Which hand the site shows.** Since 2026-11-18 the homepage shows hand v11, the newest
+  CAD: the palm built for Lingbo's own finger housing, with the thumb as a module. On it a
+  finger curls to 53.5°, because that housing gives the carriage 18 mm to travel. The Kit
+  page still shows hand v10 and finger module v4, with v10's numbers: an M3 threaded rod, a
+  90° curl, a module 282 mm long, "CAD v10". The two pages disagree until one hand is
+  picked. The CAD notes say the same thing from their side: two hands are current (v11, and
+  "v10 full curl" with a 90° curl) and one finger module has to be chosen. Lingbo's call.
+  - If v11: add `hand-v11` and a finger v5 entry to `scripts/step_to_glb.py`, run it, and
+    change the Kit page's two models, their captions, and the rows Finger drive, Finger
+    curl, Finger module, Size and Status, from hand v11's README in the CAD folder.
+  - If the 90° hand: point `HAND` in `scripts/hand_motion.py` at its folder and bring the
+    part names up to date (its header says how), and the Kit page needs its models
+    re-exported for finger v5 all the same.
+- [ ] **Billy's finger video.** It showed the older upright finger coming apart and going
+  back together. A live finger from the CAD took its place on 2026-11-18. If that stays,
+  delete `public/videos/finger-hero-transparent.webm` (2.6 MB, no page asks for it now). If
+  the video should come back, it needs rendering again from the current finger.
 - [ ] **Servo or DC motor.** Lesson 1 teaches a positional servo. The hand on The Kit page is
   driven by DC motors on threaded rods. Decide which the lesson should teach, in the review.
 - [ ] **288 mm or 282 mm.** Lesson 1 says the finger is 288 mm long. The CAD notes give the
@@ -206,6 +234,42 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-18: the hand moves the way the CAD does
+
+Lingbo asked for the animations to be brought up to the latest CAD, and said some of the
+movements were wrong. They were: the page bent the hand by itself, at joints placed by eye.
+Now the page holds no joint of its own. The shape and every movement are exported from the
+CAD by `scripts/hand_motion.py`. It is in branch `LZ-C5.2`, not in `main`.
+
+| | Before | Now |
+|---|---|---|
+| The model | An older hand, 32 mm between the fingers, put in on 2026-11-15. | Hand v11, the CAD of 2026-11-17: 36.6 mm between the fingers, the thumb and its motor as a module on the palm's side. |
+| A finger | Three hinges set in the page, turning 49°, 70° and 66°: a fist of 185°. Links and coupler bars turned with whichever segment they were tied to, so they left their pins. | One number, how far the motor's carriage has run along its screw (18 mm). The CAD's linkage table places the carriage, the link, three segments and two coupler bars for it. At the end of the travel the knuckle is at 53.5°, the middle joint 26.8° further and the tip 36.1° further. That is all this hand can curl. |
+| The thumb | Turned flat in the plane of the palm, about three pivots set in the page, by the average of the four fingers. As the fingers closed it swung outward, away from them. | Swings across the palm on the VEX 393's shaft and curls by its own carriage, as built. |
+| The grip | A fist, with parts passing through each other. | The CAD's pinch pose: fingers at 40°, thumb swung 70° and curled 36°, the thumb tip on the index fingertip and nothing else touching. |
+| The taken-apart view | The finger linkages slid 25 mm forward and fanned out sideways, leaving their motor housings in the palm. | Each finger module slides 45 mm straight out of its socket, housing and all, and the thumb module rises 45 mm off its two rails. Both are how the CAD takes the hand apart. |
+| Beside "The kit" | Billy's video of the older upright finger coming apart. | The middle finger's module from the same data, curling to its limit and opening, every 7 seconds. Housing in sky, carriage in lime, links in white. |
+| Weight of the page | `index.html` 1.97 MB, and a 2.6 MB video. | `index.html` 1.41 MB. No video is asked for. |
+
+Golam's four scroll scenes, their timing, the camera moves and the five colours are kept.
+
+Checked against the CAD: the exported parts, moved by the tables, sit within 0.04 mm of the
+CAD built at the same pose, in five poses. The way into the pinch was built in the CAD at 35
+poses and nothing touches before the two tips do.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| "The latest CAD" is hand v11: the last one built, marked current in the CAD notes, and made for Lingbo's own housing. | "Hand v10 full curl", built the same evening, whose fingers reach 90°. The CAD notes leave the choice between the two open. It is in [To do](#for-the-team-to-decide). |
+| The grip scene and the opening close to the pinch, with the fingers at 40°. | The fingers at their 53.5° limit with the thumb at rest. |
+| The fingers come down first and the thumb arrives last, then leaves first. | The thumb in place first. The CAD shows the index fingertip grazing it on the way down (3.4 mm³ at 36°). |
+| The Kit page is left as it is, on hand v10 with v10's numbers. | Re-exporting its two models and changing five rows of its spec table to v11's. That changes what the site says the product is, so it waits for the choice above. |
+| A live finger replaces Billy's video. The video file stays in `public/videos/`. | Keeping the video of the older finger, or leaving the stage empty until a new one is rendered. |
+| Parts that cannot be seen are left out: the motors in their pockets, the boards in the closed box, the eight screws inside the palm. | Exporting every part. The data would be heavier for nothing visible. |
+| The hand is drawn 7% smaller, because hand v11 is 20 mm wider and 9 mm longer and would otherwise run off the stage. | The same scale, cropped. |
+| The model stays inside `index.html`, as Golam set it up on 2026-11-15. | A separate file fetched by the page. |
 
 ### 2026-11-18: closer to the poster
 
@@ -328,6 +392,79 @@ Decided during that work:
 | Rule 5 applied to the homepage: prompt 2 took out its two mentions of the class. | Leaving the class named on the homepage. |
 | Prompt 2 turned the homepage's dark stage light, so that it matches the poster and the hand's navy parts stay readable. | A navy stage with white captions. It is in [To do](#to-do). |
 
+## The hand on the homepage
+
+Since 2026-11-18. The homepage draws two things from one block of data inside `index.html`:
+the whole hand in the scroll story at the top, and one finger module beside "The kit". The
+block sits between two `HAND-DATA` comments and is written by `scripts/hand_motion.py`. Never
+edit it by hand.
+
+**Where it comes from.** The CAD is not in this repo. It is in `~/workspace/SLDP` on the
+build machine. The script loads hand v11 there
+(`11.17 Thumb Updates/hand/v11_modular/palm11.py`), builds it with the fingers straight and
+the thumb at rest, and writes out:
+
+- every visible part as triangles, grouped into 40 rigid bodies: the palm with everything
+  fixed to it, eight bodies for each finger, seven for the thumb
+- for a finger, a table of where its carriage, link, three segments and two coupler bars are
+  at 49 evenly spaced points of the carriage's travel. The numbers are read from the function
+  the CAD itself places those parts with
+- the same for the thumb's own carriage, link, two segments and coupler bar
+- where the thumb's swing shaft is, and the pinch pose the CAD was checked in
+
+**What the page can move.** Five things, and no joint directly:
+
+| In the script | What it is | Range |
+|---|---|---|
+| `poses[i].bend` | Finger `i`'s carriage along its lead screw. The whole finger follows. | 0 to 1 is 0 to 18 mm, a knuckle curl of 0 to 53.5° |
+| `poses[i].lift` | Finger module `i` slid forward out of its socket. | 0 to 1 is 0 to 45 mm (`PULL`). The CAD checks up to 130 mm. |
+| `thumb.reach` | The thumb coming across to the index fingertip: its swing and its curl together. | 0 is at rest, 1 is the pinch: swing 70°, curl 36° |
+| `thumb.lift` | The thumb module raised off its two rails. | 0 to 1 is 0 to 45 mm (`THUMB_LIFT`). The CAD checks up to 60 mm. |
+| the finger beside "The kit" | The middle finger's `bend`, on a 7 second round. | 0 to 1 |
+
+**What the scroll story does with them.** The scenes, their timing and the camera are
+Golam's and can be changed in `prepareTimeline()` and `render()` as before.
+
+| Scene | The hand |
+|---|---|
+| Opening, the first 5 seconds | Closes to the pinch and opens again. |
+| Build one finger. | Closes to the pinch while the camera goes round it. |
+| See what moves. | Opens, then the four finger modules slide out of the palm and the thumb module rises off its rails. |
+| Try your own design. | The modules go back in. |
+
+Keep one rule when changing the timing: on the way into the pinch the fingers lead and the
+thumb arrives last, and on the way out the thumb leaves first. The other order puts the
+index fingertip through the thumb tip.
+
+**When the CAD changes.** With the CAD environment, from the repo folder:
+
+```
+~/.venvs/sldp-cad/bin/python scripts/hand_motion.py --check        # 1 minute
+~/.venvs/sldp-cad/bin/python scripts/hand_motion.py --check-path   # 10 minutes
+npm run build
+npm run shots -- hand /
+```
+
+For a new hand, first change `HAND` and `LABEL` at the top of the script, and bring the lists
+of part names under them up to date. The script stops and names any part it does not know.
+
+- `--check` builds the CAD at five other poses and compares every exported part, moved by
+  the tables, with the CAD's own. It writes nothing if any part is more than 0.2 mm off. On
+  2026-11-18 the worst was 0.04 mm.
+- `--check-path` builds the CAD at 35 poses on the way into the pinch and intersects the
+  thumb with the index and middle fingers and the palm. On 2026-11-18 nothing touched on the
+  way, and at the pinch the two tips met by 0.3 mm³, which is the grasp.
+
+**What is not shown.**
+
+- The lead screws do not turn. A finger's housing is drawn as the CAD has it, one solid
+  bar standing in for Lingbo's two printed halves, with no screw inside it.
+- Parts that cannot be seen are left out: the motors, the boards in the box, the screws
+  inside the palm.
+- One nut on the thumb sits 0.4 mm off, because the CAD does not turn it with either of the
+  two links it joins.
+- Hand v11 has not been printed. The page shows what the CAD says, not a measured hand.
+
 ## Theme
 
 Agreed 2026-11-17. The look comes from the team's SLDP poster. The poster image itself is not
@@ -418,8 +555,11 @@ These are the poster's own parts. Every page is assembled from them.
   stat panel, extend from the left as they come on screen. A percentage draws its bar to that
   length. Nothing else animates in.
 - **Page to page.** The nav holds still and the rest cross-fades, in browsers that support it.
-- **Reduced motion.** Both of the above switch off when the reader has asked for less motion,
-  and everything is visible without scripting.
+- **The hand.** On the homepage the hand and the single finger move only the way the CAD
+  says the real ones do: see [The hand on the homepage](#the-hand-on-the-homepage).
+- **Reduced motion.** All of the above switch off when the reader has asked for less motion:
+  the hand holds still, open, and the single finger holds half curled. Everything else is
+  visible without scripting.
 - **Arrows are drawn**, never typed: the font file has no arrow characters. Inner pages use
   the `Arrow` component; the homepage uses a small inline SVG.
 - **Focus.** A 3px navy outline with a 2px gap on white, white on navy.
@@ -545,10 +685,13 @@ The plan covers the demo path and nothing else:
 8. **Nothing loads from another site.** Outbound links to sources and mailto links are fine.
    `npm run shots` prints a warning for every page that breaks this.
 9. **Short words on screen.** Labels and results, not explanations.
-10. **The homepage is one hand-edited 2 MB file that Golam also edits.** Before touching
+10. **The homepage is one hand-edited 1.4 MB file that Golam also edits.** Before touching
     `index.html`, run `git fetch` and merge `origin/main` into the branch. Never read the
-    whole file: the hand's data sits on two very long lines (562 and 592 on 2026-11-18, and
-    they move). Work by `grep` and line ranges, and change only what the task needs.
+    whole file: the animation library and the hand's data sit on three very long lines (552,
+    557 and 558 on 2026-11-18, and they move). Work by `grep` and line ranges, and change
+    only what the task needs. The two data lines, between the `HAND-DATA` comments, are
+    written by `scripts/hand_motion.py` and never by hand: see
+    [The hand on the homepage](#the-hand-on-the-homepage).
 11. **Links.** Inner pages link with `p()` and `asset()` from `src/lib/url.ts`. The homepage
     links with relative paths (`lessons/`, `team/`).
 12. **Branch `LZ-C5.2`. Never commit, never push, unless Lingbo asks.** Lingbo names each
