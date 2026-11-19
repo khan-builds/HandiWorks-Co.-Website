@@ -82,7 +82,7 @@ on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 | Lesson 1 | Billy's lesson from `version-1`: five CAD steps with their models, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". | Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. Clarence's simulator is not in it. |
 | Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. | Nothing. |
 | Roadmap | Four phases as the poster's timeline, and a table of what is live, draft, demo or coming soon. | Nothing. |
-| Team | Names and roles from the poster, initials for photos, the one line about NYU Tandon. | Bios and photos. |
+| Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
 | Every page | The HandiWorks mark in the nav, the footer and the browser tab, traced from the poster. | The real logo file. |
 
 `npm run build` passed on 2026-11-18: the homepage and 23 pages built by Astro, one of them
@@ -234,6 +234,19 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-18: emails on the Team page
+
+Lingbo gave the four addresses. Each person's card on the Team page now shows theirs under
+the role, as a mailto link. It is in branch `LZ-C5.2`, not in `main`.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| On the Team page only. The team teaser on the homepage stays names and roles. | The addresses on the homepage too. |
+| Contact and "Request a kit" still go to Lingbo's NYU address, so the site shows two addresses for Lingbo. | Lingbo's Gmail address there too. |
+| In a narrow column an address breaks at the @. | Smaller type, or a break wherever the line ends. |
 
 ### 2026-11-18: the hand moves the way the CAD does
 
