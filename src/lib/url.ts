@@ -1,5 +1,5 @@
 /** Base-path aware URL helpers. The site deploys under /HandiWorks-Co.-Website/ on GitHub Pages. */
-import { CONTACT_EMAIL } from './team';
+import { CONTACT_EMAILS } from './team';
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
@@ -21,5 +21,5 @@ function splitSuffix(path: string): [string, string] {
   return i === -1 ? [path, ''] : [path.slice(0, i), path.slice(i)];
 }
 
-/** A link that starts an email with its subject filled in. With no address it goes to CONTACT_EMAIL. */
-export const mailto = (subject: string, to: string = CONTACT_EMAIL) => `mailto:${to}?subject=${encodeURIComponent(subject)}`;
+/** A link that starts an email with its subject filled in. With no address it goes to all four people. */
+export const mailto = (subject: string, to: string = CONTACT_EMAILS) => `mailto:${to}?subject=${encodeURIComponent(subject)}`;

@@ -13,6 +13,7 @@ export const team: Member[] = [
   { name: 'Lingbo Zhang', role: 'Project Manager', email: 'lingbo.zhang@gmail.com' },
 ];
 
-/** Where "Request a kit" goes: the project manager. One address, not all four, because some
-    mail programs do not split a list of addresses in a mailto link. */
-export const CONTACT_EMAIL = team.find((m) => m.role === 'Project Manager')!.email;
+/** Where "Request a kit" goes: all four people, so no one's address stands alone. A mailto link
+    lists them with commas, as the standard says. Classic Outlook may need its "commas separate
+    recipients" setting to split the list. */
+export const CONTACT_EMAILS = team.map((m) => m.email).join(',');
