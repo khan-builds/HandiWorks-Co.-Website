@@ -3,7 +3,7 @@ import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import { asset, mailto } from '../lib/url';
-import { team, CONTACT_EMAIL } from '../lib/team';
+import { team } from '../lib/team';
 
 const initials = (name: string) => name.split(' ').map((w) => w[0]).join('');
 const missing = team.some((m) => !m.bio || !m.photo);
@@ -41,11 +41,16 @@ const missing = team.some((m) => !m.bio || !m.photo);
   <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
     <div class="wrap py-14 md:py-20">
       <SectionLabel>Talk to us</SectionLabel>
-      <div class="mt-8 grid gap-x-16 gap-y-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+      <div class="mt-8 grid gap-x-16 gap-y-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
         <p class="statement text-white">Teachers, schools, and makers: we want to hear what you would do with a hand like this.</p>
-        <div class="flex flex-wrap gap-3 lg:justify-end">
-          <a class="btn btn-primary" href={mailto('HelpingHand question')}>{CONTACT_EMAIL}</a>
-          <a class="btn btn-secondary" href={mailto('HelpingHand kit request')}>Request a kit</a>
+        <div>
+          {/* Everyone's address, not one person's. */}
+          <ul class="grid gap-2">
+            {team.map((m) => (
+              <li><a class="link [overflow-wrap:anywhere]" href={mailto('HelpingHand question', m.email)}>{m.email.split('@')[0]}<wbr />@{m.email.split('@')[1]}</a></li>
+            ))}
+          </ul>
+          <a class="btn btn-primary mt-6" href={mailto('HelpingHand kit request')}>Request a kit</a>
         </div>
       </div>
     </div>
