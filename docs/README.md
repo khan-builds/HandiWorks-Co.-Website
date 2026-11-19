@@ -23,7 +23,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-19 at 12:07 Pacific.
+Checked against GitHub on 2026-11-19 at 13:08 Pacific.
 
 **The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
 shows the old one-page homepage.
@@ -73,11 +73,12 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 `main` is four commits further on, but those four add the simulator and take it out again,
-so no file differs. Nine commits are pushed: the rebuild, the hand from the CAD, the emails
+so no file differs. Ten commits are pushed: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
-people, and the homepage story with the flat hand, the receding palm and the littered parts.
-Prompts 1 to 9
+people, the homepage story with the flat hand, the receding palm and the littered parts,
+and that story without the turn round the hand, with all four modules sliding out, the
+played coming apart, and the litter kept clear of the page's content. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
@@ -131,8 +132,15 @@ The scroll story of that evening is in `screenshots/hand-story/`: `story-1440.pn
 same scroll before the change, `opening-1440.png` is the first five seconds, and the
 `home-*.png` files are single frames.
 
-The story as it stood at the end of 2026-11-19, with the flat hand and the littered parts,
-is in `screenshots/hand-litter/`: `story-1440.png` and `story-390.png` are the whole scroll
+The story as it stands, from the afternoon of 2026-11-19, is in `screenshots/hand-latest/`:
+`story-1440.png` and `story-390.png` are the whole scroll on one sheet at each width,
+`burst-1440.png` and `burst-390.png` are the coming apart frame by frame in time,
+`1-closed.png` to `6-spread.png` are single frames, `page-1440.png` and `page-390.png` show
+the parts behind the rest of the page, and `reduced-motion.png` is what a visitor who has
+asked for less motion sees.
+
+The story as it stood at midday on 2026-11-19, with the turn round the flat hand, is in
+`screenshots/hand-litter/`: `story-1440.png` and `story-390.png` are the whole scroll
 on one sheet at each width, `1-closed.png` to `6-littered.png` are single frames,
 `page-1440.png` and `page-390.png` show the parts behind the rest of the page, and
 `reduced-motion.png` is what a visitor who has asked for less motion sees.
@@ -273,6 +281,71 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-19: no turn round the hand, four modules out, a played burst, litter kept clear
+
+Four notes from Lingbo on the entry below:
+
+1. The explosion at the end is a bit off. Look at a reference such as Anime.js for ways to
+   improve it.
+2. There should be no full turn round the hand at the start. The angle it is seen at is good.
+3. Pulling the finger out passes it through the palm. Try pulling out each module and
+   focusing in on one.
+4. The parts scattered down the page should not overlap any table or text.
+
+| | At midday | Now |
+|---|---|---|
+| HelpingHand | The view went once round the flat hand. | No turn. The hand is seen from in front of the fingertips, a little to one side, and comes square on as it opens. |
+| Build one finger. | One module slid out while the palm moved back at the same time, so the palm passed through it. | All four modules slide out first, the outer two first. Only when every one is clear does the rest of the hand move back, and the view goes to the middle module. |
+| The coming apart | Tied to the scroll: as fast or slow as the visitor scrolled. Every part left at once along its own line. | Played in a second and a quarter once the scroll reaches it. Two stages: the assemblies part, then their parts. Sprung, with a small draw in first. |
+| The spread at the end | Parts over the whole stage, some behind the caption. Yellow parts passed through green on the way to sky. | Parts only to the right of the caption. They lose their colour first, then take the sky's. |
+| The rest of the homepage | Parts behind text and showing through the table. | Parts only where there is room, at least 18 px from any text, table, panel or button. |
+| The scroll | 6.9 screens. | 7.1 screens. |
+
+What the references said, and what was taken from them:
+
+- Anime.js keeps two kinds of scroll animation apart: one tied to the scroll position, and
+  one that plays by itself once a threshold is crossed. An explosion tied to the scroll can
+  never be sudden, so this one now plays.
+- Anime.js staggers a group from its centre and offers spring and elastic easings. The
+  middle of the hand now goes first and every part overshoots a little and settles.
+- Guides to exploded views in Three.js open a model in two stages: assembly groups first,
+  then the parts inside each. The hand now does the same.
+
+Anime.js itself is not back in the page. The moves are a few lines of the hand script.
+
+It is in branch `LZ-C5.2`, not in `main`.
+
+Checked in headless Chrome:
+
+- Every step of the story, 2,381 of them: the four rules as before, and the rest of the hand
+  never moves back before the shown module is fully out.
+- 400 random jumps in the scroll give the same hand as scrolling there.
+- At 1440 x 900, 1100 x 1000, 1024 x 768 and 390 x 844, the hand has at least 22 px clear of
+  the caption, the nav and the edges of the stage through the first two scenes and the
+  return.
+- On the rest of the page, no part touches any content at 1440, 1280, 1024, 768 or 390 px
+  wide. The least gap is 18 px. 39 of the 40 parts find a place at 1440 px, 36 at 1024 px
+  and 14 at 390 px.
+- The build passes, the homepage has no script errors, and it does not scroll sideways from
+  360 to 1440 px.
+
+Not checked: how it feels under a real wheel, trackpad or finger, and how fast it runs on a
+real phone.
+
+Decided during that work:
+
+| Decision | Option not taken |
+|---|---|
+| The coming apart plays by itself and plays backward if the visitor scrolls back up. | Stay tied to the scroll. |
+| The other three modules go home out of sight, during "See what moves.", so the hand comes back with one module out as before. | All four sliding home in view. |
+| A littered part with no clear place is left out. | Shrink it, or let the content cover part of it. |
+| Parts keep clear by position. Table cells are also white, as a second guard. | White boxes behind every block of text, which would cut parts off in mid-air. |
+
+Sources for the references: [Anime.js stagger from](https://animejs.com/documentation/utilities/stagger/stagger-parameters/stagger-from/),
+[Anime.js ScrollObserver synchronisation modes](https://animejs.com/documentation/events/onscroll/scrollobserver-synchronisation-modes/),
+[Three.js exploded view, multi-part GLB](https://digitalgarden.si/blog/threejs-exploded-view/),
+[Exploded view of a 3D model with React Three Fiber](https://blog.anaili.fr/articles/exploded).
 
 ### 2026-11-19: a flat hand the view goes round, a palm that moves back, parts down the page
 
@@ -690,27 +763,39 @@ scene: the hand opens toward the visitor, and at the end it comes apart.
 
 | Caption | Share of the scroll | The hand |
 |---|---|---|
-| Before any scrolling | | Lying flat, palm up and closed, in the CAD's pinch, seen from a little way off. It does not move until the page is scrolled. |
-| HelpingHand | 0 to 20% | The view comes in and goes once round the hand, so every side is seen, and stops in front of the fingertips. On the way the hand opens: the thumb leaves first and the fingers follow, index first. It ends flat and open, the four fingers pointing at the visitor. |
-| Build one finger. | 20 to 50% | The middle finger's module slides 130 mm out of its socket, toward the visitor, and the rest of the hand moves back into the distance and fades. The view goes to the module. It is turned once round and laid across the stage, then curls to its limit and opens. |
-| See what moves. | 50 to 75% | The module seen from its side. Its colours drain, then each link turns navy in the order the motion travels (carriage, link, first segment, bar, middle segment, bar, fingertip) while the finger curls again. |
-| Try your own design. | 75 to 100% | The hand comes back upright and the module slides in the way it came out. Then the whole hand comes apart: all 40 parts leave the middle along their own lines, turning a little. Last, the parts spread over the whole stage and turn pale sky. |
+| Before any scrolling | | Lying flat, palm up and closed, in the CAD's pinch, seen from in front of the fingertips and a little to one side. It does not move until the page is scrolled. |
+| HelpingHand | 0 to 14% | The hand opens and comes closer and square on: the thumb leaves first and the fingers follow, index first. It ends flat and open, the four fingers pointing at the visitor. The view does not go round it. |
+| Build one finger. | 14 to 52% | All four finger modules slide 130 mm out of their sockets, toward the visitor, the outer two first. Once every module is clear, the view picks the middle one: the rest of the hand moves back into the distance and fades. The module is turned once round and laid across the stage, then curls to its limit and opens. |
+| See what moves. | 52 to 76% | The module seen from its side. Its colours drain, then each link turns navy in the order the motion travels (carriage, link, first segment, bar, middle segment, bar, fingertip) while the finger curls again. Out of sight, the other three modules go home. |
+| Try your own design. | 76 to 100% | The hand comes back upright and the module slides in the way it came out. At 84% of the scroll the whole hand comes apart, in a second and a quarter, at its own pace. At the very end the parts spread over the stage, clear of the caption, and turn pale sky. |
 
-**The parts go on down the page.** Below the story, the same 40 parts lie behind the rest of
-the homepage in pale sky, most of them in the margins on a wide screen. `litterPage()` draws
-each part once into a small picture of its own and sets the pictures behind the sections;
-`driftLitter()` lets each drift and turn a little as the page scrolls. Panels and tables
-cover them; text on white sits over them. With less motion asked for they do not move.
+**The coming apart is played, not scrolled.** Every other move follows the scroll. This one
+starts when the scroll reaches `BURST_AT` and then runs on its own clock for `BURST_SECONDS`,
+however fast or slowly the page is scrolled. Scrolling back above `BURST_AT` runs it
+backward. It goes in two stages, the way an exploded drawing is built: first the assemblies
+part (the palm, each finger with its module, the thumb), then each assembly's own parts
+spread along it. Each move is sprung: drawn in a little first, then out past its place and
+back to it. The middle of the hand goes first. `scatter()` does this. Where a part ends up is
+its distance from `BURST_FROM` times `SPREAD`, plus a push for its kind of part so parts that
+sit inside one another separate (`LIFT`), with a turn of up to `TUMBLE`. The turn is the same
+every time: it comes from the part's number, not from chance.
+
+**The parts go on down the page.** Below the story, the same parts lie behind the rest of the
+homepage in pale sky. `litterPage()` draws each part once into a small picture of its own.
+`placeLitter()` finds each one a place with room: clear of every heading, line of text, list,
+table, panel, figure and button by at least 18 px, and clear of the other parts. A part with
+nowhere to go is left out, so a wide screen shows nearly all 40 and a phone about a dozen.
+The places are worked out again when the window changes size. `driftLitter()` turns each
+part and moves it a few pixels as the page scrolls, less than the room it was given. With
+less motion asked for they do not move. The homepage's table cells are white, so a table
+would cover a part even if one were under it.
 
 The coming apart, the spreading and the litter are the things in the story that are **not
-motions of the CAD**. No part of the real hand flies. `scatter()` moves each part away from `BURST_FROM` by a share of its distance
-(`SPREAD`), adds a push for its kind of part so parts that sit inside one another separate
-(`LIFT`), and turns it by up to `TUMBLE`. The turn is the same every time: it comes from the
-part's number, not from chance.
+motions of the CAD**. No part of the real hand flies.
 
 **How to change it.** The story is a list of moves in `prepareStory()`. A move takes one
 dial from one value to another: `move(dial, name, from, to, start, length)`. The scroll is
-11,500 steps from top to bottom, and `SCENES` says at which step each caption starts. Three
+11,900 steps from top to bottom, and `SCENES` says at which step each caption starts. Three
 kinds of dial:
 
 - the parts, in the table above
@@ -722,15 +807,15 @@ kinds of dial:
   the hand moved back into the distance), `story.side` (the module from three-quarters on to
   square from its side)
 - the colours of the trace: `story.wash` and `story.trace`
-- `story.burst`: how far the hand has come apart, and `story.litter`: how far the parts have
-  spread over the stage and turned pale
+- `story.litter`: how far the parts have spread over the stage and turned pale. (The coming
+  apart is not a dial: see above.)
 
 `HAND_VIEW` and `MODULE_VIEW` say where the two views look from. `OFFER_VIEW` is the flat
 hand the page opens on and holds out, and `BURST_VIEW` is the hand in parts. `REST` is the
 step shown to a visitor who has asked for less motion: the open hand, held out. The page follows the scroll
 with a short lag (`FOLLOW` in `render()`), so a mouse wheel's steps do not show.
 
-Keep four rules when changing the moves:
+Keep five rules when changing the moves:
 
 1. On the way out of the pinch the thumb leaves first, and on any way into it the fingers
    lead and the thumb arrives last. The other order puts the index fingertip through the
@@ -740,7 +825,10 @@ Keep four rules when changing the moves:
 3. List each dial's moves in the order they happen, and do not let two moves of one dial
    overlap. A dial takes its latest move that has begun.
 4. The hand comes apart only when it is whole and open: every module in, every finger
-   straight, the thumb at rest. The parts spread over the stage only once it is fully apart.
+   straight, the thumb at rest. So `BURST_AT` comes after all of those moves have ended. The
+   parts spread over the stage only once it is fully apart.
+5. The rest of the hand moves back (`story.away`) only once the shown module is fully out of
+   its socket. Before that, moving back would carry the palm through the module.
 
 **When the CAD changes.** With the CAD environment, from the repo folder:
 
