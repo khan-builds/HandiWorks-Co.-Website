@@ -670,8 +670,8 @@ function prepareStory(){
  move(story,'lean',OFFER_VIEW.lean,0,6990,1);
  move(story,'depth',OFFER_VIEW.depth,0,6990,1);
  move(story,'bank',OFFER_VIEW.bank,HAND_VIEW.bank,6990,1);
- // See what moves. Square from the side, the colours drain, then each link of the chain takes a
- // colour of its own in the order the motion travels, carriage to fingertip, while the finger
+ // See what moves. Square from the side, the colours drain, then each link of the chain gets
+ // its own colour back in the order the motion travels, carriage to fingertip, while the finger
  // curls again.
  move(story,'side',0,1,7100,400);
  move(story,'wash',0,1,7150,300);
@@ -1076,23 +1076,18 @@ const OF_SHOWN=HAND_INFO.bodies.map(name=>name.startsWith('finger'+SHOWN+':'));
 const OF_FINGER=HAND_INFO.bodies.map(name=>name.startsWith('finger'));
 const FINGER_OF=HAND_INFO.bodies.map(name=>name.startsWith('finger')?+name[6]:-1);
 // ---- the hand's colours ----
-// A colour for each finger, little finger to index, and one for the thumb, on a navy palm. A
-// finger's housing and fingertip take its colour, its bars and link the same colour darker,
-// its segments white. The carriages are steel. `bar` and `tip` are how light the finger's own
-// colour is drawn there.
-const SCHEME={palm:[.1,.17,.4], fingers:[[.95,.42,.37],[.98,.75,.18],[.12,.75,.65],[.56,.42,.91]], thumb:[.96,.5,.69], segment:[.95,.96,.98], bar:.72, tip:1, steel:[.62,.67,.74]};
-const BODY_COLOUR=HAND_INFO.bodies.map(name=>{
- const [set,kind]=name.split(':'), own=set==='thumb'?SCHEME.thumb:set==='palm'?SCHEME.palm:SCHEME.fingers[+set[6]];
- const shade=how=>Array.isArray(how)?how:own.map(c=>c*how);
- return set==='palm'||kind==='mount'?SCHEME.palm:kind==='module'||kind==='unit'?own:kind==='T'||kind==='distal'?shade(SCHEME.tip)
-   :kind==='P'||kind==='S'||kind==='prox'?SCHEME.segment:kind==='carriage'?SCHEME.steel:shade(SCHEME.bar);
-});
+// Every finger is coloured the same way, and the colours change from joint to joint along it:
+// a teal housing, the carriage that drives it pink, its link navy, then coral, yellow, violet
+// and orange for the two segments and their bars, and a sky fingertip. No two neighbours are
+// alike in both hue and lightness, so the joints tell apart at a glance. The thumb takes the
+// same colours for its own parts. The palm is navy.
+const SCHEME={palm:[.1,.17,.4], module:[.12,.75,.65], carriage:[.96,.5,.69], link:[.075,.204,.463], P:[.95,.42,.37], Q:[.98,.75,.18], S:[.56,.42,.91], R:[.98,.55,.15], T:[.25,.7,.92]};
+const AS_FINGER={unit:'module', prox:'P', bar:'Q', distal:'T', mount:'palm'};   // the thumb's parts, by the finger part each is coloured as
+const BODY_COLOUR=HAND_INFO.bodies.map(name=>{const kind=name.split(':')[1];return SCHEME[AS_FINGER[kind]||kind];});
 const LINK_OF=HAND_INFO.bodies.map(name=>CHAIN.indexOf(name.split(':')[1]));
-// The pale grey a part takes while it waits for the trace, and the colour each link of the chain
-// takes when the trace reaches it, in CHAIN's order: the carriage that drives it orange, then
-// navy, sky, yellow, green, violet, and the fingertip coral. No two neighbours are alike in
-// both hue and lightness, so the links tell apart at a glance.
-const WASH=[.9,.92,.95], LIT=[[.98,.53,.06],[.075,.204,.463],[.25,.7,.9],[.96,.76,.1],[.3,.69,.45],[.55,.4,.8],[.93,.33,.36]];
+// The pale grey a part takes while it waits for the trace. When the trace reaches a link of the
+// chain it gives the link its own colour back, in CHAIN's order.
+const WASH=[.9,.92,.95], LIT=CHAIN.map(kind=>SCHEME[kind]);
 // The story follows the scroll with a short soft lag, so the steps of a mouse wheel do not show
 // as jumps in the hand. `shown` is where the story is, 0 to 1; it settles on the scroll position
 // in about half a second.
