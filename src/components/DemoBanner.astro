@@ -1,0 +1,14 @@
+---
+/** Strip under the nav on both dashboards: says the data is made up before anything else.
+    Until 2026-11-21 it ended with a link, "Real accounts are on the roadmap". The Roadmap page
+    is empty for now, so it says the same thing without sending anyone there. */
+interface Props { role: 'student' | 'teacher' }
+const { role } = Astro.props;
+---
+<div class="border-b border-edge bg-panel">
+  <p class="wrap flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 text-sm">
+    <span class="badge badge-demo">Demo data</span>
+    <span>{role === 'teacher' ? 'A made-up class. Assigning is switched off.' : 'A made-up student. Nothing here is saved.'}</span>
+    <span class="md:ml-auto">There are no real accounts yet.</span>
+  </p>
+</div>

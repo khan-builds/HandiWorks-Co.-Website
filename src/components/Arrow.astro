@@ -1,0 +1,8 @@
+---
+/** A drawn arrow that takes the text colour and size. The site font has no arrow glyphs, so
+    never type one as a character. "out" marks a link that leaves the site. */
+interface Props { dir?: 'right' | 'left' | 'out'; class?: string }
+const { dir = 'right', class: cls = '' } = Astro.props;
+const path = { right: 'M2.5 8h11M9 3.5 13.5 8 9 12.5', left: 'M13.5 8h-11M7 3.5 2.5 8 7 12.5', out: 'M4.5 11.5l7-7M5.5 4.5h6v6' }[dir];
+---
+<svg class:list={['inline-block h-[1em] w-[1em] shrink-0', cls]} viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d={path} /></svg>

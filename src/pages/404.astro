@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import { p } from '../lib/url';
+
+const pages = [
+  { href: p('/'), label: 'Home' },
+  { href: p('/problem/'), label: 'The Problem' },
+  { href: p('/kit/'), label: 'The Kit' },
+  { href: p('/lessons/beginner/'), label: 'Lessons' },
+  { href: p('/roadmap/'), label: 'Roadmap' },
+  { href: p('/team/'), label: 'Team' },
+];
+---
+<Base title="Page not found" noindex>
+  <PageHeader title="That page is not here." lede="It may have moved, or it is not built yet.">
+    <a class="btn btn-primary mt-8" href={p('/lessons/beginner/')}>Go to the lessons</a>
+  </PageHeader>
+  <section class="section">
+    <SectionLabel>Pages that exist</SectionLabel>
+    <ul class="mt-8 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+      {pages.map((l) => <li><a class="panel font-semibold text-navy" href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </section>
+</Base>

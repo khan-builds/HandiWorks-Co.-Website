@@ -1,0 +1,44 @@
+---
+/** Navy band that closes every page. The homepage (index.html) carries a hand-built copy. */
+import { p, mailto } from '../lib/url';
+import { team } from '../lib/team';
+import StatusLine from './StatusLine.astro';
+import Logo from './Logo.astro';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer band">
+  <div class="wrap">
+    <div class="footer-cols">
+      <div>
+        <p class="lockup"><Logo /><span class="lockup-name">HandiWorks <small>Co.</small></span></p>
+        <p class="mt-5 max-w-xs text-white"><strong>HelpingHand.</strong> Putting Robotics Within Every Student's Grasp</p>
+        <a class="btn btn-on-navy mt-6" href={mailto('HelpingHand kit request')}>Request a kit</a>
+      </div>
+      <nav aria-label="Footer">
+        <h2 class="footer-heading">Pages</h2>
+        <ul class="footer-links">
+          <li><a href={p('/problem/')}>The Problem</a></li>
+          <li><a href={p('/kit/')}>The Kit</a></li>
+          <li><a href={p('/lessons/beginner/')}>Lessons</a></li>
+          <li><a href={p('/roadmap/')}>Roadmap</a></li>
+          <li><a href={p('/team/')}>Team</a></li>
+          <li><a href={p('/signin/')}>Sign in</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2 class="footer-heading">Contact</h2>
+        <ul class="footer-links">
+          {/* Everyone's address. A narrow column breaks one at the @ before it breaks anywhere else. */}
+          {team.map((m) => (
+            <li><a href={mailto('HelpingHand question', m.email)}>{m.email.split('@')[0]}<wbr />@{m.email.split('@')[1]}</a></li>
+          ))}
+          <li><a href={mailto('HelpingHand kit request')}>Request a kit</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>© {year} HandiWorks Co.</p>
+      <StatusLine />
+    </div>
+  </div>
+</footer>

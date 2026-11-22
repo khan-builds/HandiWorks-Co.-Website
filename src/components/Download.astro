@@ -1,0 +1,8 @@
+---
+/** A download button for a file in public/downloads/. Only the Arduino sketch is offered:
+    CAD files are held until the team has chosen a licence. */
+import { asset } from '../lib/url';
+interface Props { file: string; label: string }
+const { file, label } = Astro.props;
+---
+<p class="lesson-download"><a class="btn btn-primary" href={asset(file)} download>{label}</a></p>

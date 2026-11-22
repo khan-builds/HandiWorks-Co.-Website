@@ -1,0 +1,57 @@
+---
+/** The one nav of the site: a navy band. The homepage (index.html) carries a hand-built copy of
+    this markup and its styles, so change both together. */
+import { p } from '../lib/url';
+import Logo from './Logo.astro';
+
+const links = [
+  { key: 'problem', href: p('/problem/'), label: 'The Problem' },
+  { key: 'kit', href: p('/kit/'), label: 'The Kit' },
+  { key: 'lessons', href: p('/lessons/beginner/'), label: 'Lessons' },
+  { key: 'roadmap', href: p('/roadmap/'), label: 'Roadmap' },
+  { key: 'team', href: p('/team/'), label: 'Team' },
+];
+const path = Astro.url.pathname;
+const isActive = (key: string) => path.includes(`/${key}/`);
+---
+<header class="site-nav band" data-nav data-base={import.meta.env.BASE_URL}>
+  <div class="wrap">
+    <div class="site-nav-row">
+      <a href={p('/')} class="wordmark" aria-label="HelpingHand by HandiWorks Co., home">
+        <Logo />
+        <span class="wordmark-text"><span class="wordmark-name">HelpingHand</span><span class="wordmark-co">HandiWorks Co.</span></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-menu>Menu</button>
+      <nav id="nav-links" class="nav-links" aria-label="Primary">
+        {links.map((l) => (
+          <a href={l.href} class:list={['nav-link', { active: isActive(l.key) }]} aria-current={isActive(l.key) ? 'page' : undefined}>{l.label}</a>
+        ))}
+        <a id="nav-switch" href={p('/signin/')} class="nav-link" hidden>Switch role</a>
+        <a id="nav-auth" href={p('/signin/')} class="btn btn-on-navy nav-cta">Sign in</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  // Runs before the first paint, so the button never flashes "Sign in" for someone in the demo.
+  (() => {
+    const header = document.querySelector('[data-nav]');
+    const base = (header.dataset.base || '/').replace(/\/+$/, '');
+    let role = null;
+    try { role = localStorage.getItem('hh-role'); } catch {}
+    const auth = document.getElementById('nav-auth');
+    if (role === 'student' || role === 'teacher') {
+      auth.textContent = role === 'teacher' ? 'Teacher dashboard' : 'Student dashboard';
+      auth.href = `${base}/dashboard/${role}/`;
+      document.getElementById('nav-switch').hidden = false;
+    }
+    const menu = header.querySelector('[data-menu]');
+    const nav = document.getElementById('nav-links');
+    menu.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      menu.setAttribute('aria-expanded', String(open));
+      menu.textContent = open ? 'Close' : 'Menu';
+    });
+  })();
+</script>

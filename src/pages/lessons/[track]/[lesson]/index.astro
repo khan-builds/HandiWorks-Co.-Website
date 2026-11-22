@@ -1,0 +1,91 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../../components/PageHeader.astro';
+import SectionLabel from '../../../../components/SectionLabel.astro';
+import Arrow from '../../../../components/Arrow.astro';
+import ModelViewer from '../../../../components/ModelViewer.astro';
+import MaterialsList from '../../../../components/MaterialsList.astro';
+import { p } from '../../../../lib/url';
+import { PORTIONS, TRACKS, splitLessonId } from '../../../../lib/lessons';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('lessons');
+  return lessons.map((entry) => {
+    const { track, slug } = splitLessonId(entry.id);
+    return { params: { track, lesson: slug }, props: { entry } };
+  });
+}
+const { entry } = Astro.props;
+const { track, slug } = splitLessonId(entry.id);
+const portions = await getCollection('portions', (e) => e.id.startsWith(entry.id + '/'));
+const byKey = new Map(portions.map((x) => [x.data.portion, x]));
+const { Content } = await render(entry);
+const live = entry.data.status === 'published';
+const totalMinutes = portions.reduce((n, x) => n + x.data.durationMinutes, 0) || entry.data.durationMinutes;
+const base = `/lessons/${track}/${slug}`;
+---
+<Base title={entry.data.title} description={entry.data.summary}>
+  <PageHeader title={entry.data.title} lede={entry.data.summary}>
+    <nav slot="crumbs" class="crumbs" aria-label="Breadcrumb">
+      <a href={p(`/lessons/${track}/`)}>{TRACKS[track].label}</a> <span class="mx-1" aria-hidden="true">/</span> Lesson {entry.data.number}
+    </nav>
+    <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+      {!live && <span class="badge badge-soon">Coming soon</span>}
+      {live && !entry.data.reviewed && <span class="badge badge-draft">Draft · under team review</span>}
+      {live && entry.data.reviewed && <span class="badge badge-live">Live</span>}
+      <span>3 parts{totalMinutes ? ` · about ${totalMinutes} minutes in all` : ''}</span>
+    </p>
+    {(byKey.has('cad') || entry.data.slidesUrl || entry.data.docsUrl) && (
+      <div class="mt-7 flex flex-wrap gap-3">
+        {byKey.has('cad') && <a class="btn btn-primary" href={p(`${base}/cad/`)}>Start with CAD <Arrow /></a>}
+        {entry.data.slidesUrl && <a class="btn btn-secondary" href={entry.data.slidesUrl} target="_blank" rel="noopener">Open slides <Arrow dir="out" /></a>}
+        {entry.data.docsUrl && <a class="btn btn-secondary" href={entry.data.docsUrl} target="_blank" rel="noopener">Lesson doc <Arrow dir="out" /></a>}
+      </div>
+    )}
+  </PageHeader>
+
+  <section class="section grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1fr)_17rem] lg:items-start">
+    <div>
+      <SectionLabel>The three parts</SectionLabel>
+      <ol class="numbered mt-8">
+        {PORTIONS.map((pt) => {
+          const x = byKey.get(pt.key);
+          return (
+            <li class:list={[x && 'transition-colors hover:bg-(--navy-tint)']}>
+              <div class="flex flex-wrap items-center gap-2">
+                <h3>
+                  {x
+                    ? <a class="after:absolute after:inset-0" href={p(`${base}/${pt.key}/`)}>{x.data.title}</a>
+                    : pt.label}
+                </h3>
+                {!x && <span class="badge badge-soon">Coming soon</span>}
+                {x && x.data.status === 'placeholder' && <span class="badge badge-draft">Draft</span>}
+              </div>
+              <p class="mt-1 text-[0.9375rem] text-rule">{pt.blurb}</p>
+              {x && <p class="meta mt-2">{x.data.objectives.length} {x.data.objectives.length === 1 ? 'objective' : 'objectives'} · {x.data.durationMinutes} min</p>}
+            </li>
+          );
+        })}
+      </ol>
+
+      <article class="prose-hh mt-12"><Content components={{ h2: SectionLabel }} /></article>
+    </div>
+
+    <aside class="grid gap-10">
+      {entry.data.modelSrc && <ModelViewer src={entry.data.modelSrc} alt={`3D model for ${entry.data.title}`} label={entry.data.modelCaption} height="h-72" />}
+      {entry.data.concepts.length > 0 && (
+        <div>
+          <SectionLabel class="section-label-sm">Concepts</SectionLabel>
+          <ul class="mt-4 flex flex-wrap gap-2">{entry.data.concepts.map((c) => <li class="bg-panel px-2.5 py-1 text-sm">{c}</li>)}</ul>
+        </div>
+      )}
+      {entry.data.materials.length > 0 && (
+        <div>
+          <SectionLabel class="section-label-sm">Materials</SectionLabel>
+          <MaterialsList materials={entry.data.materials} class="mt-4 text-[0.9375rem]" />
+        </div>
+      )}
+    </aside>
+  </section>
+</Base>

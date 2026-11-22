@@ -1,0 +1,23 @@
+---
+/** A lesson's materials as ruled rows: quantity, then item and note.
+    A list, not a table, so assistive tech reads each row as one item with its quantity. */
+interface Props {
+  materials: { name: string; quantity: number; note?: string }[];
+  class?: string;
+}
+const { materials, class: cls = '' } = Astro.props;
+---
+<ul class:list={['divide-y divide-edge border-y border-edge', cls]}>
+  {materials.map((m) => (
+    <li class="flex items-baseline gap-3 py-2.5">
+      <span class="w-8 shrink-0 font-semibold tabular-nums text-navy">
+        <span class="sr-only">Quantity {m.quantity}.</span>
+        <span aria-hidden="true">×{m.quantity}</span>
+      </span>
+      <div class="min-w-0">
+        <p class="font-semibold">{m.name}</p>
+        {m.note && <p class="meta">{m.note}</p>}
+      </div>
+    </li>
+  ))}
+</ul>

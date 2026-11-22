@@ -1,0 +1,8 @@
+---
+/** The poster's boxed label with its rule. It is the heading of a section, not a line above
+    one: keep it to a few words. Also usable as the h2 of lesson text:
+    <Content components={{ h2: SectionLabel }} /> */
+interface Props { as?: 'h2' | 'h3'; class?: string; [attr: string]: unknown }
+const { as: Tag = 'h2', class: cls = '', ...rest } = Astro.props;
+---
+<Tag class:list={['section-label', cls]} data-reveal {...rest}><span><slot /></span></Tag>

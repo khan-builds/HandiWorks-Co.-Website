@@ -1,0 +1,9 @@
+---
+/** Dashed frame for an image the team has not sent yet. The caption says what will go there. */
+interface Props { caption: string; class?: string; height?: string }
+const { caption, class: cls = '', height = 'h-56' } = Astro.props;
+---
+<figure class:list={['my-6', cls]}>
+  <div class:list={['frame-empty', height]}>Image to come</div>
+  <figcaption class="caption">{caption}</figcaption>
+</figure>

@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { asset } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+const {
+  title,
+  description = 'HelpingHand by HandiWorks Co. A modular robotic hand that students CAD, wire, and program themselves, with lessons for ages 11 and up.',
+  noindex = false,
+} = Astro.props;
+const fullTitle = title ? `${title} · HelpingHand` : 'HelpingHand · HandiWorks Co.';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#133476" />
+    <link rel="icon" href={asset('/favicon.svg')} type="image/svg+xml" />
+    <link rel="preload" href={asset('/fonts/inter-latin-opsz-normal.woff2')} as="font" type="font/woff2" crossorigin />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body class="min-h-screen antialiased">
+    <a href="#main" class="skip">Skip to content</a>
+    <Nav />
+    <main id="main"><slot /></main>
+    <Footer />
+    <script>
+      // Lines draw: mark each rule and bar once it is on screen or above it (see "Motion" in
+      // global.css). Measured on scroll rather than observed, so a jump down the page, by an
+      // anchor link or the End key, can never leave a heading hidden.
+      const pending = new Set(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+      let queued = false;
+      const check = () => {
+        queued = false;
+        const line = window.innerHeight * 0.94;
+        for (const el of pending) {
+          if (el.getBoundingClientRect().top > line) continue;
+          el.classList.add('is-in');
+          pending.delete(el);
+        }
+        if (!pending.size) {
+          removeEventListener('scroll', onScroll);
+          removeEventListener('resize', onScroll);
+        }
+      };
+      const onScroll = () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(check);
+      };
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', onScroll);
+      check();
+    </script>
+  </body>
+</html>

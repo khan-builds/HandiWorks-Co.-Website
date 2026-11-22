@@ -1,0 +1,11 @@
+---
+/** A boxed aside inside lesson text. Lime for a note or a tip. "safety" is the navy one:
+    keep it for things that can hurt someone or break the hardware. */
+interface Props { type?: 'note' | 'tip' | 'safety'; title?: string }
+const { type = 'note', title } = Astro.props;
+const heading = title ?? { note: 'Note', tip: 'Tip', safety: 'Safety' }[type];
+---
+<aside class:list={['lesson-aside', type === 'safety' && 'lesson-aside-safety']}>
+  <p class="lesson-aside-title">{heading}</p>
+  <slot />
+</aside>
