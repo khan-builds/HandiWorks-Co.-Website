@@ -23,15 +23,17 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-19 at 16:08 Pacific.
+Checked against GitHub on 2026-11-21 at 19:45 Pacific.
 
-**The new site is on GitHub as branch `LZ-C5.2`. It is not on `main`.** The live site still
-shows the old one-page homepage.
+**The new site was merged into `main` on 2026-11-21, as pull request 6.** Lingbo asked for
+the merge that day. The first run of the new publishing step and a look at the live site
+came straight after it; what they showed is written in that pull request's conversation,
+<https://github.com/khan-builds/HandiWorks-Co.-Website/pull/6>.
 
 ### On GitHub
 
-`main` is at `5fb3427`, "Finish removing the interactive finger module page", pushed by
-Clarence on 2026-11-18 at 09:36. Its deploy run is what the live site shows:
+Until the merge `main` was at `5fb3427`, "Finish removing the interactive finger module
+page", pushed by Clarence on 2026-11-18 at 09:36. The live site is
 <https://khan-builds.github.io/HandiWorks-Co.-Website/>.
 
 Two teammates changed `main` that morning:
@@ -42,20 +44,20 @@ Two teammates changed `main` that morning:
   branch.**
 - **Clarence** merged pull request 5 at 09:15: a finger simulator for Lesson 1 that runs with
   no kit, a static page at `lessons/finger-module/` with one script and one stylesheet. By
-  09:36 he had taken it out again in two commits. `main` now holds the same files as
-  `7b2cf6d`, the commit this branch is built on, so **nothing on `main` is missing from this
+  09:36 he had taken it out again in two commits. `main` then held the same files as
+  `7b2cf6d`, the commit this branch is built on, so **nothing on `main` was missing from this
   branch**. The simulator is still on his branch `feature/interactive-finger-module`. It is
   in [To do](#to-do).
 
-Both are still working, so fetch again before a merge.
+No one pushed to `main` between then and the merge. It was fetched again just before.
 
-What the live site is:
+What the live site was until the merge:
 
 - One page: Golam's homepage, a dark stage with the scroll-driven hand. An older preview
   sits at `/version-1/`.
 - "Lessons", "Start learning" and "Enter learning lab" jump to the note "Homepage preview.
   Login and lessons require server hosting."
-- There is no Problem, Kit, Lessons list, Sign in, Roadmap or Team page.
+- There was no Problem, Kit, Lessons list, Sign in, Roadmap or Team page.
 
 Other branches on GitHub:
 
@@ -63,7 +65,7 @@ Other branches on GitHub:
 |---|---|---|---|
 | `version-1` | Billy, 2026-11-06 | His Lesson 1 and its five step models. | Keep it. `scripts/stl_to_glb.py` reads the step models from it. |
 | `nov15-hand-model` | Golam, 2026-11-15 | An earlier take on the Nov 15 homepage update, made a few minutes before the one on `main`. Not merged. | Golam's call. It is in [To do](#to-do). |
-| `LZ-C5.2` | Lingbo, 2026-11-18 | This branch: the whole new site, on top of `main` as it stood at `7b2cf6d`, the commit before Clarence's simulator. | Merge into `main` when the team agrees. The steps are in [To do](#to-do). |
+| `LZ-C5.2` | Lingbo, 2026-11-21 | This branch: the whole new site. | Merged into `main` on 2026-11-21. Work goes on here, and goes into `main` again when Lingbo asks. |
 | `feature/interactive-finger-module` | Clarence, 2026-11-18 | The finger simulator. Merged into `main` as pull request 5, then removed from `main` 20 minutes later. | It is on neither `main` nor this branch. It is in [To do](#to-do). |
 | `a/project-setup`, `a/db-schema`, `a/auth-and-lessons`, `a/wire-frontend` | Billy, 2026-10-28 | A server app with real login, as pull requests 1 to 4. All four are still open. | Set aside by the static-mock decision. Billy's call. It is in [To do](#to-do). |
 
@@ -72,8 +74,8 @@ Other branches on GitHub:
 Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` until Lingbo
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
-`main` is four commits further on, but those four add the simulator and take it out again,
-so no file differs. Fifteen commits are pushed: the rebuild, the hand from the CAD, the emails
+Before the merge `main` was four commits further on, but those four add the simulator and
+take it out again, so no file differed. Sixteen commits are pushed: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
 people, the homepage story with the flat hand, the receding palm and the littered parts,
@@ -84,19 +86,21 @@ down the whole page. The twelfth changes this file only: it names the new offlin
 thirteenth is the hand in the poster's colours and a tenth larger, the redrawn second scene,
 fingers that drop into the palm, and the parts gathering into the mark. The fourteenth is a
 colour for each finger, and the four fingers closing into one before the view turns. The
-fifteenth colours every finger the same way, with a colour for each joint. Prompts 1 to 9
+fifteenth colours every finger the same way, with a colour for each joint. The sixteenth
+empties the Roadmap page and lists, in the root `README.md`, the pages that still need
+review. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
 | Page | State | Still open |
 |---|---|---|
-| Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and flat, the view goes round it, and it opens with its fingers toward the visitor; one finger module is taken out and shown; its motion is traced from the carriage to the fingertip; and at the end the whole hand comes apart into its parts, which then lie in pale sky behind the rest of the page. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | The stage is light. A navy stage is the option not taken. The Kit page still shows hand v10: see [For the team to decide](#for-the-team-to-decide). |
+| Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-18 the hand is hand v11 from the CAD and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and flat and opens with its fingers toward the visitor; the four finger modules come out, loosen into their parts and close into one, which is rebuilt link by link; its motion is traced from the carriage to the fingertip, each link in its own colour; and at the end the fingers drop back into the palm, the whole hand comes apart, and the parts gather into the HandiWorks mark. The same parts lie in pale sky behind the rest of the page. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | The hand is out of date: Lingbo is sending new motor housings, and it is exported again from them. Lingbo will come back to the scroll story after that; until then it is not to change. |
 | The Problem | Poster's goal and objectives, the 18% / 42% figure checked against the Gallup report, 15 more sourced figures. | The "250,000 students" and "$500 kit" figures are left off: no source says them. |
-| The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Circuit diagram is a labelled placeholder until the image arrives. |
+| The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Both models and the specs beside them are out of date: they wait for the new motor housings. Circuit diagram is a labelled placeholder until the image arrives. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
-| Lesson 1 | Billy's lesson from `version-1`: five CAD steps with their models, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". | Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. Clarence's simulator is not in it, and no longer on `main` either. |
-| Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. | Nothing. |
-| Roadmap | Four phases as the poster's timeline, and a table of what is live, draft, demo or coming soon. | Nothing. |
+| Lesson 1 | Billy's lesson from `version-1`: five CAD steps with their models, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". | Incomplete, in Lingbo's words on 2026-11-21. It stays up as it is, with its draft label. Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. |
+| Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. | Two things are planned for the student dashboard and neither is built: a page that controls the real hand from the browser, and a guided simulator. Both are still being specified with Lingbo. |
+| Roadmap | Empty on purpose since 2026-11-21: its title, "Coming soon" and one line. | The roadmap itself. Lingbo writes it later. |
 | Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
 | Every page | The HandiWorks mark in the nav, the footer and the browser tab, traced from the poster. Under Contact in the footer, all four people's addresses. | The real logo file. |
 
@@ -123,11 +127,12 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 All but the last two were taken again on 2026-11-18.
 
-The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-19.zip` on
+The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-21.zip` on
 the build machine (6.2 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
-snapshot of the build of 2026-11-19 at 16:06, and holds the same site as the fifteenth
-commit on the branch, "Colour every finger alike, with a colour for each joint". The zip of
-2026-11-18 was deleted: it was made
+snapshot of the build of 2026-11-21 at 19:40, and holds the same site as the sixteenth
+commit on the branch, "Empty the Roadmap page and say in the README what still needs
+review". The zip of 2026-11-19 was deleted when this one was made. The zip of 2026-11-18
+was deleted before that: it was made
 before any address was added and before the hand changed, its "Talk to us" showed one
 address, Lingbo's at NYU, and anyone opening it saw the site as it was that morning.
 **Lingbo looks at the site through this zip and the pictures in `screenshots/`. Make both
@@ -187,7 +192,9 @@ Lingbo does these. `main` is the live site, and it changes only when Lingbo merg
 - [ ] Look at the build: `screenshots/rehearsal/`, then `screenshots/rehearsal-models/` for
   the 3D models. `screenshots/baseline/` is the site on GitHub, and
   `screenshots/poster-before/` is five pages before the poster pass.
-- [ ] Tell Golam, Billy and Clarence before the merge.
+- [ ] Tell Golam, Billy and Clarence. This did not happen before the merge: Lingbo asked on
+  2026-11-21 for the branch to be merged as it stood. Pull request 6 carries a summary for
+  them. What each should hear:
   - Golam: his `index.html` changed. Of its 2,188 lines, 2,042 were removed and 736 added.
     His four captions and his five colours for the hand are kept. Its model and the code
     that bends it were replaced on 2026-11-18 by an export from the CAD, hand v11, and that
@@ -206,19 +213,24 @@ Lingbo does these. `main` is the live site, and it changes only when Lingbo merg
     longer touches it. This branch removes `app/` and the old workflow, which his simulator
     branch builds on: see [For the team to decide](#for-the-team-to-decide).
   - All three: the `/version-1/` address stops existing. The `version-1` branch stays.
-- [ ] `git fetch`, then `git merge origin/main`, so that edits made there are not lost. This
-  branch holds `main` up to `7b2cf6d`. On 2026-11-18 at 19:00 `main` was four commits ahead
-  with no file different, so that merge changes nothing. If a teammate has pushed since,
-  expect `index.html` to conflict wherever they edit the old nav, buttons or footer: the
-  rebuild replaced that markup, so keep this branch's side there and carry the intent over
-  by hand.
-- [ ] Merge into `main`, check that the "Deploy site" run passes under Actions, and open the
-  live site.
+- [x] `git fetch`, then check that edits made on `main` are not lost. Done on 2026-11-21:
+  this branch held `main` up to `7b2cf6d`, and `main` was four commits ahead with no file
+  different, so the merge took nothing of a teammate's away. From now on `main` holds the
+  rebuilt homepage, so a teammate's edit to `index.html` starts from the new markup.
+- [x] Merge into `main`. Done on 2026-11-21, as pull request 6. Whether the "Deploy site" run
+  passed and what the live site showed is in that pull request's conversation.
 
 ### Who owes what
 
 Nothing here blocks a prompt. Each item ships as a labelled placeholder until it arrives,
 then goes in with prompt 10.
+
+**The last day for a teammate's file is Wednesday 2026-11-25.** Lingbo set it on 2026-11-21.
+What has not arrived by then stays a labelled placeholder on Dec 1.
+
+- [ ] **Lingbo:** the latest motor housings, as CAD in `~/workspace/SLDP`, promised for
+  2026-11-22. The hand on Home and both models on The Kit are exported again from them.
+- [ ] **Lingbo:** the roadmap. The page is empty until then.
 
 - [ ] **Golam:** the HandiWorks Co. logo as an SVG or a large PNG. Until then the site shows
   a mark traced by hand from the poster image (`src/components/Logo.astro`, with copies in
@@ -237,7 +249,10 @@ then goes in with prompt 10.
 
 ### For the team to decide
 
-- [ ] **Which hand the site shows.** Since 2026-11-18 the homepage shows hand v11, the newest
+- [x] **Which hand the site shows.** Decided by Lingbo on 2026-11-21: neither of the two
+  below. Both are out of date, new motor housings are coming, and Home and The Kit are both
+  exported from that one CAD. How the question stood before that:
+  since 2026-11-18 the homepage shows hand v11, the newest
   CAD: the palm built for Lingbo's own finger housing, with the thumb as a module. On it a
   finger curls to 53.5°, because that housing gives the carriage 18 mm to travel. The Kit
   page still shows hand v10 and finger module v4, with v10's numbers: an M3 threaded rod, a
@@ -250,7 +265,8 @@ then goes in with prompt 10.
   - If the 90° hand: point `HAND` in `scripts/hand_motion.py` at its folder and bring the
     part names up to date (its header says how), and the Kit page needs its models
     re-exported for finger v5 all the same.
-- [ ] **Billy's finger video.** It showed the older upright finger coming apart and going
+- [ ] **Billy's finger video.** Decided by Lingbo on 2026-11-21: delete the file. It is still
+  there. It showed the older upright finger coming apart and going
   back together. A live finger from the CAD took its place on 2026-11-18. If that stays,
   delete `public/videos/finger-hero-transparent.webm` (2.6 MB, no page asks for it now). If
   the video should come back, it needs rendering again from the current finger.
@@ -258,9 +274,11 @@ then goes in with prompt 10.
   driven by DC motors on threaded rods. Decide which the lesson should teach, in the review.
 - [ ] **288 mm or 282 mm.** Lesson 1 says the finger is 288 mm long. The CAD notes give the
   finger module as 282 mm. Billy's step models come from an older finger file.
-- [ ] **Light or navy stage on the homepage.** Light is built. Navy with white captions is
+- [x] **Light or navy stage on the homepage.** Light, decided by Lingbo on 2026-11-21. Light
+  is built. Navy with white captions is
   the option not taken, and it has not been built to compare.
-- [ ] **Clarence's finger simulator.** He merged it into `main` on 2026-11-18 and removed it
+- [x] **Clarence's finger simulator.** Decided by Lingbo on 2026-11-21: it stays out, and the
+  team builds its own. He merged it into `main` on 2026-11-18 and removed it
   20 minutes later. It is on his branch `feature/interactive-finger-module` and nowhere
   else. It was built on the old site: its page is `lessons/finger-module/`, it points the
   old homepage's Lessons buttons at that page, and it embeds itself in `app/`, which this
@@ -298,6 +316,54 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-21: the Roadmap emptied, the pages to review listed, the site merged
+
+Lingbo went through what is done and what is left, and asked for three things.
+
+- **The Roadmap page is empty.** "Roadmap page should be empty right now I will add it in
+  later." It keeps its place in the nav and the footer and shows its title, "Coming soon" and
+  one line: "Nothing here yet. The roadmap will be added to this page." The four phases and
+  the table of what is live are in the history: `src/pages/roadmap.astro` at commit `5d5da49`.
+- **The root `README.md` says which pages still need review and updating**, because that is
+  the file GitHub shows first. Lesson 1 keeps its label, "Draft · under team review", as it
+  is.
+- **The branch is merged into `main`**, as pull request 6, with its changes summed up there
+  as a list.
+
+Decided during the work, not by Lingbo:
+
+- The strip on both dashboards ended with a link, "Real accounts are on the roadmap". It now
+  reads "There are no real accounts yet." and links nowhere. Not taken: a link to an empty
+  page.
+- The empty page says in words that it is empty. Not taken: a title with nothing under it,
+  which reads as a broken page.
+- The root README no longer says the plans "are described on the site's Roadmap page".
+
+What Lingbo settled the same day, and what is not acted on yet:
+
+- Both hands on the site are out of date. New motor housings arrive on 2026-11-22, and Home
+  and The Kit are exported again from them.
+- The scroll story is not to change for now. Lingbo will come back to it.
+- On Dec 1 the site runs locally on Lingbo's Mac, in Chrome.
+- Clarence's simulator stays out. The team builds its own, "more like motion gen": guided
+  lessons that walk a student through the concepts of a lesson. For Lesson 1: see-saws, and
+  how linking them gives four-bars, six-bars and "dr4bs" (read here as double reverse
+  four-bars). It goes on the student dashboard.
+- A page on the student dashboard is to control the real hand from the browser: sliders, a
+  printout of gyroscope data, and a simulated hand that moves the same way, "very minimalist".
+  The prototype has four motors, each a DC motor through a driver board: two fingers, the
+  thumb and the thumb's joint. The other fingers are stand-ins. Lingbo owns the Arduino side.
+  The details are still being talked through.
+- The last day for a teammate's file is Wednesday 2026-11-25.
+- The homepage stage stays light. Billy's unused finger video is to be deleted. The type
+  check is to be installed and run. None of the three is done.
+
+Checked on 2026-11-21 before the merge: the site builds from a clean copy of the tracked
+files with `npm ci` and `npm run build`, which is what the new publishing step runs, and that
+build is file for file the same as the one on the build machine; every link and file the
+built pages ask for exists; the Roadmap page was looked at at 1440 and 390 px wide. The
+pictures are in `screenshots/roadmap-empty/`.
 
 ### 2026-11-19: every finger the same, a colour for each joint
 

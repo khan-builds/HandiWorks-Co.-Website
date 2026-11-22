@@ -1,68 +1,15 @@
 ---
+/** Empty on purpose since 2026-11-21. Lingbo will write the roadmap later. The four phases and
+    the "On this site today" table that stood here are in the history: see this file at commit
+    5d5da49. The nav, the footer and the 404 page still link here. */
 import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import SectionLabel from '../components/SectionLabel.astro';
-import { p } from '../lib/url';
-
-const phases = [
-  { when: 'Phase 1 · Now', title: 'The kit and a static curriculum', body: 'Lesson 1 is in draft. More lessons are in progress.', now: true },
-  { when: 'Phase 2', title: 'Accounts and classrooms', body: 'Assignments, progress tracking and bookmarks, for teachers and students.' },
-  { when: 'Phase 3', title: 'Community', body: 'A project showcase, a forum, questions and answers, shared docs and slides.' },
-  { when: 'Phase 4', title: 'An intermediate track', body: 'More mechanisms: gears, several motors, new fingers.' },
-];
-
-type State = 'Live' | 'Draft' | 'Demo data' | 'Coming soon';
-const today: { what: string; state: State; note: string }[] = [
-  { what: 'The Problem, The Kit, Team', state: 'Live', note: 'Open to everyone, no account.' },
-  { what: 'Lesson 1: CAD, Hardware, Software', state: 'Draft', note: 'Readable now. Under team review.' },
-  { what: 'Lesson 1 slides', state: 'Coming soon', note: 'No slides link yet.' },
-  { what: 'Lessons 2 to 4', state: 'Coming soon', note: 'Listed, not written.' },
-  { what: 'Sign in and both dashboards', state: 'Demo data', note: 'A demo of phase 2. No accounts exist.' },
-  { what: 'Showcase and forum', state: 'Coming soon', note: 'Phase 3.' },
-  { what: 'Intermediate track', state: 'Coming soon', note: 'Phase 4.' },
-];
-const badge: Record<State, string> = { Live: 'badge-live', Draft: 'badge-draft', 'Demo data': 'badge-demo', 'Coming soon': 'badge-soon' };
 ---
-<Base title="Roadmap" description="What is live on the HelpingHand site today, what is a demo, and what comes next.">
-  <PageHeader title="Where this is going, and what is real today." lede="Four phases. The first is under way. The rest are plans, and this page says which is which." />
+<Base title="Roadmap" description="The HelpingHand roadmap. Not written yet.">
+  <PageHeader title="Roadmap" />
 
   <section class="section">
-    <SectionLabel>Four phases</SectionLabel>
-    <ol class="timeline mt-10">
-      {phases.map((ph) => (
-        <li class:list={[ph.now && 'is-now']}>
-          <p class="timeline-when">{ph.when}</p>
-          <div class="timeline-what">
-            <h3>{ph.title}</h3>
-            <p>{ph.body}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <section class="section">
-    <SectionLabel>On this site today</SectionLabel>
-    <p class="note mt-8 max-w-3xl"><strong>Sign in and both dashboards are a demo of phase 2.</strong> There are no accounts yet, and every name on them is made up.</p>
-    <div class="table-scroll mt-6">
-      <table class="result-table min-w-[36rem]">
-        <thead>
-          <tr><th scope="col">Part of the site</th><th scope="col">State</th><th scope="col">Note</th></tr>
-        </thead>
-        <tbody>
-          {today.map((r) => (
-            <tr>
-              <th scope="row">{r.what}</th>
-              <td class:list={[r.state === 'Live' && 'result']}><span class:list={['badge', badge[r.state]]}>{r.state}</span></td>
-              <td>{r.note}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <div class="mt-8 flex flex-wrap gap-3">
-      <a class="btn btn-primary" href={p('/signin/')}>Try the demo dashboards</a>
-      <a class="btn btn-secondary" href={p('/lessons/beginner/01-finger-module/')}>Read Lesson 1</a>
-    </div>
+    <p><span class="badge badge-soon">Coming soon</span></p>
+    <p class="mt-4 max-w-2xl">Nothing here yet. The roadmap will be added to this page.</p>
   </section>
 </Base>

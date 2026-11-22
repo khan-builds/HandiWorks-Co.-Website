@@ -32,8 +32,24 @@ A static demo. There are no accounts, no database and no server.
 - **Dashboards** show a fictional class with made-up students.
 - Anything not finished is labelled on the page as a draft, demo data, or coming soon.
 
-Real accounts, classrooms and progress tracking are planned and are described on the site's
-Roadmap page.
+Real accounts, classrooms and progress tracking are planned. Nothing of them is built.
+
+## Pages that still need review and updating
+
+As of 2026-11-21. A page not listed here has no known work waiting.
+
+| Page | What it still needs |
+|---|---|
+| Home | The 3D hand is drawn from an older CAD. New motor housings are coming, and the hand will be exported again from them. The scroll animation is to be looked at again after that. |
+| The Kit | The hand and finger models, and the specs beside them, are out of date for the same reason. The circuit diagram is an empty labelled box until the image arrives. |
+| Lessons | Lessons 2 to 4 have no final titles or summaries. |
+| Lesson 1 (overview, CAD, Hardware, Software) | Incomplete. Every page of it says "Draft · under team review". The wiring pictures are placeholders and there is no slides link. |
+| Student dashboard | Two things are planned for it and neither is built: a page that controls the real hand from the browser, and a guided simulator. |
+| Roadmap | Empty on purpose. The roadmap has not been written. |
+| Team | Photos and bios are missing; the page shows initials. |
+| Every page | The logo is traced by hand from the team poster until the real file arrives. |
+
+The full list, with who owes what, is in `docs/README.md` under "To do".
 
 ## What is in this repository
 
@@ -108,6 +124,6 @@ for 14 days.
 | `a/project-setup`, `a/db-schema`, `a/auth-and-lessons`, `a/wire-frontend` | Earlier stages of `version-1`. |
 | `nov15-hand-model` | An earlier version of the homepage hand. `main` has moved past it. |
 
-Two things that used to be on `main` were removed on 2026-11-17 and remain in the history
-(last present at commit `7befb95`): `app/`, an early draft of the learning app, and
-`version-1/`, an earlier dark homepage.
+Two things that used to be on `main` left it when this site was merged on 2026-11-21 and
+remain in the history (last present at commit `5fb3427`): `app/`, an early draft of the
+learning app, and `version-1/`, an earlier dark homepage.
