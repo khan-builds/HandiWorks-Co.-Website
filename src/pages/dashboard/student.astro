@@ -68,4 +68,26 @@ const next = PORTIONS.find((pt) => me.progress[pt.key] !== 'done') ?? PORTIONS[P
       </div>
     </aside>
   </section>
+
+  <section class="section">
+    <SectionLabel>Test your code</SectionLabel>
+    <div class="mt-8 grid gap-x-14 gap-y-6 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+      <div>
+        <p class="flex flex-wrap items-center gap-3"><span class="badge badge-demo">Demo</span><span class="meta">A rough first version, and incomplete.</span></p>
+        <p class="mt-4 max-w-prose">Plug in the hand and drive it from the browser: a slider for each motor, the gyroscope's numbers as they arrive, and the same hand moving on screen. With no hand connected, it moves the one on screen.</p>
+      </div>
+      <div><a class="btn btn-primary" href={p('/dashboard/student/test-your-code/')}>Open Test your code <Arrow /></a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Simulator</SectionLabel>
+    <div class="mt-8 grid gap-x-14 gap-y-6 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+      <div>
+        <p class="flex flex-wrap items-center gap-3"><span class="badge badge-demo">Demo</span><span class="meta">A rough first version, and incomplete.</span></p>
+        <p class="mt-4 max-w-prose">Six short steps for Lesson 1. Start with a see-saw, join two with a rod, and build up through a four-bar and a six-bar to the finger of the hand. Drag each one, then answer one question.</p>
+      </div>
+      <div><a class="btn btn-primary" href={p('/dashboard/student/simulator/')}>Open the simulator <Arrow /></a></div>
+    </div>
+  </section>
 </Base>

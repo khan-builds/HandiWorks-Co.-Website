@@ -8,8 +8,10 @@ as branch `LZ-C5.2`.
 
 | Date | What |
 |---|---|
-| Sun 2026-11-22 | Site freeze. Copy fixes only after this. |
-| Tue 2026-12-01 | Presentation to faculty judges. |
+| Sun 2026-11-22 | Lingbo uploads the new motor housings. This was to be the site freeze; the plan Lingbo agreed on 2026-11-21 runs past it (the new hand, "Test your code", the simulator), so the freeze no longer holds. That is Claude's reading: Lingbo did not mention the freeze. |
+| Wed 2026-11-25 | Last day for a teammate's file. |
+| Sat 2026-11-28 | "Test your code" has moved the real hand, or Dec 1 shows it on screen only. |
+| Tue 2026-12-01 | Presentation to faculty judges. The site runs locally on Lingbo's Mac, in Chrome. |
 
 | Section | What it holds |
 |---|---|
@@ -17,13 +19,15 @@ as branch `LZ-C5.2`.
 | [To do](#to-do) | Every open item, with who owes it. |
 | [Design changes](#design-changes) | A dated log of what changed, and the choices made without asking. |
 | [The hand on the homepage](#the-hand-on-the-homepage) | Where its shape and its motion come from, and how to rebuild it when the CAD changes. |
+| [Test your code](#test-your-code) | The page that drives the hand over USB: its files, the lines that cross the cable, and the sketch. |
+| [Simulator](#simulator) | The six guided steps: their files, and how to add a step. |
 | [Theme](#theme) | Colours, type, building blocks, motion, and the wording from the team poster. |
 | [The plan](#the-plan) | What the site has to do, the decisions, the rules, and the prompts still in use. |
 | [Prompts already run](#prompts-already-run) | Prompts 1 to 7, kept for the record. |
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-21 at 19:45 Pacific.
+Checked against GitHub on 2026-11-21 at 21:29 Pacific.
 
 **The new site was merged into `main` on 2026-11-21, as pull request 6.** Lingbo asked for
 the merge that day. The first run of the new publishing step and a look at the live site
@@ -88,9 +92,18 @@ fingers that drop into the palm, and the parts gathering into the mark. The four
 colour for each finger, and the four fingers closing into one before the view turns. The
 fifteenth colours every finger the same way, with a colour for each joint. The sixteenth
 empties the Roadmap page and lists, in the root `README.md`, the pages that still need
-review. Prompts 1 to 9
+review. A seventeenth, committed and waiting for a push when this was written, adds "Test
+your code" and the Simulator to the student dashboard, installs the type check and deletes
+Billy's unused video. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
+
+**The seventeenth commit, "Add Test your code and the Simulator to the student dashboard",
+was made on 2026-11-21 at 21:30 when Lingbo said "commit to the branch LZ-C5.2". It was not
+pushed when this was written:** Lingbo asks for a push separately. Until then "Test your
+code", the Simulator, the type check and the removal of Billy's video are on the build
+machine and in the offline zip only, and `main` and the branch on GitHub are both as they
+were after the merge. `git status` on the build machine says whether that is still so.
 
 | Page | State | Still open |
 |---|---|---|
@@ -99,7 +112,7 @@ were run on 2026-11-17, and the look was brought closer to the poster on 2026-11
 | The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Both models and the specs beside them are out of date: they wait for the new motor housings. Circuit diagram is a labelled placeholder until the image arrives. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
 | Lesson 1 | Billy's lesson from `version-1`: five CAD steps with their models, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". | Incomplete, in Lingbo's words on 2026-11-21. It stays up as it is, with its draft label. Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. |
-| Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. | Two things are planned for the student dashboard and neither is built: a page that controls the real hand from the browser, and a guided simulator. Both are still being specified with Lingbo. |
+| Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. Since 2026-11-21 the student dashboard has a "Test your code" section that opens a page of that name: it drives the hand over USB and shows the same hand moving on screen. See [Test your code](#test-your-code). A "Simulator" section opens six guided steps for Lesson 1, from a see-saw to the finger of the hand. See [Simulator](#simulator). | "Test your code" has never met the real hand, and its Arduino sketch has never been compiled. Neither page has been used by hand in a real browser. Lingbo has not seen the simulator's wording or its questions. |
 | Roadmap | Empty on purpose since 2026-11-21: its title, "Coming soon" and one line. | The roadmap itself. Lingbo writes it later. |
 | Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
 | Every page | The HandiWorks mark in the nav, the footer and the browser tab, traced from the poster. Under Contact in the footer, all four people's addresses. | The real logo file. |
@@ -128,10 +141,12 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 All but the last two were taken again on 2026-11-18.
 
 The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-21.zip` on
-the build machine (6.2 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
-snapshot of the build of 2026-11-21 at 19:40, and holds the same site as the sixteenth
-commit on the branch, "Empty the Roadmap page and say in the README what still needs
-review". The zip of 2026-11-19 was deleted when this one was made. The zip of 2026-11-18
+the build machine (4.6 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
+snapshot of the build of 2026-11-21 at 21:02, and holds the same site as the seventeenth
+commit, "Add Test your code and the Simulator to the student dashboard". It is smaller than
+before because Billy's unused video is gone. Its `HOW-TO-OPEN.txt` now says to use Chrome or Edge and how to
+connect the hand. The zip of 2026-11-19 and the first zip of 2026-11-21 were deleted when
+this one was made. The zip of 2026-11-18
 was deleted before that: it was made
 before any address was added and before the hand changed, its "Talk to us" showed one
 address, Lingbo's at NYU, and anyone opening it saw the site as it was that morning.
@@ -231,6 +246,12 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
 - [ ] **Lingbo:** the latest motor housings, as CAD in `~/workspace/SLDP`, promised for
   2026-11-22. The hand on Home and both models on The Kit are exported again from them.
 - [ ] **Lingbo:** the roadmap. The page is empty until then.
+- [ ] **Lingbo:** the hand's wiring, in the table at the top of
+  `public/downloads/helpinghand_bench.ino`: which shield and port each motor is on, which way
+  closes it, how long each takes from open to closed, the two button pins, and whether the
+  gyroscope is an MPU-6050. Then Verify, upload, and try it from "Test your code" on the Mac
+  in Chrome. If it has not moved the real hand by Saturday 2026-11-28, Dec 1 shows the page on
+  screen only.
 
 - [ ] **Golam:** the HandiWorks Co. logo as an SVG or a large PNG. Until then the site shows
   a mark traced by hand from the poster image (`src/components/Logo.astro`, with copies in
@@ -265,8 +286,8 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
   - If the 90° hand: point `HAND` in `scripts/hand_motion.py` at its folder and bring the
     part names up to date (its header says how), and the Kit page needs its models
     re-exported for finger v5 all the same.
-- [ ] **Billy's finger video.** Decided by Lingbo on 2026-11-21: delete the file. It is still
-  there. It showed the older upright finger coming apart and going
+- [x] **Billy's finger video.** Decided by Lingbo on 2026-11-21: delete the file. Deleted the
+  same day; it is in the history up to commit `4e46fcb`. It showed the older upright finger coming apart and going
   back together. A live finger from the CAD took its place on 2026-11-18. If that stays,
   delete `public/videos/finger-hero-transparent.webm` (2.6 MB, no page asks for it now). If
   the video should come back, it needs rendering again from the current finger.
@@ -302,7 +323,15 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
 - [ ] Hover states and the page-to-page cross-fade, which a screenshot cannot show.
 - [ ] How the scroll story feels under a real mouse wheel, trackpad and finger. Its poses
   were checked frame by frame; its smoothness in motion can only be judged by scrolling it.
-- [ ] `npm run check`. The type check has never run: `@astrojs/check` is not installed.
+- [x] `npm run check`. Installed and run on 2026-11-21 (`@astrojs/check`, `typescript`,
+  `@types/node`): no errors, no warnings, 36 hints, all of them about a deprecated name in
+  `src/content.config.ts`.
+- [ ] The Arduino sketch, `public/downloads/helpinghand_bench.ino`. It has never been compiled:
+  the build machine has no Arduino tools and no C++ compiler, and installing them was not
+  allowed. Press Verify in the Arduino IDE first.
+- [ ] "Test your code" against a real board. Every check ran against a stand-in for the board
+  written in JavaScript. The browser's own USB serial code has not been exercised, and neither
+  has a motor, the gyroscope or a button.
 
 ### After any change
 
@@ -316,6 +345,120 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-21: the simulator, six steps from a see-saw to the finger
+
+Lingbo: "Our sim would be more like motion gen where we walk students through the concepts
+they are taught for example for the finger 1 lesson we would emphasize see saws and how
+linking them can bring us four bars six bars and dr4bs. Connecting them allows thier movement
+to go cyclically and have them go through guided lessons like these." It goes on the student
+portal. Agreed the same evening: flat, six steps, each with one thing to drag, a Play button,
+a sentence on what to notice and one question; no free "build any linkage" editor before
+Dec 1; the sixth step shows "how it is implemented into the finger of our hand", as "a
+combination of steps illustrating each linkage and how the linkages before effect its
+movement". How it is built is under [Simulator](#simulator).
+
+The six steps: a see-saw; two see-saws joined by a rod; a four-bar with a crank that goes all
+the way round; a six-bar; a double reverse four-bar; the finger of the hand.
+
+Decided during the work, not by Lingbo:
+
+- **All six steps are built.** The agreement let steps 4 and 5 wait if time ran short. It did
+  not.
+- **"motion gen" is read as the MotionGen linkage app, and "dr4b" as a double reverse
+  four-bar.** Lingbo has not confirmed either reading.
+- **Every word on the page is Claude's:** the titles, the two sentences of each step, "What to
+  notice", the questions and their three answers. Lingbo has not read them.
+- **The bars take the colours of the finger's links on the homepage:** coral, yellow, violet,
+  orange, sky. By the last step each colour has already done the same job in an earlier one.
+- **The finger in step 6 is the real one.** The CAD's tables say where each link is, not which
+  link is pinned to which. The page knows the nine pairs and finds each pin from the tables
+  as the one point that stays put on both links, so the drawing follows the CAD when it
+  changes. With hand v11 every pin fits to under a thousandth of a millimetre. Not taken: a
+  finger drawn by eye.
+- **Step 6 has four stages:** the push (carriage, link, first segment: the see-saw), the first
+  loop (frame, first segment, bar, middle segment: a four-bar), the second loop (first
+  segment, middle segment, bar, fingertip: a second four-bar, which makes a six-bar), and all
+  of it. Under the drawing the same finger from the CAD moves in 3D, with the same links lit.
+- **Step 4's six-bar is a plain one,** two four-bars sharing the rocking bar. It is not the
+  finger's own chain; step 6 is.
+- **Step 5 sets the upper stage to fold the opposite way by rule.** A real double reverse
+  four-bar does it with gears or a link, and the page does not draw those.
+- **A wrong answer can be tried again, and nothing is saved.** A reload starts from step 1.
+
+Checked in headless Chrome on the built site, 46 checks, all passing: for each of the six
+steps, the machine, its words and its question appear; nothing is drawn outside the stage;
+the slider and a drag on the stage both move it; Play moves it and Pause holds it; a wrong
+answer is not counted and the right one is. Also: the finger's four stages differ; its three
+angles grow from joint to joint (53°, 80°, 116° at full travel); Back and Next; no script
+errors; nothing scrolls sideways at 390, 768 or 1024 px. Separately, each machine was swept
+through its whole range: no bar changes length, and dragging the handle gives back the
+position it was drawn at. Pictures are in `screenshots/simulator/`.
+
+Not checked: by hand, in a real browser, with a real finger or mouse on the stage.
+
+### 2026-11-21: "Test your code", the hand driven from the browser
+
+Lingbo asked for "an UI connected to the arduino so the user can control the hand movement
+through a computer interface", as part of the site, on the student portal, "a bit more
+technical and cooler": sliders, the gyroscope's data printed, and "a sim hand moving the
+same", "very minimalist", marked as a demo "as it is very raw and incomplete". The details
+were settled question by question the same evening. How it works is under
+[Test your code](#test-your-code).
+
+What Lingbo decided:
+
+- The page talks to the Arduino straight from Chrome over the USB cable. Nothing is installed.
+- The page is laid out for the whole hand. The prototype has four motors (index, middle,
+  thumb curl, thumb swing); the ring and the pinky are commented out in the sketch "and
+  nothing else".
+- The hand senses nothing, so the board guesses where each finger is from how long it has run
+  its motor. Reset lets the user nudge each finger open by hand, then calls that zero.
+- Turning the whole hand past an angle closes it. The page decides that, not the board.
+- Two buttons on the hand close and open it with no computer; both together stop it.
+- No motor is driven above 175 of 255.
+- Hardware: an Arduino Mega, two Adafruit motor shields on SDA and SCL, a VEX battery.
+
+Decided during the work, not by Lingbo:
+
+- **The board keeps the guess, the page draws it.** The sketch counts the run time and reports
+  twenty times a second; the on-screen hand shows what the board reports. Not taken: the page
+  keeping its own count, which the buttons on the hand would put out of step.
+- **The ring and pinky sliders stay and move the hand on screen only.** A pretend board in the
+  page covers every motor the real board does not have. Not taken: hiding or greying them,
+  which Lingbo ruled out for the page.
+- **"Close" is the grip the CAD checks**, not every motor to its end: fingers 72%, thumb curl
+  45%, thumb swing 74% with today's CAD. At 100% everywhere the fingers and the thumb would be
+  driven into each other. The sketch's close button uses the same numbers.
+- **The tilt is read from the direction of gravity**, compared with the direction when the
+  hand was called level (at connect, or with "Set level"). That works however the sensor is
+  mounted. The on-screen hand tilts with it and assumes the sensor's axes are the hand's:
+  fingertips, thumb side, out of the palm. That needs checking once the sensor is on the hand.
+- **A nudge stops 0.3 s after the page stops asking for it**, so a closed tab or a pulled
+  cable cannot leave a motor running. No motor runs longer than 4 s in one go.
+- **The times from open to closed are first guesses:** 3 s a finger, 2.5 s the thumb's curl,
+  1.5 s its swing. Which shield port each motor is on is a guess too. Both are in the table
+  at the top of the sketch.
+- **The sensor is taken to be an MPU-6050.** Lingbo has not named the part.
+- **Esc stops the hand**, as well as the Stop button.
+- **The readout shows at most two "P" and two "G" lines a second**, and none while nothing in
+  them changes; "Every line" shows all forty.
+- **The hand's data is served a second time, as `/hand-data.js`,** built from the homepage's
+  own block, so inner pages can draw the hand. It adds 1.3 MB to the site.
+- **Billy's unused finger video is deleted and the type check is installed**, both agreed with
+  Lingbo earlier that day.
+
+Checked in headless Chrome on the built site, 37 checks, all passing: the hand loads and
+draws; a slider moves its motor at a steady speed and it arrives; Close, Stop, Esc; Reset with
+and without a hand; the tilt rule with the pretend sensor and with the board's; connecting at
+115200 baud to a stand-in board that restarts first, as an Arduino does; only the board's own
+motors are sent down the cable and only they can be nudged; a held nudge is repeated and
+ends once; Disconnect, a pulled cable, and a board that never answers; no script errors;
+nothing scrolls sideways at 390, 768 or 1024 px. `npm run check` is clean and every link the
+built pages ask for exists. Pictures are in `screenshots/test-your-code/`.
+
+Not checked: the sketch has never been compiled or run, and the page has never talked to a
+real serial port. See [Not checked yet](#not-checked-yet).
 
 ### 2026-11-21: the Roadmap emptied, the pages to review listed, the site merged
 
@@ -1175,6 +1318,71 @@ for the rules above.
   two links it joins.
 - Hand v11 has not been printed. The page shows what the CAD says, not a measured hand.
 
+## Test your code
+
+`/dashboard/student/test-your-code/`, reached from the "Test your code" section of the student
+dashboard. It drives the prototype hand over its USB cable and draws the same hand on screen.
+It is marked "Demo".
+
+| File | What |
+|---|---|
+| `src/pages/dashboard/student/test-your-code.astro` | The page: its markup and its styles (every class starts with `bench`). |
+| `src/scripts/bench/bench.ts` | What the page does: sliders, Open, Close, Stop, Reset, the tilt rule, the readout, connecting. |
+| `src/scripts/bench/protocol.ts` | The lines that cross the cable, both ways. The list is repeated at the top of the sketch. |
+| `src/scripts/bench/serial.ts` | The cable: the browser's serial-port access. Chrome and Edge on a computer only. |
+| `src/scripts/bench/pretend.ts` | A stand-in board inside the page. It covers every motor the plugged-in board lacks, and all six when nothing is plugged in. |
+| `src/scripts/hand/view.ts` | The hand from the CAD, posed by one number per motor and drawn in a canvas. |
+| `src/pages/hand-data.js.ts` | Serves the homepage's `HAND-DATA` block as `/hand-data.js`, at build time. One copy of the data stays in the repo. |
+| `public/downloads/helpinghand_bench.ino` | The sketch for the hand's Arduino Mega. |
+
+**The lines.** Plain text at 115200 baud, one per line. To the board: `?` (who are you),
+`T m pct` (motor m to pct percent of the way from open to closed), `J m dir` (nudge motor m;
+the guess does not change; it stops 0.3 s after the last one), `Z` (the hand is open: every
+guess is 0), `S` (stop everything). From the board: `HELLO helpinghand-bench 1 motors=2,3,4,5
+imu=1 buttons=1`, `P 2:45.0/60 ...` (per motor, the guess and where it is going), `G ax ay az
+gx gy gz` (g and degrees per second), `B close open` (the buttons), `E words` (a fault). Motor
+numbers: 0 pinky, 1 ring, 2 middle, 3 index, 4 thumb curl, 5 thumb swing.
+
+**The rule everything follows:** the hand has nothing that measures where a finger is. The
+board knows how long each motor takes from open to closed and counts how long it has run it.
+The page shows that count as "Guess", and the on-screen hand is drawn from it. When the guess
+and the real hand drift apart, Reset puts them back together by hand.
+
+**To change the wiring,** edit the block at the top of the sketch and nothing else: a line per
+motor (shield, port, which way closes, milliseconds from open to closed, how far "close" goes),
+the two button pins, the sensor. A finger with no motor is a commented-out line.
+
+**To change the lines,** change `protocol.ts`, `pretend.ts` and the sketch together. The page's
+checks are a scratch script, not in the repo; the 37 things it checks are listed in the design
+log entry of 2026-11-21.
+
+**Opening the port restarts the Arduino,** so on connecting the board believes the hand is
+open. The page says so and points at Reset.
+
+## Simulator
+
+`/dashboard/student/simulator/`, reached from the "Simulator" section of the student
+dashboard. Six guided steps for Lesson 1. It is marked "Demo".
+
+| File | What |
+|---|---|
+| `src/pages/dashboard/student/simulator.astro` | The page: its markup and its styles (every class starts with `sim`). |
+| `src/scripts/sim/steps.ts` | Steps 1 to 5. Each is a title, two sentences, what to notice, one question, and a small machine worked out with circles. |
+| `src/scripts/sim/finger.ts` | Step 6: the finger of the hand, with its pins found from the CAD's tables. |
+| `src/scripts/sim/sim.ts` | What the page does: draws the machine, follows the pointer, plays the motion, marks the answers. |
+| `src/scripts/hand/view.ts` | The 3D finger under step 6's drawing (shared with "Test your code"). |
+
+**To add a step,** add one more `Step` to the list at the end of `steps.ts`: its words, the
+range of the part the student moves, the one thing they can change, `draw` (where every bar
+is for one position) and `follow` (which position a pointer asks for). The page's six
+buttons and its counts come from that list.
+
+**To change a step's wording,** edit its `title`, `body`, `notice` and `question` in the same
+place. Nothing else holds a copy.
+
+**If the CAD renames a finger link,** step 6 stops with a message that names the pair it could
+not find. The pairs are listed at the top of `finger.ts`.
+
 ## Theme
 
 Agreed 2026-11-17. The look comes from the team's SLDP poster. The poster image itself is not
@@ -1350,7 +1558,7 @@ The plan covers the demo path and nothing else:
 4. Lessons
 5. Lesson 1: overview, then CAD, Hardware, Software
 6. Sign in as a teacher, teacher dashboard
-7. Sign in as a student, student dashboard
+7. Sign in as a student, student dashboard, then "Test your code" and the Simulator from it
 8. Roadmap
 9. Team
 

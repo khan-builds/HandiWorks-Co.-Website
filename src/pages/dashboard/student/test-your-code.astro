@@ -1,0 +1,215 @@
+---
+/** "Test your code": drive the hand from the browser over its USB cable, and watch the same
+    hand move on screen. Reached from the student dashboard. A demo: rough and incomplete, and
+    the page says so. How it works is in src/scripts/bench/bench.ts; the sketch the hand runs
+    is public/downloads/helpinghand_bench.ino. */
+import Base from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import RoleGate from '../../../components/RoleGate.astro';
+import { p, asset } from '../../../lib/url';
+
+// Motor numbers are the ones on the wire (src/scripts/bench/protocol.ts). The page is laid out
+// for the whole hand; which motors a given prototype has is the sketch's business, not the page's.
+const motors = [
+  { motor: 3, label: 'Index' },
+  { motor: 2, label: 'Middle' },
+  { motor: 1, label: 'Ring' },
+  { motor: 0, label: 'Pinky' },
+  { motor: 4, label: 'Thumb curl' },
+  { motor: 5, label: 'Thumb swing' },
+];
+const senses = [
+  { key: 'ax', unit: 'g' }, { key: 'ay', unit: 'g' }, { key: 'az', unit: 'g' },
+  { key: 'gx', unit: '°/s' }, { key: 'gy', unit: '°/s' }, { key: 'gz', unit: '°/s' },
+];
+---
+<Base title="Test your code" description="Drive the HelpingHand prototype from the browser and watch it move on screen. A demo." noindex>
+  <RoleGate role="student" />
+  <PageHeader compact title="Test your code">
+    <nav slot="crumbs" class="crumbs" aria-label="Breadcrumb">
+      <a href={p('/dashboard/student/')}>Student dashboard</a> <span class="mx-1" aria-hidden="true">/</span> Test your code
+    </nav>
+    <p class="meta mt-4 flex max-w-3xl flex-wrap items-baseline gap-x-3 gap-y-2">
+      <span class="badge badge-demo">Demo</span>
+      <span>A rough first version. Plug in the hand, press Connect and drive it from here. With no hand connected, it moves the one on screen.</span>
+    </p>
+  </PageHeader>
+
+  <section class="section bench pt-10!" data-bench data-hand-data={asset('/hand-data.js')}>
+    <div class="bench-grid">
+      <div class="bench-stage-col">
+        <div class="bench-stage">
+          <canvas data-hand tabindex="0" role="img" aria-label="The hand from the CAD. It moves as the board says the real hand moves. Arrow keys turn the view."></canvas>
+          <p class="bench-stage-note" data-stage-note>Loading the hand…</p>
+        </div>
+        <p class="meta mt-3 flex justify-between gap-4"><span>Drag to turn the view.</span><span class="bench-num" data-tilt-now>tilt 0°</span></p>
+      </div>
+
+      <div class="bench-controls">
+        <div class="bench-group">
+          <h2 class="sr-only">Connection</h2>
+          <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+            <p class="bench-status" role="status"><span class="dot dot-none" data-lamp aria-hidden="true"></span><span data-status-text>No hand connected. The sliders move the hand on screen.</span></p>
+            <button class="btn btn-primary" type="button" data-connect>Connect the hand</button>
+          </div>
+          <p class="meta mt-3" data-connect-note hidden></p>
+          <p class="meta mt-3">The hand's Arduino has to be running <a class="link" href={asset('/downloads/helpinghand_bench.ino')} download>helpinghand_bench.ino</a>.</p>
+        </div>
+
+        <div class="bench-group">
+          <h2 class="bench-heading">Motors</h2>
+          <div class="bench-row bench-row-head" aria-hidden="true"><span></span><span></span><span>Set</span><span>Guess</span></div>
+          {motors.map(({ motor, label }) => (
+            <div class="bench-row">
+              <label for={`motor-${motor}`}>{label}</label>
+              <input id={`motor-${motor}`} type="range" min="0" max="100" step="1" value="0" data-motor={motor} aria-describedby="bench-guess-note" />
+              <output class="bench-num" for={`motor-${motor}`} data-set={motor}>0</output>
+              <span class="bench-num bench-guess" data-guess={motor}>0</span>
+            </div>
+          ))}
+          <p class="meta mt-3 max-w-prose" id="bench-guess-note">Both are a percent of the way from open to closed. Nothing on the hand measures where a finger is, so "Guess" is the board counting how long each motor has run.</p>
+          <div class="mt-5 flex flex-wrap items-center gap-3">
+            <button class="btn btn-secondary" type="button" data-open>Open</button>
+            <button class="btn btn-secondary" type="button" data-close>Close</button>
+            <button class="btn btn-primary" type="button" data-stop title="Stops every motor. Esc does the same.">Stop</button>
+            <button class="btn btn-ghost ml-auto" type="button" data-reset aria-expanded="false" aria-controls="bench-reset">Reset</button>
+          </div>
+        </div>
+
+        <div class="bench-group bench-reset" id="bench-reset" data-reset-panel hidden>
+          <h2 class="bench-heading" tabindex="-1">Reset: make the screen and the hand agree</h2>
+          <ol class="bench-steps">
+            <li>The sliders are off while this is open.</li>
+            <li>Hold a button to run a motor until that finger on the real hand is fully open.</li>
+            <li>Press "Hand is open". The board then counts every finger from zero.</li>
+          </ol>
+          <p class="meta mt-3" data-jog-note>No hand is connected, so there is no motor to nudge. "Hand is open" still sets every guess to zero.</p>
+          <div class="mt-4 grid gap-2">
+            {motors.map(({ motor, label }) => (
+              <div class="bench-jog">
+                <span>{label}</span>
+                <button class="btn btn-secondary" type="button" data-jog={motor} data-dir="-1" aria-label={`${label}: hold to run toward open`}>Open</button>
+                <button class="btn btn-secondary" type="button" data-jog={motor} data-dir="1" aria-label={`${label}: hold to run toward closed`}>Close</button>
+              </div>
+            ))}
+          </div>
+          <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <button class="btn btn-primary" type="button" data-zero>Hand is open</button>
+            <button class="btn btn-ghost" type="button" data-reset-cancel>Cancel</button>
+          </div>
+        </div>
+
+        <div class="bench-group">
+          <h2 class="bench-heading">Tilt</h2>
+          <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-3">
+            <label class="bench-check"><input type="checkbox" data-tilt-on /> <span>Close the hand when it is tilted past</span></label>
+            <span class="flex items-center gap-1.5"><input class="bench-field" type="number" min="20" max="150" step="5" value="60" data-tilt-at aria-label="Tilt angle that closes the hand, in degrees" /><span aria-hidden="true">°</span></span>
+            <button class="btn btn-ghost ml-auto" type="button" data-level title="Call the way the hand is held now level">Set level</button>
+          </div>
+          <div class="bench-row mt-2" data-pretend-row>
+            <label for="pretend-tilt">Pretend tilt</label>
+            <input id="pretend-tilt" type="range" min="0" max="180" step="1" value="0" data-pretend-tilt />
+            <output class="bench-num" for="pretend-tilt" data-pretend-tilt-text>0°</output>
+            <span></span>
+          </div>
+          <p class="meta mt-2 max-w-prose">The hand opens again 10° short of that angle. The rule is decided here on the page, so it only works while the hand is connected.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bench-readout band">
+      <div class="bench-readout-head">
+        <h2>Readout</h2>
+        <dl class="bench-sense" aria-label="Latest sensor reading">
+          {senses.map(({ key, unit }) => (
+            <div><dt>{key}</dt><dd><span data-sense>+0.00</span> <span class="bench-unit">{unit}</span></dd></div>
+          ))}
+        </dl>
+        <div class="bench-readout-tools">
+          <label class="bench-check"><input type="checkbox" data-every-line /> <span>Every line</span></label>
+          <button class="btn btn-ghost" type="button" data-pause aria-pressed="false">Pause</button>
+          <button class="btn btn-ghost" type="button" data-clear>Clear</button>
+        </div>
+      </div>
+      <div class="bench-log" data-log role="log" aria-label="Lines sent to and received from the board" tabindex="0"></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../../../scripts/bench/bench.ts';
+</script>
+
+<style is:global>
+  /* The bench. Class names start with "bench" so nothing here reaches another page. */
+  .bench-grid { display: grid; gap: 2.5rem 3.5rem; }
+  .bench-grid > * { min-width: 0; }
+  @media (min-width: 64rem) {
+    .bench-grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); align-items: start; }
+    .bench-stage-col { position: sticky; top: calc(var(--nav-height) + 1.25rem); }
+  }
+
+  .bench-stage { position: relative; background: var(--color-panel); border: 1px solid var(--color-edge); }
+  .bench-stage canvas { display: block; width: 100%; aspect-ratio: 1 / 1; max-height: min(72svh, 38rem); cursor: grab; touch-action: none; }
+  .bench-stage canvas:active { cursor: grabbing; }
+  .bench-stage-note { position: absolute; inset: 0; display: grid; place-items: center; padding: 1.5rem; text-align: center; font-size: 0.9375rem; font-weight: 500; color: var(--color-rule); pointer-events: none; }
+
+  .bench-group { padding-block: 1.5rem; border-top: 1px solid var(--table-line); }
+  .bench-group:first-child { padding-top: 0; border-top: 0; }
+  .bench-heading { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.006em; color: var(--color-navy); }
+  .bench-heading:focus { outline: none; }
+  .bench-status { display: flex; align-items: baseline; gap: 0.625rem; flex: 1 1 16rem; font-size: 0.9375rem; font-weight: 500; line-height: 1.45; }
+  .bench-status .dot { position: relative; top: 0.0625rem; }
+  .bench[data-link="trouble"] .bench-status { color: var(--color-navy); }
+
+  .bench-num { font-family: var(--font-mono); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+  .bench-row { display: grid; grid-template-columns: 6.25rem minmax(0, 1fr) 2.5rem 3rem; align-items: center; column-gap: 0.875rem; }
+  .bench-row > label { font-size: 0.9375rem; font-weight: 500; }
+  .bench-row > :is(output, .bench-num) { text-align: right; }
+  .bench-row-head { margin-top: 0.75rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; color: var(--color-rule); }
+  .bench-row-head > span { text-align: right; }
+  .bench-guess { color: var(--color-rule); }
+
+  /* A slider: the block is where the motor is sent, the darker part of the line is how far the board believes it has got. */
+  .bench input[type="range"] { appearance: none; -webkit-appearance: none; width: 100%; height: 2.75rem; margin: 0; background: transparent; cursor: pointer; --guess: 0%; --line: linear-gradient(to right, color-mix(in oklab, var(--color-navy) 62%, white) var(--guess), var(--table-line) var(--guess)); }
+  .bench input[type="range"]::-webkit-slider-runnable-track { height: 0.25rem; background: var(--line); }
+  .bench input[type="range"]::-moz-range-track { height: 0.25rem; background: var(--line); }
+  .bench input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 0.75rem; height: 1.5rem; margin-top: -0.625rem; border: 0; border-radius: 0; background: var(--color-navy); transition: transform 160ms var(--ease-out-expo); }
+  .bench input[type="range"]::-moz-range-thumb { width: 0.75rem; height: 1.5rem; border: 0; border-radius: 0; background: var(--color-navy); }
+  .bench input[type="range"]:hover::-webkit-slider-thumb { transform: scaleY(1.12); }
+  .bench input[type="range"]:focus-visible { outline: 2px solid var(--color-navy); outline-offset: 2px; }
+  .bench input[type="range"]:disabled { cursor: not-allowed; opacity: 0.4; }
+
+  .bench .btn:disabled { cursor: not-allowed; border: 1px dashed var(--color-rule); background: var(--color-panel); color: var(--color-rule); transform: none; }
+  .bench-check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; font-weight: 500; cursor: pointer; }
+  .bench-check input { width: 1.0625rem; height: 1.0625rem; margin: 0; accent-color: var(--color-navy); }
+  .bench-check:has(input:disabled) { cursor: not-allowed; color: var(--color-rule); }
+  .bench-field { width: 4.25rem; min-height: 2.25rem; padding: 0.25rem 0.5rem; border: 1px solid var(--color-navy); background: var(--color-white); font-family: var(--font-mono); font-size: 0.875rem; font-variant-numeric: tabular-nums; color: var(--color-ink); }
+  .bench-field:focus-visible { outline: 2px solid var(--color-navy); outline-offset: 2px; }
+
+  .bench-steps { margin-top: 0.75rem; padding-left: 1.25rem; list-style: decimal; font-size: 0.9375rem; line-height: 1.5; max-width: 34rem; }
+  .bench-steps li + li { margin-top: 0.25rem; }
+  .bench-jog { display: grid; grid-template-columns: 6.25rem auto auto; justify-content: start; align-items: center; column-gap: 0.75rem; font-size: 0.9375rem; font-weight: 500; }
+  .bench-jog .btn { min-height: 2.5rem; min-width: 5rem; padding-block: 0.25rem; touch-action: none; user-select: none; }
+
+  /* The readout: the lines that cross the cable, and the latest sensor reading. */
+  .bench-readout { margin-top: 3rem; }
+  .bench-readout-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.875rem 2rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--navy-line); }
+  .bench-readout-head h2 { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.006em; }
+  .bench-sense { display: flex; flex-wrap: wrap; gap: 0.375rem 1.25rem; margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+  .bench-sense > div { display: flex; gap: 0.5rem; }
+  .bench-sense dt, .bench-unit { color: var(--on-navy-soft); }
+  .bench-sense dd { margin: 0; min-width: 5.5ch; }
+  .bench-readout-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; margin-left: auto; }
+  .bench-readout .btn-ghost { color: var(--color-white); font-size: 0.875rem; }
+  .bench-readout .bench-check { font-size: 0.875rem; }
+  .bench-readout .bench-check input { accent-color: var(--color-sky); }
+  .bench-log { height: 15rem; overflow-y: auto; padding: 0.875rem 1.25rem; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.6; font-variant-numeric: tabular-nums; white-space: pre-wrap; overflow-wrap: anywhere; scrollbar-color: var(--navy-line) transparent; scrollbar-width: thin; }
+  .bench-log:focus-visible { outline: 2px solid var(--color-white); outline-offset: -2px; }
+  .bench-line-in { color: var(--on-navy-soft); }
+  .bench-line-note { color: var(--color-sky); }
+
+  @media (max-width: 30rem) {
+    .bench-row { grid-template-columns: 6.25rem minmax(0, 1fr) 2rem 2.25rem; column-gap: 0.5rem; }
+  }
+</style>

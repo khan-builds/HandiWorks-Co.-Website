@@ -44,7 +44,8 @@ As of 2026-11-21. A page not listed here has no known work waiting.
 | The Kit | The hand and finger models, and the specs beside them, are out of date for the same reason. The circuit diagram is an empty labelled box until the image arrives. |
 | Lessons | Lessons 2 to 4 have no final titles or summaries. |
 | Lesson 1 (overview, CAD, Hardware, Software) | Incomplete. Every page of it says "Draft · under team review". The wiring pictures are placeholders and there is no slides link. |
-| Student dashboard | Two things are planned for it and neither is built: a page that controls the real hand from the browser, and a guided simulator. |
+| Student dashboard, "Test your code" | A demo. It drives the hand from the browser over USB and shows the same hand on screen. It has never been tried on the real hand, and its Arduino sketch (`public/downloads/helpinghand_bench.ino`) has never been compiled. |
+| Student dashboard, "Simulator" | A demo: six guided steps for Lesson 1, from a see-saw to the finger of the hand. Its wording and its questions have not been reviewed. |
 | Roadmap | Empty on purpose. The roadmap has not been written. |
 | Team | Photos and bios are missing; the page shows initials. |
 | Every page | The logo is traced by hand from the team poster until the real file arrives. |
@@ -56,11 +57,13 @@ The full list, with who owes what, is in `docs/README.md` under "To do".
 | Path | What |
 |---|---|
 | `index.html` | The homepage with the scroll-driven 3D hand. One hand-edited file; it has no build step of its own. The hand's shape and motion inside it are written by `scripts/hand_motion.py`. |
-| `src/pages/` | Every other page: The Problem, The Kit, Lessons, Sign in, the two dashboards, Roadmap, Team. |
+| `src/pages/` | Every other page: The Problem, The Kit, Lessons, Sign in, the two dashboards, "Test your code", the Simulator, Roadmap, Team. |
 | `src/content/lessons/` | Lesson text. One folder per lesson, with a CAD, a hardware and a software part. |
 | `src/data/` | `evidence.ts`: every figure on The Problem page with its source. `mock.ts`: the fictional class for the dashboards. |
 | `src/components/`, `src/layouts/`, `src/styles/` | Shared nav, footer, page shell and styles for the inner pages. |
-| `public/` | Files served as they are: 3D models, fonts, downloads, and a finger video no page uses since 2026-11-18. |
+| `src/scripts/` | What the two student pages run in the browser: `bench/` talks to the hand's Arduino for "Test your code", `sim/` is the simulator's six steps, `hand/view.ts` draws the hand for both. |
+| `src/pages/hand-data.js.ts` | Hands the homepage's hand data to the inner pages as `/hand-data.js`. |
+| `public/` | Files served as they are: 3D models, fonts, and downloads (Lesson 1's sketch, and `helpinghand_bench.ino` for "Test your code"). |
 | `scripts/` | `check-homepage.mjs` checks the homepage's scripts before a build. `screenshots.mjs` takes review screenshots. `hand_motion.py` exports the homepage's moving hand from the CAD: its parts and how each one moves. `step_to_glb.py` exports the still hand and finger models on The Kit page from the CAD. `stl_to_glb.py` converts Lesson 1's step models from the `version-1` branch. |
 | `docs/README.md` | One file: where the site stands, the to-do list, the log of design changes, the theme (colours, type, building blocks, the wording from the team poster), and the plan with its prompts. |
 | `.github/workflows/deploy.yml` | Builds and publishes the site on every push to `main`. |
@@ -74,6 +77,7 @@ npm install
 npm run dev       # http://localhost:4321/HandiWorks-Co.-Website/
 npm run build     # checks the homepage, then builds everything into dist/
 npm run preview   # serves dist/ the way the live site is served
+npm run check     # type check
 ```
 
 The site lives under `/HandiWorks-Co.-Website/` because that is its GitHub Pages path.
