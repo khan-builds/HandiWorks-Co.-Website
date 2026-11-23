@@ -32,10 +32,13 @@ export type Turn = number[];
 const clamp = (x: number) => Math.min(1, Math.max(0, x));
 const FINGER_LINKS = ['carriage', 'link', 'P', 'S', 'T', 'Q', 'R'];
 const THUMB_LINKS = ['carriage', 'link', 'prox', 'distal', 'bar'];
-// The homepage's colours (index.html, SCHEME): every finger alike, a colour for each joint.
+// The homepage's colours (index.html, SCHEME, which says why): every finger alike, the three
+// segments in blues from navy to sky, the four parts that pass the motion along from brick to
+// gold, a navy palm and blue-grey housings. Change the two tables together, and the bars'
+// colours in src/scripts/sim/steps.ts with them.
 const SCHEME: Record<string, [number, number, number]> = {
-  palm: [0.1, 0.17, 0.4], module: [0.12, 0.75, 0.65], carriage: [0.96, 0.5, 0.69], link: [0.075, 0.204, 0.463],
-  P: [0.95, 0.42, 0.37], Q: [0.98, 0.75, 0.18], S: [0.56, 0.42, 0.91], R: [0.98, 0.55, 0.15], T: [0.25, 0.7, 0.92],
+  palm: [0.072, 0.204, 0.463], module: [0.623, 0.736, 0.824], carriage: [0.616, 0.185, 0.087], link: [0.717, 0.373, 0.119],
+  P: [0.128, 0.271, 0.617], Q: [0.829, 0.536, 0.078], S: [0.106, 0.525, 0.818], R: [0.896, 0.721, 0.148], T: [0.335, 0.765, 0.926],
 };
 const AS_FINGER: Record<string, string> = { unit: 'module', prox: 'P', bar: 'Q', distal: 'T', mount: 'palm' };
 

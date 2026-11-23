@@ -12,7 +12,7 @@
       P and the middle segment (S); S and Q;      -> frame, P, Q, S: one four-bar
       P and the second bar (R); S and the fingertip (T); T and R.   -> P, S, R, T: a second four-bar */
 import type { HandInfo } from '../hand/view';
-import { CORAL, NAVY, ORANGE, PINK, SKY, VIOLET, YELLOW, type Bar, type Point, type Step } from './steps';
+import { BAR_1, BAR_2, CARRIAGE, FRAME, LINK, SEGMENT_1, SEGMENT_2, SEGMENT_3, type Bar, type Point, type Step } from './steps';
 
 type Table = HandInfo['fingers'];
 const PAIRS = [['carriage', 'link'], ['link', 'P'], ['frame', 'P'], ['frame', 'Q'], ['P', 'S'], ['S', 'Q'], ['P', 'R'], ['S', 'T'], ['T', 'R']] as const;
@@ -102,15 +102,15 @@ export function fingerStep(table: Table, tip: Point): Step & { says(stage: numbe
       const carriage = p('carriage-link');
       const bars: Bar[] = [
         // The frame: the screw the carriage rides on, and the two pins the housing holds.
-        { points: [[Math.min(carriageRest, carriageFull) - 16, carriage[1]], [Math.max(carriageRest, carriageFull) + 16, carriage[1]]], colour: colour('frame', NAVY), faint: true },
-        { points: [p('frame-P'), p('frame-Q')], colour: colour('frame', NAVY), faint: true },
-        { points: [p('frame-P'), p('link-P'), p('P-R'), p('P-S')], colour: colour('P', CORAL), closed: true },
-        { points: [p('P-S'), p('S-Q'), p('S-T')], colour: colour('S', VIOLET), closed: true },
-        { points: [p('S-T'), place(frameAt(table, 'T', u), tip), p('T-R')], colour: colour('T', SKY), closed: true },
-        { points: [p('frame-Q'), p('S-Q')], colour: colour('Q', YELLOW) },
-        { points: [p('P-R'), p('T-R')], colour: colour('R', ORANGE) },
-        { points: [carriage, p('link-P')], colour: colour('link', NAVY) },
-        { points: [[carriage[0] - 7, carriage[1]], [carriage[0] + 7, carriage[1]]], colour: colour('carriage', PINK) },
+        { points: [[Math.min(carriageRest, carriageFull) - 16, carriage[1]], [Math.max(carriageRest, carriageFull) + 16, carriage[1]]], colour: colour('frame', FRAME), faint: true },
+        { points: [p('frame-P'), p('frame-Q')], colour: colour('frame', FRAME), faint: true },
+        { points: [p('frame-P'), p('link-P'), p('P-R'), p('P-S')], colour: colour('P', SEGMENT_1), closed: true },
+        { points: [p('P-S'), p('S-Q'), p('S-T')], colour: colour('S', SEGMENT_2), closed: true },
+        { points: [p('S-T'), place(frameAt(table, 'T', u), tip), p('T-R')], colour: colour('T', SEGMENT_3), closed: true },
+        { points: [p('frame-Q'), p('S-Q')], colour: colour('Q', BAR_1) },
+        { points: [p('P-R'), p('T-R')], colour: colour('R', BAR_2) },
+        { points: [carriage, p('link-P')], colour: colour('link', LINK) },
+        { points: [[carriage[0] - 7, carriage[1]], [carriage[0] + 7, carriage[1]]], colour: colour('carriage', CARRIAGE) },
       ];
       const angle = (body: string) => Math.round((Math.atan2(frameAt(table, body, u)[1], frameAt(table, body, u)[0]) * 180) / Math.PI);
       // Each joint's turn is written beside its pin, on the side away from the next segment.

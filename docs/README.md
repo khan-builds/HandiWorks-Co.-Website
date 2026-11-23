@@ -27,7 +27,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-21 at 21:29 Pacific.
+Checked against GitHub on 2026-11-21 at 21:45 Pacific.
 
 **The new site was merged into `main` on 2026-11-21, as pull request 6.** Lingbo asked for
 the merge that day. The first run of the new publishing step and a look at the live site
@@ -79,7 +79,7 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 Before the merge `main` was four commits further on, but those four add the simulator and
-take it out again, so no file differed. Sixteen commits are pushed: the rebuild, the hand from the CAD, the emails
+take it out again, so no file differed. Eighteen commits are pushed: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
 people, the homepage story with the flat hand, the receding palm and the littered parts,
@@ -92,18 +92,23 @@ fingers that drop into the palm, and the parts gathering into the mark. The four
 colour for each finger, and the four fingers closing into one before the view turns. The
 fifteenth colours every finger the same way, with a colour for each joint. The sixteenth
 empties the Roadmap page and lists, in the root `README.md`, the pages that still need
-review. A seventeenth, committed and waiting for a push when this was written, adds "Test
-your code" and the Simulator to the student dashboard, installs the type check and deletes
-Billy's unused video. Prompts 1 to 9
+review. The seventeenth adds "Test your code" and the Simulator to the student dashboard,
+installs the type check and deletes Billy's unused video. The eighteenth gives the hand one
+palette, on the homepage, in "Test your code" and in the simulator, and links the simulator
+from Lesson 1's row on the student dashboard. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
-**The seventeenth commit, "Add Test your code and the Simulator to the student dashboard",
-was made on 2026-11-21 at 21:30 when Lingbo said "commit to the branch LZ-C5.2". It was not
-pushed when this was written:** Lingbo asks for a push separately. Until then "Test your
-code", the Simulator, the type check and the removal of Billy's video are on the build
-machine and in the offline zip only, and `main` and the branch on GitHub are both as they
-were after the merge. `git status` on the build machine says whether that is still so.
+**The eighteenth commit, "Give the hand one palette and link the simulator from Lesson 1",
+is on GitHub as the tip of `LZ-C5.2`.** It was made and pushed on 2026-11-22 at about 17:40,
+when Lingbo said "push to the branch" with the work still uncommitted; Claude had offered
+that name and "say commit or push" the evening before. Lingbo usually asks for the two
+separately, as with the seventeenth: "commit to the branch LZ-C5.2" on 2026-11-21 at 21:30,
+then "push it to the branch" a few minutes later.
+
+**`main` is still the merge of 2026-11-21.** Nothing since the sixteenth commit is merged,
+so the live site has none of "Test your code", the Simulator, the link in Lesson 1's row or
+the hand's new colours. Nothing is waiting uncommitted on the build machine.
 
 | Page | State | Still open |
 |---|---|---|
@@ -140,13 +145,14 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 All but the last two were taken again on 2026-11-18.
 
-The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-21.zip` on
+The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-22.zip` on
 the build machine (4.6 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It is a
-snapshot of the build of 2026-11-21 at 21:02, and holds the same site as the seventeenth
-commit, "Add Test your code and the Simulator to the student dashboard". It is smaller than
-before because Billy's unused video is gone. Its `HOW-TO-OPEN.txt` now says to use Chrome or Edge and how to
-connect the hand. The zip of 2026-11-19 and the first zip of 2026-11-21 were deleted when
-this one was made. The zip of 2026-11-18
+snapshot of the eighteenth commit, "Give the hand one palette and link the simulator from
+Lesson 1", built on 2026-11-22. The site in it is file for file the one in the zip of
+2026-11-21, which was built from the same work before it was committed; that zip was
+deleted when this one was made, as the zip of 2026-11-19 was before it. Its
+`HOW-TO-OPEN.txt` says to use Chrome or Edge and how to connect the hand. The zip of
+2026-11-18
 was deleted before that: it was made
 before any address was added and before the hand changed, its "Talk to us" showed one
 address, Lingbo's at NYU, and anyone opening it saw the site as it was that morning.
@@ -162,11 +168,12 @@ The scroll story of that evening is in `screenshots/hand-story/`: `story-1440.pn
 same scroll before the change, `opening-1440.png` is the first five seconds, and the
 `home-*.png` files are single frames.
 
-The story as it stands, from the afternoon of 2026-11-19, is in `screenshots/hand-latest/`:
+The story as it stands, in the colours of 2026-11-21, is in `screenshots/hand-latest/`:
 `story-1440.png` and `story-390.png` are the whole scroll on one sheet at each width,
-`burst-1440.png` is the coming apart frame by frame in time, `1-closed.png` to
-`9-logo.png` are single frames, `colours-1440.png` is nine moments in the hand's colours,
-and `reduced-motion.png` is what a visitor who has asked for less motion sees.
+`1-closed.png` to `9-logo.png` are single frames, `colours-1440.png` is twelve moments in
+the old colours above the same twelve in the new, `palette.png` is the two sets of colours
+as swatches, and `reduced-motion.png` is what a visitor who has asked for less motion sees.
+The motion itself has not changed since 2026-11-19.
 
 **`rehearsal/` and `rehearsal-teacher/` were taken again on 2026-11-19 at 16:05.** Until
 then they were from the morning of 2026-11-18, before any address was added, so they showed
@@ -345,6 +352,78 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-21: the hand's colours as one palette
+
+Lingbo: "can you update the animation to change the colors to be more cohesive reference some
+color theory and design theory". The colours before were one for every joint, as Lingbo had
+asked on 2026-11-19, but eight unrelated hues at full strength: teal, pink, navy, coral,
+yellow, violet, orange, sky. Nothing tied them to each other or to the site.
+
+What stays, because Lingbo asked for it earlier: every finger is coloured alike, the colour
+changes at every joint, and when the trace lights a link a visitor with no training can
+tell it from its neighbours. The motion is untouched.
+
+What changed, and the idea behind each choice:
+
+| Choice | The idea it rests on |
+|---|---|
+| Two colour families, not eight colours. Blues for the three segments, warm colours for the four parts that pass the motion along. | A complementary scheme: blue and orange sit opposite each other on the colour wheel, so each makes the other look clearer, and two hues read as one decision where eight read as none. Itten lists this "complementary contrast" and the "cold-warm contrast" among his seven colour contrasts (*The Art of Color*, 1961). |
+| Parts with the same job share a family: what swings is blue, what carries the motion is warm. | The Gestalt law of similarity: things that look alike are read as belonging together. The colour now says what a part does, and the simulator uses the same code, so a rod is warm there too. |
+| Inside a family the parts differ by lightness, in even steps, dark at the housing and light at the fingertip. | Itten's "light-dark contrast", and the practice from map-making of ordering a ramp by lightness so it reads as a sequence (Brewer's ColorBrewer schemes; two such ramps in opposite hues is her "diverging" scheme). The steps were set in OKLCH, a colour space built so that equal numbers look like equal steps (Ottosson, 2020): each is 0.11 to 0.18 of lightness. |
+| The blues run from the brand's navy to the brand's sky. | The palette is anchored on the two colours the whole site is already made of (navy at hue 262, sky at hue 222), so the hand belongs to the page it sits on. |
+| A navy palm, blue-grey housings, and the strong colours kept for the small moving parts. | Figure and ground: quiet large areas, strong small ones, so the eye goes to what moves. It is also the 60-30-10 habit of interior and graphic design (a dominant colour, a second, an accent), and Itten's "contrast of extension": a bright warm colour needs far less area than a blue to balance it (he gives orange to blue as about 1 to 2). |
+| Any two parts that touch differ by a family or by a full step of lightness. | Checked by number, not by eye: every touching pair is at least 0.11 apart in OKLab, and stays so when the colours are passed through a model of red-green colour blindness (Machado, Oliveira and Fernandes, 2009). Blue against orange is the pair that red-green colour blindness leaves most intact. |
+
+The numbers are in the table under [The hand on the homepage](#the-hand-on-the-homepage).
+
+Where it applies: the homepage story, "Test your code", and the simulator, both its drawings
+and its 3D finger. In the simulator's drawings the bars that swing are now blues and the rods
+are amber and gold, and each bar has a faint navy line under it, because gold and sky are
+light colours on a pale stage.
+
+Decided during the work, not by Lingbo:
+
+- **Two families, with warm for the parts that carry the motion.** Not taken: a single family
+  of blues with one orange accent, which is calmer still but makes seven links hard to tell
+  apart; and a three-family set, which starts to read as a rainbow again.
+- **The housings went from teal to blue-grey.** They are the largest coloured parts after the
+  palm, and a strong colour there competed with the fingers.
+- **The link is warm, not navy.** It carries the motion, and navy made it merge with the palm.
+- **Left as they were:** the finger beside "The kit" on the homepage (sky, lime and white on
+  its navy band), the logo the parts gather into (navy and sky), the pale parts down the
+  page, and the two models on The Kit page, which are exported with their own colours and are
+  due to be exported again from the new CAD.
+- **The colour names in the simulator's code are now the parts' jobs** (`SEGMENT_1`, `BAR_1`,
+  and so on), not colour words, so they stay true if the colours change again.
+
+Checked: the homepage's scripts parse and its data block is unchanged; the story was filmed
+at twelve moments at 1440 and 390 px wide with no script errors; the simulator's 46 checks
+and the 37 for "Test your code" pass; the type check is clean. The pictures are in
+`screenshots/hand-latest/`: `colours-1440.png` is before above after, and `palette.png` is
+the two sets as swatches.
+
+Not checked: on a real screen. Colours were judged from headless Chrome's pictures.
+
+### 2026-11-21: the simulator linked from Lesson 1's row
+
+Lingbo: "Implement the simulator for lesson 1 as described". Claude read that as the one
+piece of the agreed plan that was still missing: the simulator "also linked from Lesson 1's
+row" on the student dashboard. The simulator itself was already built and pushed. If Lingbo
+meant more than the link, for example the simulator inside Lesson 1's own pages, that is
+not done.
+
+Under Lesson 1's three parts on the student dashboard there is now one line: "Try Lesson 1 in
+the simulator", a "Demo" badge, and "Six steps, from a see-saw to the finger of the hand."
+The "Simulator" section lower on the same page stays.
+
+Decided during the work, not by Lingbo: Lesson 1's own pages are not touched, because Lingbo
+said on the same day that Lesson 1 keeps everything it has. Not taken: a link from the
+lesson's overview page, which would send a visitor who is not signed in to the sign-in page.
+
+Checked: the build, every link the built pages ask for, the simulator's 46 checks, and the
+student dashboard at 390, 768, 1024 and 1440 px wide with nothing scrolling sideways.
+Pictures are in `screenshots/simulator-link/`.
 
 ### 2026-11-21: the simulator, six steps from a see-saw to the finger
 
@@ -1208,12 +1287,34 @@ SVG behind the canvas, comes up as they arrive, so the story ends on the logo an
 near it.
 
 **The hand's colours** are set by part, in `SCHEME`. Every finger is coloured the same way,
-and the colours change from joint to joint along it: a teal housing, the carriage that
-drives it pink, its link navy, the first segment coral, its bar yellow, the middle segment
-violet, its bar orange, and a sky fingertip. The thumb takes the same colours for its own
-parts, and the palm is navy. `BODY_COLOUR` works each part's colour out from that once. The
+and the colours change from joint to joint along it. Since 2026-11-21 the set is two
+families and no more:
+
+| Part | Colour | OKLCH (lightness, strength, hue) | Hex |
+|---|---|---|---|
+| Palm | The brand's navy | 0.34, 0.12, 262 | `#123476` |
+| Housing | A quiet blue-grey | 0.78, 0.045, 242 | `#9fbcd2` |
+| First segment | Deep blue | 0.42, 0.15, 264 | `#21459d` |
+| Middle segment | Azure | 0.60, 0.145, 246 | `#1b86d1` |
+| Fingertip | Sky | 0.77, 0.115, 226 | `#56c3ec` |
+| Carriage | Brick | 0.47, 0.15, 34 | `#9d2f16` |
+| Link | Burnt orange | 0.58, 0.135, 52 | `#b75f1e` |
+| First bar | Amber | 0.69, 0.145, 70 | `#d38914` |
+| Second bar | Gold | 0.80, 0.155, 90 | `#e4b826` |
+
+The three segments are the cool family: they step from the brand's navy toward its sky as
+they go out to the fingertip. The four parts that pass the motion along are the warm family,
+blue's opposite on the colour wheel, and they step from brick to gold in the order the motion
+reaches them. The reasons are in the design log entry of 2026-11-21. The thumb takes the same
+colours for its own parts. `BODY_COLOUR` works each part's colour out from that once. The
 trace's colours (`LIT`) are read from the same table, so when the trace lights a link it
 gives the link its own colour back.
+
+The same table is repeated in two places, because they are separate programs: `SCHEME` in
+`src/scripts/hand/view.ts` ("Test your code", and the 3D finger in the simulator) and the
+bar colours at the top of `src/scripts/sim/steps.ts` (the simulator's drawings). Change all
+three together. To try a new colour, `oklch.com` converts between the two notations; keep
+every colour inside what a screen can show.
 
 **The hand's size.** `HAND_SIZE` draws the hand a tenth larger on a wide stage, where there
 is room. On a stage squarer than about 3:2, and on a phone, the hand already fills its place

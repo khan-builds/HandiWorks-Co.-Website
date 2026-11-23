@@ -37,6 +37,13 @@ const next = PORTIONS.find((pt) => me.progress[pt.key] !== 'done') ?? PORTIONS[P
         })}
       </ol>
 
+      {/* Lesson 1's own way into the simulator. The "Simulator" section further down says more about it. */}
+      <p class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.9375rem]">
+        <a class="link font-semibold" href={p('/dashboard/student/simulator/')}>Try Lesson 1 in the simulator</a>
+        <span class="badge badge-demo">Demo</span>
+        <span class="meta">Six steps, from a see-saw to the finger of the hand.</span>
+      </p>
+
       <div class="panel mt-12 flex flex-wrap items-center justify-between gap-4">
         <div>
           <p class="meta">After Lesson 1</p>

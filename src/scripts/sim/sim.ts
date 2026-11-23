@@ -34,8 +34,10 @@ function paint() {
   for (const bar of d.bars) {
     const points = bar.points.map(point).join(' ');
     if (bar.faint) out += `<polyline class="sim-frame" stroke="${bar.colour}" stroke-width="${4 * k}" stroke-dasharray="${2 * k} ${9 * k}" points="${points}"/>`;
-    else if (bar.closed) out += `<polygon fill="${bar.colour}" fill-opacity="0.3" stroke="${bar.colour}" stroke-width="${7 * k}" stroke-linejoin="round" points="${points}"/>`;
-    else out += `<polyline fill="none" stroke="${bar.colour}" stroke-width="${12 * k}" stroke-linecap="round" stroke-linejoin="round" points="${points}"/>`;
+    // Under each bar goes a slightly wider navy line at low strength. The gold and the sky are
+    // light, and on the pale stage that line is what holds their edge.
+    else if (bar.closed) out += `<polygon class="sim-under" stroke-width="${9.5 * k}" points="${points}"/><polygon fill="${bar.colour}" fill-opacity="0.3" stroke="${bar.colour}" stroke-width="${7 * k}" stroke-linejoin="round" points="${points}"/>`;
+    else out += `<polyline class="sim-under" stroke-width="${14.5 * k}" points="${points}"/><polyline fill="none" stroke="${bar.colour}" stroke-width="${12 * k}" stroke-linecap="round" stroke-linejoin="round" points="${points}"/>`;
   }
   for (const [px, py] of d.joints) out += `<circle class="sim-joint" cx="${px}" cy="${-py}" r="${5 * k}" stroke-width="${2.5 * k}"/>`;
   for (const [px, py] of d.fixed) out += `<circle class="sim-fixed" cx="${px}" cy="${-py}" r="${8 * k}"/><circle class="sim-fixed-eye" cx="${px}" cy="${-py}" r="${2.6 * k}"/>`;

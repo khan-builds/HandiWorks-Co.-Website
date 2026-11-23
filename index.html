@@ -1076,12 +1076,17 @@ const OF_SHOWN=HAND_INFO.bodies.map(name=>name.startsWith('finger'+SHOWN+':'));
 const OF_FINGER=HAND_INFO.bodies.map(name=>name.startsWith('finger'));
 const FINGER_OF=HAND_INFO.bodies.map(name=>name.startsWith('finger')?+name[6]:-1);
 // ---- the hand's colours ----
-// Every finger is coloured the same way, and the colours change from joint to joint along it:
-// a teal housing, the carriage that drives it pink, its link navy, then coral, yellow, violet
-// and orange for the two segments and their bars, and a sky fingertip. No two neighbours are
-// alike in both hue and lightness, so the joints tell apart at a glance. The thumb takes the
-// same colours for its own parts. The palm is navy.
-const SCHEME={palm:[.1,.17,.4], module:[.12,.75,.65], carriage:[.96,.5,.69], link:[.075,.204,.463], P:[.95,.42,.37], Q:[.98,.75,.18], S:[.56,.42,.91], R:[.98,.55,.15], T:[.25,.7,.92]};
+// Every finger is coloured the same way, and the colours change from joint to joint along it.
+// The set is two families and no more. Cool: the three segments, stepping from the brand's
+// navy toward its sky as they go out to the fingertip. Warm, blue's opposite on the colour
+// wheel: the four parts that pass the motion along (carriage, link and the two bars), stepping
+// from brick to gold in the order the motion reaches them. The palm is the brand's navy and
+// the housings a quiet blue-grey, so the moving parts are what the eye goes to. Each colour
+// was picked in OKLCH (lightness, strength, hue): within a family every step is 0.11 to 0.18
+// of lightness, and any two parts that touch differ by a family or by a step of lightness.
+// The thumb takes the same colours for its own parts. docs/README.md, "The hand on the
+// homepage", has the numbers and the reasons.
+const SCHEME={palm:[.072,.204,.463], module:[.623,.736,.824], carriage:[.616,.185,.087], link:[.717,.373,.119], P:[.128,.271,.617], Q:[.829,.536,.078], S:[.106,.525,.818], R:[.896,.721,.148], T:[.335,.765,.926]};
 const AS_FINGER={unit:'module', prox:'P', bar:'Q', distal:'T', mount:'palm'};   // the thumb's parts, by the finger part each is coloured as
 const BODY_COLOUR=HAND_INFO.bodies.map(name=>{const kind=name.split(':')[1];return SCHEME[AS_FINGER[kind]||kind];});
 const LINK_OF=HAND_INFO.bodies.map(name=>CHAIN.indexOf(name.split(':')[1]));

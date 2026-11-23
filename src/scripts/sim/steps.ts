@@ -37,8 +37,11 @@ export type Step = {
   question: { ask: string; choices: string[]; right: number; why: string };
 };
 
-// The finger's colours on the homepage: first segment, its bar, middle segment, its bar, fingertip.
-export const CORAL = '#f26b5e', YELLOW = '#f0b000', VIOLET = '#8f6be8', ORANGE = '#fa8c26', SKY = '#40b3eb', NAVY = '#133476', PINK = '#f580b0', TEAL = '#1fbfa6';
+// The finger's colours on the homepage (index.html, SCHEME), named for the job each part does:
+// the first segment, the rod that follows it, the middle segment, the second rod, the
+// fingertip, and the carriage and link that drive them. Bars that swing are blues; rods that
+// carry the motion from one to the next are warm. The frame is the brand's navy.
+export const SEGMENT_1 = '#21459d', BAR_1 = '#d38914', SEGMENT_2 = '#1b86d1', BAR_2 = '#e4b826', SEGMENT_3 = '#56c3ec', FRAME = '#133476', CARRIAGE = '#9d2f16', LINK = '#b75f1e';
 
 const rad = (degrees: number) => (degrees * Math.PI) / 180;
 const clamp = (x: number, low: number, high: number) => Math.min(high, Math.max(low, x));
@@ -74,7 +77,7 @@ const seesaw: Step = {
     const left = from(pivot, 4 * pin, a + Math.PI), right = from(pivot, 400 - 4 * pin, a);
     const swing = rad(24);
     return {
-      bars: [{ points: [left, right], colour: CORAL }],
+      bars: [{ points: [left, right], colour: SEGMENT_1 }],
       fixed: [pivot],
       joints: [],
       handle: left,
@@ -121,7 +124,7 @@ const twoSeesaws: Step = {
   draw(tip, arm) {
     const m = linked(tip, arm);
     return {
-      bars: [{ points: [m.grip, m.out], colour: CORAL }, { points: [m.out, m.end], colour: YELLOW }, { points: [m.end, m.other], colour: VIOLET }],
+      bars: [{ points: [m.grip, m.out], colour: SEGMENT_1 }, { points: [m.out, m.end], colour: BAR_1 }, { points: [m.end, m.other], colour: SEGMENT_2 }],
       fixed: [FIRST_PIN, m.pin],
       joints: [m.out, m.end],
       handle: m.grip,
@@ -158,7 +161,7 @@ const fourBarStep: Step = {
     const rocks = Array.from({ length: 73 }, (_, i) => fourBar(i * 5, crank).rock);
     const low = Math.min(...rocks), high = Math.max(...rocks);
     return {
-      bars: [{ points: [LEFT_PIN, RIGHT_PIN], colour: NAVY, faint: true }, { points: [LEFT_PIN, m.a], colour: CORAL }, { points: [m.a, m.b], colour: YELLOW }, { points: [RIGHT_PIN, m.b], colour: VIOLET }],
+      bars: [{ points: [LEFT_PIN, RIGHT_PIN], colour: FRAME, faint: true }, { points: [LEFT_PIN, m.a], colour: SEGMENT_1 }, { points: [m.a, m.b], colour: BAR_1 }, { points: [RIGHT_PIN, m.b], colour: SEGMENT_2 }],
       fixed: [LEFT_PIN, RIGHT_PIN],
       joints: [m.a, m.b],
       handle: m.a,
@@ -209,9 +212,9 @@ const sixBarStep: Step = {
     const span = (key: 'rock' | 'last') => Math.round(Math.max(...sweep.map((s) => s[key])) - Math.min(...sweep.map((s) => s[key])));
     return {
       bars: [
-        { points: [P1, P3], colour: NAVY, faint: true },
-        { points: [P1, m.a], colour: CORAL }, { points: [m.a, m.b], colour: YELLOW }, { points: [P2, m.c], colour: VIOLET },
-        { points: [m.c, m.d], colour: ORANGE }, { points: [P3, m.d], colour: SKY },
+        { points: [P1, P3], colour: FRAME, faint: true },
+        { points: [P1, m.a], colour: SEGMENT_1 }, { points: [m.a, m.b], colour: BAR_1 }, { points: [P2, m.c], colour: SEGMENT_2 },
+        { points: [m.c, m.d], colour: BAR_2 }, { points: [P3, m.d], colour: SEGMENT_3 },
       ],
       fixed: [P1, P2, P3],
       joints: [m.a, m.b, m.c, m.d],
@@ -257,11 +260,11 @@ const dr4b: Step = {
     const low = lift(0), high = lift(1);
     return {
       bars: [
-        { points: [[BASE[0], BASE[1] - 22], m.low2], colour: NAVY },
-        { points: [m.low1, m.mid1], colour: CORAL }, { points: [m.low2, m.mid2], colour: CORAL },
-        { points: [m.mid1, m.mid3], colour: VIOLET },
-        { points: [m.mid2, m.top1], colour: ORANGE }, { points: [m.mid3, m.top2], colour: ORANGE },
-        { points: [m.top1, m.top2], colour: SKY }, { points: shelf, colour: SKY },
+        { points: [[BASE[0], BASE[1] - 22], m.low2], colour: FRAME },
+        { points: [m.low1, m.mid1], colour: SEGMENT_1 }, { points: [m.low2, m.mid2], colour: SEGMENT_1 },
+        { points: [m.mid1, m.mid3], colour: SEGMENT_2 },
+        { points: [m.mid2, m.top1], colour: BAR_2 }, { points: [m.mid3, m.top2], colour: BAR_2 },
+        { points: [m.top1, m.top2], colour: SEGMENT_3 }, { points: shelf, colour: SEGMENT_3 },
       ],
       fixed: [m.low1, m.low2],
       joints: [m.mid1, m.mid2, m.mid3, m.top1, m.top2],
