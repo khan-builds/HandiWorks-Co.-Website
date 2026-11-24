@@ -6,7 +6,8 @@
     put on both links through the whole motion. So the drawing is the real finger's geometry,
     and it follows the CAD when the CAD changes, as long as the links keep their names.
 
-    The pairs, checked against hand v11 on 2026-11-21 (each fits to under a thousandth of a mm):
+    The pairs, checked against hand v11 on 2026-11-21 and against Final v3 on 2026-11-23 (each fits
+    to under a thousandth of a mm):
       the carriage and its link; the link and the first segment (P);
       the frame and P (the knuckle); the frame and the first bar (Q);
       P and the middle segment (S); S and Q;      -> frame, P, Q, S: one four-bar

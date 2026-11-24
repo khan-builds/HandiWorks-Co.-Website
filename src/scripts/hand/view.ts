@@ -176,7 +176,9 @@ export function startHandView(canvas: HTMLCanvasElement, info: HandInfo, data: A
   };
   // The hand's own axes, in mm: X toward the fingertips, Y toward the thumb, Z out of the palm.
   // `view` turns them to the screen's: x right, y up, z toward the viewer. `depth` draws near
-  // things a little larger.
+  // things a little larger. The third number of gl_Position must not be multiplied by w: then
+  // what is in front is only right at a triangle's corners, and across a face cut into a few
+  // large triangles (the palm's top on Final v3) the parts under it show through.
   shader(gl.VERTEX_SHADER, `attribute vec3 position,normal;
   uniform mat4 body; uniform mat3 view; uniform vec3 centre,look; uniform vec2 scale; uniform float depth;
   varying vec3 n;
@@ -184,7 +186,7 @@ export function startHandView(canvas: HTMLCanvasElement, info: HandInfo, data: A
    vec3 p=view*((body*vec4(position/${info.unitsPerMm}.+centre,1.)).xyz-look);
    n=view*(body*vec4(normal/127.,0.)).xyz;
    float w=1.-depth*p.z;
-   gl_Position=vec4(p.xy*scale,-p.z*.002*w,w);}`);
+   gl_Position=vec4(p.xy*scale,-p.z*.002,w);}`);
   shader(gl.FRAGMENT_SHADER, `precision mediump float;varying vec3 n;uniform vec3 paint;
   void main(){vec3 N=normalize(n);float diffuse=max(dot(N,normalize(vec3(-.5,.75,.65))),0.);
   float spec=pow(max(dot(N,normalize(vec3(-.3,.35,.88))),0.),22.);

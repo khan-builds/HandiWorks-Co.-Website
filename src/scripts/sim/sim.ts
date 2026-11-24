@@ -250,7 +250,7 @@ root.dataset.ready = 'steps';
 loadHand(root.dataset.handData!).then(({ info, data }) => {
   const [low, high] = extent(info, data, 'finger2:T');
   steps[5] = fingerStep(info.fingers, [high[0] - 2, (low[2] + high[2]) / 2]);
-  const view = startHandView(fingerCanvas, info, data, { only: (part) => part.startsWith('finger2:'), look: [150, info.fingers.y[2], 42], reach: [156, 82], face: SIDE_ON });
+  const view = startHandView(fingerCanvas, info, data, { only: (part) => part.startsWith('finger2:'), look: [146, info.fingers.y[2], 56], reach: [152, 76], face: SIDE_ON });   // the finger of Final v3 reaches X 0..291, Z -15..127 mm through its travel
   finger = view;
   if (!view) one('[data-three-note]').textContent = 'This browser could not draw the 3D finger. The drawing above is the same finger.';
   else one<HTMLElement>('[data-three-note]').hidden = true;

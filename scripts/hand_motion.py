@@ -6,10 +6,10 @@ Run it with the CAD environment, from the repo root:
     ~/.venvs/sldp-cad/bin/python scripts/hand_motion.py --check-path    # is the way into the pinch free of collisions? (10 min)
     ~/.venvs/sldp-cad/bin/python scripts/hand_motion.py --dry-run       # with either: write nothing
 
-The CAD lives outside this repo, in ~/workspace/SLDP on the build machine (set SLDP_CAD to point
-somewhere else). This reads hand v11 (11.17 Thumb Updates/hand/v11_modular/palm11.py) and takes
-nothing from the page: every joint position, angle and limit below comes out of the CAD's own
-functions, so the hand on the homepage can only move the way the CAD says it does.
+The CAD lives outside this repo, in ~/workspace/SLDP CAD on the build machine (set SLDP_CAD to point
+somewhere else). This reads the hand Final v3 (Final v3/source/final3.py) and takes nothing from
+the page: every joint position, angle and limit below comes out of the CAD's own functions, so
+the hand on the homepage can only move the way the CAD says it does.
 
 What it writes, between the two HAND-DATA markers in index.html:
 
@@ -25,8 +25,10 @@ the swing of its whole unit on the VEX 393's shaft, and the travel of its own ca
 The page draws two things from this one block: the whole hand at the top of the homepage, and
 the middle finger's module on its own beside "The kit".
 
-When the CAD changes: point HAND at the new hand's folder and change LABEL, check that the part
-names in MATERIAL, FINGER_BODY_OF and THUMB_BODY_OF still match, run this with --check and then
+When the CAD changes: point HAND at the new hand's folder, name its file in load_cad() and change
+LABEL, check that the part names in MATERIAL, HIDDEN, FINGER_BODY_OF and THUMB_BODY_OF still
+match, and that finger_tables() still asks the finger module for its pose the way that module
+gives it (hand v11 and Final v3 differ there). Then run this with --check and then
 with --check-path, run `npm run build`, and look at the homepage (`npm run shots -- hand /`).
 docs/README.md, "The hand on the homepage", says what the page does with these numbers.
 """
@@ -47,9 +49,9 @@ sys.dont_write_bytecode = True  # leave nothing behind in the CAD folders
 
 import numpy as np
 
-CAD = Path(os.environ.get("SLDP_CAD", "~/workspace/SLDP")).expanduser()
-HAND = CAD / "11.17 Thumb Updates" / "hand" / "v11_modular"
-LABEL = "Hand v11 · 2026-11-17"
+CAD = Path(os.environ.get("SLDP_CAD", "~/workspace/SLDP CAD")).expanduser()
+HAND = CAD / "Final v3" / "source"
+LABEL = "Final v3 · 2026-11-22"
 REPO = Path(__file__).resolve().parent.parent
 HTML = REPO / "index.html"
 
@@ -68,9 +70,13 @@ GOLD, STEEL, NAVY, GREY, ORANGE = 0, 1, 2, 3, 4
 MATERIAL = (
     ("palm", STEEL),
     ("plate", STEEL),
+    ("cover", STEEL),  # the end cap over the rear of the palm and of the electronics
+    ("eplate", GOLD),  # the electronics housing: a plate against the palm's back ...
+    ("eshell", GOLD),  # ... and the one curved shell over it, the back of the hand
+    ("cover_screws", GREY),
+    ("shell_screws", GREY),
     ("tbase", STEEL),
     ("pod_lid", STEEL),
-    ("box_", GOLD),
     ("shaft", GREY),
     ("dock_screws", GREY),
     ("motor_screws", GREY),
@@ -97,7 +103,7 @@ MATERIAL = (
     ("t_tube_G", GREY),
     ("t_hw_", GREY),
 )
-HIDDEN = ("m393", "module_screws", "mega", "proto", "gyro", "jack", "driver_", "battery", "t_motor_ref")
+HIDDEN = ("m393", "module_screws", "tray_screws", "mega", "proto", "gyro", "jack", "driver_", "battery", "t_motor_ref")
 
 # Which rigid body of a finger each of its parts belongs to. Anything else on a finger module
 # (housing, base, pins, base screws) is bolted to the housing and only moves when the module does.
@@ -105,7 +111,7 @@ FINGER_BODIES = ("module", "carriage", "link", "P", "S", "T", "Q", "R")
 FINGER_BODY_OF = {
     "act_carriage": "carriage",
     "link": "link",
-    "P_p": "P", "P_n": "P", "hw_PIP_p": "P", "hw_PIP_n": "P", "hw_ARM": "P", "hw_E_p": "P", "hw_E_n": "P",
+    "P_p": "P", "P_n": "P", "hw_PIP_p": "P", "hw_PIP_n": "P",
     "S_p": "S", "S_n": "S", "hw_DIP_p": "S", "hw_DIP_n": "S",
     "T_p": "T", "T_n": "T", "hw_F_p": "T", "hw_F_n": "T",
     "Q_p": "Q", "Q_n": "Q",
@@ -128,9 +134,9 @@ FINGER_NAMES = ("little", "ring", "middle", "index")
 
 def load_cad():
     sys.path.insert(0, str(HAND))
-    import palm11  # noqa: PLC0415  (the import builds nothing, but it needs the CAD environment)
+    import final3  # noqa: PLC0415  (the import builds nothing, but it needs the CAD environment)
 
-    return palm11
+    return final3
 
 
 def material_of(name: str):
@@ -143,7 +149,7 @@ def material_of(name: str):
 
 
 def body_of(key: str) -> tuple[str, str] | None:
-    """Part key from palm11.build -> (group, body), or None for a part that is left out."""
+    """Part key from the hand's build() -> (group, body), or None for a part that is left out."""
     m = re.match(r"f(\d)_(.+)", key)
     if m:
         name = m.group(2)
@@ -227,44 +233,59 @@ def finger_tables(P):
     """One finger module: for evenly spaced carriage travel, where each link is.
 
     Frame: the module's own (X from the housing's rear face toward the fingertip, Z toward the
-    palm face). Everything is taken from finger3.pose(), the function the CAD places its parts with.
+    palm face). Everything is taken from the module's pose(), the function the CAD places its
+    parts with (Final v1/source/final_module.py: finger v3's linkage with the link re-aimed at
+    this housing's carriage pin).
+
+    A row says where a link is, measured from where it is in the straight finger, because the
+    triangles this script exports are the straight finger's. That matters for the link: the CAD
+    draws it level and turns it 10 degrees downhill to reach this carriage even when the finger
+    is straight.
     """
     from build123d import Location, Pos  # noqa: PLC0415
 
-    M, F5 = P.M, P.M.F5
-    F3 = F5.F3
-    M.HOST.set()  # knuckle position of finger v5 on this housing
+    M = P.M
+    F3 = M.F3
     travel = M.TRAVEL
 
     grid = np.linspace(0.0, M.FINGER_MAX, 215)
-    used = np.array([F5.travel_used(c) for c in grid])
+    used = np.array([M.X_PIN_MAX - M.pin_x(c) for c in grid])
 
     def curl_at(s):
         return float(np.interp(s, used, grid))
 
-    pivots = {}
+    to_module, from_module = F3.to_act(Location()), F3.to_act(Location()).inverse()
+
+    def placed(pose, body):
+        """Where the CAD puts this link, as a move of the link as it is drawn, in the module frame."""
+        pivot, deg, tr = pose["xf"][body]
+        # to_act(x) = A * x; the placement of a part already in the module frame is A x A^-1
+        return to_module * (Pos(tr[0], 0, tr[1]) * F3.rot_about(Location(), pivot, deg)) * from_module
+
+    links = ("P", "S", "T", "Q", "R", "link")
+    straight = M.pose(0.0)
+    home, pivots = {}, {}
+    for body in links:
+        home[body] = placed(straight, body)
+        pin = mat4(home[body] * F3.to_act(Pos(straight["xf"][body][0][0], 0, straight["xf"][body][0][1])))
+        pivots[body] = (pin[0, 3], pin[2, 3])  # the link's own pin, where the straight finger has it
+    pivots["carriage"] = (M.X_PIN_MAX, M.Z_PIN)
+
     rows = {b: [] for b in FINGER_BODIES[1:]}
     curls = []
     for j in range(SAMPLES):
         s = travel * j / (SAMPLES - 1)
         curl = min(curl_at(s), M.FINGER_MAX) if j else 0.0
-        p = F5.pose(curl)
+        p = M.pose(curl)
         curls.append(curl)
-        for body in ("P", "S", "T", "Q", "R", "link"):
-            pivot, deg, tr = p["xf"][body]
-            loc = F3.to_act(Pos(tr[0], 0, tr[1]) * F3.rot_about(Location(), pivot, deg))
-            # to_act(x) = A * x; the placement of a part already in the module frame is A x A^-1
-            loc = loc * F3.to_act(Location()).inverse()
-            home = mat4(F3.to_act(Pos(pivot[0], 0, pivot[1])))
-            pivots[body] = (home[0, 3], home[2, 3])
-            rows[body].append(about(pivots[body], planar(loc)))
-        pivots["carriage"] = (M.X_PIN_MAX, M.Z_PIN)
-        rows["carriage"].append((0.0, M.X_PIN_MAX + p["carriage_dx"], M.Z_PIN))
+        for body in links:
+            rows[body].append(about(pivots[body], planar(placed(p, body) * home[body].inverse())))
+        rows["carriage"].append((0.0, p["pin_x"], M.Z_PIN))
     return {
-        "travel": travel,
+        "travel": round(float(travel), 4),
         "curl": [round(c, 3) for c in curls],
-        "pivot": {b: [round(v, 4) for v in pivots[b]] for b in rows},
-        "rows": {b: [[round(v, 4) for v in r] for r in rows[b]] for b in rows},
+        "pivot": {b: [round(float(v), 4) for v in pivots[b]] for b in rows},
+        "rows": {b: [[round(float(v), 4) for v in r] for r in rows[b]] for b in rows},
     }
 
 
@@ -521,7 +542,7 @@ def verify(P, info, order, by_body, meshes):
         ("fingers at their limit", [P.M.FINGER_MAX] * 4, 0.0, 0.0, None, 0.0),
         ("pinch on the index", [P.PINCH[0]] * 4, P.PINCH[1], P.PINCH[2], None, 0.0),
         ("pinch on the middle", list(P.PINCH_MIDDLE[0]), P.PINCH_MIDDLE[1], P.PINCH_MIDDLE[2], None, 0.0),
-        ("uneven curls, thumb across and curled", [7.0, 21.5, 33.3, 48.9], 95.0, 80.0, None, 0.0),
+        ("uneven curls, thumb across and curled", [7.0, 21.5, 48.9, 66.0], 95.0, 80.0, None, 0.0),
         ("modules out, thumb module lifted", [0.0] * 4, 0.0, 0.0, {0: 30.0, 1: 45.0, 2: 60.0, 3: 20.0}, 40.0),
     ]
     worst = loose = 0.0
@@ -592,7 +613,7 @@ def verify_path(P, info):
     for f, g in pairs:
         parts = P.build(curl_of(fingers, f * uf), g * pinch["thumbSwing"], curl_of(thumb, g * ut), with_refs=False, quiet=True)
         moving = {k: v for k, v in parts.items() if k.startswith("t_") and k not in ("t_motor_ref", "t_screw", "t_carriage")}
-        others = {k: v for k, v in parts.items() if k.startswith(("f2_", "f3_")) or k in ("palm", "plate", "tbase", "pod_lid")}
+        others = {k: v for k, v in parts.items() if k.startswith(("f2_", "f3_")) or k in ("palm", "plate", "cover", "tbase", "pod_lid")}
         here, where = 0.0, ""
         for tk, tv in moving.items():
             for ok, ov in others.items():

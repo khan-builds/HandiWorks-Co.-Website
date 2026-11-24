@@ -5,7 +5,7 @@ Run it with the CAD environment, from the repo root:
     ~/.venvs/sldp-cad/bin/python scripts/step_to_glb.py            # every model below
     ~/.venvs/sldp-cad/bin/python scripts/step_to_glb.py hand-v10   # one model
 
-The CAD lives outside this repo, in ~/workspace/SLDP on the build machine (set SLDP_CAD to
+The CAD lives outside this repo, in ~/workspace/SLDP CAD on the build machine (set SLDP_CAD to
 point somewhere else). Part names in the STEP become node names in the GLB, so a page can
 pick out one finger or one part later.
 
@@ -21,7 +21,7 @@ from pathlib import Path
 
 from build123d import Axis, Color, Compound, Unit, export_gltf, import_step
 
-CAD = Path(os.environ.get("SLDP_CAD", "~/workspace/SLDP")).expanduser()
+CAD = Path(os.environ.get("SLDP_CAD", "~/workspace/SLDP CAD")).expanduser()
 OUT = Path(__file__).resolve().parent.parent / "public" / "models"
 MAX_BYTES = 3_000_000  # each model must stay under this to load quickly
 
@@ -69,7 +69,7 @@ def colour_for(label: str):
 
 MODELS = {
     # Hand v10 (2026-11-17): the palm built round the real VEX 393, fingers v4, thumb v5.
-    # Marked CURRENT in ~/workspace/SLDP/CLAUDE.md and README.md.
+    # Marked CURRENT in ~/workspace/SLDP CAD/CLAUDE.md and README.md.
     "hand-v10": {
         "source": "11.17 Thumb Updates/hand/v10_real_393/parts/Hand_v10_flat.step",
         "drop": HIDDEN_HARDWARE,
