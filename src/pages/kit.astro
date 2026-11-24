@@ -2,7 +2,9 @@
 /** The Kit. Every fact on this page comes from the CAD notes (~/workspace/SLDP CAD on the build
     machine) or from the team poster (docs/README.md, Theme). Do not add a spec, a count or a
     price that is not in one of those. The models are exported by scripts/step_to_glb.py:
-    when the CAD version changes, re-export and change the captions and the Status row. */
+    when the CAD version changes, re-export and change the captions and the Status row.
+    Since 2026-11-23 the page shows Final v3, and its numbers are from the READMEs of
+    Final v1 and Final v3 in the CAD folder. */
 import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ModelViewer from '../components/ModelViewer.astro';
@@ -16,22 +18,22 @@ const box = [
   { item: 'Four finger modules', note: 'Each is a printed three-segment finger on its own motor drive.' },
   { item: 'Thumb module', note: 'Two motors: one swings the thumb across the palm, one curls it.' },
   { item: 'Palm', note: 'One printed part with a socket for each finger module.' },
-  { item: 'Electronics box', note: 'Holds the Arduino Mega 2560 and the motor drivers on the back of the hand.' },
+  { item: 'Electronics housing', note: 'A plate that carries the Arduino Mega 2560 and the motor drivers, under a curved shell that is the back of the hand.' },
   { item: 'Two push buttons and wiring', note: 'Enough to open and close the grip from the first lesson.' },
-  { item: 'M3 screws and nuts', note: 'The only fasteners in the hand.' },
+  { item: 'M3 screws and nuts', note: 'Nearly every fastener in the hand. The thumb’s swing motor is held by two #6-32 screws.' },
 ];
 
 const specs = [
   { k: 'Controller', v: 'Arduino Mega 2560' },
   { k: 'Fingers', v: 'Four finger modules and a thumb' },
   { k: 'Motors', v: 'Six DC motors: one in each finger, two in the thumb' },
-  { k: 'Finger drive', v: 'The motor turns an M3 threaded rod. No gears.' },
-  { k: 'Finger curl', v: 'Straight to 90°' },
-  { k: 'Finger module', v: '30 mm wide, 282 mm long' },
+  { k: 'Finger drive', v: 'The motor turns a lead screw. No gears.' },
+  { k: 'Finger curl', v: 'Straight to 72°' },
+  { k: 'Finger module', v: '33 mm wide, 291 mm long' },
   { k: 'Printed parts', v: 'PLA, 0.4 mm nozzle, 0.2 mm layers, no supports' },
-  { k: 'Size', v: 'About 31 × 24 × 13 cm with the electronics box' },
+  { k: 'Size', v: 'About 32 × 26 × 11 cm, lying flat with the thumb out to the side' },
   { k: 'Ages', v: '11 and up' },
-  { k: 'Status', v: 'CAD v10, 17 Nov 2026. This version is not printed yet.' },
+  { k: 'Status', v: 'CAD Final v3, 22 Nov 2026. This version is not printed yet.' },
 ];
 
 /* Product testing, from the team poster. */
@@ -54,15 +56,15 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
     <SectionLabel>The hand</SectionLabel>
     <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
       <ModelViewer
-        src="/models/hand-v10.glb"
-        alt="3D model of the HelpingHand: four fingers and a thumb on a palm, with the electronics box on the back"
-        label="Hand v10 · CAD of 17 Nov 2026 · not printed yet"
+        src="/models/hand-final-v3.glb"
+        alt="3D model of the HelpingHand: four fingers and a thumb on a palm, with the electronics under a curved shell on the back"
+        label="Hand Final v3 · CAD of 22 Nov 2026 · not printed yet"
         height="h-[22rem] md:h-[32rem]"
       />
       <div>
         <p class="statement">Four fingers, a thumb, and everything that drives them.</p>
-        <p class="mt-4">Each finger is its own module with its own motor. The modules sit side by side in the palm, the thumb bolts on beside them, and the electronics ride in a box on the back of the hand.</p>
-        <p class="mt-4 text-rule">This is the team's current design, straight from the CAD. Colours are for display. Grey parts are bought, not printed: motors, the Arduino, screws.</p>
+        <p class="mt-4">Each finger is its own module with its own motor. The modules sit side by side in the palm, the thumb slides on beside them, and the electronics sit under one curved shell that is the back of the hand.</p>
+        <p class="mt-4 text-rule">This is the team's current design, straight from the CAD. Colours are for display, the same as on the homepage. Grey parts are bought, not printed: the screws and nuts. The motors and the boards are inside, out of sight.</p>
         <a class="btn btn-primary mt-6" href={mailto('HelpingHand kit request')}>Request a kit</a>
       </div>
     </div>
@@ -73,15 +75,15 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
     <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]">
       <div class="lg:order-2">
         <ModelViewer
-          src="/models/finger-v4.glb"
+          src="/models/finger-final-v3.glb"
           alt="3D model of one finger module: a three-segment finger on a long motor housing"
-          label="Finger module v4 · CAD of 11 Nov 2026"
+          label="Finger module of Final v3 · CAD of 22 Nov 2026"
           height="h-80 md:h-[26rem]"
         />
       </div>
       <div>
         <p class="statement">One motor curls three segments.</p>
-        <p class="mt-4">The motor turns a threaded rod. A nut rides along the rod and pulls a link, and the linkage carries that one motion through all three segments of the finger, from straight to a 90° curl.</p>
+        <p class="mt-4">The motor turns a lead screw. A carriage rides along the screw and pulls a link, and the linkage carries that one motion through all three segments of the finger, from straight to a 72° curl.</p>
         <p class="mt-4">It is the unit of the whole curriculum: small enough to understand completely, real enough to be worth programming.</p>
         <a class="btn btn-secondary mt-6" href={p('/lessons/beginner/01-finger-module/')}>Open Lesson 1</a>
       </div>

@@ -9,7 +9,7 @@ import ProcessRail from '../components/ProcessRail.astro';
 import FigurePlaceholder from '../components/FigurePlaceholder.astro';
 import Arrow from '../components/Arrow.astro';
 import Logo from '../components/Logo.astro';
-import { headline, pursuit } from '../data/evidence';
+import { headline, gap } from '../data/evidence';
 
 const colors = [
   { name: 'navy', hex: '#133476', use: 'Bands, section labels, table header rows, primary buttons, links, headings on white', dark: true },
@@ -138,17 +138,17 @@ const steps = [
     <p class="lede mt-6">Top to bottom, as on the poster: caption, number, what it counts, a bar as long as the number, source. A bar is drawn only for a percentage.</p>
     <div class="mt-8 grid gap-5 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-start">
       <div class="stat-panel" data-reveal>
-        <p class="stat-caption">{pursuit.caption}</p>
+        <p class="stat-caption">{gap.caption}</p>
         <div class="mt-5 grid grid-cols-2 gap-x-8">
-          {[pursuit.without, pursuit.withClasses].map((g, i) => (
+          {[gap.highPoverty, gap.lowPoverty].map((g, i) => (
             <div class="grid grid-rows-subgrid row-span-3">
               <p class:list={['stat-number', i === 1 && 'stat-number-plain']}>{g.value}</p>
               <p class="stat-label-caps mt-3">{g.short}</p>
-              <div class="stat-bar" aria-hidden="true"><span style={`--stat-fill:${(g.fill / 42) * 100}%`}></span></div>
+              <div class="stat-bar" aria-hidden="true"><span style={`--stat-fill:${(g.fill / gap.lowPoverty.fill) * 100}%`}></span></div>
             </div>
           ))}
         </div>
-        <p class="stat-source pt-6!"><a href={pursuit.url} target="_blank" rel="noopener">{pursuit.source}</a>, {pursuit.year}</p>
+        <p class="stat-source pt-6!"><a href={gap.url} target="_blank" rel="noopener">{gap.source}</a>, {gap.year}</p>
       </div>
       <p class="meta max-w-sm">Two numbers side by side: the one the page argues against is sky and lighter, the one it argues for is white and bold. The longer bar is full width and the shorter is in proportion.</p>
     </div>

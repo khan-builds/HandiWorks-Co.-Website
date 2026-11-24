@@ -53,7 +53,7 @@ struct Motor {
   uint8_t port;                // M1 to M4 on that shield: 1 to 4
   int8_t closeWay;             // 1 if FORWARD closes the finger, -1 if BACKWARD does
   unsigned long travelMs;      // TRAVEL: milliseconds from fully open to fully closed at MAX_SPEED. Time it on the real hand.
-  uint8_t closeAt;             // how far the "close" button takes it, in percent. From the CAD's grip.
+  uint8_t closeAt;             // how far the "close" button takes it, in percent. From the grip of the CAD's Final v3 hand.
   // What the sketch keeps track of. Leave these alone.
   Adafruit_DCMotor *motor;
   float guess;                 // where the finger is believed to be, 0 open to 100 closed
@@ -67,12 +67,12 @@ struct Motor {
 // One line per motor. A finger with no motor: comment its line out, and nothing else changes.
 Motor motors[] = {
   // id  shield    port  closeWay  travelMs  closeAt
-  // { 0, &shieldB, 3,    1,        3000,     72 },   // pinky: no motor on this prototype
-  // { 1, &shieldB, 4,    1,        3000,     72 },   // ring: no motor on this prototype
-  {    2, &shieldA, 1,    1,        3000,     72 },   // middle
-  {    3, &shieldA, 2,    1,        3000,     72 },   // index
-  {    4, &shieldB, 1,    1,        2500,     45 },   // thumb curl
-  {    5, &shieldB, 2,    1,        1500,     74 },   // thumb swing
+  // { 0, &shieldB, 3,    1,        3000,     78 },   // pinky: no motor on this prototype
+  // { 1, &shieldB, 4,    1,        3000,     78 },   // ring: no motor on this prototype
+  {    2, &shieldA, 1,    1,        3000,     78 },   // middle
+  {    3, &shieldA, 2,    1,        3000,     78 },   // index
+  {    4, &shieldB, 1,    1,        2500,     91 },   // thumb curl
+  {    5, &shieldB, 2,    1,        1500,     61 },   // thumb swing
 };
 const uint8_t MOTOR_COUNT = sizeof(motors) / sizeof(motors[0]);
 

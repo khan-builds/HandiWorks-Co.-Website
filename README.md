@@ -36,14 +36,14 @@ Real accounts, classrooms and progress tracking are planned. Nothing of them is 
 
 ## Pages that still need review and updating
 
-As of 2026-11-21. A page not listed here has no known work waiting.
+As of 2026-11-23. A page not listed here has no known work waiting.
 
 | Page | What it still needs |
 |---|---|
-| Home | The 3D hand is drawn from an older CAD. New motor housings are coming, and the hand will be exported again from them. The scroll animation is to be looked at again after that. |
-| The Kit | The hand and finger models, and the specs beside them, are out of date for the same reason. The circuit diagram is an empty labelled box until the image arrives. |
+| Home | The 3D hand is the team's current CAD, Final v3 of 22 Nov 2026, which has not been printed. The scroll animation has only been judged from still frames; it needs watching in a real browser. |
+| The Kit | The two models and the specs beside them are Final v3's. "What is in the box" is a draft until the first kit is printed. The circuit diagram is an empty labelled box until the image arrives. |
 | Lessons | Lessons 2 to 4 have no final titles or summaries. |
-| Lesson 1 (overview, CAD, Hardware, Software) | Incomplete. Every page of it says "Draft · under team review". The wiring pictures are placeholders and there is no slides link. |
+| Lesson 1 (overview, CAD, Hardware, Software) | Incomplete. Every page of it says "Draft · under team review". Its five CAD step models are cut from the Final v3 finger, but its words were written for an older finger and still teach a servo, where the hand uses DC motors. The wiring pictures are placeholders and there is no slides link. |
 | Student dashboard, "Test your code" | A demo. It drives the hand from the browser over USB and shows the same hand on screen. It has never been tried on the real hand, and its Arduino sketch (`public/downloads/helpinghand_bench.ino`) has never been compiled. |
 | Student dashboard, "Simulator" | A demo: six guided steps for Lesson 1, from a see-saw to the finger of the hand. Its wording and its questions have not been reviewed. |
 | Roadmap | Empty on purpose. The roadmap has not been written. |
@@ -64,7 +64,7 @@ The full list, with who owes what, is in `docs/README.md` under "To do".
 | `src/scripts/` | What the two student pages run in the browser: `bench/` talks to the hand's Arduino for "Test your code", `sim/` is the simulator's six steps, `hand/view.ts` draws the hand for both. |
 | `src/pages/hand-data.js.ts` | Hands the homepage's hand data to the inner pages as `/hand-data.js`. |
 | `public/` | Files served as they are: 3D models, fonts, and downloads (Lesson 1's sketch, and `helpinghand_bench.ino` for "Test your code"). |
-| `scripts/` | `check-homepage.mjs` checks the homepage's scripts before a build. `screenshots.mjs` takes review screenshots. `hand_motion.py` exports the homepage's moving hand from the CAD: its parts and how each one moves. `step_to_glb.py` exports the still hand and finger models on The Kit page from the CAD. `stl_to_glb.py` converts Lesson 1's step models from the `version-1` branch. |
+| `scripts/` | `check-homepage.mjs` checks the homepage's scripts before a build. `screenshots.mjs` takes review screenshots. `hand_motion.py` exports the homepage's moving hand from the CAD: its parts and how each one moves. `step_to_glb.py` exports the still hand and finger models on The Kit page from the CAD. `finger_steps.py` cuts Lesson 1's five step models from that same finger. `stl_to_glb.py` made the step models the lesson had before, from the `version-1` branch, and is kept as the way back. |
 | `docs/README.md` | One file: where the site stands, the to-do list, the log of design changes, the theme (colours, type, building blocks, the wording from the team poster), and the plan with its prompts. |
 | `.github/workflows/deploy.yml` | Builds and publishes the site on every push to `main`. |
 

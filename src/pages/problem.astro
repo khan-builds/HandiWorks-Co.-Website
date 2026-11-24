@@ -4,13 +4,11 @@ import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import Stat from '../components/Stat.astro';
 import { p } from '../lib/url';
-import { headline, sections, older, arduino, pursuit } from '../data/evidence';
+import { headline, sections, uncounted, notes, arduino, gap } from '../data/evidence';
 
 const sources = new Map<string, string>();
-for (const f of [...headline, ...sections.flatMap((s) => s.figures), older]) sources.set(f.source, f.url);
-sources.set(arduino.source, arduino.url);
-sources.set(pursuit.source, pursuit.url);
-const widest = Math.max(pursuit.without.fill, pursuit.withClasses.fill);
+for (const f of [gap, ...headline, ...sections.flatMap((s) => s.figures), ...uncounted, notes.retired, notes.nextSurvey, arduino]) sources.set(f.source, f.url);
+const widest = Math.max(gap.highPoverty.fill, gap.lowPoverty.fill);
 ---
 <Base title="The Problem" description="Why hands-on robotics is out of reach for most US students, with a source for every number.">
   <PageHeader
@@ -20,9 +18,9 @@ const widest = Math.max(pursuit.without.fill, pursuit.withClasses.fill);
     {/* The poster's stat panel: two numbers side by side, each with its label in capitals and
         a bar. The longer bar is full width and the shorter one is in proportion to it. */}
     <div slot="aside" class="w-full max-w-md lg:w-[26rem]" data-reveal>
-      <p class="stat-caption">{pursuit.caption}</p>
+      <p class="stat-caption">{gap.caption}</p>
       <div class="mt-5 grid grid-cols-2 gap-x-8">
-        {[pursuit.without, pursuit.withClasses].map((g, i) => (
+        {[gap.highPoverty, gap.lowPoverty].map((g, i) => (
           <div class="grid grid-rows-subgrid row-span-3">
             <p class:list={['stat-number', i === 1 && 'stat-number-plain']}>{g.value}</p>
             <p class="stat-label-caps mt-3" title={g.label}>{g.short}</p>
@@ -30,7 +28,7 @@ const widest = Math.max(pursuit.without.fill, pursuit.withClasses.fill);
           </div>
         ))}
       </div>
-      <p class="stat-source pt-6!">{pursuit.detail} <a href={pursuit.url} target="_blank" rel="noopener">{pursuit.source}</a>, {pursuit.year}</p>
+      <p class="stat-source pt-6!">{gap.detail} <a href={gap.url} target="_blank" rel="noopener">{gap.source}</a>, {gap.year}</p>
     </div>
   </PageHeader>
 
@@ -51,7 +49,7 @@ const widest = Math.max(pursuit.without.fill, pursuit.withClasses.fill);
     <div class="stat-group mt-8">
       {headline.map((f) => <Stat figure={f} variant="panel" />)}
     </div>
-    <p class="meta mt-4">Every number on this page links to its source and carries its year.</p>
+    <p class="meta mt-4">Every number on this page links to its source and carries its year. The school, class and teacher figures are from the 2018 NSSME+, a national survey of 1,273 schools and 7,600 teachers and the most recent of its kind.</p>
   </section>
 
   {sections.map((s) => (
@@ -68,8 +66,8 @@ const widest = Math.max(pursuit.without.fill, pursuit.withClasses.fill);
   <section class="section">
     <SectionLabel>What nobody counts</SectionLabel>
     <p class="statement mt-6">How many schools teach robotics specifically? Nobody knows for sure.</p>
-    <p class="lede mt-3">The last national count is more than a decade old. We show it with its date rather than pretend a newer number exists.</p>
-    <div class="figure-list mt-8"><Stat figure={older} /></div>
+    <p class="lede mt-3">The last national count of robotics courses is more than a decade old. The school survey this page leans on is from 2018, and <a class="link" href={notes.nextSurvey.url} target="_blank" rel="noopener">the next one was announced for 2027</a>. The national test of technology and engineering skills <a class="link" href={notes.retired.url} target="_blank" rel="noopener">was retired in 2023</a>. We show each figure with its date rather than pretend a newer number exists.</p>
+    <div class="figure-list mt-8">{uncounted.map((f) => <Stat figure={f} />)}</div>
   </section>
 
   <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
@@ -99,7 +97,7 @@ const widest = Math.max(pursuit.without.fill, pursuit.withClasses.fill);
 
   <section class="section">
     <SectionLabel>Sources</SectionLabel>
-    <p class="lede mt-6">Figures were checked against the primary documents in October 2026. Vendor prices change: check again before quoting one in print.</p>
+    <p class="lede mt-6">Figures were checked against the primary documents in October and November 2026. Vendor prices change: check again before quoting one in print.</p>
     <ol class="mt-6 list-decimal gap-x-16 pl-6 text-[0.9375rem] marker:font-semibold marker:text-navy md:columns-2">
       {[...sources.entries()].map(([name, url]) => (
         <li class="mb-2 break-inside-avoid pl-1"><a class="link" href={url} target="_blank" rel="noopener">{name}</a></li>

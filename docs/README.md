@@ -27,7 +27,7 @@ as branch `LZ-C5.2`.
 
 ## Where things stand
 
-Checked against GitHub on 2026-11-21 at 21:45 Pacific.
+Checked against GitHub on 2026-11-24 at 11:35 Pacific.
 
 **The new site was merged into `main` on 2026-11-21, as pull request 6.** Lingbo asked for
 the merge that day. The first run of the new publishing step and a look at the live site
@@ -67,9 +67,9 @@ Other branches on GitHub:
 
 | Branch | Last change | What it is | What happens to it |
 |---|---|---|---|
-| `version-1` | Billy, 2026-11-06 | His Lesson 1 and its five step models. | Keep it. `scripts/stl_to_glb.py` reads the step models from it. |
+| `version-1` | Billy, 2026-11-06 | His Lesson 1 and its five step models. | Keep it. `scripts/stl_to_glb.py` reads his step models from it; the site showed those until 2026-11-23, and that script is the way back to them. |
 | `nov15-hand-model` | Golam, 2026-11-15 | An earlier take on the Nov 15 homepage update, made a few minutes before the one on `main`. Not merged. | Golam's call. It is in [To do](#to-do). |
-| `LZ-C5.2` | Lingbo, 2026-11-21 | This branch: the whole new site. | Merged into `main` on 2026-11-21. Work goes on here, and goes into `main` again when Lingbo asks. |
+| `LZ-C5.2` | Lingbo, 2026-11-24 | This branch: the whole new site. | Merged into `main` on 2026-11-21. Work goes on here, and goes into `main` again when Lingbo asks. |
 | `feature/interactive-finger-module` | Clarence, 2026-11-18 | The finger simulator. Merged into `main` as pull request 5, then removed from `main` 20 minutes later. | It is on neither `main` nor this branch. It is in [To do](#to-do). |
 | `a/project-setup`, `a/db-schema`, `a/auth-and-lessons`, `a/wire-frontend` | Billy, 2026-10-28 | A server app with real login, as pull requests 1 to 4. All four are still open. | Set aside by the static-mock decision. Billy's call. It is in [To do](#to-do). |
 
@@ -79,7 +79,7 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 Before the merge `main` was four commits further on, but those four add the simulator and
-take it out again, so no file differed. Nineteen commits are pushed: the rebuild, the hand from the CAD, the emails
+take it out again, so no file differed. Twenty commits are pushed: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
 people, the homepage story with the flat hand, the receding palm and the littered parts,
@@ -96,21 +96,33 @@ review. The seventeenth adds "Test your code" and the Simulator to the student d
 installs the type check and deletes Billy's unused video. The eighteenth gives the hand one
 palette, on the homepage, in "Test your code" and in the simulator, and links the simulator
 from Lesson 1's row on the student dashboard. The nineteenth is the hand exported from the
-CAD's Final v3, wherever the hand moves, and the four fingers hopping into one. Prompts 1 to 9
+CAD's Final v3, wherever the hand moves, and the four fingers hopping into one. The twentieth
+puts Final v3 on The Kit and in Lesson 1's step models, and turns The Problem's figures from
+computer science to robotics and engineering. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
-**The nineteenth commit, "Show the Final v3 hand and make four fingers hop into one", is on
-GitHub as the tip of `LZ-C5.2`.** It was made and pushed on 2026-11-23, when Lingbo said
-"push to branch" with the work still uncommitted; Claude had offered that name a message
-before. The eighteenth went the same way on 2026-11-22. Lingbo usually asks for the two
-separately, as with the seventeenth: "commit to the branch LZ-C5.2" on 2026-11-21 at 21:30,
-then "push it to the branch" a few minutes later.
+**The twentieth commit, "Show Final v3 on The Kit and in Lesson 1, and make The Problem's
+figures about robotics", is on GitHub as the tip of `LZ-C5.2`.** It was made and pushed on
+2026-11-24 at about 11:40, when Lingbo said "push to the branch" with two pieces of work
+still uncommitted: the Final v3 models of 2026-11-23 and The Problem's figures of
+2026-11-24. The name is Claude's; Lingbo did not give one. The eighteenth and nineteenth went
+the same way. Lingbo usually asks for the two separately, as with the seventeenth: "commit to
+the branch LZ-C5.2" on 2026-11-21 at 21:30, then "push it to the branch" a few minutes later.
 
 **`main` is still the merge of 2026-11-21.** Nothing since the sixteenth commit is merged,
 so the live site has none of "Test your code", the Simulator, the link in Lesson 1's row,
-the hand's new colours, the Final v3 hand or the new four-into-one move. Nothing is waiting
-uncommitted on the build machine.
+the hand's new colours, the Final v3 hand on any page, the new four-into-one move or The
+Problem's robotics figures. Nothing is waiting uncommitted on the build machine.
+
+What the twentieth commit holds: The Kit's two models and its numbers from Final v3
+(`public/models/`, `src/pages/kit.astro`, `scripts/step_to_glb.py`), Lesson 1's five step
+models cut from the same finger and the two facts in the lesson that changed with them
+(`public/models/lesson-1/`, `scripts/finger_steps.py`, `src/content/lessons/`), the Arduino
+sketch's "close" positions, The Problem's figures (`src/data/evidence.ts`,
+`src/pages/problem.astro`, `src/pages/styleguide.astro`), the root `README.md`, and this
+file. See [Design changes](#design-changes), the entry of 2026-11-24 and the first entry of
+2026-11-23.
 
 What the nineteenth commit holds: the hand exported from the CAD's Final v3 (`index.html`,
 `scripts/hand_motion.py`), the new way four fingers become one (`index.html`), a wider frame
@@ -122,10 +134,10 @@ name, `~/workspace/SLDP CAD`, in the two export scripts, and this file. See
 | Page | State | Still open |
 |---|---|---|
 | Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-23 the hand is Final v3 from the CAD, the hand built round Lingbo's final motor housings (from 2026-11-18 until then it was hand v11), and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and flat and opens with its fingers toward the visitor; the four finger modules come out, loosen into their parts and close into one, which is rebuilt link by link; its motion is traced from the carriage to the fingertip, each link in its own colour; and at the end the fingers drop back into the palm, the whole hand comes apart, and the parts gather into the HandiWorks mark. The same parts lie in pale sky behind the rest of the page. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | Lingbo has not yet seen the new hand in the story, or the new way four fingers become one (both 2026-11-23). |
-| The Problem | Poster's goal and objectives, the 18% / 42% figure checked against the Gallup report, 15 more sourced figures. | The "250,000 students" and "$500 kit" figures are left off: no source says them. |
-| The Kit | Hand v10 and finger v4 from the CAD, specs from the CAD notes, the poster's testing table. | Both models and the specs beside them are out of date. The new motor housings came on 2026-11-22 and the homepage's hand is exported from them; this page's models and numbers are not yet: see [For the team to decide](#for-the-team-to-decide). Circuit diagram is a labelled placeholder until the image arrives. |
+| The Problem | Poster's goal and objectives, and 22 sourced figures. Since 2026-11-24 they are about robotics and engineering, not computer science: teams, clubs and courses by school, hands-on work in class, kit prices, teacher preparation, evidence. | Most school figures are from 2018, the newest national survey; the page says so. The "250,000 students" and "$500 kit" figures are left off: no source says them. |
+| The Kit | Since 2026-11-23, the hand and one finger of Final v3 from the CAD, in the homepage's colours, with Final v3's numbers beside them; the poster's testing table. | Final v3 is not printed. The final carriage and lead screw were not uploaded, so the CAD assumes them and the page says only "a lead screw". "What is in the box" is a draft. Circuit diagram is a labelled placeholder until the image arrives. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
-| Lesson 1 | Billy's lesson from `version-1`: five CAD steps with their models, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". | Incomplete, in Lingbo's words on 2026-11-21. It stays up as it is, with its draft label. Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. |
+| Lesson 1 | Billy's lesson from `version-1`: five CAD steps, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". Since 2026-11-23 the five step models are the Final v3 finger, cut at five stages, and the lesson gives the finger's length as 291 mm. | Incomplete, in Lingbo's words on 2026-11-21. Its words are Billy's, written for an older finger, and still teach a servo. Billy has not seen the new step models. Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. |
 | Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. Since 2026-11-21 the student dashboard has a "Test your code" section that opens a page of that name: it drives the hand over USB and shows the same hand moving on screen. See [Test your code](#test-your-code). A "Simulator" section opens six guided steps for Lesson 1, from a see-saw to the finger of the hand. See [Simulator](#simulator). | "Test your code" has never met the real hand, and its Arduino sketch has never been compiled. Neither page has been used by hand in a real browser. Lingbo has not seen the simulator's wording or its questions. |
 | Roadmap | Empty on purpose since 2026-11-21: its title, "Coming soon" and one line. | The roadmap itself. Lingbo writes it later. |
 | Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
@@ -145,8 +157,10 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 | Folder | What |
 |---|---|
-| `rehearsal/` | Every page of the demo path, and the style guide, at 1440 and 390 px wide. 55 images. |
+| `rehearsal/` | Every page of the demo path, and the style guide, at 1440 and 390 px wide. 60 images. The Problem's four were taken again on 2026-11-24. |
+| `problem-robotics/` | The Problem and the style guide with the robotics figures of 2026-11-24, at both widths. |
 | `rehearsal-models/` | The Kit and the CAD page frame by frame, so the 3D models show. |
+| `kit-final-v3/` | `kit-models-before-after.png`: The Kit's hand and finger as they were and as they are. `lesson-1-steps-before-after.png`: Lesson 1's five step models, the same way. Each model was held still and seen from one side. |
 | `rehearsal-teacher/` | Lesson 1 as a teacher sees it, with the teacher notes. |
 | `offline-copy/` | The demo path taken from the unzipped offline copy. |
 | `poster-before/` | Five pages as they stood before the poster pass of 2026-11-18. |
@@ -154,20 +168,19 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 All but the last two were taken again on 2026-11-18.
 
-The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-23.zip` on
-the build machine (4.8 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It was
-built on 2026-11-23 at 18:00 from the work that became the nineteenth commit an hour or so
-later: the hand from the CAD's Final v3 and the four fingers hopping into one. No site file
-changed in between.
-Unzipped and served by its own `serve.py`, seven pages of the demo path opened at both
-widths with no script error, nothing loaded from another site and no file missing; the
-pictures are in `screenshots/offline-copy/`.
+The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-24.zip` on
+the build machine (3.7 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It was
+built on 2026-11-24 at 11:29, ten minutes before the twentieth commit was made, and holds
+the same site as that commit. Its `HOW-TO-OPEN.txt` still calls the newest work "not
+committed yet". Against the zip of 2026-11-23 at 19:19, which it replaced, only
+three files differ: The Problem, the style guide and `HOW-TO-OPEN.txt`. Served by its own
+`serve.py`, The Problem opened with all of its new figures. The pictures in
+`screenshots/offline-copy/` are from the zip of 2026-11-23: nine pages at both widths with
+no script error and no sideways scroll, and every model and download served.
 
-**The zip before it, `HelpingHand-site-offline-2026-11-22.zip`, is still beside it.** Claude
-was not allowed to delete it on 2026-11-23. It holds the site with hand v11 and the old
-four-into-one move: delete it, so nobody opens the old one by mistake. It was a snapshot of
-the eighteenth commit; the zips of 2026-11-21 and 2026-11-19 were deleted when the next one
-was made. Its
+The zip of 2026-11-22, a snapshot of the eighteenth commit with hand v11, was deleted that
+evening too; an earlier session had not been allowed to. The zips of 2026-11-21 and
+2026-11-19 were deleted when the next one was made. The
 `HOW-TO-OPEN.txt` says to use Chrome or Edge and how to connect the hand. The zip of
 2026-11-18
 was deleted before that: it was made
@@ -192,8 +205,10 @@ width; `four-into-one-1440.png` is the four fingers becoming one, in eighteen fr
 `kit-finger-1440.png` is the finger beside "The kit" through one curl;
 `test-your-code-1440.png` and `simulator-step-6-1440.png` are the two dashboard pages that
 draw the same hand; `reduced-motion-1440.png` is what a visitor who has asked for less motion
-sees. `rehearsal/` was taken again the same day, after the hand changed: all 15 pages of the
-demo path at both widths, with no warning and no error.
+sees. `rehearsal/` was taken again the same day, after the hand changed, and once more at
+19:15 after The Kit's and the lesson's models did: all 15 pages of the demo path at both
+widths, with no warning and no error. `rehearsal-models/` and `rehearsal-teacher/` were
+taken again at 19:15 as well.
 
 The story as it stood until 2026-11-23, with hand v11 in the colours of 2026-11-21, is in
 `screenshots/hand-latest/`:
@@ -208,8 +223,8 @@ then they were from the morning of 2026-11-18, before any address was added, so 
 one address under Contact and in "Talk to us". The site itself has had all four since the
 commits of 2026-11-18 and 2026-11-19. `offline-copy/`, `team-emails/` and
 `contact-emails/` were taken again at 14:30 the same day, the first from the new offline
-zip. `rehearsal-models/` is still from 2026-11-18, and so are `poster-before/` and
-`baseline/`, which are kept as the "before" pictures.
+zip. `rehearsal-models/` stayed from 2026-11-18 until it was taken again on 2026-11-23;
+`poster-before/` and `baseline/` are still from then, and are kept as the "before" pictures.
 
 The story as it stood at midday on 2026-11-19, with the turn round the flat hand, is in
 `screenshots/hand-litter/`: `story-1440.png` and `story-390.png` are the whole scroll
@@ -239,8 +254,8 @@ Lingbo does these. `main` is the live site, and it changes only when Lingbo merg
   `gh auth refresh -h github.com -s workflow` once on the build machine, because the branch
   changes the deploy workflow and GitHub refuses that from a login without the `workflow`
   permission.
-- [ ] Look at the build: `screenshots/rehearsal/`, then `screenshots/rehearsal-models/` for
-  the 3D models. `screenshots/baseline/` is the site on GitHub, and
+- [ ] Look at the build: `screenshots/rehearsal/`, then `screenshots/rehearsal-models/` and
+  `screenshots/kit-final-v3/` for the 3D models. `screenshots/baseline/` is the site on GitHub, and
   `screenshots/poster-before/` is five pages before the poster pass.
 - [ ] Tell Golam, Billy and Clarence. This did not happen before the merge: Lingbo asked on
   2026-11-21 for the branch to be merged as it stood. Pull request 6 carries a summary for
@@ -280,8 +295,8 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
 
 - [x] **Lingbo:** the latest motor housings, as CAD in `~/workspace/SLDP CAD`. They came on
   2026-11-22: `Final Housing and Base/`, and the hand built round them, `Final v3/`. The hand
-  on Home was exported from Final v3 on 2026-11-23. The two models on The Kit were not: see
-  [For the team to decide](#for-the-team-to-decide).
+  on Home was exported from Final v3 on 2026-11-23, and The Kit's two models and Lesson 1's
+  five step models followed that evening.
 - [ ] **Lingbo:** the roadmap. The page is empty until then.
 - [ ] **Lingbo:** the hand's wiring, in the table at the top of
   `public/downloads/helpinghand_bench.ino`: which shield and port each motor is on, which way
@@ -323,7 +338,10 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
   - If the 90° hand: point `HAND` in `scripts/hand_motion.py` at its folder and bring the
     part names up to date (its header says how), and the Kit page needs its models
     re-exported for finger v5 all the same.
-- [ ] **The Kit page still shows hand v10.** Its two models are the old hand and the old
+- [x] **The Kit page still shows hand v10.** Done on 2026-11-23, when Lingbo said "update
+  everything based on the CAD": see [Design changes](#design-changes). The Finger drive row
+  says "a lead screw" and no more, because of the open point at the end of this item. How it
+  stood: its two models are the old hand and the old
   finger, and the numbers beside them are the old hand's: an M3 threaded rod, a 90° curl, a
   finger module 282 mm long, an electronics box, "CAD v10, 17 Nov 2026". On Final v3 a finger
   curls to 72°, its motor housing is 130 mm long and 33 mm wide, the electronics sit under
@@ -341,9 +359,11 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
   delete `public/videos/finger-hero-transparent.webm` (2.6 MB, no page asks for it now). If
   the video should come back, it needs rendering again from the current finger.
 - [ ] **Servo or DC motor.** Lesson 1 teaches a positional servo. The hand on The Kit page is
-  driven by DC motors on threaded rods. Decide which the lesson should teach, in the review.
-- [ ] **288 mm or 282 mm.** Lesson 1 says the finger is 288 mm long. The CAD notes give the
-  finger module as 282 mm. Billy's step models come from an older finger file.
+  driven by DC motors on lead screws. Decide which the lesson should teach, in the review.
+- [x] **288 mm or 282 mm.** Neither, since 2026-11-23: Final v3's finger module is 291 mm
+  from the rear of its housing to the fingertip, the lesson's step models are cut from it,
+  and the lesson and The Kit both say 291. Before that the lesson said 288 mm, the CAD notes
+  gave the older finger module as 282 mm, and Billy's step models came from an older file.
 - [x] **Light or navy stage on the homepage.** Light, decided by Lingbo on 2026-11-21. Light
   is built. Navy with white captions is
   the option not taken, and it has not been built to compare.
@@ -394,6 +414,165 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-24: The Problem's figures, about robotics and not computer science
+
+Lingbo: "I wnat the statistics for the problem to be more focused on robotics in general.
+Right now the data is too CS skewed when our product is mainly targeted to robotics as a
+whole".
+
+Before, 10 of the page's 18 figures were about computer science: the header panel, two of
+the three under "Where things stand", all four under "Access" and all three under
+"Teachers". Now one of 22 is, and it is labelled as such.
+
+| Part of the page | Before | Now |
+|---|---|---|
+| Header panel | Plan to study computer science in college: 18% without computer science classes at school, 42% with. | Schools with a team in engineering competitions such as robotics: 25% of the highest-poverty schools, 36% of the lowest-poverty. |
+| Where things stand | 60% of high schools offer computer science; 37% of middle schools do; a FIRST Robotics Competition team's $24,250 season. | 35% of middle schools have a team in an engineering competition such as robotics (24% of elementary, 47% of high schools); 46% of high schools offer an engineering course (physics 82%, biology 97%); the $24,250 season, kept. |
+| Access | Computer science by suburb, city and country, by school size, for Native American students, for young women. | A team in the largest schools against the smallest, 45% vs 20%; an engineering club in the lowest-poverty schools against the highest, 39% vs 26%; a team in rural, suburban and urban schools, 32 / 32 / 29%. |
+| In class | Not on the page. | 42% of middle and high school students have used coding programs, robots or 3D printers in class, and 29% have built a circuit; 51% of middle school science classes take up engineering only a few times a year. |
+| Cost | Four prices of robotics kits and teams. | Unchanged. |
+| Teachers | Three figures about computer science teachers. | 3% of elementary teachers feel very well prepared to teach engineering (51% not adequately); 3 / 10 / 13% of elementary, middle and high school science teachers have taken a college engineering course; 14% of middle school science teachers feel very well prepared to teach developing solutions to an engineering problem. |
+| Evidence | The meta-analysis of educational robotics; FIRST alumni. | Both kept. Added: students taught four or five technology topics such as robotics are 2.6 times more likely to want a STEM job. The poster's 18% / 42% is here now, as a row, labelled as about computer science. |
+| What nobody counts | 16.9% of students at a high school with a robotics course, from 2013. | Kept. Added: 46% of eighth graders Proficient on the national test of technology and engineering literacy in 2018, a test that was retired in 2023; and a sentence that the school survey is from 2018 and the next was announced for 2027. |
+
+What the new figures say that the old ones did not: for robotics teams and engineering
+clubs, where a school is makes little difference (32 / 32 / 29%). Size and money do. So the
+"Access" heading changed from "where you live and how big your school is" to "how big a
+school is and how much money its families have".
+
+Every new figure was read in its source on 2026-11-24, the document itself and not a
+summary of it:
+
+| Source | What was read | Figures |
+|---|---|---|
+| Horizon Research, *Report of the 2018 NSSME+* (December 2018; 1,273 schools, 7,600 teachers, nationally representative) | Tables 2.7, 2.38, 2.42, 4.4, 5.26, 7.7, 7.10, E-38 to E-40, and the text beside them | Every school, class and teacher figure. The table is named beside each one in `src/data/evidence.ts`. |
+| Gallup and Walton Family Foundation, *Voices of Gen Z: Perspectives on STEM Education and Careers* (2023; 2,006 people aged 12 to 26) | The whole report, 8 pages | 42%, 29%, 81%, and 2.6 and 2.2 times. |
+| NCES, *Condition of Education*, "Technology and Engineering Literacy" | The indicator, 4 pages | 46% Proficient in 2018. |
+| National Assessment Governing Board, news release of 2023-08-04 | The release | The test was given in 2014 and 2018 and was voted off the schedule. |
+| CADRE, project page for the 2027 NSSME+ | The page, which is marked as archived | The next survey was announced for 2027. Not checked: whether it is still funded. |
+
+The cost figures, the two evidence figures that were kept, the 2013 figure and the poster's
+figure were not opened again; they stand as checked in October and on 2026-11-17.
+
+What to know before quoting these:
+
+- **Most of them are from 2018.** That is the newest national survey that asks schools about
+  engineering courses, clubs and competition teams. The page says so under the three lead
+  figures and again under "What nobody counts".
+- **The survey's question is "engineering competitions (e.g., Robotics)"**, so the page says
+  "engineering competitions such as robotics". It is not a count of robotics teams alone.
+- **The header's gap is 11 points with a standard error of about 5.** The quarters in between
+  are 39% and 25%, so the richer half of schools is at 36 to 39% and the poorer half at 25%.
+- **The teacher figures are about science teachers**, the ones the survey asked about
+  engineering. Nobody surveys "robotics teachers".
+- **Nothing replaces the old figure about young women** (34% of computer science students).
+  No source opened gives a robotics figure by sex for schools. On the national test, girls
+  outscored boys, 155 to 150; that is not on the page.
+
+Decided during the work, not by Lingbo:
+
+- **The header leads with robotics teams by school poverty.** It is the page's own headline,
+  "still a privilege", as two numbers. Not taken: teams by school size (45% vs 20%, a wider
+  gap, but about size and not money), and keeping the poster's figure on top.
+- **The poster's 18% / 42% stays on the page**, as the last row under "Evidence", with the
+  words "The figure on our poster. It is about computer science classes, not robotics." Not
+  taken: removing it, which would leave the site without the poster's figure.
+- **The computer science figures were taken off, not kept beside the new ones.** They are in
+  git history and in the team's research doc.
+- **A new section, "In class"**, for what students say they have done with their hands.
+- **No section on the robotics industry or robotics jobs.** The page is about access at
+  school. If Lingbo wants "why robotics matters" figures (robots installed, jobs), they need
+  sources opened first.
+- **The 2018 figures do not carry the "Older data" badge**; one sentence says their year and
+  that nothing newer exists. Not taken: a badge on twelve rows.
+- **In the code**, `pursuit` became `gap` and `older` became the list `uncounted`
+  (`src/data/evidence.ts`); the style guide page, which shows the same panel, follows.
+- **The team's research doc was not changed.** The new figures are not in it yet.
+
+Checked: `npm run build` and the type check pass; The Problem at 1440 and 390 px wide with
+nothing overlapping or running off the side; the same page served from the new offline zip,
+with all 23 numbers on it. Pictures: `screenshots/problem-robotics/`, and The Problem's four
+in `screenshots/rehearsal/`.
+
+Not checked: on a real screen, and the fifteen outbound links by clicking them (the five new
+addresses each answered when fetched).
+
+### 2026-11-23: The Kit's models, Lesson 1's step models and the sketch's grip from Final v3
+
+Lingbo, 2026-11-23: "update everything based on the CAD and summarize the changes on the
+website". A few minutes before, in another session, the same thing in other words: "update
+all models in the website with the new hand cad model". That session closed part way through
+(its export ran the machine out of memory), and this entry is the work finished. The moving
+hand was already Final v3: the entry below. This is everything else on the site that was
+drawn from, or quoted, an older hand.
+
+| What | Before | Now |
+|---|---|---|
+| The Kit, the hand | Hand v10, CAD of 17 Nov, lying flat, with a box on its back | Final v3, CAD of 22 Nov, standing up with the palm toward the visitor: `public/models/hand-final-v3.glb`, 1.7 MB |
+| The Kit, one finger | Finger module v4, CAD of 11 Nov | The middle finger of Final v3: `public/models/finger-final-v3.glb`, 0.7 MB |
+| The Kit, the numbers | M3 threaded rod; curl to 90°; module 30 × 282 mm; 31 × 24 × 13 cm; "CAD v10, 17 Nov 2026" | A lead screw; curl to 72°; module 33 × 291 mm; 32 × 26 × 11 cm lying flat with the thumb out; "CAD Final v3, 22 Nov 2026" |
+| The Kit, the words | The thumb "bolts on"; the electronics "ride in a box"; M3 screws are "the only fasteners"; grey parts are "motors, the Arduino, screws" | The thumb "slides on"; the electronics "sit under one curved shell that is the back of the hand"; M3 screws are nearly all, with two #6-32 on the thumb's swing motor; grey parts are the screws and nuts, and the motors and boards are inside |
+| Lesson 1, the five step models | Slices of Billy's older finger file, all one light blue, open where they were cut | The Final v3 finger cut at 66, 130.45, 188 and 244 mm from the rear of its housing, and whole; closed where they are cut; in the hand's colours |
+| Lesson 1, two facts | "about 11 inches long (288 mm)"; a teacher note about STL slices in inches | "about 11.5 inches long (291 mm)"; a teacher note that says what the five models are now |
+| The sketch's "close" positions | 72, 72, 45, 74: hand v11's grip | 78, 78, 91, 61: Final v3's grip, the same numbers the page sends |
+
+The colours are the homepage's, part for part (`COLOURS` in `scripts/step_to_glb.py`, a
+third copy of the table under [The hand on the homepage](#the-hand-on-the-homepage)), so the
+hand looks the same on Home, on The Kit, in the lesson and on the two dashboard pages.
+
+**Where the numbers come from.** The curl, the housing's width and the fasteners are from
+`Final v1/README.md` in the CAD folder, which Final v3 is built on; the shell and the status
+from `Final v3/README.md`; the lengths and the overall size were measured from
+`Final v3/OPEN IN CAD/Final_v3.step` (the finger module runs from 0 to 291.0 mm, the whole
+hand is 319 × 261 × 109 mm). The grip is `pinch` in the hand's data: fingers to 55°, thumb
+swing 58°, thumb curl 72°, which are 78%, 61% and 91% of each motor's travel.
+
+**How the export changed** (`scripts/step_to_glb.py`):
+
+- It ran out of memory on this hand: past 7 GB in 40 seconds, which is what ended the
+  earlier session. The cause: it turned every part upright one at a time, a part taken from
+  the CAD file is still attached to the whole assembly, and copying it copies the assembly,
+  65 MB a time over 156 parts. The geometry is now left as the CAD has it, and the model is
+  stood up by one rotation written into the file. The whole export takes 6 seconds and half
+  a gigabyte.
+- `tidy()` rewrites the file the CAD kernel produces. The kernel writes a separate piece of
+  mesh for every face (8,204 for the hand) with texture coordinates nothing uses, and writes
+  four identical fingers four times. Joined, stripped and stored once, the hand went from
+  3.4 MB to 1.7 MB and the finger from 1.2 MB to 0.7 MB, with the same shapes, names,
+  colours and shading.
+- `scripts/finger_steps.py` is new. It takes the same finger, cuts each solid at a plane
+  across the finger, and writes the five step models. `scripts/stl_to_glb.py`, which made
+  the old five, is kept and says at its top that it is the way back.
+
+**Checked.** Each model file was read back by a separate script: the header and every
+offset are right, no index points past its vertices, every normal is unit length, the hand
+measures 261 × 319 × 109 mm with the fingertips highest and the palm side toward the
+viewer, and the finger 291 mm. On the built site every model loads at 1440 and 390 px with
+no script error and no sideways scroll; no page asks for a file that is missing; the 37
+checks of "Test your code" and the 46 of the simulator pass, and the page's Close sends
+78, 78, 91 and 61. The type check and the homepage check pass.
+
+**Choices made without asking:**
+
+| Chosen | Not taken |
+|---|---|
+| Lesson 1's step models were replaced too. On 2026-11-21 Lingbo said the lesson stays as it is; "everything" and "all models" were read as later and wider. | Leaving Billy's five models. They are in the history (`git show aace34e:public/models/lesson-1/01-base.glb`), and `scripts/stl_to_glb.py` writes them again. |
+| The five cuts are placed so each picture still shows what Billy's step says: the rear of the housing with its mounting holes; the whole housing with the carriage and the start of the link; the base, the knuckle and the first pivots; both bars and the first two segments; the whole finger. | Cutting at Billy's own distances (68, 127, 188, 244 mm), which on this finger would cut the housing 3 mm short of its end. |
+| The lesson's other words were left alone. It still calls the motor a servo. | Rewriting Billy's lesson to match the hand. That is the team's review. |
+| The step models are in the hand's colours. | One light blue, as before: the parts are harder to tell apart. |
+| "Finger drive" says "The motor turns a lead screw. No gears." | "A printed lead screw". The final carriage and lead screw were never uploaded; the CAD assumes actuator v3's carriage and the screw of 2026-11-17. |
+| The boards, the motors and the screws under the shell are left out of the hand's model. | Drawing them. They cannot be seen and they add to the file. |
+| The hand is meshed to 0.3 mm, the finger and the step models to 0.12 mm. | Finer. Nothing shows at the sizes the page draws them. |
+| The sketch's `closeAt` numbers were changed, in a file Lingbo may already have downloaded. | Leaving the sketch on hand v11's grip while the page sends Final v3's. |
+
+**Not done, and not verified:**
+
+- Seen in headless Chrome only: no real browser, no real phone.
+- Billy has not seen the new step models, and nobody has read the lesson against them but
+  Claude.
+- Final v3 is not printed, and no real part was measured.
+- The sketch is still not compiled and has still not met the hand.
 
 ### 2026-11-23: the hand from Final v3, and four fingers that hop into one
 
@@ -638,8 +817,10 @@ Decided during the work, not by Lingbo:
 - **The ring and pinky sliders stay and move the hand on screen only.** A pretend board in the
   page covers every motor the real board does not have. Not taken: hiding or greying them,
   which Lingbo ruled out for the page.
-- **"Close" is the grip the CAD checks**, not every motor to its end: fingers 72%, thumb curl
-  45%, thumb swing 74% with today's CAD. At 100% everywhere the fingers and the thumb would be
+- **"Close" is the grip the CAD checks**, not every motor to its end: fingers 78%, thumb curl
+  91%, thumb swing 61% with Final v3 (72, 45 and 74 with hand v11, until 2026-11-23). The page
+  works them out from the hand's data; the sketch holds them as numbers, in `closeAt`, and
+  they have to be changed by hand when the CAD's grip changes. At 100% everywhere the fingers and the thumb would be
   driven into each other. The sketch's close button uses the same numbers.
 - **The tilt is read from the direction of gravity**, compared with the direction when the
   hand was called level (at connect, or with "Set level"). That works however the sensor is
@@ -1301,7 +1482,7 @@ Decided during that work:
 | Square corners everywhere, as on the poster. Circles only for numbered points, timeline nodes and status dots. | Rounded cards and pill buttons. |
 | The boxed section label is the heading of a section. No small line above a heading anywhere. | A label above a larger heading. |
 | One motion idea, "lines draw": a section label's box and rule, and a stat bar, extend from the left as they come on screen. Pages cross-fade into each other with the nav held still. Both switch off when the reader asks for reduced motion. | Fade-ins on every block; count-up numbers. |
-| The Problem leads with the poster's 18% / 42% figure in the page header, worded as the report words it. | The poster's "tech" wording. |
+| The Problem leads with the poster's 18% / 42% figure in the page header, worded as the report words it. (Until 2026-11-24: it is now a row under "Evidence", and the header shows robotics teams by school poverty.) | The poster's "tech" wording. |
 | Lessons are listed as numbered rows, one per line, not a grid of cards. | Cards. |
 | The roster on the teacher dashboard is a result table: lime cells for Done, as on the poster's testing table. | Three percentage tiles. |
 | "Part" is the word on the page for CAD, Hardware and Software. The code still says `portion`. | "Portion" on the page. |
@@ -1527,9 +1708,19 @@ Keep six rules when changing the moves:
 ```
 ~/.venvs/sldp-cad/bin/python scripts/hand_motion.py --check        # 1 minute
 ~/.venvs/sldp-cad/bin/python scripts/hand_motion.py --check-path   # 10 minutes
+~/.venvs/sldp-cad/bin/python scripts/step_to_glb.py                # The Kit's two models, 6 seconds
+~/.venvs/sldp-cad/bin/python scripts/finger_steps.py               # Lesson 1's five step models, 4 seconds
 npm run build
 npm run shots -- hand /
+npm run shots -- models /kit/ /lessons/beginner/01-finger-module/cad/ --steps
 ```
+
+The first two rebuild the moving hand. The next two rebuild the still models, which are
+separate files in `public/models/`: for a new hand, name its file in `MODELS` at the top of
+`scripts/step_to_glb.py` and check its lists of part names, and read the five step pictures
+against the lesson's words. Then change by hand what no script writes: The Kit's captions
+and numbers (`src/pages/kit.astro`), the finger's length in Lesson 1, and `closeAt` in
+`public/downloads/helpinghand_bench.ino`.
 
 For a new hand, first change `HAND` and `LABEL` at the top of the script, name the hand's
 file in `load_cad()`, and bring the lists of part names under them up to date. The script
@@ -1775,7 +1966,7 @@ A figure goes on the site only with a source a reader can open. All three were c
 
 | Figure on the poster | On the site | What the check found |
 |---|---|---|
-| 18% of students with no tech opportunities at school plan to pursue a tech degree in college, against 42% with them | Yes, on The Problem, worded as the report words it | Confirmed. It is about computer science, not "tech": 42% of students who say their school offers computer science classes plan to study it in college, against 18% of those whose school does not. Gallup with Amazon Future Engineer, "Developing Careers of the Future", 2021, printed page 14: 4,116 US students in grades 5 to 12. The poster's wording ("tech opportunities", "tech degree") is looser than the report's. |
+| 18% of students with no tech opportunities at school plan to pursue a tech degree in college, against 42% with them | Yes, on The Problem, worded as the report words it. Since 2026-11-24 it is a row under "Evidence", not the page's lead | Confirmed. It is about computer science, not "tech": 42% of students who say their school offers computer science classes plan to study it in college, against 18% of those whose school does not. Gallup with Amazon Future Engineer, "Developing Careers of the Future", 2021, printed page 14: 4,116 US students in grades 5 to 12. The poster's wording ("tech opportunities", "tech degree") is looser than the report's. |
 | Over 250,000 high school students participate in robotics competitions annually | No | Not found in any primary source. What the sources do say: FIRST Robotics Competition, more than 93,000 students (grades 9 to 12, worldwide, 2025 season); FIRST Tech Challenge, more than 109,000 (ages 12 to 18, 2024-25); REC Foundation, 316,271 students across all grades (2024-25). |
 | A $500 robotics kit | No | Not a list price of any kit found. Makeblock's mBot Ultimate is $399.99 from the maker and $495 at one reseller. The Problem page carries sourced prices instead (VEX IQ kit $479.99, LEGO class bundle $3,499). |
 

@@ -1,5 +1,9 @@
 """Convert the five Lesson 1 step models from STL to GLB for the site.
 
+NOT WHAT THE SITE SHOWS NOW. Since 2026-11-23 the five step models are cut from the finger of
+the current CAD by scripts/finger_steps.py. This script is kept as the way back: running it
+writes Billy's original slices over those five files again.
+
 Billy's step models live on the `version-1` branch as STL files. This reads them straight from
 that branch, so nothing has to be checked out, and writes small GLB files to
 public/models/lesson-1/. Run it from the repo root with the CAD environment:
