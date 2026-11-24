@@ -79,7 +79,7 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 Before the merge `main` was four commits further on, but those four add the simulator and
-take it out again, so no file differed. Twenty commits are pushed: the rebuild, the hand from the CAD, the emails
+take it out again, so no file differed. Twenty commits are pushed and a twenty-first is made: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
 people, the homepage story with the flat hand, the receding palm and the littered parts,
@@ -98,22 +98,34 @@ palette, on the homepage, in "Test your code" and in the simulator, and links th
 from Lesson 1's row on the student dashboard. The nineteenth is the hand exported from the
 CAD's Final v3, wherever the hand moves, and the four fingers hopping into one. The twentieth
 puts Final v3 on The Kit and in Lesson 1's step models, and turns The Problem's figures from
-computer science to robotics and engineering. Prompts 1 to 9
+computer science to robotics and engineering. The twenty-first rebuilds The Problem round a
+comparison of kits and puts the final poster's cost table, circuit and next steps on The Kit
+and the Roadmap. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
-**The twentieth commit, "Show Final v3 on The Kit and in Lesson 1, and make The Problem's
-figures about robotics", is on GitHub as the tip of `LZ-C5.2`.** It was made and pushed on
-2026-11-24 at about 11:40, when Lingbo said "push to the branch" with two pieces of work
-still uncommitted: the Final v3 models of 2026-11-23 and The Problem's figures of
-2026-11-24. The name is Claude's; Lingbo did not give one. The eighteenth and nineteenth went
-the same way. Lingbo usually asks for the two separately, as with the seventeenth: "commit to
-the branch LZ-C5.2" on 2026-11-21 at 21:30, then "push it to the branch" a few minutes later.
+**The twenty-first commit, "Compare the kits on The Problem, and put the final poster's
+cost, circuit and next steps on the site", is made and not pushed.** Lingbo said on
+2026-11-24 "do all three stages and commit to the branch named LZ-C5.2", and has not asked
+for the push. The name is Claude's. It holds two sessions' work: The Problem's rebuild, and
+the circuit diagram and the next steps that another session drew from the final poster the
+same afternoon. Until it is pushed, GitHub's `LZ-C5.2` ends at the twentieth commit, "Show
+Final v3 on The Kit and in Lesson 1, and make The Problem's figures about robotics", pushed
+that morning at about 11:40.
 
 **`main` is still the merge of 2026-11-21.** Nothing since the sixteenth commit is merged,
 so the live site has none of "Test your code", the Simulator, the link in Lesson 1's row,
-the hand's new colours, the Final v3 hand on any page, the new four-into-one move or The
-Problem's robotics figures. Nothing is waiting uncommitted on the build machine.
+the hand's new colours, the Final v3 hand on any page, the new four-into-one move, The
+Problem's robotics figures or its comparison, the cost table or the circuit diagram.
+
+What the twenty-first commit holds: The Problem (`src/pages/problem.astro`,
+`src/data/compare.ts`, `src/data/ratings.ts`, `src/data/evidence.ts`,
+`src/scripts/problem/`), Anime.js as a dependency (`package.json`, `package-lock.json`), The
+Kit's cost section and two box rows, the circuit diagram
+(`src/components/CircuitDiagram.astro`, `src/pages/kit.astro`), the Roadmap's four next
+steps (`src/pages/roadmap.astro`), the cost table's picture
+(`docs/cost-table-2026-11-24.png`), `.gitignore`, the root `README.md`, and this file. See
+[Design changes](#design-changes), the two entries of 2026-11-24.
 
 What the twentieth commit holds: The Kit's two models and its numbers from Final v3
 (`public/models/`, `src/pages/kit.astro`, `scripts/step_to_glb.py`), Lesson 1's five step
@@ -134,12 +146,12 @@ name, `~/workspace/SLDP CAD`, in the two export scripts, and this file. See
 | Page | State | Still open |
 |---|---|---|
 | Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-23 the hand is Final v3 from the CAD, the hand built round Lingbo's final motor housings (from 2026-11-18 until then it was hand v11), and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and flat and opens with its fingers toward the visitor; the four finger modules come out, loosen into their parts and close into one, which is rebuilt link by link; its motion is traced from the carriage to the fingertip, each link in its own colour; and at the end the fingers drop back into the palm, the whole hand comes apart, and the parts gather into the HandiWorks mark. The same parts lie in pale sky behind the rest of the page. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | Lingbo has not yet seen the new hand in the story, or the new way four fingers become one (both 2026-11-23). |
-| The Problem | Poster's goal and objectives, and 22 sourced figures. Since 2026-11-24 they are about robotics and engineering, not computer science: teams, clubs and courses by school, hands-on work in class, kit prices, teacher preparation, evidence. | Most school figures are from 2018, the newest national survey; the page says so. The "250,000 students" and "$500 kit" figures are left off: no source says them. |
-| The Kit | Since 2026-11-23, the hand and one finger of Final v3 from the CAD, in the homepage's colours, with Final v3's numbers beside them; the poster's testing table. | Final v3 is not printed. The final carriage and lead screw were not uploaded, so the CAD assumes them and the page says only "a lead screw". "What is in the box" is a draft. Circuit diagram is a labelled placeholder until the image arrives. |
+| The Problem | Rebuilt on 2026-11-24 round a comparison: two lead numbers and three lead figures on who has robotics; the LEGO question, a moving drawing, VEX's 215-page manual and what researchers say; a table of five widely used options and HelpingHand, with a "How we compare" window holding 49 mechanics concepts and every rating; Lingbo's words on what HelpingHand changes. The other 18 figures and the 36 sources fold away. Motion is Anime.js, on this page only. | Three VEX cells say "To be confirmed". The EG price list's own address is missing. Nobody on the team has read the ratings. On mechanics VEX and FIRST rate far above HelpingHand, and the page says so. |
+| The Kit | Since 2026-11-23, the hand and one finger of Final v3 from the CAD, in the homepage's colours, with Final v3's numbers beside them. Since 2026-11-24 the circuit from the final prototype poster, redrawn as a diagram; the earlier poster's two-motor testing table is gone. | Final v3 is not printed. The final carriage and lead screw were not uploaded, so the CAD assumes them and the page says only "a lead screw". "What is in the box" is a draft. The circuit is redrawn from the poster picture: Clarence's own file would replace it, and nobody on the team has checked the redrawing. |
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
 | Lesson 1 | Billy's lesson from `version-1`: five CAD steps, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". Since 2026-11-23 the five step models are the Final v3 finger, cut at five stages, and the lesson gives the finger's length as 291 mm. | Incomplete, in Lingbo's words on 2026-11-21. Its words are Billy's, written for an older finger, and still teach a servo. Billy has not seen the new step models. Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. |
 | Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. Since 2026-11-21 the student dashboard has a "Test your code" section that opens a page of that name: it drives the hand over USB and shows the same hand moving on screen. See [Test your code](#test-your-code). A "Simulator" section opens six guided steps for Lesson 1, from a see-saw to the finger of the hand. See [Simulator](#simulator). | "Test your code" has never met the real hand, and its Arduino sketch has never been compiled. Neither page has been used by hand in a real browser. Lingbo has not seen the simulator's wording or its questions. |
-| Roadmap | Empty on purpose since 2026-11-21: its title, "Coming soon" and one line. | The roadmap itself. Lingbo writes it later. |
+| Roadmap | Since 2026-11-24, the four next steps from the final prototype poster, in the poster's words, as numbered points. From 2026-11-21 until then it was empty on purpose. | A fuller roadmap. Lingbo writes it later. Lingbo has not said the poster's four steps should stand here: see [Design changes](#design-changes). |
 | Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
 | Every page | The HandiWorks mark in the nav, the footer and the browser tab, traced from the poster. Under Contact in the footer, all four people's addresses. | The real logo file. |
 
@@ -157,8 +169,9 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 | Folder | What |
 |---|---|
-| `rehearsal/` | Every page of the demo path, and the style guide, at 1440 and 390 px wide. 60 images. The Problem's four were taken again on 2026-11-24. |
-| `problem-robotics/` | The Problem and the style guide with the robotics figures of 2026-11-24, at both widths. |
+| `rehearsal/` | Every page of the demo path, and the style guide, at 1440 and 390 px wide. 59 images. The Problem, The Kit, the Roadmap and the style guide were taken again on 2026-11-24 at 12:50. |
+| `problem-v2/` | The rebuilt Problem page and The Kit at both widths; `motion-drawing-1` to `-3` and `motion-table-1` and `-2`, frames of the page moving; `window-1440.png` and `window-390.png`, "How we compare" open; `crop-kit-cost.png`, The Kit's cost table. `problem-robotics/`, the morning's pictures, was deleted. |
+| `poster-final/` | The Kit and the Roadmap after the final prototype poster's graphics went in on 2026-11-24, at both widths; `circuit-1440.png` and `circuit-390.png` are the circuit alone, and `circuit-poster-and-site.png` is the poster's diagram above the redrawing. |
 | `rehearsal-models/` | The Kit and the CAD page frame by frame, so the 3D models show. |
 | `kit-final-v3/` | `kit-models-before-after.png`: The Kit's hand and finger as they were and as they are. `lesson-1-steps-before-after.png`: Lesson 1's five step models, the same way. Each model was held still and seen from one side. |
 | `rehearsal-teacher/` | Lesson 1 as a teacher sees it, with the teacher notes. |
@@ -169,14 +182,16 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 All but the last two were taken again on 2026-11-18.
 
 The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-24.zip` on
-the build machine (3.7 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It was
-built on 2026-11-24 at 11:29, ten minutes before the twentieth commit was made, and holds
-the same site as that commit. Its `HOW-TO-OPEN.txt` still calls the newest work "not
-committed yet". Against the zip of 2026-11-23 at 19:19, which it replaced, only
-three files differ: The Problem, the style guide and `HOW-TO-OPEN.txt`. Served by its own
-`serve.py`, The Problem opened with all of its new figures. The pictures in
-`screenshots/offline-copy/` are from the zip of 2026-11-23: nine pages at both widths with
-no script error and no sideways scroll, and every model and download served.
+the build machine (18 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It was built
+on 2026-11-24 at 12:53 and holds the same site as the twenty-first commit. It took the place
+of the zip made at 11:29 the same day. It is larger because VEX's build manual sits in it,
+`vex-v5-flex-build-instructions.pdf`, beside the site and outside the published folder: The
+Problem loads that manual from VEX's server, which a room with no network cannot reach, and
+`HOW-TO-OPEN.txt` says to open the file instead. It is VEX's file and must not be put
+online. Served by its own `serve.py`, The Problem, The Kit and the Roadmap opened, with The
+Problem's script. The pictures in `screenshots/offline-copy/` are from the zip of
+2026-11-23: nine pages at both widths with no script error and no sideways scroll, and every
+model and download served.
 
 The zip of 2026-11-22, a snapshot of the eighteenth commit with hand v11, was deleted that
 evening too; an earlier session had not been allowed to. The zips of 2026-11-21 and
@@ -297,7 +312,8 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
   2026-11-22: `Final Housing and Base/`, and the hand built round them, `Final v3/`. The hand
   on Home was exported from Final v3 on 2026-11-23, and The Kit's two models and Lesson 1's
   five step models followed that evening.
-- [ ] **Lingbo:** the roadmap. The page is empty until then.
+- [ ] **Lingbo:** the roadmap. Since 2026-11-24 the page shows the four next steps from the
+  final prototype poster; anything fuller is still to write.
 - [ ] **Lingbo:** the hand's wiring, in the table at the top of
   `public/downloads/helpinghand_bench.ino`: which shield and port each motor is on, which way
   closes it, how long each takes from open to closed, the two button pins, and whether the
@@ -308,7 +324,9 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
 - [ ] **Golam:** the HandiWorks Co. logo as an SVG or a large PNG. Until then the site shows
   a mark traced by hand from the poster image (`src/components/Logo.astro`, with copies in
   `index.html` and `public/favicon.svg`). Goes on the nav, the footer and the browser tab.
-- [ ] **Clarence:** the circuit diagram as an image file. Goes on The Kit.
+- [ ] **Clarence:** the circuit diagram as an image file, and a look at the redrawing. Since
+  2026-11-24 The Kit shows the final poster's circuit, redrawn by hand from the poster picture
+  (`src/components/CircuitDiagram.astro`). His file would replace it or correct it.
 - [ ] **Billy:** a review of Lesson 1. Prompt 11 applies it.
 - [ ] **Billy:** wiring and assembly photos or diagrams. His branch has stand-ins. Goes on
   Lesson 1.
@@ -414,6 +432,231 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-24: The Problem rebuilt round a comparison, with motion
+
+Lingbo, in a grilling round of 21 questions: "currently the problem page is too large also
+make it interesting using animations from anime.js I also want a section comparing the
+current solutions and what issues they have ... a comparison table with different metrics
+(ex. affordability, scalability, num concepts taught). Also emphasize how many kits are
+currently like lego kits where you can follow the steps compelte the robot and not learn the
+underlying concepts".
+
+**What Lingbo decided**, question by question:
+
+| Question | Lingbo's answer |
+|---|---|
+| What the page argues | "the problem is schools dont have access to robotics and their options if they do have access are bad" |
+| How much to cut | Five sections; every other figure folds into one closed "All the figures" block |
+| Which options | Five widely used ones against ours: LEGO Education's Computer Science & AI kit, the VEX V5 Competition Starter Kit (Lingbo's pick over VEX IQ), Makeblock mBot2, Sphero BOLT+, FIRST Tech Challenge. Not called "the five most popular": no open source ranks them |
+| Scalability | Grows with the learner, "and also cheap to add extension and more advanced exercises / goals" |
+| Concepts | Mechanics, rated against a list compiled from public lists such as "the purdue vex wiki", with "our methodology and standards" linked from the table. Circuits and code stay open for now |
+| What is unfinished on our side | "Anything that isnt implmented do an * and add (WIP)" |
+| Our cost | The team's cost table, $153.41 in parts, shown as a parts cost and not as a price; one hand for a group of four; unit prices sourced to "the eg.poly.edu website"; screws, wiring and buttons "fall under contingency"; the Arduino Mega is $22.99 "and it is an actual arduino board" |
+| The VEX manual | Show it on the page if we can, link it otherwise |
+| Fairness | FIRST Tech Challenge shown honestly as the one where students design their own robot. The problem is steps with no reasons, not instructions as such |
+| Headline | "Robotics currently isn't hands on for everyone" |
+| The line about LEGO | "Can you rebuild a LEGO set without the booklet" |
+| Under "What HelpingHand changes" | "all students deserve the chance to have a foundation in robotics. we are not trying to replace competition robotics. Instead we target kits and curriculum", to be worded better, then "this is our first prototype aimed to solve this issue" |
+| The method | "a small window that pops up when you click it and collapses when you close it" |
+| VEX's prices | "to be confirmed" until someone reads them on VEX's site |
+| Animation | Anime.js back, on this page only: numbers count up, the table arrives row by row, and one drawing plays "follow the steps" against "change one bar" |
+| Order of work | All of it at once, then "commit to the branch named LZ-C5.2" |
+
+**What the page is now.** The header (the final poster's Background, and the two numbers
+about robotics teams by school poverty). "Few schools have it": three lead figures. "What
+schools can buy today": the LEGO question, the drawing, VEX's manual, what researchers say,
+the table, and a button that opens "How we compare". "What HelpingHand changes": Lingbo's
+words, the poster's goal and two objectives, three columns. Then two closed blocks, "All the
+figures" (the 18 figures that used to fill the page) and "Sources" (36 of them).
+
+| | Before | Now |
+|---|---|---|
+| Height at 1440 px wide | 7,257 px | 5,502 px |
+| Height at 390 px wide | 10,720 px | 11,134 px |
+| Figures in view without opening anything | 22 | 4, and the table |
+
+It is shorter on a laptop and not on a phone: the table becomes six cards there, one for
+each option, and they are long. The first plan said "roughly half the height". The table and
+the manual took back part of what the cut saved.
+
+**The table's cells** are read from each maker's own pages, and each links to its page
+(`src/data/compare.ts`). What could not be read says "To be confirmed": the VEX kit's price,
+its ages and its add-on. `www.vexrobotics.com` answers 403 to the tools on this machine and
+that block was not worked round. A search listing shows $1,284.99 for the kit; that number
+is not on the page because nobody has read it at its source.
+
+**Mechanics: 49 concepts.** The list is merged from seven public lists: Purdue SIGBots Wiki,
+Game Manual 0, VEX's STEM Labs and Library, REV Robotics' build-system documentation,
+Carnegie Mellon's *Introduction to Mechanisms*, Project Lead The Way's *Principles of
+Engineering* outline, and FRCDesign.org. A concept earns up to three marks for an option:
+explained (an official lesson or help page teaches it by name), built from steps (the
+official instructions for a set robot have the student assemble it), made by the student
+(official material asks them to draw or design their own). Every mark links to the page it
+rests on, with that page's words (`src/data/ratings.ts`).
+
+| Option | Explained | Built from steps | Made by the student |
+|---|---|---|---|
+| LEGO Education, Computer Science & AI kit | 0 | 4 | 1 |
+| VEX V5 Competition Starter Kit | 39 | 17 | 22 |
+| Makeblock mBot2 | 1 | 7 | 1 |
+| Sphero BOLT+ | not checked | not checked | not checked |
+| FIRST Tech Challenge | 31 | 0 | 21 |
+| HelpingHand | 6 | 0 | 3, and 10 more marked * (WIP) |
+
+**Read this before showing the table to anyone.** On mechanics VEX and FIRST are far ahead
+of HelpingHand, and the page says so. Three of the seven lists are written around VEX and
+FIRST parts, and about twenty of the concepts (drivetrains, lifts, launchers, pneumatics)
+can never apply to a hand. Lingbo was told this would happen before choosing the method.
+What the table shows in HelpingHand's favour is cost, and that its few concepts are ones the
+student draws.
+
+Marks were given generously to the others. A thin mention still earns "explained". For VEX
+and FIRST, guidance on designing a custom robot counts as "made by the student" even where
+no task is set, because competition teams do design their own robots. Some of FIRST's marks
+rest on its 2021-22 Class Pack lesson guides, which are official PDFs that still open but
+are not linked from a current page.
+
+How the marks were checked: three look-ups read the makers' sites and reported each mark
+with its address and quote. Then a script opened every address and looked for the quote:
+129 of the 134 quoted marks were found on their pages. The other five are on VEX STEM Lab
+pages (`education.vex.com`), which refuse this machine's requests; they were read through a
+fetch tool by the look-up only. Ten more marks describe a picture in LEGO's and Makeblock's
+build instructions and rest on the look-up's reading alone. LEGO's marks rest on the one
+lesson of its 30 that opens without signing in. Sphero's lesson site is an app that did not
+open, so its row says "not checked" and not "nothing found".
+
+**HelpingHand's own marks** follow the star rule strictly. Explained: lever, links, four-bar,
+joints, six-bar and double reverse four-bar, CAD, from Lesson 1 and the Simulator's steps.
+Made by the student: links, joints and CAD, which Lesson 1 has them draw. Starred: torque and
+speed, mechanical advantage, gear ratios, gear trains, the slider and link, turning one
+motion into another, the lead screw, grippers, fasteners, 3D printing.
+
+**What researchers say**, each sentence read in the paper itself: Alimisis (2021), Kaloti-Hallak,
+Armoni and Ben-Ari (2019), Resnick and Rosenbaum (2013), and for the other side Kirschner,
+Sweller and Clark (2006). No source counts how many kits are built from steps, and the page
+says that.
+
+**The VEX manual.** The page shows VEX's 215-page build instructions for this season's
+starter robot in a frame, loaded from VEX's server when the visitor presses "Open the manual
+here". The file's cover says "All Rights Reserved" and VEX's terms allow reuse "solely for
+educational use", so no copy is in the repo. It is the one thing on the site loaded from
+another site, and only on request. A phone gets the link alone. For a room with no network,
+a copy sits beside the site in the offline zip, outside the published folder.
+
+**The Kit.** A new section, "What it costs", holds the team's cost table as a real table
+(the picture is `docs/cost-table-2026-11-24.png`), and "What is in the box" gains the battery
+and the IMU.
+
+**Motion.** Anime.js 4.5 is a dependency again, bundled into this page only (about 30 KB of
+script; nothing is fetched from another site). It was taken out of the homepage on
+2026-11-18 and stays out of it. This page breaks the theme's "one motion" rule on purpose,
+at Lingbo's request; no other page does. With reduced motion, or with scripting off, the
+page shows everything in its finished state, and with scripting off "How we compare" is an
+ordinary section at the foot of the page.
+
+Decided during the work, not by Lingbo:
+
+- **The research is quoted in three short lines beside "the other side"**, not as a section
+  of its own.
+- **"What each one does well" is in the window**, not in the table: the rows were too tall.
+- **The Simulator counts as teaching.** Its steps name the lever, the four-bar, the six-bar
+  and the double reverse four-bar, so those are marked explained. Lingbo was told only
+  "joints, links, one servo, a button and basic code" would be unstarred.
+- **The page opens with the final poster's Background**, which now ends "having students
+  follow a manual".
+- **The lead sentence under "Few schools have it"** is new: "Most middle schools have no team
+  in any engineering competition, robotics included."
+- **Sources fold away too**, as a second closed block.
+- **The colours of the linkage in the drawing** are the hand's: blue bars that swing, an
+  amber rod.
+
+Open, for Lingbo or the team:
+
+- **The EG price list's address.** `manual.eg.poly.edu` refuses connections from this
+  machine, so the cost table's source links to `eg.poly.edu` and says "NYU Tandon EG1004
+  price list".
+- **Three VEX cells** to read off VEX's site in a browser.
+- **The cost table and the CAD disagree**: the table has two motor shields and six motors at
+  $1.16; the CAD's Final v3 has three driver boards and a VEX 393 for the thumb's swing.
+- **Arduino's own store lists the Mega 2560 Rev3 at $34.93** (24 Nov 2026), above the
+  table's $22.99.
+
+Checked: `npm run build` and the type check pass. In headless Chrome, 28 checks: the numbers
+count up and end on their values; the table's rows and squares arrive; the robot's parts and
+the linkage move; "How we compare" opens as a window, scrolls inside itself, holds 49 rows
+and closes; the manual's frame points at VEX and closes; with reduced motion nothing is
+hidden and nothing moves; no sideways scroll at 360, 390, 768, 1024, 1280 or 1440 px; on a
+phone the table is cards and the window fits the screen. Pictures: `screenshots/problem-v2/`.
+
+Not checked: on a real screen, by a person. The manual's frame was not loaded from VEX during
+the checks.
+
+### 2026-11-24: the final prototype poster's circuit and next steps
+
+Lingbo: "using the final prototype poster update all graphics on the website which are out
+of date". The poster is `Final Prototype Poster.png` in the repo folder, uploaded that day and
+not in git. Each graphic on it was held against the site:
+
+| On the final poster | On the site before | On the site now |
+|---|---|---|
+| Circuit diagram | The Kit, "Circuit": a dashed box that said "Image to come" | The diagram, redrawn (below) |
+| Cost estimate table, where the earlier poster had product testing | The Kit, "Testing so far": the earlier poster's two-motor table | The testing table is gone. The cost table went onto The Kit the same day as "What it costs", built by another session with the rebuild of The Problem |
+| Next steps: four numbered points, where the earlier poster had a dated timeline | Roadmap: empty on purpose since 2026-11-21 | The four points, in the poster's words |
+| Three CAD pictures of the hand | The Kit's two 3D models and the hand on Home, all Final v3 since 2026-11-23 | No change. The poster's pictures are the same hand, Final v3 |
+| The 18% / 42% panel and the $500 kit picture | 18% / 42% a row under Evidence since that morning, at Lingbo's ask; the $500 kit never shown, for want of a source | No change |
+| Two numbered objectives | The Problem, "Our goal" | No change: same words |
+| Logo, names, roles, tagline | Every page | No change: identical on both posters |
+| A screenshot of the website | | It is the site |
+
+**The circuit.** `src/components/CircuitDiagram.astro` is one inline drawing, used by
+`src/pages/kit.astro`. It holds what the poster's diagram holds and nothing more: the list is
+under [Theme](#theme), "Circuit, from the final poster". It is drawn in the site's colours with
+square corners: navy for the Arduino, the battery and the shields' title bars, lime for the six
+outputs, a dashed outline and a dashed wire for the proposed Wi-Fi module. A key under it names
+the four kinds of wire. In a window under about 800 px wide the drawing keeps a readable size
+and scrolls sideways inside its own frame, and a line under it says so; the page itself does
+not scroll sideways (checked at 360, 390, 768, 820, 960, 1024, 1280 and 1440 px). The words beside it now name the parts on the poster: two motor shields on one I2C
+bus, the IMU, the 7.2 V battery, the proposed Wi-Fi module.
+
+**The Roadmap.** `src/pages/roadmap.astro` shows the poster's four next steps as numbered
+points, the same block as the objectives on The Problem. It gives no dates, owners or detail,
+because the poster gives none.
+
+Decided here, not by Lingbo:
+
+| Decision | Why | Not taken |
+|---|---|---|
+| The circuit is redrawn, not cut out of the poster picture | On the poster it is about 530 px wide, so it would blur at the page's width, and its green, purple and red are not the site's colours | The poster's picture as an image file |
+| The testing table is removed, not kept beside the cost table | The final poster dropped it, and it tested two motors on a hand that now has six | Keeping it as a record of the first bench test. It is in the history at commit `7360977` |
+| The poster's next steps go on the Roadmap page | The page has stood empty since Lingbo emptied it on 2026-11-21, and the final poster is the first place the team wrote its next steps down | Leaving the page empty until Lingbo writes a roadmap. To go back: `git checkout 7360977 -- src/pages/roadmap.astro` |
+| The four steps are in the poster's exact words | They are the team's words | Rewording, for example "Scale the hand down by about half" |
+| Two wire colours are not theme colours | Four kinds of wire need four colours a reader can tell apart, and sky is too pale on a light ground. Both are from the hand's palette: the link's orange for motor power, the middle segment's blue for signals | Telling the wires apart by dashes only |
+| The words on the site are not changed | The ask was for graphics | See below |
+| `.gitignore` now names `Final Prototype Poster.png` | The earlier poster is kept out of the public repo, and this one names the class and section too | Moving the file out of the repo folder |
+
+The final poster also reworded three paragraphs, and the site still uses the earlier wording.
+For Lingbo to decide:
+
+| Paragraph | Earlier poster, used on the site | Final poster |
+|---|---|---|
+| Product, the end of it | "...one lesson at a time without following a finished kit." (Home, The Kit's header, the root `README.md`) | "...through a more interactive curriculum which connects concepts learned to real world applications." |
+| Background, second sentence | "3D printers provide an affordable alternative that allows multiple students to print an unlimited number of parts." | "Furthermore, many existing robotics kits are uninspired, having students follow a manual." |
+| Website | "...interactive lessons designed to allow teachers to assign and monitor student work, or alter the curriculum." | "...our proposed interactive lessons designed to allow teachers to assign and monitor student work while accessing lessons we created." |
+
+Not checked, and one thing that disagrees:
+
+- Nobody on the team has looked at the redrawn circuit. It was read off a picture 530 px wide.
+- The poster's circuit and the CAD do not describe the same electronics. The poster has two
+  motor shields and a 7.2 V VEX battery. Final v3's electronics plate in `~/workspace/SLDP CAD`
+  is laid out for three separate L298N driver boards, a 9 V block and a 12 V jack. The site
+  follows the poster on The Kit; the 3D model is the CAD's. One of the two has to change.
+- The poster does not say which motor is which finger, and the wiring table at the top of
+  `public/downloads/helpinghand_bench.ino` is still Lingbo's to fill in.
+- Phone width was checked in headless Chrome only.
+
+Pictures: `screenshots/poster-final/`. They were taken from a private build of this branch's
+last commit plus these changes, so the page around the circuit is as it stood that noon.
 
 ### 2026-11-24: The Problem's figures, about robotics and not computer science
 
@@ -1833,6 +2076,16 @@ not find. The pairs are listed at the top of `finger.ts`.
 Agreed 2026-11-17. The look comes from the team's SLDP poster. The poster image itself is not
 in this repo; everything the site needs from it is written down here.
 
+There are two posters, and both pictures sit in the repo folder on the build machine without
+being in git (`.gitignore` names them). `reference poster/reference-poster.png` is the poster
+of 2026-11-17, which the look and the words below were taken from.
+`Final Prototype Poster.png` is the final prototype poster, uploaded by Lingbo on 2026-11-24.
+Its look, logo, tagline, names and objectives are the same. What it changed: a cost estimate
+in place of the testing table, a new circuit diagram, four numbered next steps in place of the
+dated timeline, new CAD pictures (Final v3), and the wording of three paragraphs. The last
+four subsections of this section record the first three; the wording is in
+[Design changes](#design-changes), the entry of 2026-11-24 about the poster.
+
 One look across the whole site: the homepage (`index.html`) and every inner page. The inner
 pages take it from `src/styles/global.css`. The homepage carries its own copy, written by
 hand inside `index.html`: change one and change the other.
@@ -1917,6 +2170,9 @@ These are the poster's own parts. Every page is assembled from them.
 - **Lines draw.** The one motion on the site. A section label's box and rule, and the bar in a
   stat panel, extend from the left as they come on screen. A percentage draws its bar to that
   length. Nothing else animates in.
+  Since 2026-11-24 The Problem is the one exception, at Lingbo's request: its numbers count
+  up, its table arrives row by row and it has a moving drawing, all made with Anime.js
+  (`src/scripts/problem/motion.ts`). No other page uses it.
 - **Page to page.** The nav holds still and the rest cross-fades, in browsers that support it.
 - **The hand.** On the homepage the hand and the single finger move only the way the CAD
   says the real ones do: see [The hand on the homepage](#the-hand-on-the-homepage).
@@ -1944,6 +2200,10 @@ Use these as written here. They are the team's own words, with two spelling slip
   a high barrier for entry for schools that want to invest in engineering programs. 3D
   printers provide an affordable alternative that allows multiple students to print an
   unlimited number of parts.
+  The final poster of 2026-11-24 ends the paragraph differently, and The Problem opens with
+  its two sentences: "Popular robotics kits for young students can be extremely costly,
+  creating a high barrier for entry for schools that want to invest in engineering programs.
+  Furthermore, many existing robotics kits are uninspired, having students follow a manual."
 - **Objective 1:** Provide a scalable framework that evolves alongside the learner.
 - **Objective 2:** Offer an affordable and accessible alternative to traditional robotics
   kits (FIRST, VEX, LEGO, etc.)
@@ -1970,21 +2230,64 @@ A figure goes on the site only with a source a reader can open. All three were c
 | Over 250,000 high school students participate in robotics competitions annually | No | Not found in any primary source. What the sources do say: FIRST Robotics Competition, more than 93,000 students (grades 9 to 12, worldwide, 2025 season); FIRST Tech Challenge, more than 109,000 (ages 12 to 18, 2024-25); REC Foundation, 316,271 students across all grades (2024-25). |
 | A $500 robotics kit | No | Not a list price of any kit found. Makeblock's mBot Ultimate is $399.99 from the maker and $495 at one reseller. The Problem page carries sourced prices instead (VEX IQ kit $479.99, LEGO class bundle $3,499). |
 
-### Product testing, from the poster
+### Product testing, from the earlier poster
 
-Goes on The Kit page as "Testing so far".
+No longer on the site. The poster of 2026-11-17 had a "Product testing" table: two motors run
+one at a time and together, clockwise and counterclockwise. The Kit showed it as "Testing so
+far" until 2026-11-24. The final prototype poster has a cost estimate where that table stood
+and no testing table, so the section was taken off The Kit. The table itself is in the history:
+see `src/pages/kit.astro` at commit `7360977`.
 
-| Trial | Motor 1 ran? Direction | Motor 2 ran? Direction |
+### Cost estimate, from the final poster
+
+The final prototype poster's table, which is the same as the picture Lingbo uploaded on
+2026-11-24 as "Current Final Prototype Cost Table.png". The Kit shows it under "What it costs"
+(built by the session that rebuilt The Problem that day: see its entry under
+[Design changes](#design-changes)).
+
+| Item | Cost (unit) |
+|---|---|
+| Arduino Mega 2560 | $22.99 |
+| Battery | $24.99 |
+| IMU | $18.00 |
+| Adafruit Motor Shield (x2) | $19.95 |
+| DC Motors (x6) | $1.16 |
+| 3D Prints | $15.00 |
+| Contingency (20%) | $25.57 |
+| TOTAL | $153.41 |
+
+The column is the price of one. The total uses the quantities: two shields are $39.90 and six
+motors are $6.96, which makes $127.84 of parts; 20% of that is $25.57; together $153.41.
+
+### Circuit, from the final poster
+
+The Kit shows this as a diagram, `src/components/CircuitDiagram.astro`, redrawn by hand from
+the poster picture in the site's colours. Everything in the drawing is on the poster's diagram:
+
+| Part | On the poster | Connected to |
 |---|---|---|
-| Motor 1: clockwise and counterclockwise | Yes. Clockwise and counterclockwise | No |
-| Motor 2: clockwise and counterclockwise | No | Yes. Clockwise and counterclockwise |
-| Both motors: clockwise and counterclockwise | Yes. Clockwise and counterclockwise | Yes. Clockwise and counterclockwise |
+| Arduino Mega 2560 | drawn with an ATmega2560 chip | everything below |
+| Motor Shield A | address `0x60`, outputs M1 to M3 | the shared I2C bus; Motor 1, 2, 3 |
+| Motor Shield B | address `0x61`, outputs M1 to M3 | the shared I2C bus; Motor 4, 5, 6 |
+| IMU | "I2C + power", "SDA 20 · SCL 21" | the shared I2C bus |
+| Buttons | two | one signal wire each to the Arduino, and ground |
+| Wi-Fi module | marked "(proposed)", "UART1 + power", "Module TBD", dashed outline | the Arduino |
+| Battery | "7.2 V VEX BATTERY", "Motor supply" | VM+ on both shields, and ground |
+| Common GND | one rail | the Arduino, both shields, the battery |
 
-### Circuit, from the poster
+The poster does not say which motor drives which finger, which pins the buttons use, or which
+IMU it is, so the drawing does not either. The earlier poster's diagram showed the same six
+motors, two shields and two buttons; the IMU, the Wi-Fi module and the named battery are new.
 
-Six-motor circuit layout: an Arduino Mega 2560 R3, two stacked motor shields (addresses
-`0x60` and `0x61`), six DC motors, two push buttons, and a separate motor supply. The site
-describes it in words until the original diagram file is in the repo.
+### Next steps, from the final poster
+
+The Roadmap page shows these four, in these words, as numbered points. The earlier poster's
+"Next steps" was a timeline of dates from 8 to 23 November, all now past.
+
+1. Feedback on Lesson 1 and Design
+2. Scale size of hand down by ~50%
+3. Finalize website backend
+4. Draft next lessons 2-4
 
 ## The plan
 

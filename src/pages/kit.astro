@@ -4,21 +4,25 @@
     price that is not in one of those. The models are exported by scripts/step_to_glb.py:
     when the CAD version changes, re-export and change the captions and the Status row.
     Since 2026-11-23 the page shows Final v3, and its numbers are from the READMEs of
-    Final v1 and Final v3 in the CAD folder. */
+    Final v1 and Final v3 in the CAD folder. The prices under "What it costs" are the team's
+    cost table of 2026-11-24 (docs/cost-table-2026-11-24.png), kept in src/data/compare.ts. */
 import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ModelViewer from '../components/ModelViewer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProcessRail from '../components/ProcessRail.astro';
-import FigurePlaceholder from '../components/FigurePlaceholder.astro';
+import CircuitDiagram from '../components/CircuitDiagram.astro';
 import { p, mailto } from '../lib/url';
 import { PORTIONS } from '../lib/lessons';
+import { cost, costTotals, money } from '../data/compare';
 
 const box = [
   { item: 'Four finger modules', note: 'Each is a printed three-segment finger on its own motor drive.' },
   { item: 'Thumb module', note: 'Two motors: one swings the thumb across the palm, one curls it.' },
   { item: 'Palm', note: 'One printed part with a socket for each finger module.' },
   { item: 'Electronics housing', note: 'A plate that carries the Arduino Mega 2560 and the motor drivers, under a curved shell that is the back of the hand.' },
+  { item: 'Battery', note: 'Runs the six motors on a supply of their own, apart from the Arduino’s.' },
+  { item: 'IMU', note: 'A tilt sensor, so the hand can tell which way it is being held.' },
   { item: 'Two push buttons and wiring', note: 'Enough to open and close the grip from the first lesson.' },
   { item: 'M3 screws and nuts', note: 'Nearly every fastener in the hand. The thumb’s swing motor is held by two #6-32 screws.' },
 ];
@@ -36,14 +40,7 @@ const specs = [
   { k: 'Status', v: 'CAD Final v3, 22 Nov 2026. This version is not printed yet.' },
 ];
 
-/* Product testing, from the team poster. */
-const trials = [
-  { trial: 'Motor 1: clockwise and counterclockwise', m1: 'Yes. Clockwise and counterclockwise', m2: 'No' },
-  { trial: 'Motor 2: clockwise and counterclockwise', m1: 'No', m2: 'Yes. Clockwise and counterclockwise' },
-  { trial: 'Both motors: clockwise and counterclockwise', m1: 'Yes. Clockwise and counterclockwise', m2: 'Yes. Clockwise and counterclockwise' },
-];
-const ran = (cell: string) => cell.startsWith('Yes');
-
+const bill = costTotals();
 const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }));
 ---
 <Base title="The Kit" description="The HelpingHand kit: a modular robotic hand that students CAD, wire, and program themselves.">
@@ -106,6 +103,47 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
     </ul>
   </section>
 
+  <section class="section" id="cost">
+    <SectionLabel>What it costs</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+      <div>
+        <p class="statement">{money(bill.total)} in parts for one hand.</p>
+        <p class="mt-4">That is every part the team has priced, the plastic for the printed parts, and a fifth on top for what is not listed yet. One hand is meant to be shared by a group of four students.</p>
+        <p class="mt-4 text-rule">This is the cost of the parts of the current prototype, not a selling price. Screws, wiring and the two push buttons are not priced one by one: they fall under the contingency.</p>
+      </div>
+      <div>
+        <div class="table-scroll">
+          <table class="result-table">
+            <thead>
+              <tr><th scope="col">Item</th><th scope="col" class="text-right!">How many</th><th scope="col" class="text-right!">Each</th><th scope="col" class="text-right!">Cost</th></tr>
+            </thead>
+            <tbody>
+              {cost.rows.map((r) => (
+                <tr>
+                  <th scope="row">{r.item}</th>
+                  <td class="text-right!">{r.qty}</td>
+                  <td class="text-right!">{money(r.unit)}</td>
+                  <td class="text-right!">{money(r.qty * r.unit)}</td>
+                </tr>
+              ))}
+              <tr>
+                <th scope="row">Contingency ({cost.contingency * 100}%)</th>
+                <td></td><td></td>
+                <td class="text-right!">{money(bill.extra)}</td>
+              </tr>
+              <tr>
+                <th scope="row" class="font-bold!">Total</th>
+                <td class="result"></td><td class="result"></td>
+                <td class="result text-right! font-bold">{money(bill.total)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="meta mt-3">The team's cost table of {cost.date}. Unit prices are from the <a class="link" href={cost.src.url} target="_blank" rel="noopener">{cost.src.label}</a>.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <SectionLabel>How a lesson works</SectionLabel>
     <p class="statement mt-6">Design it, build it, code it.</p>
@@ -114,37 +152,16 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
     <a class="btn btn-secondary mt-10" href={p('/lessons/beginner/')}>Browse the lessons</a>
   </section>
 
-  <section class="section">
-    <SectionLabel>Testing so far</SectionLabel>
-    <p class="statement mt-6">Two motors, run one at a time and together.</p>
-    <p class="lede mt-3">A bench test of the motor circuit.</p>
-    <div class="table-scroll mt-8">
-      <table class="result-table">
-        <thead>
-          <tr><th scope="col">Trial</th><th scope="col">Motor 1 ran? Direction</th><th scope="col">Motor 2 ran? Direction</th></tr>
-        </thead>
-        <tbody>
-          {trials.map((t) => (
-            <tr>
-              <th scope="row">{t.trial}</th>
-              <td class:list={[ran(t.m1) && 'result']}>{t.m1}</td>
-              <td class:list={[ran(t.m2) && 'result']}>{t.m2}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section class="section">
+  {/* The circuit is the one on the team's final prototype poster (24 Nov 2026), redrawn in
+      CircuitDiagram.astro. The two-motor "Testing so far" table that stood above this section
+      came from the earlier poster; the final poster has no testing table, so it is gone. */}
+  <section class="section" id="circuit">
     <SectionLabel>Circuit</SectionLabel>
-    <div class="mt-6 grid items-start gap-x-12 gap-y-6 md:grid-cols-2">
-      <div>
-        <p class="statement">Six motors on one Arduino.</p>
-        <p class="mt-4">An Arduino Mega 2560 runs six DC motors through motor drivers, with two push buttons for control. The motors have their own power supply, separate from the Arduino's.</p>
-      </div>
-      <FigurePlaceholder class="my-0!" caption="Six-motor circuit layout. Diagram to come." height="h-64" />
+    <div class="mt-6 grid items-start gap-x-12 gap-y-4 md:grid-cols-2">
+      <p class="statement">Six motors on one Arduino.</p>
+      <p>An Arduino Mega 2560 talks to two motor shields over one shared I²C bus, and each shield drives three DC motors. An IMU sits on the same bus, and two push buttons give control by hand. The motors run from their own 7.2 V battery. A Wi-Fi module is proposed and not built yet.</p>
     </div>
+    <CircuitDiagram class="mt-8" />
   </section>
 
   <section class="section">

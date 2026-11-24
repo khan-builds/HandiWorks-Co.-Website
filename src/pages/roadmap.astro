@@ -1,15 +1,28 @@
 ---
-/** Empty on purpose since 2026-11-21. Lingbo will write the roadmap later. The four phases and
-    the "On this site today" table that stood here are in the history: see this file at commit
-    5d5da49. The nav, the footer and the 404 page still link here. */
+/** The four next steps from the team's final prototype poster (24 Nov 2026), in the poster's
+    own words and order. Nothing here is invented: no dates, no owners, no detail the poster
+    does not give.
+    From 2026-11-21 until that poster the page was empty on purpose. A fuller roadmap is still
+    Lingbo's to write; the four phases and the "On this site today" table that stood here
+    before that are in the history: see this file at commit 5d5da49. */
 import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+
+const nextSteps = [
+  'Feedback on Lesson 1 and Design',
+  'Scale size of hand down by ~50%',
+  'Finalize website backend',
+  'Draft next lessons 2-4',
+];
 ---
-<Base title="Roadmap" description="The HelpingHand roadmap. Not written yet.">
-  <PageHeader title="Roadmap" />
+<Base title="Roadmap" description="What the HelpingHand team does next.">
+  <PageHeader title="Roadmap" lede="What the team does next." />
 
   <section class="section">
-    <p><span class="badge badge-soon">Coming soon</span></p>
-    <p class="mt-4 max-w-2xl">Nothing here yet. The roadmap will be added to this page.</p>
+    <SectionLabel>Next steps</SectionLabel>
+    <ol class="numbered mt-10 max-w-2xl">
+      {nextSteps.map((step) => <li>{step}</li>)}
+    </ol>
   </section>
 </Base>

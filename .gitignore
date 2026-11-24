@@ -9,5 +9,6 @@ npm-debug.log*
 # Review screenshots written by `npm run shots`
 screenshots/
 
-# Design reference, kept out of the public repo
+# Design reference, kept out of the public repo: the two team posters
 reference poster/
+Final Prototype Poster.png

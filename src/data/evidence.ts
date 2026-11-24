@@ -145,11 +145,3 @@ export const notes = {
   retired: { source: 'National Assessment Governing Board, news release of August 4, 2023', url: 'https://www.nagb.gov/news-and-events/news-releases/2023/governing-board-decides-to-sunset-the-naep-tel-assessment.html' },
   nextSurvey: { source: 'CADRE, The 2027 National Survey of Science, Mathematics, Computer Science, and Engineering Education', url: 'https://cadrek12.org/projects/2027-national-survey-science-mathematics-computer-science-and-engineering-education' },
 };
-
-export const arduino = {
-  value: '$49.90',
-  label: 'Arduino Mega 2560 Rev3, the controller inside every HelpingHand kit',
-  source: 'Arduino official US store',
-  url: 'https://store-usa.arduino.cc/products/arduino-mega-2560-rev3',
-  year: '2026',
-};

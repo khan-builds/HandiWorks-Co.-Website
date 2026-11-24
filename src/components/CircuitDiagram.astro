@@ -1,0 +1,234 @@
+---
+/** The hand's circuit, redrawn from the team's final prototype poster (24 Nov 2026) in the
+    site's own colours. Every part, label and connection here is on the poster's diagram and
+    nothing else is: if the circuit changes, change this drawing from the team's new diagram,
+    not from memory. What the poster shows:
+      - an Arduino Mega 2560
+      - two motor shields on one shared I2C bus, at addresses 0x60 and 0x61
+      - three DC motors on each shield (M1 to M3): Motor 1 to Motor 6
+      - an IMU on the same bus (SDA 20, SCL 21)
+      - two push buttons
+      - a Wi-Fi module on UART1, marked "proposed", module not chosen
+      - a 7.2 V VEX battery feeding both shields' VM+, and one common ground
+    The drawing is 1040 units wide. On a narrow screen it keeps a readable size and scrolls
+    sideways inside its own frame.
+    The two wire colours that are not theme colours are from the hand's palette
+    (src/scripts/hand/view.ts, SCHEME): the link's orange and the middle segment's blue. */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+
+const shields = [
+  { name: 'Motor Shield A', address: '0x60', y: 40, first: 1 },
+  { name: 'Motor Shield B', address: '0x61', y: 270, first: 4 },
+];
+/* Where things sit, in drawing units. */
+const BUS = 400;      // the shared I2C line
+const GND = 430;      // the ground line
+const VM = 452;       // the motor supply line
+const SHIELD_X = 474, SHIELD_W = 286, SHIELD_H = 208;
+const MOTOR_X = 884, MOTOR_R = 29;
+const RAIL = 606;     // the common ground rail along the bottom
+---
+<figure class:list={['circuit', cls]}>
+  <div class="circuit-scroll" tabindex="0" role="group" aria-label="Circuit diagram. Scrolls sideways on a narrow screen.">
+    <svg viewBox="0 0 1040 640" role="img" aria-labelledby="circuit-title circuit-desc">
+      <title id="circuit-title">HelpingHand circuit: six motors on one Arduino Mega 2560</title>
+      <desc id="circuit-desc">An Arduino Mega 2560 shares one I2C bus with two motor shields, at addresses 0x60 and 0x61, and with an IMU on pins SDA 20 and SCL 21. Each shield drives three DC motors from its outputs M1 to M3, six motors in all. Two push buttons connect to the Arduino. A Wi-Fi module on UART1 is proposed and not chosen yet. A 7.2 volt VEX battery supplies both shields' motor power, and every part shares one common ground.</desc>
+
+      {/* ---- Wires first, so the parts sit on top of their ends ---- */}
+
+      {/* Ground: Arduino and both buttons, down the ground line to the rail; both shields and the battery join it. */}
+      <g class="wire wire-gnd">
+        <path d={`M120 268 V292 H${GND}`} />
+        <path d="M200 268 V292" />
+        <path d="M250 190 V292" />
+        <path d={`M${SHIELD_X} ${shields[0].y + 180} H${GND} V${RAIL} H872`} />
+        <path d={`M${GND} ${shields[1].y + 180} H${SHIELD_X}`} />
+        <path d={`M712 548 H734 V${RAIL}`} />
+      </g>
+
+      {/* Motor supply: the battery's positive to VM+ on both shields. */}
+      <g class="wire wire-vm">
+        <path d={`M520 548 H${VM} V${shields[0].y + 150} H${SHIELD_X}`} />
+        <path d={`M${VM} ${shields[1].y + 150} H${SHIELD_X}`} />
+      </g>
+
+      {/* Signals: one wire to each button, and UART1 to the proposed Wi-Fi module. */}
+      <g class="wire wire-sig">
+        <path d="M120 190 V232" />
+        <path d="M200 190 V232" />
+        <path class="is-proposed" d="M274 118 H340 V365 H300" />
+      </g>
+
+      {/* The shared I2C bus: Arduino, both shields, the IMU. */}
+      <g class="wire wire-bus">
+        <path d={`M274 82 H${BUS} V485 H300`} />
+        {shields.map((s) => <path d={`M${BUS} ${s.y + 72} H${SHIELD_X}`} />)}
+      </g>
+      <text class="t-wire" x="288" y="72">Shared I²C</text>
+
+      {/* Motor leads: two from each output. */}
+      <g class="wire wire-lead">
+        {shields.flatMap((s) => [0, 1, 2].map((i) => {
+          const ty = s.y + 78 + i * 50;          // the output terminal's middle
+          const my = s.y + 55 + i * 73;          // the motor's middle
+          const x0 = SHIELD_X + SHIELD_W, x1 = MOTOR_X - MOTOR_R;
+          return (
+            <>
+              <path d={`M${x0} ${ty - 5} H${x0 + 26} L${x1 - 22} ${my - 7} H${x1 + 3}`} />
+              <path d={`M${x0} ${ty + 5} H${x0 + 26} L${x1 - 22} ${my + 7} H${x1 + 3}`} />
+            </>
+          );
+        }))}
+      </g>
+
+      {/* Where wires join. */}
+      <g class="dot-gnd">
+        <circle cx="200" cy="292" r="4.5" /><circle cx="250" cy="292" r="4.5" /><circle cx={GND} cy="292" r="4.5" />
+        <circle cx={GND} cy={shields[1].y + 180} r="4.5" /><circle cx="734" cy={RAIL} r="4.5" />
+      </g>
+      <g class="dot-vm"><circle cx={VM} cy={shields[1].y + 150} r="4.5" /></g>
+      <g class="dot-bus">
+        {shields.map((s) => <circle cx={BUS} cy={s.y + 72} r="4.5" />)}
+      </g>
+
+      {/* ---- Arduino ---- */}
+      <rect class="b-solid" x="24" y="40" width="250" height="150" />
+      <text class="t-title on-navy" x="42" y="72">Arduino Mega 2560</text>
+      <text class="t-small on-navy-soft" x="42" y="94">Controller</text>
+      <text class="t-port on-navy" x="264" y="86" text-anchor="end">I²C</text>
+      <text class="t-port on-navy" x="264" y="122" text-anchor="end">UART1</text>
+      <text class="t-port on-navy" x="250" y="178" text-anchor="middle">GND</text>
+
+      {/* ---- Buttons ---- */}
+      {[120, 200].map((x) => (
+        <>
+          <rect class="b-line" x={x - 20} y="232" width="40" height="36" />
+          <circle class="fill-navy" cx={x} cy="250" r="9" />
+        </>
+      ))}
+      <text class="t-label" x="24" y="255">Buttons</text>
+
+      {/* ---- Wi-Fi module, proposed ---- */}
+      <rect class="b-proposed" x="24" y="320" width="276" height="90" />
+      <text class="t-title" x="42" y="352">Wi-Fi module</text>
+      <rect class="chip-proposed" x="196" y="335" width="88" height="24" />
+      <text class="t-chip" x="240" y="351.5" text-anchor="middle">Proposed</text>
+      <text class="t-label" x="42" y="376">UART1 + power</text>
+      <text class="t-small" x="42" y="396">Module not chosen yet</text>
+
+      {/* ---- IMU ---- */}
+      <rect class="b-line" x="24" y="440" width="276" height="90" />
+      <text class="t-title" x="42" y="472">IMU</text>
+      <text class="t-label" x="42" y="496">I²C + power</text>
+      <text class="t-small" x="42" y="516">SDA 20 · SCL 21</text>
+
+      {/* ---- Motor shields and their motors ---- */}
+      {shields.map((s) => (
+        <>
+          <rect class="b-line" x={SHIELD_X} y={s.y} width={SHIELD_W} height={SHIELD_H} />
+          <rect class="fill-navy" x={SHIELD_X} y={s.y} width={SHIELD_W} height="44" />
+          <text class="t-title on-navy" x={SHIELD_X + 18} y={s.y + 28}>{s.name}</text>
+          <rect class="chip-address" x={SHIELD_X + 176} y={s.y + 10} width="64" height="24" />
+          <text class="t-chip on-navy" x={SHIELD_X + 208} y={s.y + 26.5} text-anchor="middle">{s.address}</text>
+          <text class="t-port" x={SHIELD_X + 14} y={s.y + 77}>I²C</text>
+          <text class="t-port" x={SHIELD_X + 14} y={s.y + 155}>VM+</text>
+          <text class="t-port" x={SHIELD_X + 14} y={s.y + 185}>GND</text>
+          <text class="t-small" x={SHIELD_X + SHIELD_W - 60} y={s.y + 82.5} text-anchor="end">Outputs</text>
+          {[0, 1, 2].map((i) => {
+            const ty = s.y + 78 + i * 50, my = s.y + 55 + i * 73;
+            return (
+              <>
+                <rect class="b-out" x={SHIELD_X + SHIELD_W - 50} y={ty - 15} width="50" height="30" />
+                <text class="t-port" x={SHIELD_X + SHIELD_W - 25} y={ty + 5} text-anchor="middle">M{i + 1}</text>
+                <circle class="b-motor" cx={MOTOR_X} cy={my} r={MOTOR_R} />
+                <text class="t-motor" x={MOTOR_X} y={my + 7} text-anchor="middle">M</text>
+                <text class="t-label" x={MOTOR_X + MOTOR_R + 14} y={my + 5}>Motor {s.first + i}</text>
+              </>
+            );
+          })}
+        </>
+      ))}
+
+      {/* ---- Battery ---- */}
+      <rect class="b-solid" x="520" y="516" width="192" height="64" />
+      <text class="t-big on-navy" x="616" y="544" text-anchor="middle">7.2 V</text>
+      <text class="t-small on-navy-soft" x="616" y="566" text-anchor="middle">VEX battery</text>
+      <text class="t-port on-navy" x="530" y="536">+</text>
+      <text class="t-port on-navy" x="702" y="536" text-anchor="end">−</text>
+      <text class="t-label" x="752" y="544">Motor supply</text>
+
+      {/* ---- The common ground rail's name ---- */}
+      <rect class="chip-gnd" x="872" y="592" width="144" height="28" />
+      <text class="t-chip on-navy" x="944" y="610.5" text-anchor="middle">Common ground</text>
+    </svg>
+  </div>
+  <figcaption class="caption circuit-key">
+    <span class="circuit-hint">Swipe sideways to see the whole circuit.</span>
+    <span class="key"><i class="k-bus"></i>Shared I²C</span>
+    <span class="key"><i class="k-sig"></i>Signal</span>
+    <span class="key"><i class="k-vm"></i>Motor power, 7.2 V</span>
+    <span class="key"><i class="k-gnd"></i>Ground</span>
+    <span class="key"><i class="k-proposed"></i>Proposed, not built</span>
+    <span class="circuit-from">Redrawn from the team's final prototype poster, 24 Nov 2026.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .circuit { --c-power: #B75F1E; --c-signal: #1B86D1; --c-ground: var(--color-rule); container-type: inline-size; }
+  .circuit-scroll { overflow-x: auto; background: var(--color-panel); border: 1px solid var(--color-edge); }
+  svg { display: block; width: 100%; min-width: 46rem; height: auto; font-family: var(--font-sans); }
+
+  /* Wires */
+  .wire path { fill: none; stroke-linejoin: miter; stroke-linecap: square; }
+  .wire-bus path { stroke: var(--color-navy); stroke-width: 3.5; }
+  .wire-sig path { stroke: var(--c-signal); stroke-width: 2.5; }
+  .wire-sig path.is-proposed { stroke-dasharray: 7 6; stroke-linecap: butt; }
+  .wire-vm path { stroke: var(--c-power); stroke-width: 3.5; }
+  .wire-gnd path { stroke: var(--c-ground); stroke-width: 2.5; }
+  .wire-lead path { stroke: var(--color-navy); stroke-width: 1.75; stroke-linecap: butt; stroke-linejoin: round; }
+  .dot-bus circle { fill: var(--color-navy); }
+  .dot-vm circle { fill: var(--c-power); }
+  .dot-gnd circle { fill: var(--c-ground); }
+
+  /* Parts */
+  .b-solid, .fill-navy { fill: var(--color-navy); }
+  .b-line { fill: var(--color-white); stroke: var(--color-navy); stroke-width: 2; }
+  .b-proposed { fill: var(--color-white); stroke: var(--color-rule); stroke-width: 2; stroke-dasharray: 7 6; }
+  .b-out { fill: var(--color-lime); stroke: var(--color-navy); stroke-width: 2; }
+  .b-motor { fill: var(--color-white); stroke: var(--color-navy); stroke-width: 2.5; }
+  .chip-address { fill: none; stroke: var(--on-navy-soft); stroke-width: 1.25; }
+  .chip-proposed { fill: var(--color-panel); stroke: var(--color-rule); stroke-width: 1.25; stroke-dasharray: 4 3; }
+  .chip-gnd { fill: var(--color-rule); }
+
+  /* Words */
+  text { fill: var(--color-ink); }
+  .t-title { font-size: 17px; font-weight: 600; fill: var(--color-navy); }
+  .t-big { font-size: 21px; font-weight: 700; }
+  .t-label { font-size: 15px; font-weight: 500; }
+  .t-small { font-size: 13px; fill: var(--color-rule); }
+  .t-port { font-size: 13px; font-weight: 600; fill: var(--color-navy); }
+  .t-chip { font-size: 12.5px; font-weight: 600; fill: var(--color-rule); }
+  .t-wire { font-size: 12.5px; font-weight: 600; fill: var(--color-navy); text-transform: uppercase; letter-spacing: 0.04em; }
+  .t-motor { font-size: 21px; font-weight: 700; fill: var(--color-navy); }
+  text.on-navy { fill: var(--color-white); }
+  text.on-navy-soft { fill: var(--on-navy-soft); }
+
+  /* The key under the drawing */
+  .circuit-key { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem 1.5rem; }
+  .key { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 500; color: var(--color-ink); white-space: nowrap; }
+  .key i { display: block; width: 1.75rem; height: 0; border-top: 3px solid; }
+  .key i.k-bus { border-color: var(--color-navy); }
+  .key i.k-sig { border-color: var(--c-signal); }
+  .key i.k-vm { border-color: var(--c-power); }
+  .key i.k-gnd { border-color: var(--c-ground); }
+  .key i.k-proposed { border-top: 2px dashed var(--color-rule); }
+  .circuit-from { margin-left: auto; }
+  /* When the frame is narrower than the drawing's 46rem (plus the frame's two hairlines), the
+     drawing scrolls: say so. */
+  .circuit-hint { display: none; flex-basis: 100%; font-weight: 600; color: var(--color-navy); }
+  @container (width < 46.125rem) {
+    .circuit-hint { display: block; }
+    .circuit-from { margin-left: 0; flex-basis: 100%; }
+  }
+</style>

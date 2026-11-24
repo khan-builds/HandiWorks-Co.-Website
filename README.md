@@ -36,17 +36,18 @@ Real accounts, classrooms and progress tracking are planned. Nothing of them is 
 
 ## Pages that still need review and updating
 
-As of 2026-11-23. A page not listed here has no known work waiting.
+As of 2026-11-24. A page not listed here has no known work waiting.
 
 | Page | What it still needs |
 |---|---|
 | Home | The 3D hand is the team's current CAD, Final v3 of 22 Nov 2026, which has not been printed. The scroll animation has only been judged from still frames; it needs watching in a real browser. |
-| The Kit | The two models and the specs beside them are Final v3's. "What is in the box" is a draft until the first kit is printed. The circuit diagram is an empty labelled box until the image arrives. |
+| The Problem | The comparison table says "To be confirmed" for VEX's price, ages and add-on: VEX's store does not open for the tool the prices were checked with, so someone has to read them in a browser. The ratings behind "How we compare" have not been read by the team. The animations have only been seen in headless Chrome. |
+| The Kit | The two models and the specs beside them are Final v3's. "What is in the box" is a draft until the first kit is printed. The circuit diagram is redrawn from the team's final prototype poster and has not been checked by the team. |
 | Lessons | Lessons 2 to 4 have no final titles or summaries. |
 | Lesson 1 (overview, CAD, Hardware, Software) | Incomplete. Every page of it says "Draft · under team review". Its five CAD step models are cut from the Final v3 finger, but its words were written for an older finger and still teach a servo, where the hand uses DC motors. The wiring pictures are placeholders and there is no slides link. |
 | Student dashboard, "Test your code" | A demo. It drives the hand from the browser over USB and shows the same hand on screen. It has never been tried on the real hand, and its Arduino sketch (`public/downloads/helpinghand_bench.ino`) has never been compiled. |
 | Student dashboard, "Simulator" | A demo: six guided steps for Lesson 1, from a see-saw to the finger of the hand. Its wording and its questions have not been reviewed. |
-| Roadmap | Empty on purpose. The roadmap has not been written. |
+| Roadmap | Shows the four next steps from the team's final prototype poster. A fuller roadmap has not been written. |
 | Team | Photos and bios are missing; the page shows initials. |
 | Every page | The logo is traced by hand from the team poster until the real file arrives. |
 
@@ -59,9 +60,9 @@ The full list, with who owes what, is in `docs/README.md` under "To do".
 | `index.html` | The homepage with the scroll-driven 3D hand. One hand-edited file; it has no build step of its own. The hand's shape and motion inside it are written by `scripts/hand_motion.py`. |
 | `src/pages/` | Every other page: The Problem, The Kit, Lessons, Sign in, the two dashboards, "Test your code", the Simulator, Roadmap, Team. |
 | `src/content/lessons/` | Lesson text. One folder per lesson, with a CAD, a hardware and a software part. |
-| `src/data/` | `evidence.ts`: every figure on The Problem page with its source. `mock.ts`: the fictional class for the dashboards. |
+| `src/data/` | `evidence.ts`: every figure on The Problem page with its source. `compare.ts`: The Problem's comparison of five options and HelpingHand, the 49 mechanics concepts it is rated on, and the team's cost table. `ratings.ts`: every rating, with the page it was read on. `mock.ts`: the fictional class for the dashboards. |
 | `src/components/`, `src/layouts/`, `src/styles/` | Shared nav, footer, page shell and styles for the inner pages. |
-| `src/scripts/` | What the two student pages run in the browser: `bench/` talks to the hand's Arduino for "Test your code", `sim/` is the simulator's six steps, `hand/view.ts` draws the hand for both. |
+| `src/scripts/` | What the two student pages run in the browser: `bench/` talks to the hand's Arduino for "Test your code", `sim/` is the simulator's six steps, `hand/view.ts` draws the hand for both. `problem/` is The Problem's motion, made with Anime.js. |
 | `src/pages/hand-data.js.ts` | Hands the homepage's hand data to the inner pages as `/hand-data.js`. |
 | `public/` | Files served as they are: 3D models, fonts, and downloads (Lesson 1's sketch, and `helpinghand_bench.ino` for "Test your code"). |
 | `scripts/` | `check-homepage.mjs` checks the homepage's scripts before a build. `screenshots.mjs` takes review screenshots. `hand_motion.py` exports the homepage's moving hand from the CAD: its parts and how each one moves. `step_to_glb.py` exports the still hand and finger models on The Kit page from the CAD. `finger_steps.py` cuts Lesson 1's five step models from that same finger. `stl_to_glb.py` made the step models the lesson had before, from the `version-1` branch, and is kept as the way back. |
