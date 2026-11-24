@@ -1,35 +1,43 @@
 // lesson-1-finger.ino
-// Board: Arduino Mega 2560
+// Board:   Arduino Mega 2560 with an Adafruit Motor Shield on top
+// Motor:   one DC motor on the shield's terminal M1, run from the battery
+// Library: "Adafruit Motor Shield V2 Library" (Arduino IDE: Tools > Manage Libraries)
 // One button press closes the finger. The next press opens it.
+//
+// Written from the library's documentation and not yet run on a real finger:
+// press Verify first, and time the move before trusting runTime.
 
-#include <Servo.h>
+#include <Wire.h>
+#include <Adafruit_MotorShield.h> // The library for the motor shield.
 
-const int buttonPin = 2;     // Button wire. The other button leg goes to GND.
-const int servoPin = 9;      // Servo signal wire. It is usually orange or yellow.
-const int openAngle = 30;    // How far the finger opens. Make this bigger to open more.
-const int closedAngle = 120; // How far the finger closes. Lower it if the servo strains.
+const int buttonPin = 2;    // Button wire. The other button leg goes to GND.
+const int motorSpeed = 150; // How hard the motor turns, from 0 to 255.
+const int runTime = 1500;   // How long the motor runs for one move, in milliseconds.
 
-Servo finger;                // The servo that moves the finger.
+Adafruit_MotorShield shield = Adafruit_MotorShield(); // The motor shield on top of the Mega.
+Adafruit_DCMotor *finger = shield.getMotor(1);        // The motor on terminal M1.
 
-bool fingerClosed = false;   // false means the finger is open.
-bool buttonWasDown = false;  // Remembers the last reading so one press counts once.
+bool fingerClosed = false;  // false means the finger is open.
+bool buttonWasDown = false; // Remembers the last reading so one press counts once.
 
 void setup() {
-  finger.attach(servoPin);          // Tell the Mega that pin 9 talks to the servo.
-  pinMode(buttonPin, INPUT_PULLUP); // The pin stays HIGH until the button connects it to GND.
-  finger.write(openAngle);          // Start with the finger open.
+  pinMode(buttonPin, INPUT_PULLUP); // HIGH at rest, LOW when the button connects the pin to GND.
+  shield.begin();                   // Wake up the motor shield.
+  finger->setSpeed(motorSpeed);     // Set how hard the motor turns.
 }
 
 void loop() {
   bool buttonDown = digitalRead(buttonPin) == LOW; // A press reads LOW because of INPUT_PULLUP.
 
-  if (buttonDown && !buttonWasDown) {              // The button just went down.
-    fingerClosed = !fingerClosed;                  // Flip between open and closed.
+  if (buttonDown && !buttonWasDown) { // The button just went down.
+    fingerClosed = !fingerClosed;      // Flip between open and closed.
     if (fingerClosed) {
-      finger.write(closedAngle);                   // Move to the closed angle.
+      finger->run(FORWARD);            // Turn one way to close the finger.
     } else {
-      finger.write(openAngle);                     // Move back to the open angle.
+      finger->run(BACKWARD);           // Turn the other way to open it.
     }
+    delay(runTime);                    // Let the motor run for the whole move.
+    finger->run(RELEASE);              // Stop the motor.
   }
 
   buttonWasDown = buttonDown; // Save this reading for the next loop.

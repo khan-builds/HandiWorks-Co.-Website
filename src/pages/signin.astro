@@ -4,13 +4,30 @@ import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import Arrow from '../components/Arrow.astro';
 
+/** The classroom demo's front door. The address is still /signin/ so old links keep working,
+    but nothing here signs anyone in: it sets a role in this browser (localStorage, hh-role).
+    A link can skip the choice: /signin/?as=teacher goes straight to the teacher dashboard,
+    and &to=/dashboard/student/simulator/ names another page inside the site (see demo() in
+    src/lib/url.ts). The homepage uses the same links, written by hand. */
 const roles = [
   { key: 'teacher', title: 'Explore as a teacher', body: 'A class, each student’s progress through Lesson 1, and what is assigned.' },
-  { key: 'student', title: 'Explore as a student', body: 'Your progress through Lesson 1, what is due next, and your bookmarks.' },
+  { key: 'student', title: 'Explore as a student', body: 'Your progress through Lesson 1, what is due next, and the simulator.' },
 ];
 ---
-<Base title="Sign in" description="Explore the HelpingHand demo as a teacher or as a student. No account needed.">
-  <PageHeader title="Sign in" lede="This is a demo with no accounts. Pick a side of the classroom to see how it would use the lessons." />
+<Base title="Classroom demo" description="See HelpingHand as a teacher or as a student would. A made-up class, no account needed.">
+  {/* Before anything is drawn: a link that already names its role goes straight through. */}
+  <script is:inline define:vars={{ base: import.meta.env.BASE_URL }}>
+    (() => {
+      const q = new URLSearchParams(location.search), role = q.get('as'), to = q.get('to');
+      if (role !== 'teacher' && role !== 'student') return;
+      try { localStorage.setItem('hh-role', role); } catch {}
+      const root = base.replace(/\/+$/, '');
+      // Only a plain path inside this site is followed.
+      const inside = to && /^\/[a-z0-9\-\/]*$/i.test(to) && !to.startsWith('//');
+      location.replace(root + (inside ? to : `/dashboard/${role}/`));
+    })();
+  </script>
+  <PageHeader title="See it as a teacher or a student." lede="A made-up class, with no account needed. Pick a side of the classroom." />
 
   <section class="section" data-signin data-base={import.meta.env.BASE_URL}>
     <SectionLabel>Choose a role</SectionLabel>

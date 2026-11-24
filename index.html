@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HelpingHand · HandiWorks Co.</title>
-    <meta name="description" content="HelpingHand is a modular robotic hand that students CAD, wire, and program themselves." />
+    <meta name="description" content="HelpingHand is a robotic hand kit with lessons. Students ages 11 and up design it, wire it, and program it themselves." />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <script>document.documentElement.classList.add('js');</script>
     <style>
@@ -91,6 +91,7 @@ table { font-variant-numeric: tabular-nums; }
 .wrap, .section { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1.25rem; }
 @media (min-width: 48rem) { .wrap, .section { padding-inline: 2rem; } }
 .section { padding-top: clamp(3.25rem, 2.25rem + 4vw, 5.25rem); scroll-margin-top: var(--nav-height); }
+.section[tabindex="-1"]:focus { outline: none; }   /* where "Skip animation" lands: focus moves there without a ring round the whole section */
 main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 /* The hand's parts in pale sky, lying behind the rest of the page. The hand script draws them. */
 .litter { position: absolute; left: 0; right: 0; bottom: 0; z-index: -1; overflow: hidden; pointer-events: none; }
@@ -173,14 +174,16 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 .nav-link[hidden] { display: none; }
 .nav-cta { min-height: 2.25rem; margin-left: 0.75rem; padding: 0.25rem 1rem; font-size: 0.875rem; white-space: nowrap; }
 .nav-toggle { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.25rem 0.875rem; border: 1px solid var(--color-white); color: var(--color-white); font-size: 0.875rem; font-weight: 600; }
-/* The row has to hold seven links and "Teacher dashboard" once a role is set: the company
-   name gives way first, then the links fold into the menu. Same numbers as global.css. */
-@media (max-width: 68.74rem) {
+/* The row holds six links and a button, "Teacher dashboard" at its widest: the company name
+   gives way first, then the links fold into the menu. "Switch role" is in the menu only; on
+   a wide screen the dashboards carry it. Same numbers as global.css. */
+@media (max-width: 71.99rem) {
   .wordmark-co { display: none; }
 }
 @media (min-width: 64rem) {
   .nav-links { display: flex; }
   .nav-toggle { display: none; }
+  #nav-switch { display: none; }
 }
 @media (max-width: 63.99rem) {
   .nav-links.is-open { position: absolute; left: -1.25rem; right: -1.25rem; top: 100%; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0.5rem 1.25rem 1.25rem; background: var(--color-navy); border-top: 1px solid var(--navy-line); border-bottom: 1px solid var(--navy-line); }
@@ -237,7 +240,15 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 .story-scene h1, .story-scene h2 { font-size: clamp(2.375rem, 1.45rem + 3.6vw, 4.25rem); font-weight: 700; line-height: 1.04; letter-spacing: -0.022em; }
 .scene-tagline { margin-top: 0.875rem; color: var(--color-navy); font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem); font-weight: 500; line-height: 1.25; text-wrap: balance; }
 .scene-body { max-width: 36ch; margin-top: 1rem; font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem); line-height: 1.55; }
-.story-steps { display: flex; gap: 6px; margin-top: 2rem; }
+.scene-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+.story-bar { display: flex; align-items: center; gap: 1.25rem; margin-top: 2rem; }
+.story-steps { display: flex; gap: 6px; }
+/* "Skip animation": small and quiet beside the dashes, and there for the whole story. It goes
+   straight to the first section after the story (the script at the foot of main does the jump). */
+.story-skip { position: relative; display: inline-flex; align-items: center; gap: 0.375rem; min-height: 2rem; padding: 0.25rem 0.625rem; border: 1px solid color-mix(in oklab, var(--color-navy) 38%, white); background: var(--color-white); color: var(--color-navy); font-size: 0.8125rem; font-weight: 600; line-height: 1.2; white-space: nowrap; transition: background-color 160ms, border-color 160ms; }
+.story-skip::after { content: ""; position: absolute; inset: -0.375rem; }   /* a finger-sized target round a small label */
+.story-skip:hover { border-color: var(--color-navy); background: var(--navy-tint); }
+.story-skip svg { width: 0.875rem; height: 0.875rem; flex: none; }
 .story-steps i { width: 2rem; height: 5px; background: color-mix(in oklab, var(--color-navy) 16%, white); transition: background-color 320ms var(--ease-out-expo); }
 .story-steps i.on { background: var(--color-navy); }
 .story-hint { display: flex; align-items: center; gap: 0.375rem; margin-top: 0.875rem; color: var(--color-rule); font-size: 0.8125rem; font-weight: 500; transition: opacity 200ms linear; }
@@ -251,7 +262,10 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
   .story-scene h1, .story-scene h2 { font-size: clamp(1.875rem, 8.4vw, 2.5rem); }
   .scene-tagline { margin-top: 0.5rem; font-size: 1.0625rem; }
   .scene-body { margin-top: 0.5rem; font-size: 0.9375rem; line-height: 1.45; }
-  .story-steps { margin-top: 1rem; }
+  .scene-actions { gap: 0.5rem; margin-top: 0.75rem; }
+  .scene-actions .btn { min-height: 2.5rem; padding-inline: 1rem; }
+  .story-bar { margin-top: 1rem; }
+  .story-skip { margin-left: auto; }
   .story-hint { margin-top: 0.5rem; }
 }
 
@@ -271,6 +285,8 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 .card-grid .card-lead { color: var(--color-ink); font-size: 1rem; font-weight: 600; line-height: 1.35; }
 
 #learn .btn, #team .btn { margin-top: 1.75rem; }
+#try .btn { margin-top: 1.25rem; }
+#try .card-grid { margin-top: 1.75rem; }
 
 #team .lede { margin-top: 0.75rem; }
 .team-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: clamp(1.75rem, 4vw, 2.5rem); }
@@ -339,7 +355,7 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
   .storyboard { padding: 0 var(--page-inset); }
   .story-scenes { gap: 1.75rem; }
   .story-scene { grid-area: auto; visibility: visible; }
-  .story-steps, .story-hint, .orbit-room { display: none; }
+  .story-bar, .story-hint, .orbit-room { display: none; }
 }
 /* On a laptop the still hand stands beside the four captions, not under them. */
 @media (prefers-reduced-motion: reduce) and (min-width: 56rem) {
@@ -368,16 +384,17 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
             <a href="problem/" class="nav-link">The Problem</a>
             <a href="kit/" class="nav-link">The Kit</a>
             <a href="lessons/beginner/" class="nav-link">Lessons</a>
+            <a href="teachers/" class="nav-link">For teachers</a>
             <a href="roadmap/" class="nav-link">Roadmap</a>
             <a href="team/" class="nav-link">Team</a>
             <a id="nav-switch" href="signin/" class="nav-link" hidden>Switch role</a>
-            <a id="nav-auth" href="signin/" class="btn btn-on-navy nav-cta">Sign in</a>
+            <a id="nav-auth" href="signin/" class="btn btn-on-navy nav-cta">Classroom demo</a>
           </nav>
         </div>
       </div>
     </header>
     <script>
-      // Runs before the first paint, so the button never flashes "Sign in" for someone in the demo.
+      // Runs before the first paint, so the button never flashes "Classroom demo" for someone already in it.
       (() => {
         const header = document.querySelector('[data-nav]');
         let role = null;
@@ -409,7 +426,11 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
               <article class="story-scene">
                 <h1>HelpingHand</h1>
                 <p class="scene-tagline">Putting Robotics Within Every Student's Grasp</p>
-                <p class="scene-body">We make robotics more affordable and easier to learn, so students ages 11 and up can move from following a guide to designing, building, and testing their own inventions.</p>
+                <p class="scene-body">A robotic hand kit with lessons. Students ages 11 and up design it, wire it, and program it themselves. $153.41 in parts for one hand.</p>
+                <div class="scene-actions">
+                  <a class="btn btn-primary" href="kit/">See the kit</a>
+                  <a class="btn btn-secondary" href="teachers/">For teachers</a>
+                </div>
               </article>
               <article class="story-scene">
                 <h2>Build one finger.</h2>
@@ -424,7 +445,11 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
                 <p class="scene-body">Change a link, predict how the grip will move, then test it. Your next design starts with what you learn.</p>
               </article>
             </div>
-            <div class="story-steps" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <!-- The four dashes say where the story is; the link beside them leaves it. -->
+            <div class="story-bar">
+              <div class="story-steps" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <a class="story-skip" href="#about" data-skip>Skip animation <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+            </div>
             <p class="story-hint" aria-hidden="true">Scroll to explore <svg viewBox="0 0 16 16"><path d="M8 3v10M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></p>
           </div>
           <figure class="home-visual">
@@ -437,14 +462,14 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
         <h2 class="section-label" data-reveal><span>The kit in numbers</span></h2>
         <div class="stat-group">
           <div class="stat-panel">
-            <p class="stat-caption">Areas of study</p>
-            <p class="stat-number">3</p>
-            <p class="stat-label">Mechanics, circuits, and code</p>
+            <p class="stat-caption">Parts for one hand</p>
+            <p class="stat-number">$153.41</p>
+            <p class="stat-label">Shared by a group of four students</p>
           </div>
           <div class="stat-panel">
             <p class="stat-caption">Motors</p>
             <p class="stat-number">6</p>
-            <p class="stat-label">DC motors, run from an Arduino Mega</p>
+            <p class="stat-label">DC motors, run from one Arduino board</p>
           </div>
           <div class="stat-panel">
             <p class="stat-caption">Student ages</p>
@@ -459,28 +484,28 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
         <div class="product-grid">
           <div class="product-copy">
             <p class="statement">Engineered for hands-on learning.</p>
-            <p class="lede">HelpingHand is a modular robotic hand that students CAD, wire, and program themselves. They learn mechanics, circuits, and coding concepts one lesson at a time, without following a finished kit.</p>
+            <p class="lede">HelpingHand is a modular robotic hand that students design, wire, and program themselves. They learn mechanics, circuits, and coding one lesson at a time, not by following a manual.</p>
             <a class="btn btn-primary" href="kit/">See the kit</a>
           </div>
           <figure class="finger-stage" aria-label="Animated finger linkage">
-            <canvas role="img" aria-label="One finger module curling and opening: a carriage on the motor's screw pulls a link, and the three segments follow"></canvas>
+            <canvas role="img" aria-label="One finger module curling and opening: the motor pulls a link, and the three segments follow"></canvas>
           </figure>
         </div>
         <div class="columns card-grid">
           <article>
             <h3>Mechanics</h3>
             <p class="card-lead">Small links. Coordinated movement.</p>
-            <p>Each finger is a linkage. Explore how connected links carry one motor's motion to the fingertip.</p>
+            <p>Each finger is a chain of links. See how they carry one motor's motion to the fingertip.</p>
           </article>
           <article>
             <h3>Electronics</h3>
             <p class="card-lead">A little power. A lot to explore.</p>
-            <p>An Arduino Mega runs six DC motors, with two push buttons to drive them.</p>
+            <p>An Arduino, a small programmable board, runs six motors. Two push buttons drive them.</p>
           </article>
           <article>
             <h3>Programming</h3>
             <p class="card-lead">From your code to its fingertips.</p>
-            <p>Program the grasp, run it from the buttons, then change the sketch and watch the hand respond.</p>
+            <p>Program the grasp, run it from the buttons, then change the program and watch the hand respond.</p>
           </article>
         </div>
       </section>
@@ -491,13 +516,32 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
           <table class="result-table">
             <thead><tr><th scope="col">Activity</th><th scope="col">With a guide</th><th scope="col">On your own</th></tr></thead>
             <tbody>
-              <tr><th scope="row">Build</th><td>Assemble the supplied finger.</td><td class="result">Redesign a link.</td></tr>
-              <tr><th scope="row">Program</th><td>Run the example sketch.</td><td class="result">Choose a new grip angle.</td></tr>
+              <tr><th scope="row">Build</th><td>Assemble the finger.</td><td class="result">Redesign a link.</td></tr>
+              <tr><th scope="row">Program</th><td>Run the example program.</td><td class="result">Choose a new grip angle.</td></tr>
               <tr><th scope="row">Test</th><td>Check that each joint moves.</td><td class="result">Compare two designs and explain the difference.</td></tr>
             </tbody>
           </table>
         </div>
         <a class="btn btn-secondary" href="lessons/beginner/">Browse the lessons</a>
+      </section>
+
+      <section class="section" id="try">
+        <h2 class="section-label" data-reveal><span>Try it now</span></h2>
+        <p class="statement">No kit needed. Both run in the browser.</p>
+        <div class="columns card-grid">
+          <article>
+            <h3>The simulator</h3>
+            <p class="card-lead">For students.</p>
+            <p>Six short steps, from a see-saw to the finger of the hand. Drag each one, then answer one question.</p>
+            <a class="btn btn-primary" href="signin/?as=student&amp;to=%2Fdashboard%2Fstudent%2Fsimulator%2F">Try the simulator</a>
+          </article>
+          <article>
+            <h3>The teacher view</h3>
+            <p class="card-lead">For teachers.</p>
+            <p>A made-up class of 20: who has finished which part of Lesson 1, and what is assigned.</p>
+            <a class="btn btn-secondary" href="signin/?as=teacher">See the teacher view</a>
+          </article>
+        </div>
       </section>
 
       <section class="section" id="team">
@@ -521,7 +565,7 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
               Start learning
               <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
             </a>
-            <a class="btn btn-secondary" href="signin/">Sign in</a>
+            <a class="btn btn-secondary" href="teachers/">For teachers</a>
           </div>
         </div>
       </section>
@@ -553,6 +597,20 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
     addEventListener('scroll', onScroll, { passive: true });
     addEventListener('resize', onScroll);
     check();
+
+    // "Skip animation": land on the first section after the story at once. A smooth scroll
+    // would play the whole story on the way past, which is the thing being skipped.
+    const skip = document.querySelector('[data-skip]');
+    if (skip) skip.addEventListener('click', (event) => {
+      const next = document.querySelector(skip.getAttribute('href'));
+      if (!next) return;
+      event.preventDefault();
+      // Flush under the nav, so nothing of the story is left showing above the section.
+      const nav = document.querySelector('[data-nav]');
+      scrollTo({ top: next.getBoundingClientRect().top + scrollY - nav.offsetHeight, behavior: 'instant' });
+      next.setAttribute('tabindex', '-1');   // so the keyboard carries on from here, not from the story
+      next.focus({ preventScroll: true });
+    });
   </script>
 <script>// The hand. Its shape and every joint's motion come from the CAD: scripts/hand_motion.py writes
 // the block below, and docs/README.md ("The hand on the homepage") says how to run it.
@@ -1335,7 +1393,7 @@ window.addEventListener('resize',scheduleFinger);reduced.addEventListener('chang
           <div>
             <p class="lockup"><svg class="logo-mark" viewBox="0 0 72 100" aria-hidden="true" focusable="false"><path fill="#FFFFFF" d="M1.5 11.5 23 2v24L1.5 35.5Z" /><path fill="#FFFFFF" fill-rule="evenodd" d="M1.5 41.5 38 25.5v23.7L23 55.8V74L1.5 83.5ZM8.2 50.8a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0Z" /><path fill="#70D0F0" fill-rule="evenodd" d="M41 22A10.75 10.75 0 0 1 62.5 22V64.87L69.94 82.9A10.75 10.75 0 0 1 50.06 91.1L41.81 71.1A10.75 10.75 0 0 1 41 67ZM47.75 22a4 4 0 1 0 8 0a4 4 0 1 0-8 0ZM56 87a4 4 0 1 0 8 0a4 4 0 1 0-8 0Z" /></svg><span class="lockup-name">HandiWorks <small>Co.</small></span></p>
             <p class="footer-tagline"><strong>HelpingHand.</strong> Putting Robotics Within Every Student's Grasp</p>
-            <a class="btn btn-on-navy" href="mailto:billyjin@gmail.com,gkhan@gmail.com,clarenceli@gmail.com,lingbo.zhang@gmail.com?subject=HelpingHand%20kit%20request">Request a kit</a>
+            <a class="btn btn-on-navy" href="mailto:billyjin@gmail.com,gkhan@gmail.com,clarenceli@gmail.com,lingbo.zhang@gmail.com?subject=HelpingHand%20kit%20request&amp;body=School%20or%20group%3A%0AGrade%20or%20ages%3A%0ANumber%20of%20students%3A%0A%0AWhat%20we%20would%20like%20to%20do%20with%20HelpingHand%3A%0A">Request a kit</a>
           </div>
           <nav aria-label="Footer">
             <h2 class="footer-heading">Pages</h2>
@@ -1343,9 +1401,10 @@ window.addEventListener('resize',scheduleFinger);reduced.addEventListener('chang
               <li><a href="problem/">The Problem</a></li>
               <li><a href="kit/">The Kit</a></li>
               <li><a href="lessons/beginner/">Lessons</a></li>
+              <li><a href="teachers/">For teachers</a></li>
               <li><a href="roadmap/">Roadmap</a></li>
               <li><a href="team/">Team</a></li>
-              <li><a href="signin/">Sign in</a></li>
+              <li><a href="signin/">Classroom demo</a></li>
             </ul>
           </nav>
           <div>
@@ -1355,13 +1414,12 @@ window.addEventListener('resize',scheduleFinger);reduced.addEventListener('chang
               <li><a href="mailto:gkhan@gmail.com?subject=HelpingHand%20question">gkhan<wbr>@gmail.com</a></li>
               <li><a href="mailto:clarenceli@gmail.com?subject=HelpingHand%20question">clarenceli<wbr>@gmail.com</a></li>
               <li><a href="mailto:lingbo.zhang@gmail.com?subject=HelpingHand%20question">lingbo.zhang<wbr>@gmail.com</a></li>
-              <li><a href="mailto:billyjin@gmail.com,gkhan@gmail.com,clarenceli@gmail.com,lingbo.zhang@gmail.com?subject=HelpingHand%20kit%20request">Request a kit</a></li>
             </ul>
           </div>
         </div>
         <div class="footer-base">
           <p>© 2026 HandiWorks Co.</p>
-          <p>Demo site. Lesson 1 is a draft and the dashboards show made-up data.</p>
+          <p>Prototype. Lesson 1 is a demo and subject to change. The classroom demo uses made-up data.</p>
         </div>
       </div>
     </footer>

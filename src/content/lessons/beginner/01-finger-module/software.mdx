@@ -2,7 +2,7 @@
 portion: software
 title: Program the finger
 objectives:
-  - Upload a sketch that opens the finger on one press and closes it on the next
+  - Upload a program that closes the finger on one press and opens it on the next
 durationMinutes: 50
 status: published
 ---
@@ -11,27 +11,32 @@ import Download from '../../../../components/Download.astro';
 import TeacherNotes from '../../../../components/TeacherNotes.astro';
 import TeacherOnly from '../../../../components/TeacherOnly.astro';
 
-The sketch closes the finger on one press and opens it on the next. Read the note at the end of each line. It says what that line is for.
+{/* Rewritten on 2026-11-24 from a servo to a DC motor: see index.mdx. The program below is
+    the same text as public/downloads/lesson-1-finger.ino: change the two together. It has
+    not been compiled or run on a real finger. */}
 
-## The sketch
+The program closes the finger on one press and opens it on the next. Arduino calls a program a **sketch**. Read the note at the end of each line. It says what that line is for.
+
+## The program
 
 ```cpp
-#include <Servo.h> // The Servo library moves a positional servo to an angle.
+#include <Wire.h>
+#include <Adafruit_MotorShield.h> // The library for the motor shield.
 
-const int buttonPin = 2;      // Button wire. The other button leg goes to GND.
-const int servoPin = 9;       // Servo signal wire. It is usually orange or yellow.
-const int openAngle = 30;     // How far the finger opens. Make this bigger to open more.
-const int closedAngle = 120;  // How far the finger closes. Lower it if the servo strains.
+const int buttonPin = 2;    // Button wire. The other button leg goes to GND.
+const int motorSpeed = 150; // How hard the motor turns, from 0 to 255.
+const int runTime = 1500;   // How long the motor runs for one move, in milliseconds.
 
-Servo finger; // The servo that moves the finger.
+Adafruit_MotorShield shield = Adafruit_MotorShield(); // The motor shield on top of the Mega.
+Adafruit_DCMotor *finger = shield.getMotor(1);        // The motor on terminal M1.
 
 bool fingerClosed = false;  // false means the finger is open.
 bool buttonWasDown = false; // Remembers the last reading so one press counts once.
 
 void setup() {
-  finger.attach(servoPin);          // Pin 9 talks to the servo.
   pinMode(buttonPin, INPUT_PULLUP); // HIGH at rest, LOW when the button connects the pin to GND.
-  finger.write(openAngle);          // Start with the finger open.
+  shield.begin();                   // Wake up the motor shield.
+  finger->setSpeed(motorSpeed);     // Set how hard the motor turns.
 }
 
 void loop() {
@@ -40,10 +45,12 @@ void loop() {
   if (buttonDown && !buttonWasDown) { // The button just went down.
     fingerClosed = !fingerClosed;      // Flip between open and closed.
     if (fingerClosed) {
-      finger.write(closedAngle);       // Move to the closed angle.
+      finger->run(FORWARD);            // Turn one way to close the finger.
     } else {
-      finger.write(openAngle);         // Move back to the open angle.
+      finger->run(BACKWARD);           // Turn the other way to open it.
     }
+    delay(runTime);                    // Let the motor run for the whole move.
+    finger->run(RELEASE);              // Stop the motor.
   }
 
   buttonWasDown = buttonDown; // Save this reading for the next loop.
@@ -53,18 +60,21 @@ void loop() {
 
 <Download file="/downloads/lesson-1-finger.ino" label="Download lesson-1-finger.ino" />
 
+A DC motor does not know where it is. It only turns while it has power. So the program runs it for a set time, `runTime`, and then stops it.
+
 ## Upload it
 
 1. Open the Arduino IDE.
-2. Go to **Tools, Board** and choose **Arduino Mega or Mega 2560**.
-3. Go to **Tools, Port** and choose the port that appears when the Mega is plugged in.
-4. Paste the sketch, or open `lesson-1-finger.ino` from the download.
-5. Click Upload. Wait until it says "Done uploading."
+2. Go to **Tools, Manage Libraries** and install **Adafruit Motor Shield V2 Library**.
+3. Go to **Tools, Board** and choose **Arduino Mega or Mega 2560**.
+4. Go to **Tools, Port** and choose the port that appears when the Mega is plugged in.
+5. Paste the program, or open `lesson-1-finger.ino` from the download.
+6. Click Upload. Wait until it says "Done uploading."
 
-Press the button once. The servo should move to the closed angle and stay there. Press it again. The servo should move back.
+Press the button once. The motor should run, close the finger, and stop. Press it again. The motor should run the other way and open it.
 
 <Callout type="tip" title="Change the movement">
-`openAngle` and `closedAngle` are the only numbers you need at first. Change one number, upload again, and watch what the finger does. Stay away from an angle that makes the servo buzz. Buzzing means it is pushing against a stop.
+`runTime` and `motorSpeed` are the only numbers you need at first. Change one number, upload again, and watch what the finger does. If the finger does not close all the way, make `runTime` bigger. If the motor hums at the end of the move, it is pushing against a stop: make `runTime` smaller.
 </Callout>
 
 ## Test it
@@ -72,13 +82,13 @@ Press the button once. The servo should move to the closed angle and stay there.
 The build is done when all of these are true.
 
 - Your CAD model shows the base, the drive bar, the joints, and the tip.
-- The servo ground, power, and signal wires match the table.
+- The motor, battery, and button wires match the table.
 - The Mega board is set to **Arduino Mega or Mega 2560**.
 - One press closes the finger, and the next press opens it.
 - Holding the button does not make the finger flap.
 
 <Callout type="tip">
-If the finger jitters without a press, the button pin is probably not using `INPUT_PULLUP`. If it never moves, check that the signal wire is in pin 9 and that you chose the Mega board before uploading.
+If the finger moves without a press, the button pin is probably not using `INPUT_PULLUP`. If it never moves, check that the battery is connected and that you chose the Mega board before uploading. If it opens when it should close, swap the motor's two wires.
 </Callout>
 
 ## Check your understanding
@@ -87,31 +97,33 @@ Say the answers out loud, or write them down for your teacher.
 
 1. What do you add in step 2, after the base?
 2. What is a joint?
-3. Which Mega pin is the servo signal wire on?
+3. Which terminal on the shield is the motor on?
 4. Which Mega pin is the button on?
-5. Why does the sketch use `INPUT_PULLUP`?
-6. What do you do before you move a wire?
+5. Why does the program use `INPUT_PULLUP`?
+6. Which number sets how far the finger closes?
+7. What do you do before you move a wire?
 
 ## Go further
 
 <Callout type="tip" title="A smaller move">
-Add a third angle, `halfAngle`, and make every third press stop between open and closed. Lesson 2 connects this finger to the next one.
+Add a second number, `halfTime`, half of `runTime`, and make one press close the finger only halfway. Lesson 2 connects this finger to the next one.
 </Callout>
 
 <TeacherNotes>
 <TeacherOnly title="Timing">
-- Sketch, upload, and angle tuning: 35 min
+- Program, upload, and tuning the run time: 35 min
 - Test and questions: 15 min
 </TeacherOnly>
 <TeacherOnly title="Common mistakes">
-The usual code miss is forgetting `INPUT_PULLUP`, so the pin floats and the servo chatters. The usual IDE miss is leaving the board on Uno, so the upload fails or the pins do not match. Students also power the servo before the wiring is checked.
+The usual code miss is forgetting `INPUT_PULLUP`, so the pin floats and the motor runs by itself. The usual IDE misses are leaving the board on Uno and not installing the shield's library, so the upload fails. Students also connect the battery before the wiring is checked. The motor has no stop of its own: a `runTime` that is too long leaves it pushing against the end of its travel.
 </TeacherOnly>
 <TeacherOnly title="Answer key">
 1. The drive bar.
 2. A round hole with a pin that a link swings on.
-3. Pin 9.
+3. M1.
 4. Pin 2.
 5. So the pin reads HIGH until the button connects it to ground.
-6. Unplug the USB cable.
+6. `runTime`: the motor moves the finger for as long as it runs.
+7. Unplug the battery and the USB cable.
 </TeacherOnly>
 </TeacherNotes>

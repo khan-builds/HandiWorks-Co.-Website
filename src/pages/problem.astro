@@ -157,7 +157,7 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
       <p class="note"><strong>The other side.</strong> “{guidance.quote}” (<a class="link" href={guidance.src.url} target="_blank" rel="noopener">Kirschner, Sweller and Clark, 2006</a>). Nobody has counted how many kits are built from steps, and no study shows that steps harm learning. What the research supports is narrower: steps alone do not teach why.</p>
     </div>
 
-    <h3 class="mt-12 text-xl">Five widely used options</h3>
+    <h3 id="compare" class="mt-12 scroll-mt-24 text-xl">Five widely used options</h3>
     <p class="lede mt-3">{list(byBuild('steps'))} ship a manual for a set robot. {list(byBuild('none'))} has nothing to build. {list(byBuild('own'))} asks students to design their own, and costs about $1,850 to start. HelpingHand is the last row: a prototype, rated by the same rules.</p>
 
     <div class="cmp mt-8" data-cmp>
@@ -245,7 +245,7 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
         </div>
         <div>
           <h3 class="text-xl">One lesson at a time</h3>
-          <p class="mt-2 text-(--on-navy-soft)">Students learn mechanics, circuits, and coding concepts one lesson at a time without following a finished kit.</p>
+          <p class="mt-2 text-(--on-navy-soft)">Students learn mechanics, circuits, and coding one lesson at a time, not by following a manual.</p>
         </div>
       </div>
       <div class="mt-10 flex flex-wrap gap-3">
@@ -280,7 +280,7 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
   <section class="section more-next" id="sources">
     <details class="more">
       <summary><span class="more-title">Sources</span><span class="meta">{sources.size} documents and pages. Figures were checked against them in October and November 2026.</span></summary>
-      <p class="lede mt-6">Vendor prices change: check again before quoting one in print.</p>
+      <p class="lede mt-6">Vendor prices change, so each one carries the year it was read.</p>
       <ol class="mt-6 list-decimal gap-x-16 pl-6 text-[0.9375rem] marker:font-semibold marker:text-navy md:columns-2">
         {[...sources.entries()].map(([name, url]) => (
           <li class="mb-2 break-inside-avoid pl-1"><a class="link" href={url} target="_blank" rel="noopener">{name}</a></li>

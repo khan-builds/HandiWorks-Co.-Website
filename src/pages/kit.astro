@@ -12,42 +12,38 @@ import ModelViewer from '../components/ModelViewer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProcessRail from '../components/ProcessRail.astro';
 import CircuitDiagram from '../components/CircuitDiagram.astro';
-import { p, mailto } from '../lib/url';
+import { p, KIT_REQUEST } from '../lib/url';
 import { PORTIONS } from '../lib/lessons';
 import { cost, costTotals, money } from '../data/compare';
-
-const box = [
-  { item: 'Four finger modules', note: 'Each is a printed three-segment finger on its own motor drive.' },
-  { item: 'Thumb module', note: 'Two motors: one swings the thumb across the palm, one curls it.' },
-  { item: 'Palm', note: 'One printed part with a socket for each finger module.' },
-  { item: 'Electronics housing', note: 'A plate that carries the Arduino Mega 2560 and the motor drivers, under a curved shell that is the back of the hand.' },
-  { item: 'Battery', note: 'Runs the six motors on a supply of their own, apart from the Arduino’s.' },
-  { item: 'IMU', note: 'A tilt sensor, so the hand can tell which way it is being held.' },
-  { item: 'Two push buttons and wiring', note: 'Enough to open and close the grip from the first lesson.' },
-  { item: 'M3 screws and nuts', note: 'Nearly every fastener in the hand. The thumb’s swing motor is held by two #6-32 screws.' },
-];
+import { printed, bought, needs, CLASS_SIZE, GROUP } from '../data/kit';
 
 const specs = [
   { k: 'Controller', v: 'Arduino Mega 2560' },
   { k: 'Fingers', v: 'Four finger modules and a thumb' },
   { k: 'Motors', v: 'Six DC motors: one in each finger, two in the thumb' },
-  { k: 'Finger drive', v: 'The motor turns a lead screw. No gears.' },
+  { k: 'Finger drive', v: 'The motor turns a threaded rod, which pulls the finger closed' },
   { k: 'Finger curl', v: 'Straight to 72°' },
-  { k: 'Finger module', v: '33 mm wide, 291 mm long' },
-  { k: 'Printed parts', v: 'PLA, 0.4 mm nozzle, 0.2 mm layers, no supports' },
-  { k: 'Size', v: 'About 32 × 26 × 11 cm, lying flat with the thumb out to the side' },
+  { k: 'Finger module', v: '33 mm wide, 291 mm long (about 1.3 × 11.5 in)' },
+  { k: 'Printed parts', v: 'PLA plastic on an ordinary 3D printer, with no support material' },
+  { k: 'Size', v: 'About 32 × 26 × 11 cm (12.6 × 10.2 × 4.3 in), lying flat with the thumb out to the side' },
   { k: 'Ages', v: '11 and up' },
-  { k: 'Status', v: 'CAD Final v3, 22 Nov 2026. This version is not printed yet.' },
 ];
 
 const bill = costTotals();
+const classHands = CLASS_SIZE / GROUP;
 const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }));
 ---
-<Base title="The Kit" description="The HelpingHand kit: a modular robotic hand that students CAD, wire, and program themselves.">
+<Base title="The Kit" description="The HelpingHand kit: a modular robotic hand that students design, wire, and program themselves.">
   <PageHeader
     title="A robotic hand students build themselves."
-    lede="HelpingHand is a modular robotic hand that students CAD, wire, and program themselves. They learn mechanics, circuits, and coding concepts one lesson at a time, without following a finished kit."
-  />
+    lede="HelpingHand is a modular robotic hand that students design, wire, and program themselves. They learn mechanics, circuits, and coding one lesson at a time, not by following a manual."
+  >
+    {/* The page's one status line. The captions and the tables below say nothing more about it. */}
+    <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+      <span class="badge badge-demo">Prototype</span>
+      <span>This is the team's current design. The first full hand is not printed yet.</span>
+    </p>
+  </PageHeader>
 
   <section class="section">
     <SectionLabel>The hand</SectionLabel>
@@ -55,14 +51,15 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
       <ModelViewer
         src="/models/hand-final-v3.glb"
         alt="3D model of the HelpingHand: four fingers and a thumb on a palm, with the electronics under a curved shell on the back"
-        label="Hand Final v3 · CAD of 22 Nov 2026 · not printed yet"
+        label="The whole hand"
         height="h-[22rem] md:h-[32rem]"
       />
       <div>
         <p class="statement">Four fingers, a thumb, and everything that drives them.</p>
         <p class="mt-4">Each finger is its own module with its own motor. The modules sit side by side in the palm, the thumb slides on beside them, and the electronics sit under one curved shell that is the back of the hand.</p>
-        <p class="mt-4 text-rule">This is the team's current design, straight from the CAD. Colours are for display, the same as on the homepage. Grey parts are bought, not printed: the screws and nuts. The motors and the boards are inside, out of sight.</p>
-        <a class="btn btn-primary mt-6" href={mailto('HelpingHand kit request')}>Request a kit</a>
+        <p class="mt-4 text-rule">The grey parts are the screws and nuts. The motors and the boards are inside, out of sight.</p>
+        <a class="btn btn-primary mt-6" href={KIT_REQUEST}>Request a kit</a>
+        <p class="meta mt-3 max-w-[40ch]">Kits are not for sale yet. Write to the four of us and tell us about your class.</p>
       </div>
     </div>
   </section>
@@ -74,33 +71,61 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
         <ModelViewer
           src="/models/finger-final-v3.glb"
           alt="3D model of one finger module: a three-segment finger on a long motor housing"
-          label="Finger module of Final v3 · CAD of 22 Nov 2026"
+          label="One finger module"
           height="h-80 md:h-[26rem]"
         />
       </div>
       <div>
         <p class="statement">One motor curls three segments.</p>
-        <p class="mt-4">The motor turns a lead screw. A carriage rides along the screw and pulls a link, and the linkage carries that one motion through all three segments of the finger, from straight to a 72° curl.</p>
+        <p class="mt-4">The motor turns a threaded rod. A block rides along the rod and pulls a link, and the links carry that one motion through all three segments of the finger, from straight to a 72° curl.</p>
         <p class="mt-4">It is the unit of the whole curriculum: small enough to understand completely, real enough to be worth programming.</p>
         <a class="btn btn-secondary mt-6" href={p('/lessons/beginner/01-finger-module/')}>Open Lesson 1</a>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <SectionLabel>What is in the box</SectionLabel>
-    <div class="mt-6 flex flex-wrap items-end justify-between gap-4">
-      <p class="statement">The parts of one hand.</p>
-      <span class="badge badge-draft">Draft: contents are set with the first printed kit</span>
+  <section class="section" id="parts">
+    <SectionLabel>The parts</SectionLabel>
+    <p class="statement mt-6">Every part of one hand is either printed or bought.</p>
+    <div class="mt-8 grid gap-x-14 gap-y-10 lg:grid-cols-2">
+      <div>
+        <h3 class="text-lg">Printed</h3>
+        <ul class="mt-4 border-t border-navy">
+          {printed.map((b) => (
+            <li class="border-b border-edge py-3.5">
+              <p class="font-semibold">{b.item}</p>
+              <p class="mt-0.5 text-rule">{b.note}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-lg">Bought</h3>
+        <ul class="mt-4 border-t border-navy">
+          {bought.map((b) => (
+            <li class="border-b border-edge py-3.5">
+              <p class="font-semibold">{b.item}{b.qty > 1 && <span class="ml-2 font-normal tabular-nums text-rule">×{b.qty}</span>}</p>
+              <p class="mt-0.5 text-rule">{b.note}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
-    <ul class="mt-8 border-t border-navy">
-      {box.map((b) => (
-        <li class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[18rem_1fr]">
-          <p class="font-semibold">{b.item}</p>
-          <p class="text-rule">{b.note}</p>
-        </li>
-      ))}
-    </ul>
+  </section>
+
+  <section class="section" id="need">
+    <SectionLabel>What you need</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+      <p class="statement">Besides the parts: a 3D printer, a computer, and hex keys.</p>
+      <ul class="border-t border-navy">
+        {needs.map((n) => (
+          <li class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[11rem_1fr]">
+            <p class="font-semibold">{n.item}</p>
+            <p class="text-rule">{n.note}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 
   <section class="section" id="cost">
@@ -108,7 +133,8 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
     <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
       <div>
         <p class="statement">{money(bill.total)} in parts for one hand.</p>
-        <p class="mt-4">That is every part the team has priced, the plastic for the printed parts, and a fifth on top for what is not listed yet. One hand is meant to be shared by a group of four students.</p>
+        <p class="mt-4">That is every part the team has priced, the plastic for the printed parts, and a fifth on top for what is not listed yet. One hand is meant to be shared by a group of four students, so a class of {CLASS_SIZE} needs {classHands} hands: <strong>{money(bill.total * classHands)}</strong>.</p>
+        <p class="mt-4"><a class="link" href={p('/problem/#compare')}>See it beside five other kits</a></p>
         <p class="mt-4 text-rule">This is the cost of the parts of the current prototype, not a selling price. Screws, wiring and the two push buttons are not priced one by one: they fall under the contingency.</p>
       </div>
       <div>
@@ -159,7 +185,7 @@ const portionSteps = PORTIONS.map((pt) => ({ title: pt.label, body: pt.blurb }))
     <SectionLabel>Circuit</SectionLabel>
     <div class="mt-6 grid items-start gap-x-12 gap-y-4 md:grid-cols-2">
       <p class="statement">Six motors on one Arduino.</p>
-      <p>An Arduino Mega 2560 talks to two motor shields over one shared I²C bus, and each shield drives three DC motors. An IMU sits on the same bus, and two push buttons give control by hand. The motors run from their own 7.2 V battery. A Wi-Fi module is proposed and not built yet.</p>
+      <p>One Arduino Mega 2560 controls two motor shields, and each shield drives three DC motors. A tilt sensor shares the same connection, and two push buttons give control by hand. The motors run from their own 7.2 V battery. A Wi-Fi module is proposed and not built yet.</p>
     </div>
     <CircuitDiagram class="mt-8" />
   </section>

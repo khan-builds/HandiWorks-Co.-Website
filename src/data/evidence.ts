@@ -102,9 +102,12 @@ export const sections: { label: string; title: string; intro: string; figures: F
   {
     label: 'Evidence',
     title: 'Hands-on robotics works when students can get it',
-    intro: 'The research is positive on learning and attitudes, with honest caveats on effect sizes and study design.',
+    intro: 'The research is positive on learning and attitudes, with honest caveats on how large the gains are and how the studies were done.',
     figures: [
-      { value: 'g = 0.49', label: 'pooled effect of educational robotics on STEM learning across 21 studies', detail: 'Learning performance g = 0.67; attitudes g = 0.50. Computational-thinking effects were not significant.', source: 'Ouyang & Xu, International Journal of STEM Education (meta-analysis)', url: 'https://doi.org/10.1186/s40594-024-00469-4', year: '2024', tag: 'verified' },
+      /* In the paper's own terms: a pooled effect of g = 0.49 on STEM learning, 0.67 on learning
+         performance and 0.50 on attitudes; computational thinking not significant. The page
+         says it in plain words. */
+      { value: '21 studies', label: 'taken together, found a moderate gain in STEM learning from educational robotics', detail: 'The gain was clearest in what students learned and in their attitudes. For computational thinking the review found no clear effect.', source: 'Ouyang & Xu, International Journal of STEM Education (meta-analysis)', url: 'https://doi.org/10.1186/s40594-024-00469-4', year: '2024', tag: 'verified' },
       { value: '83% vs 61%', label: 'of FIRST alumni majored in a STEM field, compared with similar non-participants', detail: 'Correlational and funded by FIRST. Engineering or CS majors: 61% versus 26%.', source: 'Brandeis University, FIRST Longitudinal Study Final Report', url: 'https://heller.brandeis.edu/cyc/reports/the-first-longitudinal-study-final-report.pdf', year: '2024 (10-year study)', tag: 'verified' },
       { value: '2.6×', label: 'students taught four or five technology topics, such as robotics and 3D design, are 2.6 times more likely to want a STEM job than those taught one or none', detail: 'They are also 2.2 times more likely to declare a STEM major. A one-time survey: it shows a link, not a cause.', ...GEN_Z, tag: 'verified' },
       /* The figure on the team poster, which words it as "tech". Printed page 14 and chart 6
@@ -113,7 +116,7 @@ export const sections: { label: string; title: string; intro: string; figures: F
          computer science or a computer science related major?". Yes: 42% where the student
          says the school offers computer science classes, 18% where it does not. "Don't know":
          22% and 35%. It led the page until 2026-11-24. */
-      { value: '42% vs 18%', label: 'of students plan to study computer science in college, where their school offers computer science classes and where it does not', detail: 'The figure on our poster. It is about computer science classes, not robotics. As reported by students in grades 5 to 12.', source: 'Gallup and Amazon Future Engineer, Developing Careers of the Future', url: 'https://www.amazonfutureengineer.com/research/developing-careers-report.pdf', year: '2021', tag: 'verified' },
+      { value: '42% vs 18%', label: 'of students plan to study computer science in college, where their school offers computer science classes and where it does not', detail: 'It is about computer science classes, not robotics. As reported by students in grades 5 to 12.', source: 'Gallup and Amazon Future Engineer, Developing Careers of the Future', url: 'https://www.amazonfutureengineer.com/research/developing-careers-report.pdf', year: '2021', tag: 'verified' },
     ],
   },
 ];

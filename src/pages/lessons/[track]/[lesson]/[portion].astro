@@ -7,7 +7,7 @@ import Arrow from '../../../../components/Arrow.astro';
 import ModelViewer from '../../../../components/ModelViewer.astro';
 import MaterialsList from '../../../../components/MaterialsList.astro';
 import { p } from '../../../../lib/url';
-import { PORTIONS, TRACKS, splitLessonId } from '../../../../lib/lessons';
+import { DEMO_LABEL, PORTIONS, TRACKS, splitLessonId } from '../../../../lib/lessons';
 
 export async function getStaticPaths() {
   const portions = await getCollection('portions');
@@ -43,7 +43,7 @@ const materials = lesson.data.materials;
       <a href={p(`${base}/`)}>Lesson {lesson.data.number}</a> <span class="mx-1" aria-hidden="true">/</span> {meta.label}
     </nav>
     <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
-      {!entry.data.reviewed && <span class="badge badge-draft">Draft · under team review</span>}
+      {!entry.data.reviewed && <span class="badge badge-demo">{DEMO_LABEL}</span>}
       <span>Lesson {lesson.data.number} · Part {meta.step} of 3 · About {entry.data.durationMinutes} minutes</span>
     </p>
     {(slides || docs) && (

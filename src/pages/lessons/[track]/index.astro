@@ -1,31 +1,101 @@
 ---
+/** The lessons of one track. A lesson that can be read is shown whole: what it is, its three
+    parts with their minutes, and the two ways in (the lesson, and the simulator, which needs
+    no kit). Lessons that are not written yet are one plain row each under "Coming next", not
+    a card apiece, and a track with nothing to read gets no page at all: the intermediate
+    track is one sentence here until its first lesson exists. */
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/BaseLayout.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import SectionLabel from '../../../components/SectionLabel.astro';
 import TrackSelector from '../../../components/TrackSelector.astro';
-import LessonCard from '../../../components/LessonCard.astro';
-import { TRACKS, type TrackKey } from '../../../lib/lessons';
+import Arrow from '../../../components/Arrow.astro';
+import { p, demo } from '../../../lib/url';
+import { DEMO_LABEL, PORTIONS, TRACKS, splitLessonId, type TrackKey } from '../../../lib/lessons';
 
-export function getStaticPaths() {
-  return (Object.keys(TRACKS) as TrackKey[]).map((track) => ({ params: { track } }));
+// A track gets a page once it has a lesson to read. (getStaticPaths runs on its own and sees
+// only the imports, so the same test is written again below it.)
+export async function getStaticPaths() {
+  const all = await getCollection('lessons');
+  return (Object.keys(TRACKS) as TrackKey[])
+    .filter((t) => all.some((l) => l.data.track === t && l.data.status === 'published'))
+    .map((track) => ({ params: { track } }));
 }
 const track = Astro.params.track as TrackKey;
-const lessons = (await getCollection('lessons', (e) => e.data.track === track)).sort((a, b) => a.data.number - b.data.number);
+const all = await getCollection('lessons');
+const tracks = (Object.keys(TRACKS) as TrackKey[]).filter((t) => all.some((l) => l.data.track === t && l.data.status === 'published'));
+const lessons = all.filter((l) => l.data.track === track).sort((a, b) => a.data.number - b.data.number);
+const ready = lessons.filter((l) => l.data.status === 'published');
+const coming = lessons.filter((l) => l.data.status !== 'published');
 const portions = await getCollection('portions');
-const keysFor = (id: string) => portions.filter((x) => x.id.startsWith(id + '/')).map((x) => x.data.portion);
+const partsOf = (id: string) => PORTIONS.map((pt) => ({ pt, part: portions.find((x) => x.id === `${id}/${pt.key}`) }));
+const minutesOf = (id: string) => portions.filter((x) => x.id.startsWith(id + '/')).reduce((n, x) => n + x.data.durationMinutes, 0);
+const href = (id: string) => { const { track: t, slug } = splitLessonId(id); return `/lessons/${t}/${slug}`; };
+const untitled = (l: (typeof lessons)[number]) => l.data.title === `Lesson ${l.data.number}`;
 ---
 <Base title={TRACKS[track].label} description="HelpingHand lessons. Every lesson has three parts: CAD, hardware and software.">
   <PageHeader title="Design it. Build it. Code it." lede={TRACKS[track].tagline}>
-    <div class="mt-8"><TrackSelector current={track} /></div>
+    {tracks.length > 1 && <div class="mt-8"><TrackSelector current={track} /></div>}
   </PageHeader>
+
+  {ready.map((l) => (
+    <section class="section">
+      <SectionLabel>Lesson {l.data.number}</SectionLabel>
+      <div class="mt-8 grid items-start gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+        <div>
+          <h3 class="statement">{l.data.title}</h3>
+          <p class="lede mt-3">{l.data.summary}</p>
+          <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span class:list={['badge', l.data.reviewed ? 'badge-live' : 'badge-demo']}>{l.data.reviewed ? 'Live' : DEMO_LABEL}</span>
+            <span>3 parts{minutesOf(l.id) ? ` · about ${minutesOf(l.id)} minutes in all` : ''}</span>
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a class="btn btn-primary" href={p(`${href(l.id)}/`)}>Open Lesson {l.data.number} <Arrow /></a>
+            {l.data.number === 1 && <a class="btn btn-secondary" href={demo('student', '/dashboard/student/simulator/')}>Try it in the simulator</a>}
+          </div>
+          {l.data.number === 1 && <p class="meta mt-3">The simulator runs in the browser. No kit needed.</p>}
+        </div>
+        <ol class="numbered">
+          {partsOf(l.id).map(({ pt, part }) => (
+            <li class:list={[part && 'transition-colors hover:bg-(--navy-tint)']}>
+              <h4 class="numbered-title">
+                {part ? <a class="after:absolute after:inset-0" href={p(`${href(l.id)}/${pt.key}/`)}>{pt.label}: {part.data.title}</a> : pt.label}
+              </h4>
+              <p class="mt-1 text-[0.9375rem] text-rule">{pt.blurb}</p>
+              {part && <p class="meta mt-2">{part.data.durationMinutes} min</p>}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  ))}
+
+  {coming.length > 0 && (
+    <section class="section">
+      <SectionLabel>Coming next</SectionLabel>
+      <ul class="mt-8 max-w-4xl border-t border-navy">
+        {coming.map((l) => (
+          <li class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[20rem_1fr]">
+            <p class="font-semibold">Lesson {l.data.number}{!untitled(l) && `: ${l.data.title}`}</p>
+            <p class="text-rule">{l.data.summary}</p>
+          </li>
+        ))}
+      </ul>
+      {track === 'beginner' && <p class="meta mt-5">After these, an intermediate track keeps the same three parts, with harder mechanisms.</p>}
+    </section>
+  )}
+
   <section class="section">
-    <SectionLabel>{TRACKS[track].label}</SectionLabel>
-    {track === 'intermediate' && (
-      <p class="note mt-6 max-w-3xl">The intermediate track is a work in progress. It follows the same CAD, hardware, software structure as the beginner track.</p>
-    )}
-    <ul class="mt-8 grid gap-5">
-      {lessons.map((l) => <li><LessonCard lesson={l} portionKeys={keysFor(l.id)} /></li>)}
-    </ul>
+    <SectionLabel>Teaching it</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-14 gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      <p class="statement">Every part comes with teacher notes: timing, common mistakes, and answers.</p>
+      <div>
+        <p>The classroom demo shows a made-up class of 20: who has finished which part, and what is assigned.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href={demo('teacher')}>See the teacher view <Arrow /></a>
+          <a class="btn btn-secondary" href={p('/teachers/')}>For teachers</a>
+        </div>
+      </div>
+    </div>
   </section>
 </Base>

@@ -2,18 +2,16 @@
 import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
-import { asset, mailto } from '../lib/url';
+import { asset, mailto, KIT_REQUEST } from '../lib/url';
 import { team } from '../lib/team';
 
 const initials = (name: string) => name.split(' ').map((w) => w[0]).join('');
-const missing = team.some((m) => !m.bio || !m.photo);
 ---
 <Base title="Team" description="The four people behind HelpingHand and HandiWorks Co.">
   <PageHeader title="Meet HandiWorks." lede="Four engineers who think the best way to learn how something works is to build it, break it, and build it again." />
 
   <section class="section">
     <SectionLabel>The team</SectionLabel>
-    {missing && <p class="mt-6"><span class="badge badge-draft">Photos and bios to come</span></p>}
     <ul class="columns mt-8">
       {team.map((m) => (
         <li class="flex items-center gap-5 md:block">
@@ -42,7 +40,10 @@ const missing = team.some((m) => !m.bio || !m.photo);
     <div class="wrap py-14 md:py-20">
       <SectionLabel>Talk to us</SectionLabel>
       <div class="mt-8 grid gap-x-16 gap-y-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
-        <p class="statement text-white">Teachers, schools, and makers: we want to hear what you would do with a hand like this.</p>
+        <div>
+          <p class="statement text-white">Teachers, schools, and makers: we want to hear what you would do with a hand like this.</p>
+          <p class="mt-4 max-w-[46ch] text-(--on-navy-soft)">Kits are not for sale yet. Tell us your school, the grade and the class size. “Request a kit” reaches all four of us.</p>
+        </div>
         <div>
           {/* Everyone's address, not one person's. */}
           <ul class="grid gap-2">
@@ -50,7 +51,7 @@ const missing = team.some((m) => !m.bio || !m.photo);
               <li><a class="link [overflow-wrap:anywhere]" href={mailto('HelpingHand question', m.email)}>{m.email.split('@')[0]}<wbr />@{m.email.split('@')[1]}</a></li>
             ))}
           </ul>
-          <a class="btn btn-primary mt-6" href={mailto('HelpingHand kit request')}>Request a kit</a>
+          <a class="btn btn-primary mt-6" href={KIT_REQUEST}>Request a kit</a>
         </div>
       </div>
     </div>

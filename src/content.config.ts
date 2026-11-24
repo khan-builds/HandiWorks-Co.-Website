@@ -29,7 +29,7 @@ const lessons = defineCollection({
     modelSrc: z.string().optional(),
     /** Caption under the model: say what it is and where it comes from. */
     modelCaption: z.string().optional(),
-    /** Set to true once the team has reviewed the text. Until then the page says "Draft · under team review". */
+    /** Set to true once the team has reviewed the text. Until then the page says "Demo · subject to change". */
     reviewed: z.boolean().default(false),
   }),
 });

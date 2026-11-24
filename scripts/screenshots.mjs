@@ -46,6 +46,7 @@ const DEMO_PATH = [
   '/lessons/beginner/01-finger-module/cad/',
   '/lessons/beginner/01-finger-module/hardware/',
   '/lessons/beginner/01-finger-module/software/',
+  '/teachers/',
   '/signin/',
   '/dashboard/teacher/',
   '/dashboard/student/',

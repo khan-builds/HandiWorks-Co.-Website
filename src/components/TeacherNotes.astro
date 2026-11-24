@@ -1,21 +1,31 @@
 ---
 /** The teacher-only part of a lesson page. It shows when the demo role in this browser is
-    "teacher" (see /signin/). That is a display switch, not a lock, and the page says so.
-    Put <TeacherOnly title="..."> blocks inside. Everyone else sees one line saying where the
-    notes are. */
+    "teacher" (see /signin/). Anyone can switch it on: the button under the lesson sets that
+    role and shows the notes in place, so a visitor never has to go looking for them.
+    Put <TeacherOnly title="..."> blocks inside. */
 import SectionLabel from './SectionLabel.astro';
-import { p } from '../lib/url';
 ---
 <section class="teacher-notes" data-teacher-only hidden>
   <SectionLabel>Teacher notes</SectionLabel>
-  <p class="meta teacher-notes-flag"><span class="badge badge-demo">Teacher view</span> Shown because you are exploring as a teacher. A display switch, not a lock.</p>
+  <p class="meta teacher-notes-flag"><span class="badge badge-demo">Teacher view</span> Shown because you are exploring as a teacher.</p>
   <slot />
 </section>
-<p class="meta teacher-notes-hint" data-teacher-hint>Teacher notes for this page appear when you <a class="link" href={p('/signin/')}>explore as a teacher</a>.</p>
+<p class="teacher-notes-hint" data-teacher-hint>
+  <button type="button" class="btn btn-secondary" data-teacher-show>Show the teacher notes</button>
+  <span class="meta">Timing, common mistakes and answers for this page.</span>
+</p>
 
 <script>
-  if (localStorage.getItem('hh-role') === 'teacher') {
+  const show = () => {
     document.querySelectorAll('[data-teacher-only]').forEach((el) => el.removeAttribute('hidden'));
     document.querySelectorAll('[data-teacher-hint]').forEach((el) => el.setAttribute('hidden', ''));
-  }
+  };
+  if (localStorage.getItem('hh-role') === 'teacher') show();
+  document.querySelectorAll<HTMLButtonElement>('[data-teacher-show]').forEach((button) => {
+    button.addEventListener('click', () => {
+      // Seeing the notes is exploring as a teacher: the nav button follows on the next page.
+      localStorage.setItem('hh-role', 'teacher');
+      show();
+    });
+  });
 </script>

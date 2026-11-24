@@ -79,7 +79,7 @@ Branch `LZ-C5.2`, in `~/workspace/SLDP Website`. It was called `site-buildout` u
 named it on 2026-11-18, when it was first committed and pushed. It sits on `7b2cf6d`, Golam's
 last commit of that morning, with his changes to the hand merged into the rebuilt homepage.
 Before the merge `main` was four commits further on, but those four add the simulator and
-take it out again, so no file differed. Twenty commits are pushed and a twenty-first is made: the rebuild, the hand from the CAD, the emails
+take it out again, so no file differed. Twenty commits are pushed and two more are made: the rebuild, the hand from the CAD, the emails
 on the Team page, the scroll story, everyone's address under Contact, all four addresses
 under "Talk to us", the homepage's new first and last scenes, "Request a kit" to all four
 people, the homepage story with the flat hand, the receding palm and the littered parts,
@@ -100,18 +100,36 @@ CAD's Final v3, wherever the hand moves, and the four fingers hopping into one. 
 puts Final v3 on The Kit and in Lesson 1's step models, and turns The Problem's figures from
 computer science to robotics and engineering. The twenty-first rebuilds The Problem round a
 comparison of kits and puts the final poster's cost table, circuit and next steps on The Kit
-and the Roadmap. Prompts 1 to 9
+and the Roadmap. The twenty-second is the first-time-customer pass: the price on Home, the
+For teachers page, "Classroom demo", "Skip animation" and Lesson 1 on a DC motor. Prompts 1 to 9
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
-**The twenty-first commit, "Compare the kits on The Problem, and put the final poster's
-cost, circuit and next steps on the site", is made and not pushed.** Lingbo said on
-2026-11-24 "do all three stages and commit to the branch named LZ-C5.2", and has not asked
-for the push. The name is Claude's. It holds two sessions' work: The Problem's rebuild, and
-the circuit diagram and the next steps that another session drew from the final poster the
-same afternoon. Until it is pushed, GitHub's `LZ-C5.2` ends at the twentieth commit, "Show
-Final v3 on The Kit and in Lesson 1, and make The Problem's figures about robotics", pushed
-that morning at about 11:40.
+**The twenty-first and twenty-second commits are made and not pushed.** The twenty-first is
+"Compare the kits on The Problem, and put the final poster's cost, circuit and next steps on
+the site". Lingbo said on 2026-11-24 "do all three stages and commit to the branch named
+LZ-C5.2", and has not asked for the push. The name is Claude's. It holds two sessions' work:
+The Problem's rebuild, and the circuit diagram and the next steps that another session drew
+from the final poster the same afternoon. Until they are pushed, GitHub's `LZ-C5.2` ends at
+the twentieth commit, "Show Final v3 on The Kit and in Lesson 1, and make The Problem's
+figures about robotics", pushed that morning at about 11:40.
+
+**The twenty-second commit, "Make the site friendlier to a first-time visitor", is the
+first-time-customer pass of 2026-11-24.** Lingbo asked a session to go through the site "as
+though you were first being introduced" to it, then to make the changes it listed. At about
+14:40 the same day Lingbo told another session "commit from here to my branch", and that
+session committed the working folder as it stood: it built the site first, ran the type check
+(no errors in `src/`), and changed only this section and the offline-copy paragraph below.
+The name is Claude's. What the changes are is the first entry under
+[Design changes](#design-changes). Files: `index.html`,
+`src/pages/teachers.astro` (new), `src/data/kit.ts` (new), `src/pages/kit.astro`,
+`src/pages/lessons/[track]/` (all three), `src/pages/signin.astro`, `src/pages/team.astro`,
+`src/pages/problem.astro`, `src/pages/404.astro`, `src/pages/dashboard/student.astro`,
+`src/components/` (`Nav`, `Footer`, `StatusLine`, `TeacherNotes`; `LessonCard` deleted),
+`src/lib/` (`url.ts`, `lessons.ts`), `src/data/` (`compare.ts`, `evidence.ts`), Lesson 1's
+four files and Lessons 2 to 4's first lines under `src/content/lessons/beginner/`,
+`public/downloads/lesson-1-finger.ino`, `src/styles/global.css`, `src/layouts/BaseLayout.astro`,
+`src/content.config.ts`, `scripts/screenshots.mjs`, the root `README.md`, and this file.
 
 **`main` is still the merge of 2026-11-21.** Nothing since the sixteenth commit is merged,
 so the live site has none of "Test your code", the Simulator, the link in Lesson 1's row,
@@ -192,6 +210,17 @@ online. Served by its own `serve.py`, The Problem, The Kit and the Roadmap opene
 Problem's script. The pictures in `screenshots/offline-copy/` are from the zip of
 2026-11-23: nine pages at both widths with no script error and no sideways scroll, and every
 model and download served.
+
+**A second zip sits beside it since 2026-11-24, 13:19:
+`~/workspace/HelpingHand-site-offline-2026-11-24-first-visit.zip`.** It is the same folder
+with the site rebuilt after the first-time-customer pass, and it is the one to open: it holds
+the same site as the twenty-second commit. Just before that commit, at 14:38, a fresh build
+matched all 44 of its files byte for byte. Its `HOW-TO-OPEN.txt` was written before the
+commit and still says the pass is not committed. Served by its own `serve.py`, all 44 of its
+files came back byte for byte the same as `dist/`. The session that made it was not allowed
+to overwrite or delete the 12:53 zip, so both are there. The 12:53 zip is the twenty-first
+commit's site: delete it (`rm ~/workspace/HelpingHand-site-offline-2026-11-24.zip`) or
+rebuild a single copy with prompt 8.
 
 The zip of 2026-11-22, a snapshot of the eighteenth commit with hand v11, was deleted that
 evening too; an earlier session had not been allowed to. The zips of 2026-11-21 and
@@ -330,7 +359,29 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
 - [ ] **Billy:** a review of Lesson 1. Prompt 11 applies it.
 - [ ] **Billy:** wiring and assembly photos or diagrams. His branch has stand-ins. Goes on
   Lesson 1.
-- [ ] **Everyone:** a bio of two or three sentences and a photo. Goes on Team.
+- [ ] **Everyone:** a bio of two or three sentences and a photo. Goes on Team. Since
+  2026-11-24 the Team page no longer says "Photos and bios to come": it shows initials until
+  a photo is in `src/lib/team.ts`.
+- [ ] **The team: a photo or a short video of something printed and moving.** Every picture
+  on the site is a drawing from the CAD. One real finger curling would do more for a visitor
+  than anything else on this list. Goes on Home, The Kit and For teachers.
+- [ ] **The team: what is on offer.** A kit for sale, the files and a parts list for free, or
+  a pilot with a few classrooms; and whether the printed parts come printed. Until it is
+  decided, "Request a kit" is followed by "Kits are not for sale yet", and The Kit's parts
+  list says "printed" or "bought" without saying by whom.
+- [ ] **The team: one address to write to**, and how soon someone answers. "Request a kit"
+  still opens an email to all four personal addresses.
+- [ ] **The team: the grade band and the standards** the lessons meet (for example NGSS
+  engineering design). For teachers has neither, because nobody has written them down.
+- [ ] **The team: the tools.** For teachers and The Kit say "small hex keys". Whether
+  anything has to be soldered, and which key sizes, is not in the CAD notes.
+- [ ] **Billy: Lesson 1 with a DC motor.** On 2026-11-24 Lingbo said the hand uses DC motors,
+  and the lesson's hardware and software parts were rewritten from a servo to one DC motor on
+  the motor shield (terminal M1, button on pin 2, the battery on the shield's power
+  terminal, a run time of 1.5 s in place of two angles). The program
+  (`public/downloads/lesson-1-finger.ino`) was written from the shield library's
+  documentation and has never been compiled or run. Read it, try it on a real finger, and
+  send the wiring picture: the page has none.
 - [ ] **Lingbo:** titles and one-line summaries for Lessons 2 to 4. The site and Billy's
   branch disagree. Goes on Lessons.
 - [ ] **Lingbo:** the published slides link for Lesson 1. "Open slides" stays hidden until
@@ -376,8 +427,11 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
   back together. A live finger from the CAD took its place on 2026-11-18. If that stays,
   delete `public/videos/finger-hero-transparent.webm` (2.6 MB, no page asks for it now). If
   the video should come back, it needs rendering again from the current finger.
-- [ ] **Servo or DC motor.** Lesson 1 teaches a positional servo. The hand on The Kit page is
-  driven by DC motors on lead screws. Decide which the lesson should teach, in the review.
+- [x] **Servo or DC motor.** Decided by Lingbo on 2026-11-24: "we are using DC motors".
+  Lesson 1 was rewritten for one DC motor the same day: see
+  [Design changes](#design-changes) and, for what Billy still has to check,
+  [Who owes what](#who-owes-what). How it stood: Lesson 1 taught a positional servo while the
+  hand on The Kit page is driven by DC motors.
 - [x] **288 mm or 282 mm.** Neither, since 2026-11-23: Final v3's finger module is 291 mm
   from the rear of its housing to the fingertip, the lesson's step models are cut from it,
   and the lesson and The Kit both say 291. Before that the lesson said 288 mm, the CAD notes
@@ -432,6 +486,92 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-24: friendlier to someone seeing the site for the first time
+
+Lingbo: "go through the website and determine what changes to the UI need to be made to make
+it more friendly for potential customers and act as though you were first being introduced to
+the website, what is confusing what needs to be changed and what else should we add". A
+session walked every page of commit `7360977` as a teacher, a school buyer and a parent, and
+reported. Then Lingbo: "fix the contradictions: we are using DC motors, remove the portion of
+the kit that says no gears, lesson 1 is going to say 'demo subject to change' instead. the
+arduino is 22.99 that is not a contradiction. fix the jargon and remove any of these unclear
+references ... add in the price using the price table. add in a way to skip the animation
+which is discrete but noticable. implement all changes you mention under the what to change
+section and the what to add stuff keep the things you need from the team in mind".
+
+**What the walk found**, in one line each: no price anywhere although the pitch is "more
+affordable"; a first screen that never says "robotic hand kit" and offers nothing to click;
+about eight screens of animation before the first fact; "Sign in" for what is a demo with no
+accounts; no way to tell whether a school needs a 3D printer; seven of eight lesson cards
+"coming soon"; about two dozen not-ready labels; and Lesson 1 teaching a servo.
+
+**What changed, page by page.**
+
+| Page | Change |
+|---|---|
+| Every page | Nav: "For teachers" added, "Sign in" renamed "Classroom demo". The footer follows, and its last line is now "Prototype. Lesson 1 is a demo and subject to change. The classroom demo uses made-up data." "Request a kit" opens with school, grade and class size already asked. |
+| Home | First screen: "A robotic hand kit with lessons. Students ages 11 and up design it, wire it, and program it themselves. $153.41 in parts for one hand.", two buttons (See the kit, For teachers), and "Skip animation" beside the four dashes for the whole story. "The kit in numbers" leads with $153.41 in place of "3 areas of study". A new section, "Try it now", opens the simulator and the teacher view in one click. The closing block's second button is "For teachers". |
+| The Kit | One status line under the title ("Prototype"), and none on the captions or in the tables. "What is in the box" became "The parts": printed in one column, bought in the other, with counts from the cost table. A new section, "What you need": a 3D printer, a computer, hex keys. The cost section gives the class figure, $920.46 for 24 students, and links to the comparison. "No gears." is gone. |
+| Lessons | Lesson 1 shown whole, with its three parts and their minutes, and a button into the simulator. Lessons 2 to 4 are three plain rows under "Coming next". The intermediate track is one sentence, and its four placeholder pages and Lessons 3 and 4's pages are no longer built. "Teaching it" links the teacher view and For teachers. |
+| Lesson 1 | The label is "Demo · subject to change" on the list and on all four pages (it was "Live" on the list and "Draft · under team review" on the pages). The hardware and software parts teach one DC motor on the motor shield, not a servo. "Show the teacher notes" is a button on the page. |
+| For teachers (new, `/teachers/`) | Class time, the cost for a class beside LEGO Education's, what you need, three ways into the demo, and eight questions answered from facts already on the site. |
+| Classroom demo (`/signin/`) | Title "See it as a teacher or a student." A link can name its role: `/signin/?as=teacher` goes straight to the teacher dashboard. |
+| The Problem | "g = 0.49" said in plain words, "The figure on our poster." and "check again before quoting one in print" removed, the Lesson 1 row says DC motor. |
+| Team, 404, student dashboard | "Photos and bios to come" removed; one line on what to write and that it reaches all four; "Pages that exist" is "Where to go"; the dashboard keeps one demo label, the strip under its title. |
+
+**Words changed everywhere they appeared.** "students CAD, wire, and program" is "design, wire,
+and program" (the poster's sentence, with its one verb a teacher may not know replaced);
+"without following a finished kit" is "not by following a manual", the final poster's own
+complaint about other kits; "sketch" is "program" outside Lesson 1, which now says once that
+Arduino calls a program a sketch; "lead screw", "carriage" and "linkage" are "threaded rod",
+"block" and "links"; "PLA, 0.4 mm nozzle, 0.2 mm layers, no supports" is "PLA plastic on an
+ordinary 3D printer, with no support material"; "Final v3", "CAD of 22 Nov 2026", "#6-32",
+"I²C bus", "gyroscope", "four-bar and a six-bar" and the note about rack and pinion are off
+the pages. The circuit drawing keeps its labels: they are the poster's.
+
+**Decided here, not by Lingbo**, with the option not taken:
+
+- **Lesson 1's wiring and program for a DC motor.** One motor on the shield's terminal M1, the
+  button on pin 2, the 7.2 V battery on the shield's power terminal, and a program that runs
+  the motor for `runTime` (1.5 s) one way and then the other, since a DC motor has no angle
+  to go to. Written from the Adafruit library's documentation, never compiled, never run.
+  Not taken: leaving the servo text under the new label, or teaching the shield without the
+  battery.
+- **"Skip animation" sits beside the four dashes**, a small outlined label that stays for the
+  whole story and jumps, without scrolling through it, to "The kit in numbers". Not taken: a
+  button fixed in a corner of the stage (it covered the caption on a phone), or shortening
+  the story (Lingbo said on 2026-11-21 it is frozen).
+- **The first screen keeps "HelpingHand" and the tagline** and changes the sentence under
+  them. Not taken: the reviewer's headline "A robotic hand your students design, wire and
+  program".
+- **The price is shown as "$153.41 in parts for one hand"**, never as a selling price, and the
+  class figure assumes six hands for 24, from "one hand for a group of four".
+- **"For teachers" is in the nav**, between Lessons and Roadmap. To keep the row from
+  overflowing, "Switch role" moved out of the wide nav into the strip under each dashboard's
+  title (it stays in the phone menu), and the company name beside the logo now gives way
+  below 1152 px. Not taken: dropping Roadmap from the nav.
+- **"Request a kit" still goes to all four addresses**, as Lingbo asked on 2026-11-19. The
+  review asked for one address; there is none, so the footer and the Team page keep the four,
+  and only the duplicate "Request a kit" link in the footer's Contact column went.
+- **"Printed" and "bought", not "in the box".** Whether a kit comes with its parts printed is
+  not decided, so the page does not say.
+- **The print sizes on "What you need"** (16 × 18 cm, 14.5 cm tall) are the largest parts of
+  Final v3 in the CAD notes. They will change if the hand is scaled down.
+- **A lesson with nothing written gets no page.** Lessons 3 and 4 and the four intermediate
+  placeholders are rows or a sentence; their files are still in `src/content/lessons/`.
+- **Left alone:** the order of The Kit's sections, the story's length, the Team page's
+  initials, the demo class's due dates, and the look of every page.
+
+**Still missing, and the team's to supply**: a photo or video of a printed part moving; what
+is on offer and on what terms; one address to write to; a grade band and standards; the tools
+list; Billy's check of the DC-motor lesson and its wiring picture. All six are under
+[Who owes what](#who-owes-what).
+
+**Checked**: `npm run build`; the type check (no errors in `src/`); a headless-browser run of
+the skip link at both widths, the four one-click demo links, the teacher-notes button, the nav
+row at five widths with and without a role, and sideways scroll at 390 px on every changed
+page. Pictures: `screenshots/rehearsal/`.
 
 ### 2026-11-24: The Problem rebuilt round a comparison, with motion
 
@@ -2156,9 +2296,11 @@ These are the poster's own parts. Every page is assembled from them.
   swap sides from one step to the next, as in the poster's "Next steps".
 - **Buttons.** Primary: navy fill, white text. Secondary: 1px navy border, navy text.
   On a navy band: white fill, navy text.
-- **Status labels.** Live, Draft, Demo data, Coming soon. They stay, because the site is a
-  mock and says so. Lime for Live, `panel` with a dashed `rule` border for Draft and Coming
-  soon, navy outline for Demo data.
+- **Status labels.** Live, Demo · subject to change, Prototype, Demo data, Coming soon. They
+  stay, because the site is a mock and says so, one to a page. Lime for Live, `panel` with a
+  dashed `rule` border for Coming soon, navy outline for the rest. "Demo · subject to change"
+  is Lingbo's wording of 2026-11-24 for Lesson 1 (`DEMO_LABEL` in `src/lib/lessons.ts`): a
+  lesson shows it until `reviewed: true` is set in its frontmatter.
 
 ### Shape and motion
 
@@ -2316,9 +2458,11 @@ The plan covers the demo path and nothing else:
   page is a static Astro page under `src/`, built and published together with it.
 - **Static mock through Dec 1.** No accounts, no database, no server. Real login is a
   Roadmap item.
-- **One nav on every page:** The Problem · The Kit · Lessons · Roadmap · Team, plus a
-  "Sign in" button. On the homepage the product and team sections stay as teasers that link
-  to the full pages.
+- **One nav on every page:** The Problem · The Kit · Lessons · For teachers · Roadmap ·
+  Team, plus a "Classroom demo" button. On the homepage the product and team sections stay as
+  teasers that link to the full pages. Until 2026-11-24 there was no For teachers page and
+  the button said "Sign in"; a first-time visitor read that as needing an account. The page
+  it opens is still `/signin/`.
 - **One look, from the team poster.** It is written down under
   [Theme](#theme). Light only.
 - **Lesson 1 is Billy's**, from the `version-1` branch, ported to static pages and labelled
@@ -2329,15 +2473,20 @@ The plan covers the demo path and nothing else:
 - **Missing content ships as a labelled placeholder.** No prompt waits on a teammate.
   [Who owes what](#who-owes-what) lists it.
 - **Contact** is four mailto links, one per person. "Request a kit" is one mailto link to all
-  four. The addresses are in `src/lib/team.ts`.
+  four, and since 2026-11-24 it opens with three questions already in the message (school,
+  grade, class size). The addresses are in `src/lib/team.ts`; the link is `KIT_REQUEST` in
+  `src/lib/url.ts`, with a copy written out by hand in `index.html`.
 - **It must run with no network.** Fonts, scripts, models and video are all in the repo.
 
 ### Rules for every prompt
 
 1. **Static only.** No accounts, database, server or API calls. Sign in sets a role in the
    browser (`localStorage` key `hh-role`) and nothing more.
-2. **Say what is unfinished.** Anything that is a draft, demo data or coming soon carries
-   that label on the page. Never make a mock look like a working feature.
+2. **Say what is unfinished, once.** Anything that is a draft, demo data or coming soon
+   carries that label on the page. Never make a mock look like a working feature. Since
+   2026-11-24 a page says it in one place, the line under its title, and not on every
+   caption and row: a first-time visitor counted about two dozen such labels and stopped
+   trusting the page.
 3. **Invent nothing.** Specs, quantities and prices come from the CAD READMEs or from the
    team. Every figure has a source a reader can open, with its year, recorded in
    `src/data/evidence.ts`. If a fact is missing, leave it out and add it to

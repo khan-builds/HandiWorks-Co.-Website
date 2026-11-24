@@ -2,48 +2,55 @@
 portion: hardware
 title: Wire the Arduino Mega
 objectives:
-  - Wire one servo and one button to an Arduino Mega
+  - Wire one DC motor and one button to an Arduino Mega
 durationMinutes: 25
 status: published
 ---
 import Callout from '../../../../components/Callout.astro';
-import FigurePlaceholder from '../../../../components/FigurePlaceholder.astro';
 import TeacherNotes from '../../../../components/TeacherNotes.astro';
 import TeacherOnly from '../../../../components/TeacherOnly.astro';
 
-The Mega is the board that will tell the servo how far to turn. Unplug the USB cable before you move any wire.
+{/* Rewritten on 2026-11-24 from a servo to a DC motor: see index.mdx. The parts are the ones
+    on the team's circuit (an Arduino Mega 2560, an Adafruit Motor Shield, a 7.2 V battery).
+    Not yet wired on a real finger by the team. Billy owes the wiring picture. */}
+
+The Mega is the board that runs your program. The motor shield sits on top of it and switches the motor on and off. Unplug the battery and the USB cable before you move any wire.
 
 <Callout type="safety">
-A moving link can pinch. Keep your fingers off the joints while the servo is powered. If a part feels hot or the finger stops halfway, unplug the USB cable first.
+A moving link can pinch. Keep your fingers off the joints while the battery is connected. If a part feels hot or the finger stops halfway, unplug the battery first.
 </Callout>
 
 ## Connections
 
-Use these connections. The servo has three wires. The button has two legs.
+Use these connections. The motor has two wires. The button has two legs.
 
-| Wire | Connect it to |
+| Part | Connect it to |
 | --- | --- |
-| Servo ground (brown or black) | Mega GND |
-| Servo power (red) | Mega 5V |
-| Servo signal (orange or yellow) | Mega pin 9 |
-| One button leg | Mega pin 2 |
-| Other button leg | Mega GND |
+| Motor shield | Press it onto the Mega so every pin lines up |
+| The motor's two wires | The shield's terminal marked M1, one wire in each hole |
+| Battery, red wire | The + side of the shield's power terminal |
+| Battery, black wire | The − side of the shield's power terminal |
+| One button leg | Pin 2 |
+| Other button leg | GND |
 
-<FigurePlaceholder caption="Wiring diagram: one servo and one button on the Mega." />
+The shield has its own row of holes above the Mega's pins. Pin 2 and GND are reached through those.
 
-Pin 9 sends the angle. Pin 2 listens to the button. GND is the shared ground. The button does not need a resistor, because the sketch turns on the Mega's built-in pull-up.
+Pin 2 listens to the button. GND is the shared ground. The button does not need a resistor, because the program turns on the Mega's built-in pull-up.
 
 ## Power
 
-One small servo can run from the Mega's 5V pin. If the Mega restarts when the servo moves, the servo needs its own 5V supply. Connect that supply's ground to a Mega GND pin too.
+The motor runs from the battery, not from the Mega. The USB cable powers the Mega and carries your program to it.
 
-Plug in the USB cable only after every wire is in the right hole.
+Plug in the USB cable and the battery only after every wire is in the right hole.
 
 <TeacherNotes>
 <TeacherOnly title="Timing">
 Wiring: 25 min
 </TeacherOnly>
-<TeacherOnly title="If the servo resets the Mega">
-USB 5V is enough for one unloaded micro servo. A finger that binds will brown out the Mega. Have the student lower `closedAngle` first. If it still resets, move servo power to a separate 5V supply and tie the grounds together. Do not power the servo from a Mega pin other than 5V.
+<TeacherOnly title="Before class">
+The shield talks to the Mega through the pins it is pressed onto, so it has to be seated all the way down. With the Mega on USB and the battery on the shield's power terminal, Adafruit's guide for this shield says to leave its small power jumper off.
+</TeacherOnly>
+<TeacherOnly title="If the motor does not turn">
+Check the battery first, then that both motor wires are held in M1. If the finger opens when it should close, swap the motor's two wires.
 </TeacherOnly>
 </TeacherNotes>

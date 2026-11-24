@@ -139,8 +139,8 @@ export const options: Option[] = [
     ages: { text: 'Ages 11 and up' },
     more: { text: 'Print more parts', detail: 'Each added finger needs one more motor.' },
     build: { kind: 'guided', tag: 'Guided: the student draws the parts', text: 'Five CAD steps, each saying what the part is for', src: { label: 'Lesson 1, Draw the finger', url: '/lessons/beginner/01-finger-module/cad/' } },
-    circuits: { text: 'Lesson 1: a servo and a button. The rest * (WIP)', src: { label: 'Lesson 1, Wire the Arduino Mega', url: '/lessons/beginner/01-finger-module/hardware/' } },
-    code: { text: 'Lesson 1: one Arduino sketch. The rest * (WIP)', src: { label: 'Lesson 1, Program the finger', url: '/lessons/beginner/01-finger-module/software/' } },
+    circuits: { text: 'Lesson 1: a DC motor and a button. The rest * (WIP)', src: { label: 'Lesson 1, Wire the Arduino Mega', url: '/lessons/beginner/01-finger-module/hardware/' } },
+    code: { text: 'Lesson 1: one Arduino program. The rest * (WIP)', src: { label: 'Lesson 1, Program the finger', url: '/lessons/beginner/01-finger-module/software/' } },
     good: '',
   },
 ];

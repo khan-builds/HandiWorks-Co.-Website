@@ -7,10 +7,11 @@ import Arrow from '../../../../components/Arrow.astro';
 import ModelViewer from '../../../../components/ModelViewer.astro';
 import MaterialsList from '../../../../components/MaterialsList.astro';
 import { p } from '../../../../lib/url';
-import { PORTIONS, TRACKS, splitLessonId } from '../../../../lib/lessons';
+import { DEMO_LABEL, PORTIONS, TRACKS, hasOwnPage, splitLessonId } from '../../../../lib/lessons';
 
 export async function getStaticPaths() {
-  const lessons = await getCollection('lessons');
+  // A lesson with nothing written yet is one row on the lessons page and has no page here.
+  const lessons = (await getCollection('lessons')).filter((entry) => hasOwnPage(entry.data));
   return lessons.map((entry) => {
     const { track, slug } = splitLessonId(entry.id);
     return { params: { track, lesson: slug }, props: { entry } };
@@ -32,7 +33,7 @@ const base = `/lessons/${track}/${slug}`;
     </nav>
     <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
       {!live && <span class="badge badge-soon">Coming soon</span>}
-      {live && !entry.data.reviewed && <span class="badge badge-draft">Draft · under team review</span>}
+      {live && !entry.data.reviewed && <span class="badge badge-demo">{DEMO_LABEL}</span>}
       {live && entry.data.reviewed && <span class="badge badge-live">Live</span>}
       <span>3 parts{totalMinutes ? ` · about ${totalMinutes} minutes in all` : ''}</span>
     </p>

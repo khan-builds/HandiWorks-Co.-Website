@@ -1,0 +1,166 @@
+---
+/** For teachers: the page a teacher or a school buyer needs before anything else. It gathers
+    what the rest of the site already says (class time from Lesson 1, the cost table, what a
+    classroom needs, the classroom demo) and adds nothing of its own: every fact here is read
+    from the same data the other pages use. Added 2026-11-24.
+    Not here because the team has not decided or sent them: a grade band and standards, how a
+    school gets a kit and on what terms, a photo or a video of a printed hand. They are listed
+    in docs/README.md under "Who owes what". */
+import { getCollection } from 'astro:content';
+import Base from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import ProcessRail from '../components/ProcessRail.astro';
+import Arrow from '../components/Arrow.astro';
+import { p, demo, KIT_REQUEST } from '../lib/url';
+import { PORTIONS } from '../lib/lessons';
+import { options, costTotals, money } from '../data/compare';
+import { needs, CLASS_SIZE, GROUP } from '../data/kit';
+
+const LESSON_1 = 'beginner/01-finger-module';
+const parts = await getCollection('portions', (e) => e.id.startsWith(LESSON_1 + '/'));
+const minutes = (key: string) => parts.find((x) => x.data.portion === key)?.data.durationMinutes;
+const total = parts.reduce((n, x) => n + x.data.durationMinutes, 0);
+const steps = PORTIONS.map((pt) => ({ title: pt.label, body: `${pt.blurb}${minutes(pt.key) ? ` About ${minutes(pt.key)} minutes in Lesson 1.` : ''}` }));
+
+const bill = costTotals();
+const hands = CLASS_SIZE / GROUP;
+/* LEGO Education's own page gives both figures: one kit for four students, and a bundle for
+   24. They are the "cost" cell of its row in src/data/compare.ts. */
+const lego = options.find((o) => o.key === 'lego')!;
+const LEGO_CLASS = '$3,499';
+
+const questions = [
+  { q: 'Do we need a 3D printer?', a: 'Yes. The body of the hand is printed in ordinary PLA plastic, with no support material. The largest part of the current design is about 16 × 18 cm.' },
+  { q: 'What ages is it for?', a: '11 and up.' },
+  { q: 'How many students share a hand?', a: `A group of ${GROUP}. A class of ${CLASS_SIZE} needs ${hands} hands.` },
+  { q: 'What software does it use?', a: 'The Arduino IDE for programming and a CAD tool such as Tinkercad for drawing parts. Both are free.' },
+  { q: 'Do students need to know how to code?', a: 'No. Lesson 1 gives the whole program, with a note on every line saying what the line is for.' },
+  { q: 'What if a part breaks?', a: 'Print another. Every printed part can be made again on the same printer.' },
+  { q: 'How many lessons are there?', a: `One so far: Lesson 1, Build a Finger, about ${total} minutes over three sessions. Lessons 2 to 4 are being written.` },
+  { q: 'Can we buy one today?', a: 'Not yet. HelpingHand is a prototype and has not been used in a classroom. Write to us and tell us about your class.' },
+];
+---
+<Base title="For teachers" description="HelpingHand in a classroom: how a lesson runs, what a class set costs, what you need, and a demo of the teacher view.">
+  <PageHeader title="HelpingHand in your classroom." lede="How a lesson runs, what a class set costs, what you need, and how to see it for yourself.">
+    <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+      <span class="badge badge-demo">Prototype</span>
+      <span>Not yet used in a classroom.</span>
+    </p>
+    <div class="mt-7 flex flex-wrap gap-3">
+      <a class="btn btn-primary" href={demo('teacher')}>See the teacher view <Arrow /></a>
+      <a class="btn btn-secondary" href={KIT_REQUEST}>Request a kit</a>
+    </div>
+  </PageHeader>
+
+  <section class="section" id="class">
+    <SectionLabel>In class</SectionLabel>
+    <p class="statement mt-6">Every lesson has three parts. Each part is one class session.</p>
+    <ProcessRail steps={steps} class="mt-10" />
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a class="btn btn-primary" href={p('/lessons/beginner/01-finger-module/')}>Open Lesson 1 <Arrow /></a>
+      <a class="btn btn-secondary" href={demo('student', '/dashboard/student/simulator/')}>Try the simulator</a>
+    </div>
+  </section>
+
+  <section class="section" id="cost">
+    <SectionLabel>What it costs</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+      <div>
+        <p class="statement">{money(bill.total * hands)} in parts for a class of {CLASS_SIZE}.</p>
+        <p class="mt-4">One hand is {money(bill.total)} in parts and is shared by a group of {GROUP}, so a class of {CLASS_SIZE} needs {hands}.</p>
+        <p class="mt-4 text-rule">Ours is the cost of the parts of a prototype, not a selling price. LEGO Education's is its list price.</p>
+      </div>
+      <div>
+        <div class="table-scroll">
+          <table class="result-table">
+            <thead>
+              <tr><th scope="col">Kit</th><th scope="col" class="text-right!">For {GROUP} students</th><th scope="col" class="text-right!">For {CLASS_SIZE} students</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">HelpingHand</th>
+                <td class="result text-right! tabular-nums">{money(bill.total)}</td>
+                <td class="result text-right! font-bold tabular-nums">{money(bill.total * hands)}</td>
+              </tr>
+              <tr>
+                <th scope="row">{lego.maker}, {lego.name}</th>
+                <td class="text-right! tabular-nums">{lego.cost.text}</td>
+                <td class="text-right! tabular-nums">{LEGO_CLASS}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="meta mt-3">
+          <a class="link" href={p('/kit/#cost')}>Our cost table</a>.{' '}
+          {lego.cost.src && <>LEGO's prices: <a class="link" href={lego.cost.src.url} target="_blank" rel="noopener">{lego.cost.src.label}</a>.</>}
+          {' '}<a class="link" href={p('/problem/#compare')}>All five kits compared</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="need">
+    <SectionLabel>What you need</SectionLabel>
+    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+      <div>
+        <p class="statement">A 3D printer, a computer, and hex keys.</p>
+        <p class="mt-4"><a class="link" href={p('/kit/#parts')}>Every part of the hand</a>, printed and bought, is listed on The Kit.</p>
+      </div>
+      <ul class="border-t border-navy">
+        {needs.map((n) => (
+          <li class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[11rem_1fr]">
+            <p class="font-semibold">{n.item}</p>
+            <p class="text-rule">{n.note}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="demo">
+    <SectionLabel>See it for yourself</SectionLabel>
+    <div class="columns mt-8">
+      <div>
+        <h3 class="text-xl">The teacher view</h3>
+        <p class="mt-2 text-rule">A made-up class of 20: who has finished which part of Lesson 1, and what is assigned.</p>
+        <a class="btn btn-primary mt-5" href={demo('teacher')}>See the teacher view</a>
+      </div>
+      <div>
+        <h3 class="text-xl">Teacher notes</h3>
+        <p class="mt-2 text-rule">Lesson 1 has them on every part: timing, common mistakes, and an answer key.</p>
+        <a class="btn btn-secondary mt-5" href={demo('teacher', '/lessons/beginner/01-finger-module/software/')}>Read a lesson with its notes</a>
+      </div>
+      <div>
+        <h3 class="text-xl">The simulator</h3>
+        <p class="mt-2 text-rule">What a student does before the kit is on the table: six steps, from a see-saw to the finger.</p>
+        <a class="btn btn-secondary mt-5" href={demo('student', '/dashboard/student/simulator/')}>Try the simulator</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="questions">
+    <SectionLabel>Questions</SectionLabel>
+    <dl class="mt-8 max-w-4xl border-t border-navy">
+      {questions.map((x) => (
+        <div class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[18rem_1fr]">
+          <dt class="font-semibold">{x.q}</dt>
+          <dd class="text-rule">{x.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
+    <div class="wrap py-14 md:py-20">
+      <SectionLabel>Talk to us</SectionLabel>
+      <div class="mt-8 grid gap-x-16 gap-y-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
+        <p class="statement text-white">Kits are not for sale yet. Tell us your school, the grade and the class size.</p>
+        <div>
+          <p class="text-(--on-navy-soft)">“Request a kit” starts an email to all four of us, with those questions already in it.</p>
+          <a class="btn btn-primary mt-6" href={KIT_REQUEST}>Request a kit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

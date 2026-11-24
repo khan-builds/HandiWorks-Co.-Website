@@ -8,6 +8,7 @@ const links = [
   { key: 'problem', href: p('/problem/'), label: 'The Problem' },
   { key: 'kit', href: p('/kit/'), label: 'The Kit' },
   { key: 'lessons', href: p('/lessons/beginner/'), label: 'Lessons' },
+  { key: 'teachers', href: p('/teachers/'), label: 'For teachers' },
   { key: 'roadmap', href: p('/roadmap/'), label: 'Roadmap' },
   { key: 'team', href: p('/team/'), label: 'Team' },
 ];
@@ -27,14 +28,14 @@ const isActive = (key: string) => path.includes(`/${key}/`);
           <a href={l.href} class:list={['nav-link', { active: isActive(l.key) }]} aria-current={isActive(l.key) ? 'page' : undefined}>{l.label}</a>
         ))}
         <a id="nav-switch" href={p('/signin/')} class="nav-link" hidden>Switch role</a>
-        <a id="nav-auth" href={p('/signin/')} class="btn btn-on-navy nav-cta">Sign in</a>
+        <a id="nav-auth" href={p('/signin/')} class="btn btn-on-navy nav-cta">Classroom demo</a>
       </nav>
     </div>
   </div>
 </header>
 
 <script is:inline>
-  // Runs before the first paint, so the button never flashes "Sign in" for someone in the demo.
+  // Runs before the first paint, so the button never flashes "Classroom demo" for someone already in it.
   (() => {
     const header = document.querySelector('[data-nav]');
     const base = (header.dataset.base || '/').replace(/\/+$/, '');

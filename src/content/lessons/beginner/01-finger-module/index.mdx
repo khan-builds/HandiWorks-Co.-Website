@@ -2,16 +2,18 @@
 track: beginner
 number: 1
 title: Build a Finger
-summary: Draw one finger in five CAD steps, wire a servo to an Arduino Mega, and make the finger open and close.
+summary: Draw one finger in five CAD steps, wire a DC motor to an Arduino Mega, and make the finger open and close.
 status: published
 durationMinutes: 120
-concepts: [Joints, Links, Servos]
+concepts: [Joints, Links, DC motors]
 materials:
   - { name: "Arduino Mega 2560", quantity: 1, note: "with a USB cable" }
-  - { name: "Positional servo", quantity: 1, note: "signal, power, and ground wires" }
+  - { name: "Adafruit Motor Shield", quantity: 1, note: "it sits on top of the Mega" }
+  - { name: "DC motor", quantity: 1, note: "the one in the finger module" }
+  - { name: "Battery", quantity: 1, note: "7.2 V, for the motor" }
   - { name: "Push button", quantity: 1 }
-  - { name: "Jumper wires", quantity: 6 }
-  - { name: "Computer", quantity: 1, note: "Arduino IDE and a CAD tool that opens STL files, such as Tinkercad" }
+  - { name: "Jumper wires", quantity: 2 }
+  - { name: "Computer", quantity: 1, note: "the free Arduino IDE, and a CAD tool such as Tinkercad" }
 modelSrc: /models/lesson-1/05-finished-finger.glb
 modelCaption: The finished finger, from step 5 of the CAD part
 ---
@@ -19,26 +21,31 @@ import Callout from '../../../../components/Callout.astro';
 import TeacherNotes from '../../../../components/TeacherNotes.astro';
 import TeacherOnly from '../../../../components/TeacherOnly.astro';
 
-{/* Lesson 1 is Billy's, ported from the version-1 branch on 2026-11-17 with his wording.
-    It stays "Draft · under team review" until `reviewed: true` is set above. */}
+{/* Lesson 1 is Billy's, ported from the version-1 branch on 2026-11-17 with his wording. On
+    2026-11-24 Lingbo said the hand uses DC motors, so the hardware and software parts were
+    rewritten from a servo to one DC motor on the motor shield. The page says
+    "Demo · subject to change" until `reviewed: true` is set above.
+    Two sentences in the "New words" box are quoted by The Problem's comparison
+    (src/data/ratings.ts): keep "A joint is a round hole with a pin through it." and
+    "A link is a bar that swings on a joint." word for word. */}
 
 This lesson has three parts. First you draw the finger. Then you wire it. Then you program it.
 
 The finished finger is about 11.5 inches long (291 mm).
 
 <Callout type="note" title="New words">
-A **joint** is a round hole with a pin through it. A **link** is a bar that swings on a joint. The **servo** is the motor that moves the links.
+A **joint** is a round hole with a pin through it. A **link** is a bar that swings on a joint. The **motor** turns to move the links. **CAD** is drawing a part in 3D on a computer.
 </Callout>
 
 ## What you will have
 
-A finger model that matches the finished example, and a Mega that opens and closes a servo when the button is pressed.
+A finger model that matches the finished example, and a Mega that closes the finger on one press of the button and opens it on the next.
 
 <TeacherNotes>
 <TeacherOnly title="Timing guide">
 - CAD, steps 1–5: 45 min
 - Wiring: 25 min
-- Sketch, upload, and angle tuning: 35 min
+- Program, upload, and tuning the run time: 35 min
 - Test and questions: 15 min
 </TeacherOnly>
 </TeacherNotes>

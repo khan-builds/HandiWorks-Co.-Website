@@ -271,19 +271,6 @@
   /* Square for an objective the reader has not ticked off yet. */
   .tick { display: inline-block; flex: none; margin-top: 0.42em; width: 0.8125rem; height: 0.8125rem; border: 1.5px solid var(--color-navy); }
 
-  /* ---------- Lesson row: a numbered point that is also a link ---------- */
-  .lesson-row { position: relative; display: grid; gap: 0.875rem 2rem; margin-left: 1.25rem; padding: 1.25rem 1.5rem 1.25rem 2.5rem; width: auto; }
-  .lesson-num { position: absolute; left: -1.25rem; top: 1.125rem; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 1.0625rem; font-weight: 600; line-height: 1; }
-  .lesson-title { font-size: 1.3125rem; }
-  .lesson-summary { margin-top: 0.375rem; max-width: 58ch; font-size: 0.9375rem; line-height: 1.5; color: var(--color-rule); }
-  .lesson-parts { display: flex; flex-wrap: wrap; gap: 0.375rem 1.125rem; font-size: 0.8125rem; font-weight: 500; }
-  .lesson-parts > li { display: inline-flex; align-items: center; gap: 0.4rem; }
-  .lesson-row > .badge { justify-self: start; }
-  @media (min-width: 56rem) {
-    .lesson-row { grid-template-columns: minmax(0, 1fr) auto 7.5rem; align-items: center; }
-    .lesson-row > .badge { justify-self: end; }
-  }
-
   /* ---------- Process rail: numbered steps on one navy line ---------- */
   .process-rail { position: relative; display: grid; gap: 2rem; }
   .process-rail > li { position: relative; padding-left: 3.5rem; }
@@ -330,14 +317,16 @@
   .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
   .nav-cta { min-height: 2.25rem; margin-left: 0.75rem; padding: 0.25rem 1rem; font-size: 0.875rem; white-space: nowrap; }
   .nav-toggle { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.25rem 0.875rem; border: 1px solid var(--color-white); color: var(--color-white); font-size: 0.875rem; font-weight: 600; }
-  /* The row has to hold seven links and "Teacher dashboard" once a role is set: the company
-     name gives way first, then the links fold into the menu. */
-  @media (max-width: 68.74rem) {
+  /* The row holds six links and a button, "Teacher dashboard" at its widest: the company
+     name gives way first, then the links fold into the menu. "Switch role" is in the menu
+     only; on a wide screen the strip under a dashboard's title carries it. */
+  @media (max-width: 71.99rem) {
     .wordmark-co { display: none; }
   }
   @media (min-width: 64rem) {
     .nav-links { display: flex; }
     .nav-toggle { display: none; }
+    #nav-switch { display: none; }
   }
   @media (max-width: 63.99rem) {
     .nav-links.is-open { position: absolute; left: -1.25rem; right: -1.25rem; top: 100%; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0.5rem 1.25rem 1.25rem; background: var(--color-navy); border-top: 1px solid var(--navy-line); border-bottom: 1px solid var(--navy-line); }
@@ -414,7 +403,7 @@
   .prose-hh .teacher-note h3 { margin: 0 0 0.5rem; font-size: 1.125rem; }
   .prose-hh .teacher-note > :last-child { margin-bottom: 0; }
   .prose-hh .teacher-note code { background: var(--color-white); }
-  .prose-hh .teacher-notes-hint { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--color-edge); }
+  .prose-hh .teacher-notes-hint { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--color-edge); }
 }
 
 /* ---------- Motion: lines draw ----------
