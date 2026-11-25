@@ -16,7 +16,7 @@ import ModelViewer from '../components/ModelViewer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import CircuitDiagram from '../components/CircuitDiagram.astro';
 import { p, KIT_REQUEST } from '../lib/url';
-import { cost, costTotals, money } from '../data/compare';
+import { cost, costTotals, money, about } from '../data/compare';
 import { printed, bought, CLASS_SIZE, GROUP } from '../data/kit';
 
 const specs = [
@@ -52,6 +52,9 @@ const classHands = CLASS_SIZE / GROUP;
       <div>
         <p class="statement">Four fingers, a thumb, and everything that drives them.</p>
         <p class="measure mt-5">Each finger is its own module with its own motor. The modules sit side by side in the palm, the thumb slides on beside them, and the electronics sit under one curved shell that is the back of the hand.</p>
+        {/* The size, where a reader meets the hand (2026-11-25): it was only in the row that
+            opens, and the hand is larger than the word suggests. The numbers are the Size row's. */}
+        <p class="measure mt-4">Lying flat with the thumb out it is about 32 × 26 cm (12.6 × 10.2 in), a little larger than a sheet of printer paper, and 11 cm (4.3 in) thick. <a class="link" href={p('/team/#next')}>Making it about half that size</a> is on the team's list.</p>
         <p class="measure mt-4 text-rule">The grey parts are the screws and nuts. The motors and the boards are inside, out of sight.</p>
       </div>
       <ModelViewer
@@ -85,8 +88,8 @@ const classHands = CLASS_SIZE / GROUP;
     <SectionLabel>What it costs</SectionLabel>
     <div class="split">
       <div>
-        <p class="statement">{money(bill.total)} in parts for one hand.</p>
-        <p class="measure mt-5">That is every part the team has priced, the plastic for the printed parts, and a fifth on top for what is not listed yet. One hand is shared by a group of {GROUP} students, so a class of {CLASS_SIZE} needs {classHands} hands: <strong>{money(bill.total * classHands)}</strong>.</p>
+        <p class="statement">{about(bill.total, true)} in parts for one hand.</p>
+        <p class="measure mt-5">The team's table comes to {money(bill.total)}: every part the team has priced, the plastic for the printed parts, and a fifth on top for what is not listed yet. One hand is shared by a group of {GROUP} students, so a class of {CLASS_SIZE} needs {classHands} hands: <strong>{about(bill.total * classHands)}</strong>.</p>
         <p class="measure mt-4 text-rule">It is the cost of the parts of the current prototype, not a selling price.</p>
         <p class="mt-4"><a class="link" href={p('/problem/#compare')}>See it beside five other kits</a></p>
       </div>
@@ -124,8 +127,10 @@ const classHands = CLASS_SIZE / GROUP;
   </section>
 
   <section class="section" id="parts">
-    <SectionLabel>What is in the box</SectionLabel>
-    <p class="statement">Every part of one hand is either printed or bought.</p>
+    {/* Not "What is in the box": nothing is sold yet, and who prints the printed parts is not
+        decided (src/data/kit.ts). */}
+    <SectionLabel>What one hand is made of</SectionLabel>
+    <p class="statement">The body is printed. The rest is bought.</p>
     <div class="mt-8 grid gap-x-16 gap-y-10 lg:grid-cols-2">
       <div>
         <h3 class="text-lead">Printed</h3>
@@ -196,9 +201,9 @@ const classHands = CLASS_SIZE / GROUP;
     <div class="wrap">
       <SectionLabel>Request a kit</SectionLabel>
       <div class="split">
-        <p class="statement text-white">Kits are not for sale yet. Tell us about your class.</p>
+        <p class="statement text-white">Kits are not for sale yet.</p>
         <div>
-          <p class="measure text-(--on-navy-soft)">“Request a kit” starts an email to all four of us, with the three things we need to know already asked: your school, the grade and the class size.</p>
+          <p class="measure text-(--on-navy-soft)">Tell us your school, the grade and the class size.</p>
           <a class="btn btn-primary mt-6" href={KIT_REQUEST}>Request a kit</a>
         </div>
       </div>

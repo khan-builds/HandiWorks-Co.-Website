@@ -243,7 +243,8 @@ tabs.forEach((tab, i) => tab.addEventListener('click', () => show(i)));
 back.addEventListener('click', () => show(at - 1));
 next.addEventListener('click', () => show(at + 1));
 
-show(0);
+// A link can name its step: .../simulator/#step-3 opens "A four-bar". Lesson 1's "Change it" does.
+show(Number(/^#step-([1-6])$/.exec(location.hash)?.[1] ?? 1) - 1);
 root.dataset.ready = 'steps';
 
 // The sixth step needs the hand's own data: its tables for the drawing, its parts for the picture.

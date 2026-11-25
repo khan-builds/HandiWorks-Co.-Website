@@ -22,8 +22,8 @@ const roles = [
       if (role !== 'teacher' && role !== 'student') return;
       try { localStorage.setItem('hh-role', role); } catch {}
       const root = base.replace(/\/+$/, '');
-      // Only a plain path inside this site is followed.
-      const inside = to && /^\/[a-z0-9\-\/]*$/i.test(to) && !to.startsWith('//');
+      // Only a plain path inside this site is followed, with or without a #place on that page.
+      const inside = to && /^\/[a-z0-9\-\/]*(#[a-z0-9\-]*)?$/i.test(to) && !to.startsWith('//');
       location.replace(root + (inside ? to : `/dashboard/${role}/`));
     })();
   </script>

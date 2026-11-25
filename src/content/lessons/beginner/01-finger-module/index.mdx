@@ -2,11 +2,12 @@
 track: beginner
 number: 1
 title: Build a Finger
-summary: Draw one finger in five CAD steps, wire a DC motor to an Arduino Mega, and make the finger open and close.
+summary: Draw one finger in five CAD steps, change one link yourself, wire a DC motor to an Arduino Mega, and make the finger open and close.
 status: published
-durationMinutes: 120
+durationMinutes: 130
 concepts: [Joints, Links, DC motors]
 materials:
+  - { name: "Finger module", quantity: 1, note: "printed and assembled before the Hardware part" }
   - { name: "Arduino Mega 2560", quantity: 1, note: "with a USB cable" }
   - { name: "Adafruit Motor Shield", quantity: 1, note: "it sits on top of the Mega" }
   - { name: "DC motor", quantity: 1, note: "the one in the finger module" }
@@ -39,11 +40,17 @@ A **joint** is a round hole with a pin through it. A **link** is a bar that swin
 
 ## What you will have
 
-A finger model that matches the finished example, and a Mega that closes the finger on one press of the button and opens it on the next.
+A finger model that matches the finished example, a copy of it with one change of your own, and a Mega that closes the finger on one press of the button and opens it on the next.
 
 <TeacherNotes>
+{/* Added on 2026-11-25: the lesson draws a finger in part 1 and wires one in part 2, and
+    nothing said where the printed one comes from. The print time is not known: the team owes it. */}
+<TeacherOnly title="Before class">
+Each group needs one finger module, printed and assembled, before the Hardware part. The CAD part draws the finger. It does not print it. How long one finger takes to print has not been measured yet.
+</TeacherOnly>
 <TeacherOnly title="Timing guide">
 - CAD, steps 1–5: 45 min
+- CAD, Change it: 10 min
 - Wiring: 25 min
 - Program, upload, and tuning the run time: 35 min
 - Test and questions: 15 min

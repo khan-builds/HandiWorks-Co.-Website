@@ -2,8 +2,10 @@
 /** The team, and what it does next. Since 2026-11-25 the Roadmap is a section of this page
     ("Roadmap", `#next`): on its own it was four lines, and /roadmap/ now sends the reader here.
     The four next steps are from the team's final prototype poster (24 Nov 2026), in the
-    poster's own words and order. Nothing in them is invented: no dates, no owners, no detail
-    the poster does not give. A fuller roadmap is still Lingbo's to write.
+    poster's order. Since 2026-11-25 each is a plain sentence and not the poster's shorthand
+    ("Finalize website backend"). Nothing in them is invented: no dates, no owners. The one
+    thing added is what the backend is for, real accounts, which the dashboards already say
+    are missing. A fuller roadmap is still Lingbo's to write.
     Each person's address is on their row and in the footer of every page. "Talk to us" is
     the one button that writes to all four. */
 import Base from '../layouts/BaseLayout.astro';
@@ -15,10 +17,10 @@ import { team } from '../lib/team';
 const initials = (name: string) => name.split(' ').map((w) => w[0]).join('');
 
 const nextSteps = [
-  'Feedback on Lesson 1 and Design',
-  'Scale size of hand down by ~50%',
-  'Finalize website backend',
-  'Draft next lessons 2-4',
+  'Get feedback on Lesson 1 and on the hand’s design.',
+  'Make the hand about half its current size.',
+  'Finish the website’s backend, so a class signs in with real accounts.',
+  'Write Lessons 2 to 4.',
 ];
 ---
 <Base title="Team" description="The four people behind HelpingHand and HandiWorks Co., and what they do next.">
@@ -68,7 +70,7 @@ const nextSteps = [
       <div class="split">
         <p class="statement text-white">Teachers, schools, and makers: we want to hear what you would do with a hand like this.</p>
         <div>
-          <p class="measure text-(--on-navy-soft)">Kits are not for sale yet. Tell us your school, the grade and the class size. “Request a kit” reaches all four of us.</p>
+          <p class="measure text-(--on-navy-soft)">Kits are not for sale yet. Tell us your school, the grade and the class size.</p>
           <a class="btn btn-primary mt-6" href={KIT_REQUEST}>Request a kit</a>
         </div>
       </div>

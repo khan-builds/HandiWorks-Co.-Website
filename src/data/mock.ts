@@ -36,10 +36,13 @@ export const students: { name: string; cad: Status; hardware: Status; software: 
     Titles and paths must match the real Lesson 1 pages. */
 export const LESSON_1 = { title: 'Lesson 1 · Build a Finger', path: '/lessons/beginner/01-finger-module/' };
 
+/* `due` follows the word "Due" on the page. Counted from today, not a calendar date, since
+   2026-11-25: the dates had been Nov 10, 14 and 19, so on the day of the presentation the
+   class would have looked three weeks behind. */
 export const assignments: { title: string; due: string; portion: PortionKey }[] = [
-  { title: 'Lesson 1 · CAD', due: 'Nov 10', portion: 'cad' },
-  { title: 'Lesson 1 · Hardware', due: 'Nov 14', portion: 'hardware' },
-  { title: 'Lesson 1 · Software', due: 'Nov 19', portion: 'software' },
+  { title: 'Lesson 1 · CAD', due: 'in 2 days', portion: 'cad' },
+  { title: 'Lesson 1 · Hardware', due: 'in 6 days', portion: 'hardware' },
+  { title: 'Lesson 1 · Software', due: 'in 11 days', portion: 'software' },
 ];
 
 export const studentPersona = {
@@ -48,8 +51,8 @@ export const studentPersona = {
   className: demoClass.name,
   progress: { cad: 'done' as Status, hardware: 'in-progress' as Status, software: 'not-started' as Status },
   assigned: [
-    { title: 'Lesson 1 · Hardware', due: 'Nov 14', path: '/lessons/beginner/01-finger-module/hardware/' },
-    { title: 'Lesson 1 · Software', due: 'Nov 19', path: '/lessons/beginner/01-finger-module/software/' },
+    { title: 'Lesson 1 · Hardware', due: 'in 6 days', path: '/lessons/beginner/01-finger-module/hardware/' },
+    { title: 'Lesson 1 · Software', due: 'in 11 days', path: '/lessons/beginner/01-finger-module/software/' },
   ],
   bookmarks: [
     { title: 'Lesson 1 · CAD', path: '/lessons/beginner/01-finger-module/cad/' },

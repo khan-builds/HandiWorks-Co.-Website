@@ -135,10 +135,13 @@ export const options: Option[] = [
     maker: 'HandiWorks Co.',
     ours: true,
     reach: { text: 'Prototype', detail: 'Not yet used in a classroom.' },
-    cost: { text: '$153.41', detail: 'Parts for one hand, for 4 students.', src: { label: 'Our cost table, on The Kit', url: '/kit/#cost' } },
+    /* Rounded, and "parts, not a price" in the row itself (Lingbo, 2026-11-25): the total is
+       $153.41 with a fifth of it contingency, and the rows beside it are selling prices. The
+       exact table is on The Kit. Typed here, not computed: `cost` is defined further down. */
+    cost: { text: 'About $150', detail: 'Parts for one hand, for 4 students. Parts, not a price.', src: { label: 'Our cost table, on The Kit', url: '/kit/#cost' } },
     ages: { text: 'Ages 11 and up' },
     more: { text: 'Print more parts', detail: 'Each added finger needs one more motor.' },
-    build: { kind: 'guided', tag: 'Guided: the student draws the parts', text: 'Five CAD steps, each saying what the part is for', src: { label: 'Lesson 1, Draw the finger', url: '/lessons/beginner/01-finger-module/cad/' } },
+    build: { kind: 'guided', tag: 'Guided: the student draws the parts', text: 'Five CAD steps, each saying what the part is for, then one change of the student’s own', src: { label: 'Lesson 1, Draw the finger', url: '/lessons/beginner/01-finger-module/cad/' } },
     circuits: { text: 'Lesson 1: a DC motor and a button. The rest * (WIP)', src: { label: 'Lesson 1, Wire the Arduino Mega', url: '/lessons/beginner/01-finger-module/hardware/' } },
     code: { text: 'Lesson 1: one Arduino program. The rest * (WIP)', src: { label: 'Lesson 1, Program the finger', url: '/lessons/beginner/01-finger-module/software/' } },
     good: '',
@@ -326,6 +329,10 @@ export const cost = {
   date: '24 Nov 2026',
   src: { label: 'NYU Tandon EG1004 price list', url: 'https://eg.poly.edu/' },
 };
+/** How the price is said in a headline or beside another maker's price: to the nearest $10,
+ *  with "about", because a fifth of the total is contingency. The table on The Kit keeps the
+ *  cents. Lingbo chose this on 2026-11-25. */
+export const about = (x: number, cap = false) => `${cap ? 'About' : 'about'} $${(Math.round(x / 10) * 10).toLocaleString('en-US')}`;
 export const money = (x: number) => `$${x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 export function costTotals() {
   const parts = cost.rows.reduce((s, r) => s + r.qty * r.unit, 0);

@@ -6,6 +6,9 @@
     own pages.
     Since 2026-11-25 the main flow is short: the two figures in the header, three more, the
     argument with its drawing, and a comparison of four plain columns with HelpingHand first.
+    The figures it leads with are about hands-on work in class and what a kit costs, not about
+    competition teams (Lingbo, 2026-11-25): the page ends by saying HelpingHand does not
+    replace competition robotics, so it should not open on how few schools have a team.
     What backs it is one click away and off the main flow: the ratings and the rules in the
     "How we compare" window, and the figures, the research and the sources in three rows that
     open. The motion is Anime.js (src/scripts/problem/motion.ts), on this page only: the page
@@ -14,7 +17,7 @@ import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import Stat from '../components/Stat.astro';
-import { p } from '../lib/url';
+import { p, demo } from '../lib/url';
 import { headline, sections, uncounted, notes, gap } from '../data/evidence';
 import { options, manual, research, guidance, market, strip, totals, GROUPS, LISTS, RATINGS, CHECKED, CONCEPT_COUNT, type Option, type Src, type Mark } from '../data/compare';
 import { LEFT, RIGHT, SHAPES, pose, trace } from '../scripts/problem/linkage';
@@ -48,14 +51,14 @@ for (const f of [gap, ...headline, ...figures, notes.retired, notes.nextSurvey])
 for (const o of others) for (const c of [o.reach, o.cost, o.ages, o.more, o.build, o.circuits, o.code]) cite(c.src);
 for (const r of research) cite(r.src);
 [guidance.src, market, manual.about, manual.advice].forEach(cite);
-const widest = Math.max(gap.highPoverty.fill, gap.lowPoverty.fill);
+const widest = Math.max(gap.first.fill, gap.second.fill);
 
 /* The drawing. Its still form is the linkage a third of the way round, with the path its
    fingertip draws; the script moves the same parts. */
 const still = pose(2.1, SHAPES[0]);
 const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
 ---
-<Base title="The Problem" description="Few schools have robotics, and the kits they can buy have students follow a manual. With a source for every number.">
+<Base title="The Problem" description="Few students build anything in class, and the kits schools can buy have students follow a manual. With a source for every number.">
   <PageHeader
     title="Robotics currently isn’t hands-on for everyone."
     lede="Popular robotics kits for young students can be extremely costly, creating a high barrier for entry for schools that want to invest in engineering programs. Furthermore, many existing robotics kits are uninspired, having students follow a manual."
@@ -65,7 +68,7 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
     <div slot="aside" class="w-full max-w-md lg:w-[26rem]" data-reveal data-count>
       <p class="stat-caption">{gap.caption}</p>
       <div class="mt-5 grid grid-cols-2 gap-x-8">
-        {[gap.highPoverty, gap.lowPoverty].map((g, i) => (
+        {[gap.first, gap.second].map((g, i) => (
           <div class="grid grid-rows-subgrid row-span-3">
             <p class:list={['stat-number', i === 1 && 'stat-number-plain']}>{g.value}</p>
             <p class="stat-label-caps mt-3" title={g.label}>{g.short}</p>
@@ -73,17 +76,17 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
           </div>
         ))}
       </div>
-      <p class="stat-source pt-6!">{gap.detail} From a national survey of schools: <a href={gap.url} target="_blank" rel="noopener">{gap.source}</a>, {gap.year}</p>
+      <p class="stat-source pt-6!">{gap.detail} <a href={gap.url} target="_blank" rel="noopener">{gap.source}</a>, {gap.year}</p>
     </div>
   </PageHeader>
 
   <section class="section">
-    <SectionLabel>Few schools have it</SectionLabel>
-    <p class="statement">Most middle schools have no team in any engineering competition, robotics included.</p>
+    <SectionLabel>In most classrooms</SectionLabel>
+    <p class="statement">Engineering is rare in class, few teachers were taught it, and a kit for four students costs over $500.</p>
     <div class="stat-group mt-8" data-count>
       {headline.map((f) => <Stat figure={f} variant="panel" />)}
     </div>
-    <p class="meta measure mt-4">The school figures are from the 2018 NSSME+, a national survey of 1,273 schools and 7,600 teachers and the most recent of its kind.</p>
+    <p class="meta measure mt-4">The class and teacher figures are from the 2018 NSSME+, a national survey of 1,273 schools and 7,600 teachers and the most recent of its kind.</p>
   </section>
 
   <section class="section">
@@ -128,7 +131,7 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
             <circle class="duo-pin" data-pin-c cx={still.c[0].toFixed(1)} cy={still.c[1].toFixed(1)} r="4" />
             <circle class="duo-tip" data-tip cx={still.tip[0].toFixed(1)} cy={still.tip[1].toFixed(1)} r="6" />
           </svg>
-          <figcaption><strong>Change one bar.</strong> A different motion every time. <a class="link" href={p('/dashboard/student/simulator/')}>Try it in the Simulator</a> (a demo: sign in as a student).</figcaption>
+          <figcaption><strong>Change one bar.</strong> A different motion every time. <a class="link" href={demo('student', '/dashboard/student/simulator/')}>Try it in the simulator</a>.</figcaption>
         </figure>
       </div>
     </div>
@@ -265,6 +268,9 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
       <button type="button" class="btn btn-secondary method-close" data-method-close>Close</button>
     </div>
     <div class="method-body">
+      {/* The first thing in the window (Lingbo, 2026-11-25): the mechanics count puts one
+          lesson beside finished curricula, and a reader should know that before the numbers. */}
+      <p class="method-frame"><strong>HelpingHand has one lesson so far. The others are finished curricula.</strong> The counts below are what Lesson 1 and the simulator teach today. What is planned and not taught yet is marked * (WIP).</p>
       <p>Checked on 24 Nov 2026. Say so if a cell is wrong: <a class="link" href={p('/team/')}>the team’s addresses are on the Team page</a>.</p>
 
       <h3>Mechanics, circuits and code</h3>
@@ -410,7 +416,10 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
         </div>
         <ol class="numbered on-navy">
           <li>Provide a <strong>scalable</strong> framework that evolves alongside the learner.</li>
-          <li>Offer an <strong>affordable</strong> and <strong>accessible</strong> alternative to traditional robotics kits (FIRST, VEX, LEGO, etc.)</li>
+          {/* The poster's second objective names "(FIRST, VEX, LEGO, etc.)". FIRST is a competition,
+              and the sentence beside this list says we do not replace those: Lingbo took it out
+              of the list here on 2026-11-25. */}
+          <li>Offer an <strong>affordable</strong> and <strong>accessible</strong> alternative to traditional robotics kits (VEX, LEGO, etc.)</li>
         </ol>
       </div>
       <div class="mt-8 flex flex-wrap gap-3">
@@ -533,6 +542,7 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
   @media (min-width: 48rem) { .method-head { padding-inline: 2rem; } .method-body { padding: 1.75rem 2rem 2.5rem; } }
   .method-body > :is(p, ul, ol) { max-width: 34.5rem; }
   .method-body > :is(p, ul, ol) + :is(p, ul, ol) { margin-top: 1rem; }
+  .method-body > .method-frame { max-width: 44rem; padding: 0.875rem 1rem; border: 1px solid var(--color-navy); }
   .method-body > h3 { margin-top: 3rem; font-size: var(--t-lead); }
   .method-body > h3 + * { margin-top: 0.75rem; }
   /* A link in the window is taller than its line of text, so it is easy to hit. */

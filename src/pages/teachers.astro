@@ -14,7 +14,7 @@ import ProcessRail from '../components/ProcessRail.astro';
 import Arrow from '../components/Arrow.astro';
 import { p, asset, demo, KIT_REQUEST } from '../lib/url';
 import { PORTIONS } from '../lib/lessons';
-import { options, costTotals, money } from '../data/compare';
+import { options, costTotals, about } from '../data/compare';
 import { needs, CLASS_SIZE, GROUP } from '../data/kit';
 
 const LESSON_1 = 'beginner/01-finger-module';
@@ -31,14 +31,13 @@ const lego = options.find((o) => o.key === 'lego')!;
 const LEGO_CLASS = '$3,499';
 
 const questions = [
-  { q: 'Do we need a 3D printer?', a: 'Yes. The body of the hand is printed in ordinary PLA plastic, with no support material. The largest part of the current design is about 16 × 18 cm.' },
+  /* Five questions since 2026-11-25. The three that went (a 3D printer, how many share a hand,
+     which software) were each answered by a section just above this one. */
   { q: 'What ages is it for?', a: '11 and up.' },
-  { q: 'How many students share a hand?', a: `A group of ${GROUP}. A class of ${CLASS_SIZE} needs ${hands} hands.` },
-  { q: 'What software does it use?', a: 'The Arduino IDE for programming and a CAD tool such as Tinkercad for drawing parts. Both are free.' },
   { q: 'Do students need to know how to code?', a: 'No. Lesson 1 gives the whole program, with a note on every line saying what the line is for.' },
   { q: 'What if a part breaks?', a: 'Print another. Every printed part can be made again on the same printer.' },
   { q: 'How many lessons are there?', a: `One so far: Lesson 1, Build a Finger, about ${total} minutes over three sessions. Lessons 2 to 4 are being written.` },
-  { q: 'Can we buy one today?', a: 'Not yet. HelpingHand is a prototype and has not been used in a classroom. Write to us and tell us about your class.' },
+  { q: 'Can we buy one today?', a: 'Not yet. Write to us and tell us about your class.' },
 ];
 ---
 <Base title="For teachers" description="HelpingHand in a classroom: how a lesson runs, what a class set costs, what you need, and a demo of the teacher view.">
@@ -69,8 +68,8 @@ const questions = [
     <SectionLabel>What it costs</SectionLabel>
     <div class="split">
       <div>
-        <p class="statement">{money(bill.total * hands)} in parts for a class of {CLASS_SIZE}.</p>
-        <p class="measure mt-5">One hand is {money(bill.total)} in parts and is shared by a group of {GROUP}, so a class of {CLASS_SIZE} needs {hands}.</p>
+        <p class="statement">{about(bill.total * hands, true)} in parts for a class of {CLASS_SIZE}.</p>
+        <p class="measure mt-5">One hand is {about(bill.total)} in parts and is shared by a group of {GROUP}, so a class of {CLASS_SIZE} needs {hands}.</p>
         <p class="measure mt-4 text-rule">Ours is the cost of the parts of a prototype, not a selling price. LEGO Education's is its list price.</p>
       </div>
       <div>
@@ -81,9 +80,9 @@ const questions = [
             </thead>
             <tbody>
               <tr>
-                <th scope="row">HelpingHand</th>
-                <td class="result text-right! tabular-nums">{money(bill.total)}</td>
-                <td class="result text-right! font-bold tabular-nums">{money(bill.total * hands)}</td>
+                <th scope="row">HelpingHand <span class="block text-small font-normal text-rule">Parts, not a price</span></th>
+                <td class="result text-right! tabular-nums">{about(bill.total, true)}</td>
+                <td class="result text-right! font-bold tabular-nums">{about(bill.total * hands, true)}</td>
               </tr>
               <tr>
                 <th scope="row">{lego.maker}, {lego.name}</th>
@@ -151,9 +150,9 @@ const questions = [
     <div class="wrap">
       <SectionLabel>Talk to us</SectionLabel>
       <div class="split">
-        <p class="statement text-white">Kits are not for sale yet. Tell us your school, the grade and the class size.</p>
+        <p class="statement text-white">Kits are not for sale yet.</p>
         <div>
-          <p class="measure text-(--on-navy-soft)">“Request a kit” starts an email to all four of us, with those questions already in it.</p>
+          <p class="measure text-(--on-navy-soft)">Tell us your school, the grade and the class size.</p>
           <a class="btn btn-primary mt-6" href={KIT_REQUEST}>Request a kit</a>
         </div>
       </div>

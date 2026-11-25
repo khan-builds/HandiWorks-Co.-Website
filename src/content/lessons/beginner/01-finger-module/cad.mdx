@@ -4,9 +4,11 @@ title: Draw the finger
 objectives:
   - Grow the finger in five CAD steps and compare each step to the example
   - Point to the base, the drive bar, the joints, and the fingertip
-durationMinutes: 45
+  - Change one link, predict what it will do, and check the prediction
+durationMinutes: 55
 status: published
 ---
+import { demo } from '../../../../lib/url';
 import ModelViewer from '../../../../components/ModelViewer.astro';
 import Callout from '../../../../components/Callout.astro';
 import TeacherNotes from '../../../../components/TeacherNotes.astro';
@@ -70,9 +72,28 @@ Turn both models all the way around. Check the base, the drive bar, every joint,
 If a piece looks wrong, go back one step and fix that piece only. Do not start the whole finger over.
 </Callout>
 
+{/* Added on 2026-11-25, not Billy's: the five steps above copy an example, and the site's own
+    claim is that a student changes the design and predicts what it does. This is the smallest
+    step that makes that true in Lesson 1. It uses step 3 of the simulator, "A four-bar",
+    whose "Length of the crank" slider shows how far the far bar swings. Billy to review. */}
+
+## Change it
+
+The five steps gave you the team's finger. Now make one change of your own. How long a bar is decides how far the next bar swings.
+
+1. **Predict.** A short bar drives a longer bar through a rod. If you make the short bar longer, will the far bar swing further, less far, or the same? Write your guess down.
+2. **Test.** Open <a class="link" href={demo('student', '/dashboard/student/simulator/#step-3')}>step 3 of the simulator, “A four-bar”</a>. Slide **Length of the crank** and read how many degrees the far bar swings.
+3. **Change your finger.** Save a copy of your CAD file. In the copy, make one link 10 mm longer or shorter. Write one sentence: what will the fingertip do differently, and why?
+
+Keep both files. The first one matches the example. The copy is your own design.
+
 <TeacherNotes>
 <TeacherOnly title="Timing">
-CAD, steps 1–5: 45 min
+- CAD, steps 1–5: 45 min
+- Change it: 10 min
+</TeacherOnly>
+<TeacherOnly title="Change it">
+In the simulator, a longer crank swings the far bar through more degrees: 28° at the shortest setting, 49° where the slider starts, and 76° at the longest. For the student's own change there is no single right answer: look for a prediction with a reason. The changed finger is not printed in this lesson.
 </TeacherOnly>
 <TeacherOnly title="What the model is">
 The five models are one finger of the team's current design, cut across its length a little further along each time, from the base to the tip. They are in millimeters, and the whole finger is 291 mm long. The long bar in step 2 is the drive. The circles after that are the pivot joints.

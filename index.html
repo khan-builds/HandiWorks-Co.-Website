@@ -259,6 +259,10 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 .scene-tagline { margin-top: 0.875rem; color: var(--color-navy); font-size: var(--t-statement); font-weight: 600; line-height: 1.2; letter-spacing: -0.014em; text-wrap: balance; }
 .scene-body { max-width: 36ch; margin-top: 1rem; font-size: var(--t-lead); line-height: 1.5; }
 .scene-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+/* The third action on the first screen: a plain link beside the two buttons, so the simulator is
+   one click from the top of the site without a third box. */
+.scene-link { align-self: center; padding-block: 0.5rem; font-size: var(--t-small); font-weight: 600; color: var(--color-navy); text-decoration: underline; text-underline-offset: 0.25em; }
+.scene-link:hover { text-decoration-thickness: 2px; }
 /* The four dashes and "Skip animation". They are there for the whole story and leave with it:
    the hand script fades them out over the story's last steps, so they are gone before the
    stage scrolls away under the nav. */
@@ -388,6 +392,7 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
             <a href="problem/" class="nav-link">The Problem</a>
             <a href="kit/" class="nav-link">The Kit</a>
             <a href="lessons/beginner/" class="nav-link">Lessons</a>
+            <a href="signin/?as=student&amp;to=%2Fdashboard%2Fstudent%2Fsimulator%2F" class="nav-link">Simulator</a>
             <a href="teachers/" class="nav-link">For teachers</a>
             <a href="team/" class="nav-link">Team</a>
             <a id="nav-switch" href="signin/" class="nav-link" hidden>Switch role</a>
@@ -429,10 +434,11 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
               <article class="story-scene">
                 <h1>HelpingHand</h1>
                 <p class="scene-tagline">Putting Robotics Within Every Student's Grasp</p>
-                <p class="scene-body">A robotic hand kit with lessons. Students ages 11 and up design it, wire it, and program it themselves. $153.41 in parts for one hand.</p>
+                <p class="scene-body">A robotic hand kit with lessons. Students ages 11 and up design it, wire it, and program it themselves. About $150 in parts for one hand.</p>
                 <div class="scene-actions">
                   <a class="btn btn-primary" href="kit/">See the kit</a>
                   <a class="btn btn-secondary" href="teachers/">For teachers</a>
+                  <a class="scene-link" href="signin/?as=student&amp;to=%2Fdashboard%2Fstudent%2Fsimulator%2F">Try the simulator</a>
                 </div>
               </article>
               <article class="story-scene">
@@ -466,8 +472,8 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
         <h2 class="section-label" data-reveal><span>The kit</span></h2>
         <div class="split">
           <div class="kit-copy">
-            <p class="statement">Engineered for hands-on learning.</p>
-            <p class="measure">HelpingHand is a modular robotic hand that students design, wire, and program themselves. They learn mechanics, circuits, and coding one lesson at a time, not by following a manual.</p>
+            <p class="statement">One finger first. Then the whole hand.</p>
+            <p class="measure">Each finger is its own module with its own motor. A class starts with one finger in Lesson 1. The whole hand is four fingers and a thumb.</p>
             <a class="btn btn-primary" href="kit/">See the kit</a>
           </div>
           <figure class="finger-stage" aria-label="Animated finger linkage">
@@ -476,14 +482,14 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
         </div>
         <div class="stat-group">
           <div class="stat-panel">
-            <p class="stat-caption">Parts for one hand</p>
-            <p class="stat-number stat-number-plain">$153.41</p>
-            <p class="stat-label">Shared by a group of four students</p>
+            <p class="stat-caption">Parts for a class of 24</p>
+            <p class="stat-number stat-number-plain">$920</p>
+            <p class="stat-label">Six hands, each shared by four students</p>
           </div>
           <div class="stat-panel">
-            <p class="stat-caption">Motors</p>
-            <p class="stat-number stat-number-plain">6</p>
-            <p class="stat-label">DC motors, run from one Arduino board</p>
+            <p class="stat-caption">Class sessions in Lesson 1</p>
+            <p class="stat-number stat-number-plain">3</p>
+            <p class="stat-label">CAD, hardware and software: about 130 minutes in all</p>
           </div>
           <div class="stat-panel">
             <p class="stat-caption">Student ages</p>
@@ -1418,6 +1424,7 @@ window.addEventListener('resize',scheduleFinger);reduced.addEventListener('chang
               <li><a href="problem/">The Problem</a></li>
               <li><a href="kit/">The Kit</a></li>
               <li><a href="lessons/beginner/">Lessons</a></li>
+              <li><a href="signin/?as=student&amp;to=%2Fdashboard%2Fstudent%2Fsimulator%2F">Simulator</a></li>
               <li><a href="teachers/">For teachers</a></li>
               <li><a href="team/">Team</a></li>
               <li><a href="signin/">Classroom demo</a></li>
@@ -1435,7 +1442,7 @@ window.addEventListener('resize',scheduleFinger);reduced.addEventListener('chang
         </div>
         <div class="footer-base">
           <p>© 2026 HandiWorks Co.</p>
-          <p>Prototype. Lesson 1 is a demo and subject to change. The classroom demo uses made-up data.</p>
+          <p>HelpingHand is a prototype.</p>
         </div>
       </div>
     </footer>

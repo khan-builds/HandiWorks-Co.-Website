@@ -2,7 +2,7 @@ export type PortionKey = 'cad' | 'hardware' | 'software';
 
 /** The three parts of every lesson, in order. ("Portion" in the code, "part" on the page.) */
 export const PORTIONS: { key: PortionKey; label: string; step: number; blurb: string }[] = [
-  { key: 'cad', label: 'CAD', step: 1, blurb: 'Draw the part in 3D on a computer, one piece at a time, and check each piece against the example.' },
+  { key: 'cad', label: 'CAD', step: 1, blurb: 'Draw the part in 3D on a computer, one piece at a time, and check each piece against the example. Then change one piece and predict what it does.' },
   { key: 'hardware', label: 'Hardware', step: 2, blurb: 'Wire the motor and the controls to the Arduino Mega.' },
   { key: 'software', label: 'Software', step: 3, blurb: 'Upload a program and make it move.' },
 ];

@@ -34,7 +34,7 @@ const href = (id: string) => { const { track: t, slug } = splitLessonId(id); ret
 const untitled = (l: (typeof lessons)[number]) => l.data.title === `Lesson ${l.data.number}`;
 ---
 <Base title={TRACKS[track].label} description="HelpingHand lessons. Every lesson has three parts: CAD, hardware and software.">
-  <PageHeader title="Design it. Build it. Code it." lede={TRACKS[track].tagline}>
+  <PageHeader title="Design it. Wire it. Program it." lede={TRACKS[track].tagline}>
     {tracks.length > 1 && <div class="mt-8"><TrackSelector current={track} /></div>}
     {/* A still of the Final v3 finger, rendered from public/models by scripts/model-stills.mjs. */}
     <img slot="aside" class="hidden w-[24rem] max-w-none lg:block" src={asset('/images/finger-final-v3.webp')} width="1040" height="266" alt="One finger module of the hand: a three-segment finger on a long motor housing" />

@@ -106,16 +106,28 @@ were run on 2026-11-17, and the look was brought closer to the poster on 2026-11
 [Design changes](#design-changes)).
 
 **Since 2026-11-25 both are pushed**, when Lingbo said "push the two commits": GitHub's
-`LZ-C5.2` ends at the twenty-second, `a420005`. Neither is in `main`. **The design overhaul
-of 2026-11-25 is the twenty-third commit, made that afternoon and not pushed**: "Shorten
-every page and give the site one type scale, one layout and one heading per section".
-Lingbo said "commit the changes" after the name was offered, and has not asked for the
-push. The name is Claude's. It is
+`LZ-C5.2` then ended at the twenty-second, `a420005`. Neither is in `main`. **The design
+overhaul of 2026-11-25 is the twenty-third commit, made that afternoon** (`b4ff63f`):
+"Shorten every page and give the site one type scale, one layout and one heading per
+section". Lingbo said "commit the changes" after the name was offered. It was pushed later
+that afternoon, together with the twenty-fourth (next paragraph). The name is Claude's. It is
 the first entry under [Design changes](#design-changes), and it changed `index.html`, every
 page under `src/pages/`, most of `src/components/`,
 `src/styles/global.css`, `src/scripts/problem/motion.ts`, `astro.config.mjs`,
 `scripts/screenshots.mjs`, both READMEs, and added `public/images/` and
 `scripts/model-stills.mjs`.
+
+**The twenty-fourth commit, made and pushed on 2026-11-25, is the fixes from a judge's and a
+teacher's read of the site**: "Lead The Problem with hands-on figures, round the price, and
+add a change step to Lesson 1". Lingbo asked for the read, chose what to build, and then
+said "push and commit all changes you see queued up". The name is Claude's, offered a
+message earlier. The push carried the twenty-third commit with it, so GitHub's `LZ-C5.2`
+ends at the twenty-fourth. Neither is in `main`, so the live site has neither. It is
+the first entry under [Design changes](#design-changes). It changed `index.html`, `Nav`,
+`Footer` and `StatusLine` in `src/components/`, the pages The Problem, The Kit, For
+teachers, Team, Lessons, sign-in, the teacher dashboard and the style guide,
+`src/data/evidence.ts`, `compare.ts` and `mock.ts`, `src/lib/lessons.ts`,
+`src/scripts/sim/sim.ts`, Lesson 1's overview and CAD part, Lesson 2's page, and this file.
 
 What follows was written on 2026-11-24, before that push. The twenty-first is
 "Compare the kits on The Problem, and put the final poster's cost, circuit and next steps on
@@ -218,7 +230,19 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 All but the last two were taken again on 2026-11-18.
 
-**The offline copy to open is `~/workspace/HelpingHand-site-offline-2026-11-25-design.zip`**
+**The offline copy to open is `~/workspace/HelpingHand-site-offline-2026-11-25-judge.zip`**
+(18 MB), built on 2026-11-25 at 13:35 from the working folder: the twenty-third commit plus
+the fixes from the judge's read. It holds the same site as the twenty-fourth commit, which
+was made after it with no change to the site's files; its `HOW-TO-OPEN.txt` still says the
+fixes are not committed. It has the same four things in it
+as the zips below, and VEX's manual in it is the same file, carried over. Its 46 site files
+are `dist/` as built. Unzipped and served by its own `serve.py`, Home, The Problem, The Kit,
+Lesson 1's CAD part, For teachers, Team, the simulator, the hand's data and a model all came
+back, and The Kit was photographed from it with its fonts and its model. Its
+`HOW-TO-OPEN.txt` says the simulator is in the nav. The three older zips were left as they
+were.
+
+The copy before it is `~/workspace/HelpingHand-site-offline-2026-11-25-design.zip`
 (18 MB), built on 2026-11-25 at 12:57 from the working folder after the design overhaul.
 It holds the same site as the twenty-third commit, which was made after it with no change
 to the site's files; its `HOW-TO-OPEN.txt` still says the overhaul is not committed. It has the same four things in it as the two zips below:
@@ -414,8 +438,22 @@ What has not arrived by then stays a labelled placeholder on Dec 1.
   (`public/downloads/lesson-1-finger.ino`) was written from the shield library's
   documentation and has never been compiled or run. Read it, try it on a real finger, and
   send the wiring picture: the page has none.
+- [ ] **Lingbo: VEX's price and ages, read in a browser.** The comparison on The Problem
+  says "To be confirmed" twice in VEX's row, and once more in "How we compare". VEX's store
+  refuses the tools on the build machine. They go in `src/data/compare.ts`, in the row with
+  `key: 'vex'`.
+- [ ] **The team: what the kit would sell for**, or a sentence saying no price is set. The
+  site gives the cost of the parts and nothing else, beside other makers' selling prices.
+- [ ] **The team: which motor is $1.16.** The cost table lists six DC motors at $1.16 and
+  two Adafruit motor shields. The CAD's Final v3 is built round VEX 393 motors, three L298N
+  drivers and a 9 V block. A judge who knows motors will ask which is the real hand.
+- [ ] **The team: how long one finger and one hand take to print**, and how much plastic.
+  Lesson 1's "Before class" note and For teachers both need it: a class of 24 is six hands.
+- [ ] **Billy: the "Change it" step** at the end of Lesson 1's CAD part, added on
+  2026-11-25, and whether the part still fits one session at 55 minutes.
 - [ ] **Lingbo:** titles and one-line summaries for Lessons 2 to 4. The site and Billy's
-  branch disagree. Goes on Lessons.
+  branch disagree. Goes on Lessons. Lesson 2 still promises a gear train, which the hand
+  does not have: its page says where the gears go is not decided.
 - [ ] **Lingbo:** the published slides link for Lesson 1. "Open slides" stays hidden until
   then.
 - [ ] **Lingbo:** a licence for the CAD files, before any CAD download is offered. Lesson 1's
@@ -518,6 +556,95 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-25: a judge's and a teacher's read, after the overhaul
+
+Lingbo: "you are a potential customer/judge of our website. provide criticism and what you
+need to change. whether it be things be more concise or whatever". The site was read at
+commit `b4ff63f`: every page's text from `dist/`, and the pictures in
+`screenshots/rehearsal/` at 1440px. The phone width was not reviewed (it waits until after
+Dec 1). 22 problems were listed, and Lingbo answered four questions, taking the first option
+of each.
+
+**What the read found**, the seven that would cost most with a judge:
+
+1. Lesson 1 did what the pitch attacks. The Problem says the trouble is "steps with no
+   reasons" and Home says "Change a link, predict how the grip will move, then test it", but
+   the CAD part was five steps of "match the example" and the simulator, where a bar can be
+   changed, was three clicks deep.
+2. Nothing on the site is real: every picture is from the CAD.
+3. The price was exact to the cent ($153.41) with a 20% contingency in it, and sat beside
+   selling prices.
+4. The Problem led with figures on competition teams and ended by saying HelpingHand does
+   not replace competition robotics.
+5. The Problem's closing band said that, and beside it offered an alternative to "(FIRST,
+   VEX, LEGO, etc.)".
+6. VEX's row says "To be confirmed" twice.
+7. "How we compare" shows HelpingHand explaining 6 of 49 concepts against VEX's 39, with no
+   line saying it is one lesson against finished curricula.
+
+**Lingbo's four answers.**
+
+| Question | Answer |
+|---|---|
+| How much to build now | Wording and structure: the wording fixes, the simulator in the nav and on Home's first screen, a "Change it" step in Lesson 1's CAD part, the hand's size on The Kit, "What is in the box" renamed, and a "before class" line in Lesson 1. |
+| What leads The Problem | The hands-on figures (42% and 29%) with the price gap. The competition-team figures go into "All the figures", $24,250 goes, and FIRST leaves the closing band's list. |
+| How the price reads | "About $150 in parts" in headlines and comparison rows, "parts, not a price" in the row itself, "about $920" for a class of 24. The exact table stays on The Kit. |
+| "How we compare" | A framing line at the top. The tables stay. |
+
+**What changed, page by page.**
+
+| Page | Change |
+|---|---|
+| Every page | The nav has a sixth link, Simulator, after Lessons: it goes in as a student and opens the simulator in one click (`demo()` in `src/lib/url.ts`). The footer lists it too. The footer's last line is "HelpingHand is a prototype." Checked at 1024, 1152 and 1280px wide: the six links and the button fit on one line. |
+| Home | "About $150 in parts for one hand." A third action on the first screen, the link "Try the simulator". The kit section's sentence is "One finger first. Then the whole hand." (it was The Kit's header, word for word). The strip is $920 for a class of 24, 3 class sessions in Lesson 1, and 11+. |
+| The Problem | The header's two numbers are 42% (used coding programs, robots or 3D printers in class) and 29% (built an electrical circuit), from the Gallup and Walton report, printed page 4, read again that day. The first section is "In most classrooms": 51% of middle school science classes, 14% of middle school science teachers, and $529.95 for LEGO's kit for four. "Access" in "All the figures" holds the three figures that led. Still 18 figures in that row. The closing band's second objective ends "(VEX, LEGO, etc.)". "How we compare" opens with a boxed line: "HelpingHand has one lesson so far. The others are finished curricula." The drawing's link opens the simulator directly. Our row says "About $150" and "Parts, not a price". |
+| The Kit | The size is in "The hand": about 32 × 26 cm, a little larger than a sheet of printer paper, 11 cm thick, with a link to the roadmap's step on halving it. "About $150 in parts for one hand", with $153.41 in the sentence under it and in the table. "What is in the box" is "What one hand is made of", and its sentence is "The body is printed. The rest is bought." The closing band is two short lines and the button. |
+| Lessons, Lesson 1 | The title is "Design it. Wire it. Program it." The CAD part ends with a new step, "Change it": predict, test in step 3 of the simulator ("A four-bar", whose slider changes the crank and shows how far the far bar swings), then change one link in a copy of the CAD file and write what it will do. It has a teacher note with the simulator's own numbers (28°, 49°, 76°). The CAD part is 55 minutes and the lesson 130. Materials starts with "Finger module, printed and assembled before the Hardware part", and the overview's teacher notes have "Before class". Lesson 2 no longer says the gear train is "in the knuckle". |
+| For teachers | "About $920 in parts for a class of 24", and the table's row says "Parts, not a price". Five questions, from eight. The closing band is two short lines and the button. |
+| Classroom demo | Due dates are "in 2 days", "in 6 days" and "in 11 days": they were Nov 10, 14 and 19. The teacher dashboard has no "Assign a lesson" button, which was switched off. The simulator opens on the step a link names (`#step-3`), and `/signin/` lets a link carry that through. |
+| Team | The roadmap's four steps are plain sentences. The closing band lost its last sentence. |
+
+**One name for the three parts.** What a student does is design, wire, program. The parts
+of a lesson are labelled CAD, Hardware, Software. The subjects (mechanics, circuits, coding)
+are named once, in The Kit's header, which is the poster's sentence. "Design it. Build it.
+Code it." is gone.
+
+**Decided here, not by Lingbo.** Say so if any of these should change.
+
+| Choice | Why | Not taken |
+|---|---|---|
+| The three panels under The Problem's header are a class (51%), a teacher (14%) and LEGO's price | Lingbo's answer named the header's two figures and the price gap. The other two had to be figures already on the page with a checked source, and these two are for middle school, where HelpingHand starts. | Keeping 35% and 46% on show. |
+| "Change it" is ten minutes at the end of the CAD part, tested in the simulator, and the changed finger is not printed | It is the smallest step that makes the site's claim true in Lesson 1, and the simulator's four-bar already has the slider. | A change tested on the real finger, which needs a print; a slider on the simulator's finger step, which has none. |
+| The CAD part is 55 minutes and the lesson 130 | A step was added. Billy to say whether it fits. | Calling it 45 still. |
+| The CAD part's one-line description, used for every lesson, ends "Then change one piece and predict what it does." | It is the product's claim. Lessons 2 to 4 are not written, so it binds them. | Leaving the line as it was. |
+| Lesson 2 keeps its title and its summary | The titles of Lessons 2 to 4 are Lingbo's to give, and two "planned" marks in "How we compare" rest on the gears. The page now says where the gear train goes is not decided. | Retitling it for the screw drive, which the hand has. |
+| "Before class" says print and assemble one finger module for each group, and gives no time | Part 2 wires "the motor in the finger module" and nothing said where the module comes from. Nobody has timed a print. | A guessed print time. |
+| "Try the simulator" on Home is a link beside the two buttons | A third box crowded the first screen. "For teachers" stays where the first-visit pass put it. | The simulator in place of "For teachers". |
+| Home's strip shows a class's cost and Lesson 1's sessions | The price for one hand is already on the first screen, and a count of motors is not something a buyer weighs. | "$153.41" and "Motors: 6". |
+| The size is compared with a sheet of printer paper | 32 × 26 cm against 21.6 × 27.9 cm: true and easy to picture. | "Twice a real hand", which is rougher. |
+| "Request a kit" keeps its name, and still writes to all four | Lingbo asked for both. The review's point stands: the button leads to "Kits are not for sale yet". | "Tell us about your class". |
+| The roadmap's third step says what the backend is for: real accounts | "Finalize website backend" told a reader nothing, and the plan already says real login is a roadmap item. | The poster's words. |
+| The poster's own sentences are left alone | The Problem's opening ("Furthermore, many existing robotics kits are uninspired") and the goal sentence are the team's words, and the poster is on show beside the site. The review found both weak. | Rewriting them. |
+| Due dates count from today | They can never be in the past. | Calendar dates after Dec 1. |
+| A rounded price is to the nearest $10 (`about()` in `src/data/compare.ts`) | $153.41 reads as "about $150" and $920.46 as "about $920". | Nearest $5 or $50. |
+
+**From the read, and not done.** Each needs the team: see [Who owes what](#who-owes-what).
+A photograph or a short video of a printed part moving. What the kit would sell for. VEX's
+price and ages. Which motor is $1.16, when the CAD's Final v3 is built round VEX 393 motors.
+The basis for "ages 11 and up" (the program uses `finger->run(FORWARD)`), and a grade band.
+How long a hand takes to print. Lessons 3 and 4 say only "a third finger, a third mechanism".
+Smaller things left as they are: Team's "why is it taught as three separate subjects?",
+which no other page argues; "Test your code", which has sliders and no code; Home's first
+frame, where the closed hand reads as a box with four levers (the story is frozen); the
+student's Bookmarks; Materials repeated on all four pages of Lesson 1.
+
+**Checked.** `npm run build` makes 19 pages. `npm run check` has no error in the site's own
+files (the nine it reports are in `screenshots/roadmap-queue/draft-source/`, which git
+ignores). `npm run shots -- rehearsal` printed no script error and nothing loaded from
+another site. The lesson's link was followed in headless Chrome and opened the simulator on
+step 3 with "rocker: swings 49°". Not checked: a real phone, and how the sixth nav link sits
+in the phone's menu beyond the 390px pictures.
 
 ### 2026-11-25: the design overhaul, after a designer's review
 
@@ -2640,7 +2767,8 @@ The plan covers the demo path and nothing else:
   page is a static Astro page under `src/`, built and published together with it.
 - **Static mock through Dec 1.** No accounts, no database, no server. Real login is a
   Roadmap item.
-- **One nav on every page:** The Problem · The Kit · Lessons · For teachers · Team, plus a
+- **One nav on every page:** The Problem · The Kit · Lessons · Simulator (since 2026-11-25,
+  a link that goes in as a student) · For teachers · Team, plus a
   "Classroom demo" button. Roadmap left the nav on 2026-11-25: it is a section of Team
   (`/team/#next`), and `/roadmap/` sends the reader there. On the homepage the product and team sections stay as
   teasers that link to the full pages. Until 2026-11-24 there was no For teachers page and

@@ -1,13 +1,17 @@
 ---
 /** The one nav of the site: a navy band. The homepage (index.html) carries a hand-built copy of
     this markup and its styles, so change both together. */
-import { p } from '../lib/url';
+import { p, demo } from '../lib/url';
 import Logo from './Logo.astro';
 
 const links = [
   { key: 'problem', href: p('/problem/'), label: 'The Problem' },
   { key: 'kit', href: p('/kit/'), label: 'The Kit' },
   { key: 'lessons', href: p('/lessons/beginner/'), label: 'Lessons' },
+  /* The simulator is a page of the classroom demo. This link goes in as a student, so it
+     opens in one click (2026-11-25: it was three clicks deep, and it is the one place on
+     the site where a visitor changes a bar and sees what happens). */
+  { key: 'simulator', href: demo('student', '/dashboard/student/simulator/'), label: 'Simulator' },
   { key: 'teachers', href: p('/teachers/'), label: 'For teachers' },
   { key: 'team', href: p('/team/'), label: 'Team' },
 ];

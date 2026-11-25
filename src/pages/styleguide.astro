@@ -173,11 +173,11 @@ const steps = [
       <div class="stat-panel" data-reveal>
         <p class="stat-caption">{gap.caption}</p>
         <div class="mt-5 grid grid-cols-2 gap-x-8">
-          {[gap.highPoverty, gap.lowPoverty].map((g, i) => (
+          {[gap.first, gap.second].map((g, i) => (
             <div class="grid grid-rows-subgrid row-span-3">
               <p class:list={['stat-number', i === 1 && 'stat-number-plain']}>{g.value}</p>
               <p class="stat-label-caps mt-3">{g.short}</p>
-              <div class="stat-bar" aria-hidden="true"><span style={`--stat-fill:${(g.fill / gap.lowPoverty.fill) * 100}%`}></span></div>
+              <div class="stat-bar" aria-hidden="true"><span style={`--stat-fill:${(g.fill / Math.max(gap.first.fill, gap.second.fill)) * 100}%`}></span></div>
             </div>
           ))}
         </div>

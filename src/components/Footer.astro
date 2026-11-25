@@ -1,6 +1,6 @@
 ---
 /** Navy band that closes every page. The homepage (index.html) carries a hand-built copy. */
-import { p, mailto, KIT_REQUEST } from '../lib/url';
+import { p, demo, mailto, KIT_REQUEST } from '../lib/url';
 import { team } from '../lib/team';
 import StatusLine from './StatusLine.astro';
 import Logo from './Logo.astro';
@@ -20,6 +20,7 @@ const year = new Date().getFullYear();
           <li><a href={p('/problem/')}>The Problem</a></li>
           <li><a href={p('/kit/')}>The Kit</a></li>
           <li><a href={p('/lessons/beginner/')}>Lessons</a></li>
+          <li><a href={demo('student', '/dashboard/student/simulator/')}>Simulator</a></li>
           <li><a href={p('/teachers/')}>For teachers</a></li>
           <li><a href={p('/team/')}>Team</a></li>
           <li><a href={p('/signin/')}>Classroom demo</a></li>

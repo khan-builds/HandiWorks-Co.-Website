@@ -16,10 +16,8 @@ const pct = (n: number) => Math.round((n / students.length) * 100);
   <RoleGate role="teacher" />
   <PageHeader compact title={demoClass.name}>
     <p class="meta mt-3">{demoClass.school} · {demoClass.teacher} · {students.length} students</p>
-    <div slot="aside" class="flex flex-col items-start gap-2 lg:items-end">
-      <button type="button" class="btn btn-primary" aria-disabled="true" aria-describedby="assign-off">Assign a lesson</button>
-      <p id="assign-off" class="meta">Switched off in this demo</p>
-    </div>
+    {/* "Assign a lesson" was here until 2026-11-25, switched off: the first button on the page
+        did nothing. It comes back with real accounts. */}
   </PageHeader>
   <DemoBanner role="teacher" />
 
