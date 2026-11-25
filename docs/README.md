@@ -105,7 +105,19 @@ For teachers page, "Classroom demo", "Skip animation" and Lesson 1 on a DC motor
 were run on 2026-11-17, and the look was brought closer to the poster on 2026-11-18 (see
 [Design changes](#design-changes)).
 
-**The twenty-first and twenty-second commits are made and not pushed.** The twenty-first is
+**Since 2026-11-25 both are pushed**, when Lingbo said "push the two commits": GitHub's
+`LZ-C5.2` ends at the twenty-second, `a420005`. Neither is in `main`. **The design overhaul
+of 2026-11-25 is the twenty-third commit, made that afternoon and not pushed**: "Shorten
+every page and give the site one type scale, one layout and one heading per section".
+Lingbo said "commit the changes" after the name was offered, and has not asked for the
+push. The name is Claude's. It is
+the first entry under [Design changes](#design-changes), and it changed `index.html`, every
+page under `src/pages/`, most of `src/components/`,
+`src/styles/global.css`, `src/scripts/problem/motion.ts`, `astro.config.mjs`,
+`scripts/screenshots.mjs`, both READMEs, and added `public/images/` and
+`scripts/model-stills.mjs`.
+
+What follows was written on 2026-11-24, before that push. The twenty-first is
 "Compare the kits on The Problem, and put the final poster's cost, circuit and next steps on
 the site". Lingbo said on 2026-11-24 "do all three stages and commit to the branch named
 LZ-C5.2", and has not asked for the push. The name is Claude's. It holds two sessions' work:
@@ -161,6 +173,11 @@ which part is in front (`src/scripts/sim/`, `src/scripts/hand/view.ts`), the CAD
 name, `~/workspace/SLDP CAD`, in the two export scripts, and this file. See
 [Design changes](#design-changes), the entry of 2026-11-23.
 
+The rows below say what each page holds. How each is laid out, and what was cut from it, is
+the overhaul of 2026-11-25 under [Design changes](#design-changes): Home ends in three
+sections, The Problem's comparison is four columns, The Kit is five sections, and the
+Roadmap is a section of Team.
+
 | Page | State | Still open |
 |---|---|---|
 | Home | Golam's four captions, in the poster theme, with the shared nav and footer. Since 2026-11-23 the hand is Final v3 from the CAD, the hand built round Lingbo's final motor housings (from 2026-11-18 until then it was hand v11), and every joint moves by the CAD's own numbers; beside "The kit" one finger module curls and opens, drawn from the same data. The scroll story does what each caption says: the hand starts closed and flat and opens with its fingers toward the visitor; the four finger modules come out, loosen into their parts and close into one, which is rebuilt link by link; its motion is traced from the carriage to the fingertip, each link in its own colour; and at the end the fingers drop back into the palm, the whole hand comes apart, and the parts gather into the HandiWorks mark. The same parts lie in pale sky behind the rest of the page. See [The hand on the homepage](#the-hand-on-the-homepage). Every button leads to a real page. | Lingbo has not yet seen the new hand in the story, or the new way four fingers become one (both 2026-11-23). |
@@ -169,8 +186,8 @@ name, `~/workspace/SLDP CAD`, in the two export scripts, and this file. See
 | Lessons | Lesson 1 live. Lessons 2 to 4 and the Intermediate track are coming-soon rows. | Titles for lessons 3 and 4. |
 | Lesson 1 | Billy's lesson from `version-1`: five CAD steps, wiring, the sketch and its download, questions, teacher notes. Every page says "Draft · under team review". Since 2026-11-23 the five step models are the Final v3 finger, cut at five stages, and the lesson gives the finger's length as 291 mm. | Incomplete, in Lingbo's words on 2026-11-21. Its words are Billy's, written for an older finger, and still teach a servo. Billy has not seen the new step models. Team review (prompt 11). Wiring diagram is a labelled placeholder. No slides link. |
 | Sign in, dashboards | Two roles, a made-up class of 20, "Demo data" on both dashboards, Assign visibly switched off. Since 2026-11-21 the student dashboard has a "Test your code" section that opens a page of that name: it drives the hand over USB and shows the same hand moving on screen. See [Test your code](#test-your-code). A "Simulator" section opens six guided steps for Lesson 1, from a see-saw to the finger of the hand. See [Simulator](#simulator). | "Test your code" has never met the real hand, and its Arduino sketch has never been compiled. Neither page has been used by hand in a real browser. Lingbo has not seen the simulator's wording or its questions. |
-| Roadmap | Since 2026-11-24, the four next steps from the final prototype poster, in the poster's words, as numbered points. From 2026-11-21 until then it was empty on purpose. | A fuller roadmap. Lingbo writes it later. Lingbo has not said the poster's four steps should stand here: see [Design changes](#design-changes). |
-| Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon. | Bios and photos. |
+| Roadmap | Since 2026-11-25 a section of the Team page, "Roadmap" (`/team/#next`); `/roadmap/` sends the reader there. It holds the four next steps from the final prototype poster, in the poster's words, as numbered points (on a page of their own from 2026-11-24). From 2026-11-21 until then the page was empty on purpose. | A fuller roadmap. Lingbo writes it later. Lingbo has not said the poster's four steps should stand here: see [Design changes](#design-changes). |
+| Team | Names and roles from the poster, each person's email, initials for photos, the one line about NYU Tandon, and since 2026-11-25 the roadmap. | Bios and photos. |
 | Every page | The HandiWorks mark in the nav, the footer and the browser tab, traced from the poster. Under Contact in the footer, all four people's addresses. | The real logo file. |
 
 `npm run build` passed on 2026-11-18: the homepage and 23 pages built by Astro, one of them
@@ -187,7 +204,9 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 | Folder | What |
 |---|---|
-| `rehearsal/` | Every page of the demo path, and the style guide, at 1440 and 390 px wide. 59 images. The Problem, The Kit, the Roadmap and the style guide were taken again on 2026-11-24 at 12:50. |
+| `rehearsal/` | Every page of the demo path, and the style guide, at 1440 and 390 px wide. 59 images, all taken on 2026-11-25 after the design overhaul. |
+| `rehearsal-before-2026-11-25/` | The same pages as they stood at commit `a420005`, before the overhaul, to set beside the new ones. 65 images. |
+| `model-stills/` | What `scripts/model-stills.mjs` writes: the hand and the finger on a clear background, before they are cropped into `public/images/`. |
 | `problem-v2/` | The rebuilt Problem page and The Kit at both widths; `motion-drawing-1` to `-3` and `motion-table-1` and `-2`, frames of the page moving; `window-1440.png` and `window-390.png`, "How we compare" open; `crop-kit-cost.png`, The Kit's cost table. `problem-robotics/`, the morning's pictures, was deleted. |
 | `poster-final/` | The Kit and the Roadmap after the final prototype poster's graphics went in on 2026-11-24, at both widths; `circuit-1440.png` and `circuit-390.png` are the circuit alone, and `circuit-poster-and-site.png` is the poster's diagram above the redrawing. |
 | `rehearsal-models/` | The Kit and the CAD page frame by frame, so the 3D models show. |
@@ -199,7 +218,20 @@ Screenshots, in `screenshots/` on the build machine (the folder is not in git):
 
 All but the last two were taken again on 2026-11-18.
 
-The offline copy from prompt 8 is `~/workspace/HelpingHand-site-offline-2026-11-24.zip` on
+**The offline copy to open is `~/workspace/HelpingHand-site-offline-2026-11-25-design.zip`**
+(18 MB), built on 2026-11-25 at 12:57 from the working folder after the design overhaul.
+It holds the same site as the twenty-third commit, which was made after it with no change
+to the site's files; its `HOW-TO-OPEN.txt` still says the overhaul is not committed. It has the same four things in it as the two zips below:
+`HandiWorks-Co.-Website/`, `serve.py`, `HOW-TO-OPEN.txt` and VEX's manual beside the site.
+Its 46 site files match `dist/` byte for byte, and served by its own `serve.py` the fifteen
+pages of the demo path, the old `/roadmap/` address, the two new stills, a model, the font,
+the hand's data and Lesson 1's sketch all came back. `serve.py` now names the type of a
+`.webp` picture, and `HOW-TO-OPEN.txt` says where VEX's manual is on The Problem (in the row
+"The research, and VEX's own manual") and that the roadmap is on Team. No pictures were
+taken from the unzipped copy this time: `screenshots/rehearsal/` is the same build. The two
+older zips were left as they were: they are the site as pushed, to compare with.
+
+The offline copy from prompt 8 was `~/workspace/HelpingHand-site-offline-2026-11-24.zip` on
 the build machine (18 MB), with `HOW-TO-OPEN.txt` and a small `serve.py` inside. It was built
 on 2026-11-24 at 12:53 and holds the same site as the twenty-first commit. It took the place
 of the zip made at 11:29 the same day. It is larger because VEX's build manual sits in it,
@@ -486,6 +518,90 @@ What waits until after Dec 1 is under [Not in this plan](#not-in-this-plan).
 
 Newest first. Each entry says what changed and why, then what was decided during the work and
 not by Lingbo, with the option not taken. Say so if any of those should change.
+
+### 2026-11-25: the design overhaul, after a designer's review
+
+Lingbo: "you are a professional designer that is going through our website for the first
+time. Provide critical feedback with a plan to overhaul the design and formattting to be
+more concise, clear and aesthetically pleasing". Two reviews were run apart from one
+another on commit `a420005`, one by eye over all 65 review pictures and one measuring the
+built pages in headless Chrome with a design detector, and their findings were checked
+against the pictures. The score was 26 out of 40 on Nielsen's ten heuristics.
+
+**What the review found**, in one line each: too many words, with the same facts on several
+pages (The Problem alone was 1,536 words on show and about 2,660 more behind its rows and
+its window; the price was told on four pages); nothing led, because every section had a
+22px boxed label on top of a 26px bold sentence, and 23 font sizes were in use; no single
+grid (five column splits, lists stopping at 60% of the width, header bands 40% empty,
+lesson text at 91 to 95 characters a line); Home and the inner pages read as two sites, the
+inner pages having no picture at all; and on a phone The Kit ran off the right edge.
+
+**Lingbo's four answers**, to four questions put with the review:
+
+| Question | Answer |
+|---|---|
+| How much to build now | Steps 1 to 4 (cut and merge, type and headings, layout, colour and pictures) and the fix for The Kit on phones. The rest of the phone pass waits until after Dec 1. |
+| Which heading leads | The sentence. The label shrinks to the small 13px box and the sentence grows to 30px. |
+| The Problem's comparison | Four plain columns on the page (Option, Cost, Ages, How it gets built), HelpingHand first, one link a row. The ratings move into "How we compare". |
+| Earlier asks that may change | All three: thin the floating parts on the homepage, the four addresses twice on Team and not three times, and Roadmap folded into Team. |
+
+**What changed, page by page.**
+
+| Page | Change |
+|---|---|
+| Every page | Five type sizes and three weights (it was 23 and four). The boxed label is small and the sentence under it is the heading. Two layouts, full width and a 5:7 split, with every rule, table and box on one right edge. Three status words in one look. Nav of five links: Roadmap is gone from it and from the footer. |
+| Home | After the story, three sections where there were six: The kit (the sentence, the finger, and the three numbers as one strip, now in white because they are the product's own), Try it now, and the closing lime block. Gone: the Mechanics / Electronics / Programming columns, "From a guided build to your own design" with its table, and the team strip. The floating parts went from 112 to 13, in the two outer margins and the gaps above The kit and above the footer, none below 1000px wide, and the white backing behind text is gone with them. The four dashes and "Skip animation" fade out as the story ends. Below the story it is 2.2 screens at 1440, from 3.5. |
+| The Problem | 671 words on show, from 1,536, and 3,553px tall at 1440, from 5,534. The comparison is four columns with HelpingHand first in lime. The ratings on mechanics, circuits and code, their legend, "How widely it is used" and "Cost to go further" are in "How we compare", where nothing is under 13px now. VEX's manual, the three quotations and "The other side" are one new row that opens, "The research, and VEX's own manual", between "All the figures" and "Sources". The navy band closes the page with the statement, Lingbo's sentence on not replacing competition robotics, the poster's goal and its two objectives. |
+| The Kit | Five sections and a closing band, from eight: The hand, One finger, What it costs, What is in the box, and one row that opens, "Circuit and specifications". "How a lesson works" is gone (Lessons says it) and so is "What you need" (For teachers says it, and the page links there). "Request a kit" is in the closing band only. 4,143px at 1440, from 6,366. |
+| Lessons, Lesson 1 | A lesson's three parts carry the hand's sky, orange and gold on their numbers. A part's page has a strip in its colour under the title. Inside a lesson a heading is a plain heading on a hairline, not a boxed label; text runs about 70 characters to a line with code and tables at the full column; a note or a tip is an outlined box, not a lime one. Code is coloured from the theme and the hand. A still of the finger sits in the Lessons header. |
+| For teachers | The same five sections, on the new layout, with the part colours on "In class" and a still of the hand in the header. The questions run the full width. |
+| Dashboards | "Demo data" is "Demo", and the strip says what is made up once. The student dashboard's "Test your code" and "Simulator" sections are one section, "Practice", of two columns. |
+| Team | One section for the team: where it started on the left, the four people as rows on the right, initials on navy. A "Roadmap" section (`#next`) holds the poster's four next steps. "Talk to us" keeps its words and the "Request a kit" button; the four addresses are on the rows and in the footer. |
+| Roadmap | The page is a redirect to `/team/#next`. |
+
+Measured on the built site before and after, in headless Chrome at 1440 and 390px wide:
+
+| | Before | After |
+|---|---|---|
+| Words on show, all pages | 6,677 | 5,355 |
+| Length of all pages at 1440 | 53,876px | 47,171px |
+| Length of all pages at 390 | 79,762px | 69,219px |
+| Font sizes in use | 23 | 6, and the homepage title |
+| Weights in use | 400, 500, 600, 700 | 400, 600, 700 |
+| Text under 13px | on 3 pages | none |
+| Pages that scroll sideways at 390 | The Kit | none |
+| Detector findings in the source | 1 (a side stripe on The Problem) | 0 |
+
+The detector's two remaining findings are both in `index.html` ("cramped padding" on the
+closing block and the footer's last line) and both are false: the rendered padding is 56px
+and 18px. No page throws a script error, and the type check has no error in the site's own
+files (it reports nine in `screenshots/roadmap-queue/draft-source/`, a draft from
+2026-11-24 that git ignores).
+
+**Decided here, not by Lingbo.** Say so if any of these should change.
+
+| Choice | Why | Not taken |
+|---|---|---|
+| A boxed label above a sentence is kept, small | Lingbo chose it from a drawing of the three options, and the label on its rule is the poster's own mark. The design tool used for the review calls a small label above a heading an overused pattern and would delete it. | No label at all: delete `<SectionLabel>` from a section and the sentence stands alone. |
+| The scale is five sizes plus 13px | 13px is the boxed label, the status labels and code: the longest line of Lesson 1's program is 97 characters and fits its column at 13px and not at 14. | Code at 14px, scrolling sideways. |
+| Lessons and dashboards keep a main column and a sidebar | They are worked in, not read once. So there are two layouts on the selling pages and a third on these. | Forcing the 5:7 split on them. |
+| The three part colours are the fingertip's sky, the link's orange and the bar's gold | They are the three most different colours on the hand that take readable ink. | The hand's blues, which sit too near the navy. |
+| The stills sit on the navy band, where the hand's navy palm is dark on dark | The fingers carry the picture, and a white tile in the band was louder than the title. | A light tile behind the hand; no picture on For teachers. |
+| The poster's goal sentence stays on The Problem | The shortening had cut it, and it was then nowhere on the site. It is the team's own goal, in the poster's words. | Leaving it out. |
+| What is cut from The Problem's argument | Three sentences that the remaining three already say: that beginners learn better with a guide, that a manual shows where and not why, and the list "supplied parts, numbered steps, a finished robot". Also "Every number on this page links to its source and carries its year", and "This is our first prototype aimed at solving this issue". | Keeping them in the row that opens. |
+| Anchors `#about`, `#product`, `#learn` and `#team` are gone from the homepage | Their sections are gone, and nothing on the site linked to them. | Keeping empty anchors. |
+| On the homepage's story the tagline is 30px semibold (it was 24px medium) and scene text 20px (19px); on a phone scene text is 14px (15px) | To put the story's words on the scale. At 17px on a short phone screen the hand's stage shrank by an eighth, so the phone steps down. | Leaving the story's text off the scale. |
+| No parts float in the gaps between sections, or below 1000px wide | A part in an 84px gap sat 16px from a button and read as a stray mark; below 1000px no place holds a part of 40px. | Lingbo's wording was "in the side margins and between sections": the gap above The kit and the gap above the footer have two parts each, the others none. |
+| The old review pictures are kept as `screenshots/rehearsal-before-2026-11-25/` | To look at before and after side by side. | Overwriting them. |
+| The offline copy is a new zip and the two older ones are left | The older ones are the site as pushed. | Deleting them. |
+
+**Not done.** The phone pass (step 5): the footer is still 842px on a phone, the part
+switcher of a lesson still comes after its text there, and footer links are still 19px
+tall. "How we compare" is long, about 6,700px of scrolling on a laptop. The two navy
+figures from the 2018 survey still name their source as "Horizon Research, Report of the
+2018 NSSME+"; the sentence under them says what that is. A photograph of a real printed
+part, and four portraits, would do more for the inner pages than any of the above: both
+are the team's to send.
 
 ### 2026-11-24: friendlier to someone seeing the site for the first time
 
@@ -2028,16 +2144,25 @@ every colour inside what a screen can show.
 is room. On a stage squarer than about 3:2, and on a phone, the hand already fills its place
 and is the size it was.
 
-**The parts go on down the page.** Below the story, the same parts lie behind the rest of the
-homepage in pale sky. `litterPage()` draws each part once into a small picture of its own.
-`placeLitter()` lays copies down the whole page, one to a cell of a grid about 190 px wide
-(130 px on a phone), so no stretch of the page is without them: 96 at 1440 px, 72 on a
-phone. They are behind the page. The words, lists and tables below the story sit on white,
-a little wider than themselves, and the panels are solid, so content covers the parts
-cleanly and a part shows only in the open space around it. Within its cell each part takes
-the spot furthest from any content. The page is laid again when the window changes size.
-`driftLitter()` turns each part and moves it a little as the page scrolls. With less motion
-asked for they do not move. These are not the story's own parts: the story ends on the mark.
+**The parts go on down the page, in its margins.** Below the story, a few of the same parts
+lie beside the rest of the homepage in pale sky. `litterPage()` draws each part once into a
+small picture of its own. Since 2026-11-25 `placeLitter()` lays them only where nothing else
+is: a staggered column down each outer margin, about one every 320 px, and two small parts
+each in the gap above "The kit" and the gap above the footer. That is 13 parts at 1280 px
+and wider, 4 (the two gaps only) from 1000 to 1259 px, and none below 1000 px. Each part is
+whole, at least 22 px from any content and 12 px from the window's edge, its drift included,
+and only the fingers' links, bars, segments and carriages are used, flat side on. The
+numbers are in `LITTER` beside the function. Until that day there were 112 (90 on a phone),
+one to a cell of a grid over the whole page and behind its content, which sat on white
+backing that cut the parts into rectangles: Lingbo agreed on 2026-11-25 to thin them. The
+page is laid again when the window changes size. `driftLitter()` turns each part and moves
+it a little as the page scrolls. With less motion asked for they do not move. These are not
+the story's own parts: the story ends on the mark.
+
+**Below the story** the page has three sections since 2026-11-25: "The kit" (`id="kit"`,
+where "Skip animation" lands), "Try it now", and the closing lime block. The four dashes
+and "Skip animation" fade out between 95.5% and 98% of the story's scroll, so they no
+longer slide under the nav.
 
 The coming apart, the fingers loosened into lines and hopped into one, the gathering into
 the mark and the litter are the things in the story that are **not motions of the CAD**. No
@@ -2240,7 +2365,7 @@ Sampled from the poster.
 | `white` | `#FFFFFF` | page background, text on navy |
 | `panel` | `#F5F5F5` | quiet panels and rows on the white page |
 | `edge` | `#ECEEF2` | hairline borders, dividers |
-| `lime` | `#E5FEC3` | the highlight: result cells in tables, "live" and "done" states, callouts |
+| `lime` | `#E5FEC3` | the highlight, for results only: result cells in tables, "done" and "live" states, a total. Since 2026-11-25 a note or a tip in a lesson is an outlined box, not a lime one |
 | `sky` | `#70D0F0` | the accent, on navy only: big numbers, the logo mark, small decorative strokes |
 | `ink` | `#000000` | body text |
 | `rule` | `#595959` | the thin rule beside a section label, secondary text |
@@ -2257,19 +2382,49 @@ Contrast, measured:
 
 Light only. There is no dark mode. Navy bands are part of the light theme.
 
+Since 2026-11-25 three more colours appear on the inner pages, all taken from the hand's own
+colour table (`SCHEME` in `index.html` and `src/scripts/hand/view.ts`), so the pages and the
+hand read as one product. They are set once, in `:root` in `src/styles/global.css`.
+
+| Token | Value | From the hand's | Use |
+|---|---|---|---|
+| `--part-cad` | `#55C3EC` | fingertip | the CAD part of a lesson: its number wherever it is shown, and the strip under its page's title. Navy ink on it, 5.8:1 |
+| `--part-hardware` | `#B75F1E` | link | the Hardware part, the same way. White ink on it, 4.6:1 |
+| `--part-software` | `#E4B826` | bar | the Software part, the same way. Navy ink on it, 6.2:1 |
+
+Code in a lesson is coloured from the same sources (`--astro-code-*` in `global.css`): navy
+for keywords, the theme's grey for comments, the hand's carriage brick `#9D2F16` for numbers
+and constants, its first-segment blue `#21459D` for functions, and its link orange darkened
+to `#8F4712` for text in quotes. Each is 6:1 or better on the grey panel. Until 2026-11-25
+the code used a stock editor theme, and two of its colours were under 4.5:1.
+
 ### Type
 
 One family: Inter, self-hosted, no other typeface. One copy of the font files lives in
 `public/fonts/` and both the homepage and the inner pages load it from there.
 
 - Three weights, as on the poster: 400 for text, 600 for section labels and small headings,
-  700 for titles and for the words that matter. Nothing heavier.
+  700 for titles and for the words that matter. Nothing heavier, and no 500.
+- **Five sizes, and no others** (since 2026-11-25; the site had 23). They are tokens in
+  `:root` in `global.css`, and Tailwind's own sizes are switched off, so `text-lg` and its
+  like do nothing: the utilities are `text-display`, `text-statement`, `text-lead`,
+  `text-body`, `text-small` and `text-label`.
+
+  | Token | Size | For |
+  |---|---|---|
+  | `--t-display` | 36 to 56px | page titles, the big numbers in a stat panel |
+  | `--t-statement` | 24 to 30px | the sentence that leads a section; a heading inside a lesson |
+  | `--t-lead` | 18 to 20px | ledes, small headings |
+  | `--t-body` | 17px | anything read as a sentence, 1.6 line height, about 70 characters to a line |
+  | `--t-small` | 14px | tables, buttons, the nav, the footer, captions and sources |
+  | `--t-label` | 13px | the boxed label, status labels, code |
+
+  The homepage's first screen and its four scene headings keep their own larger sizes.
 - Page titles: 700. White on a navy band; navy on the homepage's light stage.
-- Section labels: 600, uppercase, white on a navy box.
+- Section labels: 600, uppercase, white on a navy box, 13px.
 - Text on white is black. The sentence that leads a section is black and bold, or regular
   with its key words in bold, which is how the poster writes. Navy text is for small
   headings and links. Grey is for captions and sources.
-- Body: 400, black, 17px with 1.6 line height on reading pages.
 - Numbers that matter (stats, counts): large. Sky at 600, white at 700.
 - No monospace labels. Code blocks in lessons use the system monospace stack.
 
@@ -2281,8 +2436,24 @@ These are the poster's own parts. Every page is assembled from them.
   one more band per page.
 - **Logo.** The HandiWorks mark from the poster: two white blocks and a `sky` link. On navy
   bands only. Traced from the poster image until the logo file arrives.
-- **Section label.** White uppercase text in a navy box. After a gap, a 2px `rule` line runs
-  to the right edge of the column. Starts every section.
+- **Section label.** White uppercase text in a small navy box (13px), on a 1px `rule` line
+  that runs to the right edge of the column. Starts every section and names it. One size
+  everywhere; until 2026-11-25 it was 22px with a 2px rule, and nearly as loud as the
+  sentence under it.
+- **Statement.** The sentence under the label, 30px bold black: it is the section's heading,
+  and it makes the claim. Lingbo chose on 2026-11-25 that the sentence leads and the label
+  only names.
+- **Two layouts.** A section is full width, or `split`: its statement and words in the
+  narrower left column (5 of 12), and the thing they are about, a table, a list, a model or
+  a drawing, in the wider right one (7 of 12). Every rule, table and box ends on the same
+  right edge, and sentences keep a measure of about 70 characters (`measure`). Lessons and
+  dashboards, which are worked in, use a main column with a sidebar (`with-aside`).
+- **Rows.** A ruled list of name and note (`rows`): parts, what you need, questions, lessons
+  to come. The rules run the full width and the note keeps its measure.
+- **A row that opens** (`more`). For what most readers do not need: The Kit's circuit and
+  specifications, The Problem's research and sources. Closed until asked for.
+- **Closing band** (`band-close`). The navy band that ends a selling page with its one
+  action: "Request a kit" on The Kit, For teachers and Team.
 - **Panel.** `panel` grey block for supporting text.
 - **Stat panel.** Navy block. Top to bottom: small uppercase caption, big number, what it
   counts, a round-ended bar as long as the number, source. The number the page argues
@@ -2295,20 +2466,32 @@ These are the poster's own parts. Every page is assembled from them.
 - **Timeline.** A navy line with small open circles. On a wide screen the date and the text
   swap sides from one step to the next, as in the poster's "Next steps".
 - **Buttons.** Primary: navy fill, white text. Secondary: 1px navy border, navy text.
-  On a navy band: white fill, navy text.
-- **Status labels.** Live, Demo · subject to change, Prototype, Demo data, Coming soon. They
-  stay, because the site is a mock and says so, one to a page. Lime for Live, `panel` with a
-  dashed `rule` border for Coming soon, navy outline for the rest. "Demo · subject to change"
-  is Lingbo's wording of 2026-11-24 for Lesson 1 (`DEMO_LABEL` in `src/lib/lessons.ts`): a
-  lesson shows it until `reviewed: true` is set in its frontmatter.
+  On a navy band: white fill, navy text. All 14px.
+- **Status labels.** Three words in one look, a navy outline: Prototype, Demo, Coming soon.
+  They stay, because the site is a mock and says so, one to a page, under its title. Lime is
+  kept for "Live", a lesson the team has signed off. "Demo · subject to change" is Lingbo's
+  wording of 2026-11-24 for Lesson 1 (`DEMO_LABEL` in `src/lib/lessons.ts`): a lesson shows
+  it until `reviewed: true` is set in its frontmatter. Until 2026-11-25 there were eight
+  looks, among them "Demo data", "Draft", "Teacher view" and a dashed "Coming soon".
+- **Lesson parts.** CAD, Hardware and Software each wear one colour of the hand (see
+  [Colours](#colours)): on the part's number wherever it is shown (Lessons, a lesson's
+  overview and sidebar, For teachers, the student dashboard) and in a strip under the title
+  of the part's page. Set `data-part="cad"` (or `hardware`, `software`) on the element.
+- **Stills.** Where a header shows the hand without a viewer it uses a picture rendered from
+  the same models: `public/images/hand-final-v3.webp` on For teachers and
+  `finger-final-v3.webp` on Lessons, on the navy band, wide screens only.
+  `scripts/model-stills.mjs` renders them again when the models change.
 
 ### Shape and motion
 
 - **Square corners.** Every block, button and label is a rectangle, as on the poster. Circles
   are kept for numbered points, timeline nodes and status dots, and a stat bar has round
   ends, as on the poster.
-- **A section label is the heading.** Never put a small line above a heading: the boxed label
-  is the heading, and a sentence under it can make the claim.
+- **One heading per section, and it is the sentence.** The boxed label names the section and
+  the statement under it leads. Never add a second small line, and never set a label and a
+  statement at nearly the same size, which is what the pages did until 2026-11-25. Inside a
+  lesson a heading is a plain heading on a hairline: the boxed label is for the sections of
+  a page, not for the steps of a lesson.
 - **Lines draw.** The one motion on the site. A section label's box and rule, and the bar in a
   stat panel, extend from the left as they come on screen. A percentage draws its bar to that
   length. Nothing else animates in.
@@ -2423,7 +2606,7 @@ motors, two shields and two buttons; the IMU, the Wi-Fi module and the named bat
 
 ### Next steps, from the final poster
 
-The Roadmap page shows these four, in these words, as numbered points. The earlier poster's
+The Team page's "Roadmap" section shows these four, in these words, as numbered points. The earlier poster's
 "Next steps" was a timeline of dates from 8 to 23 November, all now past.
 
 1. Feedback on Lesson 1 and Design
@@ -2449,8 +2632,7 @@ The plan covers the demo path and nothing else:
 5. Lesson 1: overview, then CAD, Hardware, Software
 6. Sign in as a teacher, teacher dashboard
 7. Sign in as a student, student dashboard, then "Test your code" and the Simulator from it
-8. Roadmap
-9. Team
+8. Team, with the roadmap as its second section
 
 ### Decisions
 
@@ -2458,8 +2640,9 @@ The plan covers the demo path and nothing else:
   page is a static Astro page under `src/`, built and published together with it.
 - **Static mock through Dec 1.** No accounts, no database, no server. Real login is a
   Roadmap item.
-- **One nav on every page:** The Problem · The Kit · Lessons · For teachers · Roadmap ·
-  Team, plus a "Classroom demo" button. On the homepage the product and team sections stay as
+- **One nav on every page:** The Problem · The Kit · Lessons · For teachers · Team, plus a
+  "Classroom demo" button. Roadmap left the nav on 2026-11-25: it is a section of Team
+  (`/team/#next`), and `/roadmap/` sends the reader there. On the homepage the product and team sections stay as
   teasers that link to the full pages. Until 2026-11-24 there was no For teachers page and
   the button said "Sign in"; a first-time visitor read that as needing an account. The page
   it opens is still `/signin/`.

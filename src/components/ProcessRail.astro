@@ -1,11 +1,11 @@
 ---
 /** Steps that happen in order, as numbered navy circles on one line: Design, Build, Code. */
-interface Props { steps: { title: string; body: string }[]; class?: string }
+interface Props { steps: { title: string; body: string; part?: string }[]; class?: string }
 const { steps, class: cls = '' } = Astro.props;
 ---
 <ol class:list={['process-rail', cls]}>
   {steps.map((s, i) => (
-    <li>
+    <li data-part={s.part}>
       <span class="process-num" aria-hidden="true">{i + 1}</span>
       <h3>{s.title}</h3>
       <p>{s.body}</p>

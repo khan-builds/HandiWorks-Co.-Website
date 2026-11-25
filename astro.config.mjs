@@ -42,7 +42,8 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   integrations: [mdx(), homepage()],
-  // Light code blocks, so lesson code sits on the theme's grey panel.
-  markdown: { shikiConfig: { theme: 'github-light' } },
+  // Lesson code is coloured from CSS variables, set in src/styles/global.css from the theme
+  // and the hand's own colours ("Code colours"), so no colour comes from a stock editor theme.
+  markdown: { shikiConfig: { theme: 'css-variables' } },
   vite: { plugins: [tailwindcss()] },
 });

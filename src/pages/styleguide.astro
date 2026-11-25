@@ -16,20 +16,26 @@ const colors = [
   { name: 'white', hex: '#FFFFFF', use: 'Page background, text on navy' },
   { name: 'panel', hex: '#F5F5F5', use: 'Quiet panels and rows on the white page' },
   { name: 'edge', hex: '#ECEEF2', use: 'Hairline borders, dividers' },
-  { name: 'lime', hex: '#E5FEC3', use: 'The highlight: result cells, Live and Done, notes' },
+  { name: 'lime', hex: '#E5FEC3', use: 'The highlight, for results only: a done cell, a total, a signed-off lesson' },
   { name: 'sky', hex: '#70D0F0', use: 'The accent, on navy only: big numbers, small strokes. Never text on white' },
   { name: 'ink', hex: '#000000', use: 'Body text', dark: true },
   { name: 'rule', hex: '#595959', use: 'The rule beside a section label, secondary text', dark: true },
 ];
 
-const type = [
-  { name: 'Page title', spec: '36 to 56px · 700 · -0.02em', cls: 'page-title text-navy' },
-  { name: 'Statement', spec: '20 to 26px · 700 · black', cls: 'statement' },
-  { name: 'Statement, plain', spec: '20 to 26px · 400 · key words in 700', cls: 'statement statement-plain', html: 'Build a <strong>robotic</strong> hand.' },
-  { name: 'Heading', spec: '20px · 600 · navy', cls: 'text-xl font-semibold text-navy' },
-  { name: 'Lede', spec: '17 to 19px · 400 · black', cls: 'lede' },
-  { name: 'Body', spec: '17px · 400 · line height 1.6', cls: '' },
-  { name: 'Meta', spec: '13px · 500 · rule grey', cls: 'meta' },
+/* The whole scale: five sizes, plus 13px for boxed labels and code. Nothing else is used. */
+const type: { name: string; spec: string; cls: string; html?: string }[] = [
+  { name: 'Display', spec: '--t-display · 36 to 56px · 700 · page titles, the big numbers', cls: 'page-title text-navy' },
+  { name: 'Statement', spec: '--t-statement · 24 to 30px · 700 · the sentence that leads a section', cls: 'statement' },
+  { name: 'Lead', spec: '--t-lead · 18 to 20px · ledes (400) and small headings (600, navy)', cls: 'text-lead font-semibold text-navy' },
+  { name: 'Body', spec: '--t-body · 17px · 400 · line height 1.6 · about 70 characters to a line', cls: '' },
+  { name: 'Small', spec: '--t-small · 14px · tables, buttons, the nav, captions and sources', cls: 'meta' },
+  { name: 'Label', spec: '--t-label · 13px · 600 · the boxed label, status labels, code', cls: 'text-label font-semibold uppercase tracking-[0.04em] text-navy' },
+];
+
+const parts = [
+  { key: 'cad', name: 'CAD', hex: '#55C3EC', from: 'the fingertip' },
+  { key: 'hardware', name: 'Hardware', hex: '#B75F1E', from: 'the link' },
+  { key: 'software', name: 'Software', hex: '#E4B826', from: 'the bar' },
 ];
 
 const steps = [
@@ -43,18 +49,16 @@ const steps = [
     <div class="mt-8 flex flex-wrap items-center gap-3">
       <a class="btn btn-primary" href="#buttons">Primary on navy</a>
       <a class="btn btn-secondary" href="#buttons">Secondary on navy</a>
-      <span class="badge badge-live">Live</span>
-      <span class="badge badge-draft">Draft</span>
-      <span class="badge badge-demo">Demo data</span>
+      <span class="badge">Prototype</span>
     </div>
   </PageHeader>
 
   <section class="section">
     <SectionLabel>Colours</SectionLabel>
-    <ul class="mt-8 grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+    <ul class="grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
       {colors.map((c) => (
         <li>
-          <div class:list={['flex h-24 items-end border border-edge p-3 text-sm font-semibold', c.dark ? 'text-white' : 'text-navy']} style={`background:${c.hex}`}>{c.hex}</div>
+          <div class:list={['flex h-24 items-end border border-edge p-3 text-small font-semibold', c.dark ? 'text-white' : 'text-navy']} style={`background:${c.hex}`}>{c.hex}</div>
           <p class="mt-3 font-semibold text-navy">{c.name}</p>
           <p class="meta mt-1">{c.use}</p>
         </li>
@@ -64,7 +68,7 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Logo</SectionLabel>
-    <p class="lede mt-6">The HandiWorks Co. mark, traced from the poster: two white blocks and a sky link. It stands in until the logo file arrives. On navy only.</p>
+    <p class="lede ">The HandiWorks Co. mark, traced from the poster: two white blocks and a sky link. It stands in until the logo file arrives. On navy only.</p>
     <div class="band mt-8 flex flex-wrap items-center gap-x-16 gap-y-8 p-8">
       <p class="lockup"><Logo /><span class="lockup-name">HandiWorks <small>Co.</small></span></p>
       <p class="wordmark"><Logo /><span class="wordmark-text"><span class="wordmark-name">HelpingHand</span><span class="wordmark-co">HandiWorks Co.</span></span></p>
@@ -73,7 +77,7 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Type</SectionLabel>
-    <p class="lede mt-6">Inter, one file, served from this site. No other typeface. Three weights, as on the poster: 400 for text, 600 for labels and small headings, 700 for titles and the words that matter. Code uses the system monospace.</p>
+    <p class="lede ">Inter, one file, served from this site. No other typeface. Three weights, as on the poster: 400 for text, 600 for labels and small headings, 700 for titles and the words that matter. Code uses the system monospace.</p>
     <div class="mt-6 border-t border-navy">
       {type.map((t) => (
         <div class="grid gap-x-8 gap-y-2 border-b border-edge py-5 md:grid-cols-[14rem_1fr] md:items-baseline">
@@ -86,16 +90,45 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Section label</SectionLabel>
-    <p class="lede mt-6">White capitals in a navy box, with a rule to the edge of the column. It is the heading of the section, so it never sits above another heading. The rule draws in as the label comes on screen.</p>
-    <div class="mt-8 grid gap-8 md:grid-cols-2">
-      <div><SectionLabel as="h3">Background</SectionLabel></div>
-      <div><SectionLabel as="h3" class="section-label-sm">In a narrow column</SectionLabel></div>
+    <p class="statement">The label names the section. The sentence leads it.</p>
+    <p class="measure mt-5">White capitals in a small navy box, on the rule that opens a section and runs to the edge of the column. One size, everywhere. The sentence under it is the section's heading. The rule draws in as the label comes on screen.</p>
+  </section>
+
+  <section class="section">
+    <SectionLabel>The two layouts</SectionLabel>
+    <div class="split">
+      <div>
+        <p class="statement">Full width, or split.</p>
+        <p class="measure mt-5">In a split the sentence and its words take the narrower left column, and the thing they are about takes the wider right one. Rules, tables and boxes all end on the same right edge; sentences keep a measure of about 70 characters.</p>
+      </div>
+      <ul class="rows">
+        <li><p>Split</p><p>A table, a list, a model or a drawing beside the words about it.</p></li>
+        <li><p>Full width</p><p>A row of columns, a wide drawing, a list of questions.</p></li>
+        <li><p>Main and sidebar</p><p>Lessons and dashboards only: pages that are worked in.</p></li>
+      </ul>
+    </div>
+    <details class="more mt-10">
+      <summary><span class="more-title">A row that opens</span><span class="meta">For what most readers do not need: sources, specifications, the long form of an argument.</span></summary>
+      <p class="measure">Closed until asked for. The Kit keeps its circuit and specifications in one, and The Problem its sources.</p>
+    </details>
+  </section>
+
+  <section class="section">
+    <SectionLabel>Lesson parts</SectionLabel>
+    <div class="split">
+      <div>
+        <p class="statement">Each part of a lesson wears one colour of the hand.</p>
+        <p class="measure mt-5">Wherever a part's number is shown, and in the strip under the title of its page. Nowhere else: the navy and the lime keep their jobs.</p>
+      </div>
+      <ol class="numbered">
+        {parts.map((pt) => <li data-part={pt.key}><h3>{pt.name}</h3><p class="mt-1">{pt.hex}, from {pt.from}</p></li>)}
+      </ol>
     </div>
   </section>
 
   <section class="section" id="buttons">
     <SectionLabel>Buttons</SectionLabel>
-    <div class="mt-8 flex flex-wrap items-center gap-3">
+    <div class="flex flex-wrap items-center gap-3">
       <a class="btn btn-primary" href="#buttons">Primary</a>
       <a class="btn btn-secondary" href="#buttons">Secondary</a>
       <a class="btn btn-primary" href="#buttons">With an arrow <Arrow /></a>
@@ -106,36 +139,36 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Status labels</SectionLabel>
-    <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+    <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
+      <span class="badge">Prototype</span>
+      <span class="badge">Demo</span>
+      <span class="badge">Coming soon</span>
       <span class="badge badge-live">Live</span>
-      <span class="badge badge-draft">Draft</span>
-      <span class="badge badge-demo">Demo data</span>
-      <span class="badge badge-soon">Coming soon</span>
-      <span class="inline-flex items-center gap-2 text-sm"><span class="dot dot-done"></span>Done</span>
-      <span class="inline-flex items-center gap-2 text-sm"><span class="dot dot-progress"></span>In progress</span>
-      <span class="inline-flex items-center gap-2 text-sm"><span class="dot dot-none"></span>Not started</span>
+      <span class="inline-flex items-center gap-2 text-small"><span class="dot dot-done"></span>Done</span>
+      <span class="inline-flex items-center gap-2 text-small"><span class="dot dot-progress"></span>In progress</span>
+      <span class="inline-flex items-center gap-2 text-small"><span class="dot dot-none"></span>Not started</span>
       <span class="w-48"><span class="meter"><span style="width:62%"></span></span></span>
     </div>
   </section>
 
   <section class="section">
     <SectionLabel>Panel and note</SectionLabel>
-    <div class="mt-8 grid gap-5 md:grid-cols-3">
+    <div class="grid gap-5 md:grid-cols-3">
       <div class="panel">
-        <h3 class="text-xl">Panel</h3>
-        <p class="mt-2 text-[0.9375rem] text-rule">A grey block for supporting text.</p>
+        <h3 class="text-lead">Panel</h3>
+        <p class="mt-2 text-smallall text-rule">A grey block for supporting text.</p>
       </div>
       <a class="panel" href="#buttons">
-        <h3 class="text-xl">Panel as a link</h3>
-        <p class="mt-2 text-[0.9375rem] text-rule">Tints and gains a navy outline on hover.</p>
+        <h3 class="text-lead">Panel as a link</h3>
+        <p class="mt-2 text-smallall text-rule">Tints and gains a navy outline on hover.</p>
       </a>
-      <p class="note self-start"><strong>Note.</strong> A lime block for the one thing a page has to say.</p>
+      <aside class="lesson-aside my-0! self-start"><p class="lesson-aside-title">Tip</p><p>A note or a tip in a lesson is an outlined box.</p></aside>
     </div>
   </section>
 
   <section class="section">
     <SectionLabel>Stat panel</SectionLabel>
-    <p class="lede mt-6">Top to bottom, as on the poster: caption, number, what it counts, a bar as long as the number, source. A bar is drawn only for a percentage.</p>
+    <p class="lede ">Top to bottom, as on the poster: caption, number, what it counts, a bar as long as the number, source. A bar is drawn only for a percentage.</p>
     <div class="mt-8 grid gap-5 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-start">
       <div class="stat-panel" data-reveal>
         <p class="stat-caption">{gap.caption}</p>
@@ -162,7 +195,7 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Result table</SectionLabel>
-    <div class="table-scroll mt-8">
+    <div class="table-scroll ">
       <table class="result-table min-w-[36rem]">
         <thead><tr><th scope="col">Trial</th><th scope="col">Motor 1 ran? Direction</th><th scope="col">Motor 2 ran? Direction</th></tr></thead>
         <tbody>
@@ -175,7 +208,7 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Numbered point</SectionLabel>
-    <ol class="numbered mt-10 max-w-2xl">
+    <ol class="numbered max-w-2xl">
       <li>Provide a <strong>scalable</strong> framework that evolves alongside the learner.</li>
       <li>Offer an <strong>affordable</strong> and <strong>accessible</strong> alternative to traditional robotics kits.</li>
     </ol>
@@ -183,7 +216,7 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Timeline and steps</SectionLabel>
-    <ol class="timeline mt-10">
+    <ol class="timeline ">
       <li class="is-now"><p class="timeline-when">Phase 1 · Now</p><div class="timeline-what"><h3>The kit</h3><p>A static curriculum.</p></div></li>
       <li><p class="timeline-when">Phase 2</p><div class="timeline-what"><h3>Accounts</h3><p>Classrooms and progress.</p></div></li>
       <li><p class="timeline-when">Phase 3</p><div class="timeline-what"><h3>Community</h3><p>Showcase and forum.</p></div></li>
@@ -194,7 +227,7 @@ const steps = [
 
   <section class="section">
     <SectionLabel>Frames</SectionLabel>
-    <div class="mt-8 grid gap-8 md:grid-cols-2">
+    <div class="grid gap-8 md:grid-cols-2">
       <figure>
         <div class="frame h-56"></div>
         <figcaption class="caption">Frame: a model or an image sits here, with its caption underneath.</figcaption>
@@ -203,14 +236,14 @@ const steps = [
     </div>
   </section>
 
-  <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
-    <div class="wrap py-14 md:py-20">
+  <section class="band band-close">
+    <div class="wrap">
       <SectionLabel>Band</SectionLabel>
-      <p class="statement mt-8 text-white">A full-width navy block. The page header, the footer, and at most one more per page.</p>
+      <p class="statement text-white">A full-width navy block. The page header, the footer, and at most one more per page.</p>
       <div class="columns mt-10">
-        <div><h3 class="text-xl">Columns</h3><p class="mt-2 text-(--on-navy-soft)">Split by hairlines, as on the poster.</p></div>
-        <div><h3 class="text-xl">Text</h3><p class="mt-2 text-(--on-navy-soft)">White, with secondary text mixed from white and navy.</p></div>
-        <div><h3 class="text-xl">Buttons</h3><p class="mt-2 text-(--on-navy-soft)">Flip to white on their own.</p></div>
+        <div><h3 class="text-lead">Columns</h3><p class="mt-2 text-(--on-navy-soft)">Split by hairlines, as on the poster.</p></div>
+        <div><h3 class="text-lead">Text</h3><p class="mt-2 text-(--on-navy-soft)">White, with secondary text mixed from white and navy.</p></div>
+        <div><h3 class="text-lead">Buttons</h3><p class="mt-2 text-(--on-navy-soft)">Flip to white on their own.</p></div>
       </div>
     </div>
   </section>

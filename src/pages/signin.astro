@@ -31,13 +31,13 @@ const roles = [
 
   <section class="section" data-signin data-base={import.meta.env.BASE_URL}>
     <SectionLabel>Choose a role</SectionLabel>
-    <p class="note mt-8 max-w-3xl" data-wanted hidden></p>
-    <div class="mt-8 grid gap-5 md:grid-cols-2">
+    <p class="note max-w-3xl" data-wanted hidden></p>
+    <div class="mt-7 grid gap-5 md:grid-cols-2">
       {roles.map((r) => (
         <button type="button" class="panel flex h-full flex-col items-stretch justify-start p-7 md:p-9" data-role={r.key}>
           <span class="flex items-start justify-between gap-6">
-            <span class="text-[1.625rem] font-bold leading-tight tracking-[-0.02em] text-navy">{r.title}</span>
-            <Arrow class="mt-1.5 text-2xl text-navy" />
+            <span class="text-statement font-bold leading-tight tracking-[-0.02em] text-navy">{r.title}</span>
+            <Arrow class="mt-1.5 text-statement text-navy" />
           </span>
           <span class="mt-3 block max-w-[38ch] text-rule">{r.body}</span>
           <span class="badge badge-live mt-5 self-start" data-current hidden>Your role now</span>

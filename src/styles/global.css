@@ -4,7 +4,9 @@
    docs/README.md and every block below is shown at /styleguide/. Light only. Square corners:
    circles are kept for numbered points, timeline nodes and status dots, and a stat bar has
    round ends, as on the poster. Three weights only, as on the poster: 400 for text, 600 for
-   labels and small headings, 700 for titles and the words that matter. */
+   labels and small headings, 700 for titles and the words that matter.
+   Five sizes only, set in :root below, plus 13px for the boxed labels and for code. A rule
+   that needs a size takes one of those tokens: do not write a new one. */
 
 @font-face {
   font-family: "Inter";
@@ -26,6 +28,17 @@
   --color-ink: #000000;
   --color-rule: #595959;
 
+  /* The same for sizes: Tailwind's scale is switched off, so `text-lg` and its like do nothing.
+     The utilities are text-display, text-statement, text-lead, text-body, text-small and
+     text-label, set from the tokens in :root. */
+  --text-*: initial;
+  --text-display: var(--t-display);
+  --text-statement: var(--t-statement);
+  --text-lead: var(--t-lead);
+  --text-body: var(--t-body);
+  --text-small: var(--t-small);
+  --text-label: var(--t-label);
+
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
@@ -42,6 +55,36 @@
   /* The poster's table lines: thin and dark enough to read as a grid. */
   --table-line: color-mix(in oklab, var(--color-rule) 48%, white);
   --nav-height: 4rem;
+
+  /* The type scale. Display and statement shrink on a phone; the rest hold. */
+  --t-display: clamp(2.25rem, 1.45rem + 3.1vw, 3.5rem);      /* 36 to 56: page titles, the big numbers */
+  --t-statement: clamp(1.5rem, 1.32rem + 0.75vw, 1.875rem);  /* 24 to 30: the sentence that leads a section */
+  --t-lead: clamp(1.125rem, 1.07rem + 0.25vw, 1.25rem);      /* 18 to 20: ledes and small headings */
+  --t-body: 1.0625rem;   /* 17: anything read as a sentence */
+  --t-small: 0.875rem;   /* 14: tables, buttons, the nav, captions and sources */
+  --t-label: 0.8125rem;  /* 13: the boxed label, status labels, code */
+
+  /* Code colours (astro.config.mjs hands the highlighter these). Navy and the grey are the
+     theme's; the other three are the hand's carriage, link and first segment, the link's
+     orange darkened. Each is 6:1 or better on the grey panel. */
+  --astro-code-foreground: var(--color-ink);
+  --astro-code-background: var(--color-panel);
+  --astro-code-token-comment: var(--color-rule);
+  --astro-code-token-keyword: var(--color-navy);
+  --astro-code-token-constant: #9D2F16;
+  --astro-code-token-string: #8F4712;
+  --astro-code-token-string-expression: #8F4712;
+  --astro-code-token-function: #21459D;
+  --astro-code-token-parameter: var(--color-ink);
+  --astro-code-token-punctuation: var(--color-ink);
+  --astro-code-token-link: var(--color-navy);
+
+  /* The three parts of a lesson each take one colour of the hand (SCHEME in index.html and
+     src/scripts/hand/view.ts): the fingertip's sky, the link's orange, the bar's gold. The
+     second value is the ink that reads on it. */
+  --part-cad: #55C3EC;       --part-cad-ink: var(--color-navy);
+  --part-hardware: #B75F1E;  --part-hardware-ink: var(--color-white);
+  --part-software: #E4B826;  --part-software-ink: var(--color-navy);
 }
 
 @layer base {
@@ -54,7 +97,7 @@
     background: var(--color-white);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: 1.0625rem;
+    font-size: var(--t-body);
     line-height: 1.6;
     font-optical-sizing: auto;
     caret-color: var(--color-navy);
@@ -100,36 +143,59 @@
   .band .link { color: var(--color-white); }
 
   /* ---------- Type ---------- */
-  .page-title { font-size: clamp(2.25rem, 1.45rem + 3.1vw, 3.5rem); font-weight: 700; line-height: 1.07; letter-spacing: -0.02em; max-width: 21ch; }
-  .page-title-compact { font-size: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem); line-height: 1.1; letter-spacing: -0.018em; max-width: 26ch; }
-  .page-lede { margin-top: 1.25rem; max-width: 58ch; font-size: clamp(1.0625rem, 0.98rem + 0.42vw, 1.3125rem); line-height: 1.5; color: var(--color-white); }
-  /* The sentence under a section label. The poster has no display headlines on white: it says
-     the thing in black, bold where it matters. `statement-plain` is the poster's own voice, a
-     regular sentence with its key words in bold. */
-  .statement { max-width: 34ch; font-size: clamp(1.25rem, 1.08rem + 0.8vw, 1.625rem); font-weight: 700; line-height: 1.25; letter-spacing: -0.014em; color: var(--color-ink); text-wrap: balance; }
-  .statement-plain { max-width: 36ch; font-weight: 400; line-height: 1.4; letter-spacing: -0.008em; text-wrap: pretty; }
-  .lede { max-width: 62ch; font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); line-height: 1.55; color: var(--color-ink); }
-  .meta { font-size: 0.8125rem; font-weight: 500; line-height: 1.45; color: var(--color-rule); }
+  .page-title { font-size: var(--t-display); font-weight: 700; line-height: 1.07; letter-spacing: -0.02em; max-width: 21ch; }
+  .page-title-compact { font-size: var(--t-statement); line-height: 1.15; letter-spacing: -0.018em; max-width: 30ch; }
+  .page-lede { margin-top: 1.25rem; max-width: 52ch; font-size: var(--t-lead); line-height: 1.5; color: var(--color-white); }
+  /* The sentence that leads a section: it is the section's heading, and the small boxed label
+     above it only names the section. One of them leads, and since 2026-11-25 it is the
+     sentence. `statement-plain` is the poster's own voice, a regular sentence with its key
+     words in bold. */
+  .statement { max-width: 24ch; font-size: var(--t-statement); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--color-ink); text-wrap: balance; }
+  .statement-plain { max-width: 30ch; font-weight: 400; line-height: 1.3; letter-spacing: -0.012em; text-wrap: pretty; }
+  .lede { max-width: 56ch; font-size: var(--t-lead); line-height: 1.5; color: var(--color-ink); }
+  .meta { font-size: var(--t-small); font-weight: 400; line-height: 1.45; color: var(--color-rule); }
+  /* Sentences keep a measure a reader can follow, whatever the width of the column they sit in. */
+  .measure { max-width: 34.5rem; }
   .link { color: var(--color-navy); text-decoration-line: underline; transition: text-decoration-thickness 120ms; }
   .link:hover { text-decoration-thickness: 2px; }
 
-  .crumbs { margin-bottom: 1.125rem; font-size: 0.875rem; font-weight: 500; color: var(--on-navy-soft); }
+  .crumbs { margin-bottom: 1.125rem; font-size: var(--t-small); font-weight: 400; color: var(--on-navy-soft); }
   .crumbs a { text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 160ms, color 160ms; }
   .crumbs a:hover { color: var(--color-white); text-decoration-color: currentColor; }
 
-  /* ---------- Section label: the heading of every section ----------
-     <h2 class="section-label"><span>Background</span></h2> */
-  .section-label { display: flex; align-items: center; gap: 1.5rem; font-size: clamp(1.125rem, 1rem + 0.55vw, 1.375rem); font-weight: 600; line-height: 1; letter-spacing: 0.012em; text-transform: uppercase; text-wrap: nowrap; }
-  .section-label > span { flex: 0 1 auto; min-width: 0; padding: 0.36em 0.6em 0.34em; background: var(--color-navy); color: var(--color-white); text-wrap: balance; white-space: normal; line-height: 1.15; }
-  .section-label::after { content: ''; flex: 1 1 2rem; min-width: 1.5rem; height: 2px; background: var(--color-rule); transform-origin: left center; }
-  .section-label-sm { gap: 0.875rem; font-size: 0.8125rem; letter-spacing: 0.04em; }
-  .section-label-sm > span { padding: 0.45em 0.7em 0.42em; }
-  .section-label-sm::after { height: 1px; }
+  /* ---------- Section label: names a section, on the rule that opens it ----------
+     <h2 class="section-label"><span>Background</span></h2>
+     The poster's boxed label, small: a tab on the line that divides one section from the
+     next. The sentence under it (`.statement`) is what leads. One size, everywhere. */
+  .section-label { display: flex; align-items: center; gap: 0.875rem; font-size: var(--t-label); font-weight: 600; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; text-wrap: nowrap; }
+  .section-label > span { flex: 0 1 auto; min-width: 0; padding: 0.45em 0.7em 0.42em; background: var(--color-navy); color: var(--color-white); text-wrap: balance; white-space: normal; line-height: 1.15; }
+  .section-label::after { content: ''; flex: 1 1 2rem; min-width: 1.5rem; height: 1px; background: var(--color-rule); transform-origin: left center; }
+  /* What follows a label sits close under it: the label belongs to its section, not to the
+     gap above. */
+  .section-label + * { margin-top: 1.75rem; }
+
+  /* ---------- The two layouts ----------
+     A section is either full width, or `split`: its sentence and words in the narrower left
+     column, the thing they are about (a table, a list, a model, a drawing) in the wider
+     right one. Every rule, table and box ends on the same right edge. */
+  .split { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem 4rem; align-items: start; }
+  .split > * { min-width: 0; }
+  @media (min-width: 64rem) { .split { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+  /* Lessons and dashboards are worked in, not read once: a main column and a sidebar. */
+  .with-aside { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem 2.5rem; }
+  .with-aside > * { min-width: 0; }
+  @media (min-width: 64rem) { .with-aside { grid-template-columns: minmax(0, 1fr) var(--aside, 16rem); align-items: start; } }
+  /* A ruled list of name and note, the note keeping its measure while the rules run on. */
+  .rows { border-top: 1px solid var(--color-navy); }
+  .rows > * { display: grid; gap: 0.25rem 2rem; padding: 0.875rem 0; border-bottom: 1px solid var(--color-edge); }
+  .rows > * > :first-child { font-weight: 600; }
+  .rows > * > :last-child { max-width: 34.5rem; color: var(--color-rule); }
+  @media (min-width: 48rem) { .rows > * { grid-template-columns: var(--rows-name, 12rem) minmax(0, 1fr); } }
   .band .section-label > span { background: var(--color-white); color: var(--color-navy); }
   .band .section-label::after { background: var(--navy-line); }
 
   /* ---------- Buttons ---------- */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 1.25rem; border: 1px solid transparent; font-size: 0.9375rem; font-weight: 600; line-height: 1.2; text-align: center; cursor: pointer; transition: background-color 160ms, color 160ms, border-color 160ms, transform 160ms var(--ease-out-expo); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 1.25rem; border: 1px solid transparent; font-size: var(--t-small); font-weight: 600; line-height: 1.2; text-align: center; cursor: pointer; transition: background-color 160ms, color 160ms, border-color 160ms, transform 160ms var(--ease-out-expo); }
   .btn:active { transform: translateY(1px); }
   .btn-primary { background: var(--color-navy); color: var(--color-white); }
   .btn-primary:hover { background: var(--navy-deep); }
@@ -163,8 +229,33 @@
     .band .columns > * { border-left-color: var(--navy-line); }
   }
 
+  /* ---------- Disclosure: a row that opens ----------
+     <details class="more"><summary><span class="more-title">…</span><span class="meta">…</span></summary>…</details>
+     For what most readers do not need: sources, specifications, the long form of an argument.
+     Rows that follow one another share their rules. */
+  .more { border-top: 1px solid var(--color-navy); border-bottom: 1px solid var(--color-edge); }
+  .more + .more { border-top: 0; }
+  .more > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1.25rem; padding: 1.125rem 0; cursor: pointer; list-style: none; }
+  .more > summary::-webkit-details-marker { display: none; }
+  .more > summary::before { content: '+'; flex: none; width: 1.5rem; font-size: var(--t-lead); font-weight: 600; line-height: 1; color: var(--color-navy); }
+  .more[open] > summary::before { content: '\2212'; }
+  .more-title { font-size: var(--t-lead); font-weight: 700; color: var(--color-navy); }
+  .more > summary:hover .more-title { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+  .more[open] { padding-bottom: 2.5rem; }
+  .more[open] > summary { margin-bottom: 1rem; }
+  /* On a phone the note goes under the title, in line with it, and a long title wraps beside
+     its "+" and not under it. */
+  @media (max-width: 47.99rem) {
+    .more-title { flex: 1 1 0; min-width: 0; line-height: 1.25; }
+    .more > summary > .meta { flex: 0 0 100%; padding-left: 2.75rem; }
+  }
+
+  /* The navy band that closes a page with its one action. */
+  .band-close { margin-top: clamp(3.25rem, 2.25rem + 4vw, 5.25rem); }
+  .band-close > .wrap { padding-block: clamp(3rem, 2.4rem + 2.6vw, 4.5rem); }
+
   /* A lime block for the one thing on a page that needs saying. */
-  .note { background: var(--color-lime); color: var(--color-ink); padding: 1rem 1.25rem; font-size: 0.9375rem; }
+  .note { background: var(--color-lime); color: var(--color-ink); padding: 1rem 1.25rem; }
   .note strong { color: var(--color-navy); }
 
   /* ---------- Stat panel: navy block, as on the poster ----------
@@ -172,17 +263,17 @@
      source. The number the page is arguing against is sky and lighter; the one it is arguing
      for is white and bold (`stat-number-plain`). A bar is drawn only for a percentage. */
   .stat-panel { display: flex; flex-direction: column; height: 100%; padding: 1.5rem 1.5rem 1.25rem; background: var(--color-navy); color: var(--color-white); }
-  .stat-caption { font-size: 0.8125rem; font-weight: 700; line-height: 1.3; letter-spacing: 0.02em; text-transform: uppercase; }
-  .stat-number { font-size: clamp(2.75rem, 2rem + 2.6vw, 4rem); font-weight: 600; line-height: 1; letter-spacing: -0.025em; color: var(--color-sky); font-variant-numeric: tabular-nums; }
+  .stat-caption { font-size: var(--t-label); font-weight: 700; line-height: 1.3; letter-spacing: 0.02em; text-transform: uppercase; }
+  .stat-number { font-size: var(--t-display); font-weight: 600; line-height: 1; letter-spacing: -0.025em; color: var(--color-sky); font-variant-numeric: tabular-nums; }
   .stat-number-plain { font-weight: 700; color: var(--color-white); }
-  .stat-label { margin-top: 0.75rem; font-size: 1rem; font-weight: 600; line-height: 1.35; }
+  .stat-label { margin-top: 0.75rem; font-size: var(--t-body); font-weight: 600; line-height: 1.35; }
   /* The poster's short label: capitals, in the colour of its number. */
-  .stat-label-caps { font-size: 0.75rem; font-weight: 700; line-height: 1.35; letter-spacing: 0.02em; text-transform: uppercase; color: var(--color-sky); }
+  .stat-label-caps { font-size: var(--t-label); font-weight: 700; line-height: 1.35; letter-spacing: 0.02em; text-transform: uppercase; color: var(--color-sky); }
   .stat-number-plain ~ .stat-label-caps { color: var(--color-white); }
   .stat-bar { margin-top: 1rem; height: 6px; }
   .stat-bar > span { display: block; height: 100%; width: var(--stat-fill, 3rem); border-radius: 9999px; background: var(--color-sky); transform-origin: left center; }
   .stat-number-plain ~ .stat-bar > span { background: var(--color-white); }
-  .stat-detail { margin-top: 0.875rem; font-size: 0.875rem; line-height: 1.5; color: var(--on-navy-soft); }
+  .stat-detail { margin-top: 0.875rem; font-size: var(--t-small); line-height: 1.5; color: var(--on-navy-soft); }
   /* Several figures in one navy block, split by hairlines, like the two on the poster. */
   .stat-group { display: grid; background: var(--color-navy); }
   .stat-group > * + * { border-top: 1px solid var(--navy-line); }
@@ -190,17 +281,17 @@
     .stat-group { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
     .stat-group > * + * { border-top: 0; border-left: 1px solid var(--navy-line); }
   }
-  .stat-source { margin-top: auto; padding-top: 1.25rem; font-size: 0.75rem; line-height: 1.45; color: var(--on-navy-soft); }
+  .stat-source { margin-top: auto; padding-top: 1.25rem; font-size: var(--t-small); line-height: 1.45; color: var(--on-navy-soft); }
   .stat-source a { color: inherit; text-decoration: underline; }
   .stat-source a:hover { color: var(--color-white); }
 
   /* The same figure as a ruled row, for the long lists under a section. */
   .figure-list { border-top: 1px solid var(--color-navy); }
   .figure-row { display: grid; gap: 0.25rem 2rem; padding: 1.125rem 0; border-bottom: 1px solid var(--color-edge); }
-  .figure-value { font-size: clamp(1.625rem, 1.4rem + 1vw, 2.125rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-navy); font-variant-numeric: tabular-nums; }
+  .figure-value { font-size: var(--t-statement); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-navy); font-variant-numeric: tabular-nums; }
   .figure-label { font-weight: 600; line-height: 1.4; }
-  .figure-detail { margin-top: 0.25rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-rule); }
-  .figure-source { font-size: 0.8125rem; line-height: 1.45; color: var(--color-rule); }
+  .figure-detail { margin-top: 0.25rem; font-size: var(--t-small); line-height: 1.5; color: var(--color-rule); }
+  .figure-source { font-size: var(--t-small); line-height: 1.45; color: var(--color-rule); }
   @media (min-width: 48rem) {
     .figure-row { grid-template-columns: 13.5rem minmax(0, 1fr) minmax(0, 16rem); align-items: baseline; }
     .figure-source { text-align: right; }
@@ -208,19 +299,27 @@
 
   /* ---------- Result table: navy header row, lime result cells ---------- */
   .table-scroll { overflow-x: auto; }
-  .result-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.45; }
+  .result-table { width: 100%; border-collapse: collapse; font-size: var(--t-small); line-height: 1.45; }
   .result-table th, .result-table td { padding: 0.75rem 1rem; border: 1px solid var(--table-line); text-align: left; vertical-align: top; }
-  .result-table thead th { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-white); font-weight: 500; }
+  .result-table thead th { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-white); font-weight: 600; }
   .result-table thead th + th { border-left-color: var(--navy-line); }
-  .result-table tbody th { font-weight: 500; color: var(--color-ink); }
+  .result-table tbody th { font-weight: 600; color: var(--color-ink); }
   .result-table .result { background: var(--color-lime); }
   .result-table-compact th, .result-table-compact td { padding: 0.5rem 0.875rem; }
 
   /* ---------- Numbered point: navy circle on the edge of a panel row ---------- */
   .numbered { display: grid; gap: 1.5rem; padding-left: 1.375rem; counter-reset: point; }
   .numbered > li { position: relative; padding: 1.125rem 1.5rem 1.125rem 2.5rem; background: var(--color-panel); counter-increment: point; }
-  .numbered > li::before { content: counter(point); position: absolute; left: -1.375rem; top: -0.625rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 1.125rem; font-weight: 500; line-height: 1; }
-  .numbered > li > :is(h3, h4, .numbered-title) { font-size: 1.1875rem; font-weight: 700; color: var(--color-navy); }
+  .numbered > li::before { content: counter(point); position: absolute; left: -1.375rem; top: -0.625rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 9999px; background: var(--part, var(--color-navy)); color: var(--part-ink, var(--color-white)); font-size: var(--t-body); font-weight: 600; line-height: 1; }
+  .numbered > li > :is(h3, h4, .numbered-title) { font-size: var(--t-lead); font-weight: 700; color: var(--color-navy); }
+  .numbered > li > p { font-size: var(--t-small); color: var(--color-rule); }
+
+  /* A lesson's part carries its colour wherever its number is shown. */
+  [data-part="cad"] { --part: var(--part-cad); --part-ink: var(--part-cad-ink); }
+  [data-part="hardware"] { --part: var(--part-hardware); --part-ink: var(--part-hardware-ink); }
+  [data-part="software"] { --part: var(--part-software); --part-ink: var(--part-software-ink); }
+  /* The strip under the title band of a lesson part, in that part's colour. */
+  .part-strip { height: 0.375rem; background: var(--part, transparent); }
 
   /* ---------- Timeline: the poster's "next steps" line ----------
      <ol class="timeline"><li><p class="timeline-when">…</p><div class="timeline-what">…</div></li></ol>
@@ -232,10 +331,10 @@
   .timeline > li::before { content: ''; position: absolute; left: 0; top: 0.25rem; width: 0.875rem; height: 0.875rem; border: 1.5px solid var(--color-rule); border-radius: 9999px; background: var(--color-white); z-index: 1; }
   .timeline > li.is-now::before { border-color: var(--color-navy); background: var(--color-navy); }
   .timeline::before { content: ''; position: absolute; left: calc(0.4375rem - 1px); top: 0.5rem; bottom: 0.5rem; width: 2px; background: var(--color-navy); }
-  .timeline-when { font-size: 0.875rem; font-weight: 700; line-height: 1.35; color: var(--color-ink); }
+  .timeline-when { font-size: var(--t-small); font-weight: 700; line-height: 1.35; color: var(--color-ink); }
   .timeline-what { margin-top: 0.25rem; }
-  .timeline-what :is(h3, h4) { font-size: 1.125rem; line-height: 1.25; }
-  .timeline-what p { margin-top: 0.375rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-rule); }
+  .timeline-what :is(h3, h4) { font-size: var(--t-lead); line-height: 1.25; }
+  .timeline-what p { margin-top: 0.375rem; font-size: var(--t-small); line-height: 1.5; color: var(--color-rule); }
   @media (min-width: 64rem) {
     .timeline { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: auto 0.875rem auto; gap: 1rem 2rem; }
     .timeline::before { display: none; }
@@ -251,13 +350,13 @@
     .timeline > li:nth-child(even) .timeline-what { grid-area: 1 / 1; align-self: end; }
   }
 
-  /* ---------- Status labels ---------- */
-  .badge { display: inline-flex; align-items: center; min-height: 1.5rem; padding: 0.15rem 0.55rem; border: 1px solid transparent; font-size: 0.75rem; font-weight: 600; line-height: 1.2; letter-spacing: 0.01em; white-space: nowrap; }
-  .badge-live { background: var(--color-lime); border-color: var(--lime-edge); color: var(--color-navy); }
-  .badge-draft, .badge-soon { background: var(--color-panel); border: 1px dashed var(--color-rule); color: var(--color-rule); }
-  .badge-demo { background: var(--color-white); border-color: var(--color-navy); color: var(--color-navy); }
-  .band .badge-draft, .band .badge-soon { background: transparent; border-color: var(--on-navy-soft); color: var(--color-white); }
-  .band .badge-demo { background: transparent; border-color: var(--color-white); color: var(--color-white); }
+  /* ---------- Status labels ----------
+     Three words, one look: Prototype, Demo and Coming soon are all a navy outline. A page says
+     its status once, under its title. Lime is kept for a lesson the team has signed off. */
+  .badge { display: inline-flex; align-items: center; min-height: 1.5rem; padding: 0.15rem 0.55rem; border: 1px solid var(--color-navy); background: var(--color-white); color: var(--color-navy); font-size: var(--t-label); font-weight: 600; line-height: 1.2; letter-spacing: 0.01em; white-space: nowrap; }
+  .badge-live { background: var(--color-lime); border-color: var(--lime-edge); }
+  .band .badge { background: transparent; border-color: var(--color-white); color: var(--color-white); }
+  .band .badge-live { background: var(--color-lime); border-color: var(--color-lime); color: var(--color-navy); }
 
   /* Progress, said twice: by shape and by the word beside it. */
   .dot { display: inline-block; flex: none; width: 0.6875rem; height: 0.6875rem; border: 1.5px solid var(--color-navy); border-radius: 9999px; }
@@ -274,10 +373,10 @@
   /* ---------- Process rail: numbered steps on one navy line ---------- */
   .process-rail { position: relative; display: grid; gap: 2rem; }
   .process-rail > li { position: relative; padding-left: 3.5rem; }
-  .process-num { position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 1.0625rem; font-weight: 600; line-height: 1; z-index: 1; }
+  .process-num { position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: var(--part, var(--color-navy)); color: var(--part-ink, var(--color-white)); font-size: var(--t-body); font-weight: 600; line-height: 1; z-index: 1; }
   .process-rail::before { content: ''; position: absolute; left: calc(1.25rem - 0.5px); top: 1.25rem; bottom: 1.25rem; width: 1px; background: var(--color-navy); }
   .process-rail > li.is-todo .process-num { background: var(--color-white); border: 1.5px solid var(--color-navy); color: var(--color-navy); }
-  .process-rail h3 { padding-top: 0.4rem; font-size: 1.25rem; }
+  .process-rail h3 { padding-top: 0.4rem; font-size: var(--t-lead); }
   .process-rail p { margin-top: 0.375rem; color: var(--color-rule); }
   @media (min-width: 48rem) {
     .process-rail { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 2.5rem; }
@@ -288,7 +387,7 @@
 
   /* ---------- Segmented choice between two pages ---------- */
   .segmented { display: inline-flex; border: 1px solid var(--color-navy); }
-  .segmented a { padding: 0.5rem 1.125rem; font-size: 0.9375rem; font-weight: 600; line-height: 1.3; color: var(--color-navy); transition: background-color 160ms, color 160ms; }
+  .segmented a { padding: 0.5rem 1.125rem; font-size: var(--t-small); font-weight: 600; line-height: 1.3; color: var(--color-navy); transition: background-color 160ms, color 160ms; }
   .segmented a:hover { background: var(--navy-tint); }
   .segmented a[aria-current="page"] { background: var(--color-navy); color: var(--color-white); }
   .band .segmented { border-color: var(--color-white); }
@@ -298,8 +397,8 @@
 
   /* ---------- Model and image frames ---------- */
   .frame { background: var(--color-panel); border: 1px solid var(--color-edge); }
-  .frame-empty { display: grid; place-items: center; background: var(--color-panel); border: 1px dashed var(--color-rule); color: var(--color-rule); font-size: 0.875rem; font-weight: 500; text-align: center; padding: 1rem; }
-  .caption { margin-top: 0.625rem; font-size: 0.8125rem; line-height: 1.45; color: var(--color-rule); }
+  .frame-empty { display: grid; place-items: center; background: var(--color-panel); border: 1px dashed var(--color-rule); color: var(--color-rule); font-size: var(--t-small); font-weight: 400; text-align: center; padding: 1rem; }
+  .caption { margin-top: 0.625rem; font-size: var(--t-small); line-height: 1.45; color: var(--color-rule); }
 
   /* ---------- Site nav (navy band) ---------- */
   .site-nav { position: sticky; top: 0; z-index: 40; border-bottom: 1px solid var(--navy-line); }
@@ -308,16 +407,16 @@
   .wordmark-text { display: inline-flex; align-items: baseline; gap: 0.75rem; }
   /* The HandiWorks mark, traced from the poster: white blocks and a sky link. Navy bands only. */
   .logo-mark { flex: none; width: auto; height: 2.375rem; }
-  .wordmark-name { font-size: 1.3125rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
-  .wordmark-co { padding-left: 0.75rem; border-left: 1px solid var(--navy-line); font-size: 0.8125rem; font-weight: 500; line-height: 1.2; color: var(--on-navy-soft); }
+  .wordmark-name { font-size: var(--t-lead); font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .wordmark-co { padding-left: 0.75rem; border-left: 1px solid var(--navy-line); font-size: var(--t-small); font-weight: 400; line-height: 1.2; color: var(--on-navy-soft); }
   .nav-links { display: none; align-items: center; gap: 0.125rem; }
-  .nav-link { position: relative; display: inline-flex; align-items: center; height: var(--nav-height); padding: 0 0.875rem; font-size: 0.9375rem; font-weight: 500; white-space: nowrap; color: var(--on-navy-soft); transition: color 160ms; }
+  .nav-link { position: relative; display: inline-flex; align-items: center; height: var(--nav-height); padding: 0 0.875rem; font-size: var(--t-small); font-weight: 600; white-space: nowrap; color: var(--on-navy-soft); transition: color 160ms; }
   .nav-link:hover, .nav-link.active { color: var(--color-white); }
   .nav-link::after { content: ''; position: absolute; left: 0.875rem; right: 0.875rem; bottom: -1px; height: 3px; background: var(--color-sky); transform: scaleX(0); transform-origin: left center; transition: transform 320ms var(--ease-out-expo); }
   .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
-  .nav-cta { min-height: 2.25rem; margin-left: 0.75rem; padding: 0.25rem 1rem; font-size: 0.875rem; white-space: nowrap; }
-  .nav-toggle { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.25rem 0.875rem; border: 1px solid var(--color-white); color: var(--color-white); font-size: 0.875rem; font-weight: 600; }
-  /* The row holds six links and a button, "Teacher dashboard" at its widest: the company
+  .nav-cta { min-height: 2.25rem; margin-left: 0.75rem; padding: 0.25rem 1rem; white-space: nowrap; }
+  .nav-toggle { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.25rem 0.875rem; border: 1px solid var(--color-white); color: var(--color-white); font-size: var(--t-small); font-weight: 600; }
+  /* The row holds five links and a button, "Teacher dashboard" at its widest: the company
      name gives way first, then the links fold into the menu. "Switch role" is in the menu
      only; on a wide screen the strip under a dashboard's title carries it. */
   @media (max-width: 71.99rem) {
@@ -337,18 +436,18 @@
   }
 
   /* ---------- Footer (navy band) ---------- */
-  .site-footer { border-top: 1px solid var(--navy-line); font-size: 0.9375rem; }
+  .site-footer { border-top: 1px solid var(--navy-line); font-size: var(--t-small); }
   .footer-cols { display: grid; gap: 2.5rem; padding-block: 3.5rem; }
   /* The poster's lockup: the mark, "HandiWorks", and "Co." tucked under its end. */
   .lockup { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-white); }
   .lockup .logo-mark { height: 3.25rem; }
-  .lockup-name { display: grid; justify-items: end; font-size: 1.5rem; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
-  .lockup-name small { margin-top: 0.125rem; font-size: 0.875rem; letter-spacing: 0; }
-  .footer-heading { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-navy-soft); }
+  .lockup-name { display: grid; justify-items: end; font-size: var(--t-statement); font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .lockup-name small { margin-top: 0.125rem; font-size: var(--t-small); letter-spacing: 0; }
+  .footer-heading { font-size: var(--t-label); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-navy-soft); }
   .footer-links { margin-top: 0.875rem; display: grid; gap: 0.5rem; }
   .footer-links a { color: var(--color-white); text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 160ms; overflow-wrap: anywhere; }
   .footer-links a:hover { text-decoration-color: currentColor; }
-  .footer-base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1.125rem; border-top: 1px solid var(--navy-line); font-size: 0.8125rem; color: var(--on-navy-soft); }
+  .footer-base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1.125rem; border-top: 1px solid var(--navy-line); color: var(--on-navy-soft); }
   @media (min-width: 48rem) {
     .footer-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.25fr); gap: 0; }
     .footer-cols > * + * { padding-left: 2.5rem; border-left: 1px solid var(--navy-line); }
@@ -356,32 +455,34 @@
   }
 
   /* ---------- Lesson body (MDX) ---------- */
-  /* Text keeps a readable measure; code, tables, figures and section labels use the whole column. */
-  .prose-hh { font-size: 1.0625rem; line-height: 1.6; }
-  .prose-hh > * { max-width: 68ch; }
-  .prose-hh > :is(pre, table, figure, .section-label, .table-scroll) { max-width: none; }
+  /* Text keeps a measure of about 70 characters; code, tables and figures use the whole
+     column. A heading here is a plain heading: the boxed label is for the sections of a page,
+     not for the steps of a lesson. */
+  .prose-hh { font-size: var(--t-body); line-height: 1.6; }
+  .prose-hh > * { max-width: 34.5rem; }
+  .prose-hh > :is(pre, table, figure, .table-scroll, .teacher-notes) { max-width: none; }
   .prose-hh > :first-child { margin-top: 0; }
   .prose-hh :is(h2, h3, h4) { scroll-margin-top: calc(var(--nav-height) + 1.5rem); }
-  .prose-hh h2:not(.section-label) { margin: 2.75rem 0 0.75rem; font-size: 1.625rem; }
+  .prose-hh h2:not(.section-label) { margin: 3rem 0 0.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-edge); max-width: none; font-size: var(--t-statement); letter-spacing: -0.02em; }
   .prose-hh .section-label { margin: 3rem 0 1.25rem; }
-  .prose-hh h3 { margin: 2rem 0 0.5rem; font-size: 1.25rem; }
-  .prose-hh h4 { margin: 1.5rem 0 0.5rem; font-size: 1.0625rem; }
+  .prose-hh h3 { margin: 2rem 0 0.5rem; font-size: var(--t-lead); }
+  .prose-hh h4 { margin: 1.5rem 0 0.5rem; font-size: var(--t-body); }
   .prose-hh p { margin: 1rem 0; }
   .prose-hh ul { margin: 1rem 0; padding-left: 1.25rem; list-style: square; }
   .prose-hh ul > li::marker { color: var(--color-navy); }
   .prose-hh ol { margin: 1.25rem 0; padding-left: 0; list-style: none; counter-reset: step; }
   .prose-hh ol > li { position: relative; margin: 0.75rem 0; padding-left: 2.5rem; counter-increment: step; }
-  .prose-hh ol > li::before { content: counter(step); position: absolute; left: 0; top: 0.05em; display: grid; place-items: center; width: 1.625rem; height: 1.625rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: 0.8125rem; font-weight: 600; line-height: 1; }
+  .prose-hh ol > li::before { content: counter(step); position: absolute; left: 0; top: 0.05em; display: grid; place-items: center; width: 1.625rem; height: 1.625rem; border-radius: 9999px; background: var(--color-navy); color: var(--color-white); font-size: var(--t-small); font-weight: 600; line-height: 1; }
   .prose-hh li { margin: 0.375rem 0; }
   .prose-hh a:not(.btn) { color: var(--color-navy); text-decoration: underline; }
   .prose-hh a:not(.btn):hover { text-decoration-thickness: 2px; }
   .prose-hh strong { font-weight: 600; }
   .prose-hh blockquote { margin: 1.5rem 0; padding: 1rem 1.25rem; background: var(--color-lime); }
   .prose-hh blockquote p { margin: 0.25rem 0; }
-  .prose-hh code { padding: 0.1em 0.3em; background: var(--color-panel); font-family: var(--font-mono); font-size: 0.875em; }
-  .prose-hh pre { margin: 1.25rem 0; padding: 1rem; overflow-x: auto; background: var(--color-panel) !important; border: 1px solid var(--color-edge); font-family: var(--font-mono); font-size: 0.78125rem; line-height: 1.7; tab-size: 2; }
+  .prose-hh code { padding: 0.1em 0.3em; background: var(--color-panel); font-family: var(--font-mono); font-size: var(--t-small); }
+  .prose-hh pre { margin: 1.25rem 0; padding: 1rem; overflow-x: auto; background: var(--color-panel) !important; border: 1px solid var(--color-edge); font-family: var(--font-mono); font-size: var(--t-label); line-height: 1.7; tab-size: 2; }
   .prose-hh pre code { padding: 0; background: transparent; font-size: inherit; }
-  .prose-hh table { margin: 1.5rem 0; width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .prose-hh table { margin: 1.5rem 0; width: 100%; border-collapse: collapse; font-size: var(--t-small); }
   .prose-hh th { padding: 0.625rem 0.875rem; background: var(--color-navy); border: 1px solid var(--color-navy); color: var(--color-white); font-weight: 600; text-align: left; }
   .prose-hh td { padding: 0.625rem 0.875rem; border: 1px solid var(--color-edge); vertical-align: top; }
   .prose-hh hr { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--color-edge); }
@@ -389,18 +490,20 @@
   .prose-hh figure { margin: 1.5rem 0; }
 
   /* Asides, downloads and teacher notes inside lesson text */
-  .lesson-aside { margin: 1.5rem 0; padding: 1rem 1.25rem; background: var(--color-lime); }
+  /* A note or a tip is an outlined box. Lime is kept for results (a "done" cell, a total), so
+     a page with four tips does not turn lime. Safety stays the navy one. */
+  .lesson-aside { margin: 1.5rem 0; padding: 1rem 1.25rem; border: 1px solid var(--color-navy); }
   .lesson-aside-title { margin: 0 0 0.25rem; font-weight: 700; color: var(--color-navy); }
   .prose-hh .lesson-aside p { margin: 0.25rem 0; }
-  .lesson-aside code { background: color-mix(in oklab, white 65%, transparent); }
   .lesson-aside-safety { background: var(--color-navy); color: var(--color-white); }
+  .lesson-aside-safety code { background: color-mix(in oklab, white 16%, var(--color-navy)); }
   .lesson-aside-safety .lesson-aside-title { color: var(--color-white); }
   .lesson-download { margin: 1.5rem 0; }
   .teacher-notes { margin-top: 3rem; }
   .teacher-notes > .section-label { margin: 0 0 1rem; }
   .prose-hh .teacher-notes-flag { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin: 0 0 1.25rem; }
   .teacher-note { margin-top: 1rem; }
-  .prose-hh .teacher-note h3 { margin: 0 0 0.5rem; font-size: 1.125rem; }
+  .prose-hh .teacher-note h3 { margin: 0 0 0.5rem; font-size: var(--t-lead); }
   .prose-hh .teacher-note > :last-child { margin-bottom: 0; }
   .prose-hh .teacher-note code { background: var(--color-white); }
   .prose-hh .teacher-notes-hint { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--color-edge); }

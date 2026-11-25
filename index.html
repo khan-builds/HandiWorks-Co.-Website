@@ -19,6 +19,11 @@
 
    Three weights only, as on the poster: 400 for text, 600 for labels and small headings,
    700 for titles and the words that matter.
+   Five sizes only, the --t- tokens below, plus 13px for the boxed labels. A rule that needs a
+   size takes one of those tokens. The one exception is the scroll story's own headings (the
+   hero title and the four scene headings), which are sized to the stage.
+
+   Below the story the page is three sections: The kit, Try it now, and the closing lime block.
 
    Order: tokens, base, shared blocks, nav, scroll story, page sections, footer, motion. */
 
@@ -46,13 +51,20 @@
   --navy-tint: color-mix(in oklab, var(--color-navy) 7%, white);
   --navy-line: color-mix(in oklab, white 24%, var(--color-navy));
   --on-navy-soft: color-mix(in oklab, white 82%, var(--color-navy));
-  --table-line: color-mix(in oklab, var(--color-rule) 48%, white);
 
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --nav-height: 4rem;
   /* left edge of the page column, for things that are not inside .wrap */
   --page-inset: 1.25rem;
+
+  /* The type scale, the same as global.css. Display and statement shrink on a phone; the rest hold. */
+  --t-display: clamp(2.25rem, 1.45rem + 3.1vw, 3.5rem);      /* 36 to 56: the big numbers, the closing line */
+  --t-statement: clamp(1.5rem, 1.32rem + 0.75vw, 1.875rem);  /* 24 to 30: the sentence that leads a section */
+  --t-lead: clamp(1.125rem, 1.07rem + 0.25vw, 1.25rem);      /* 18 to 20: ledes and small headings */
+  --t-body: 1.0625rem;   /* 17: anything read as a sentence */
+  --t-small: 0.875rem;   /* 14: buttons, the nav, the footer, captions */
+  --t-label: 0.8125rem;  /* 13: the boxed label */
 }
 @media (min-width: 48rem) {
   :root { --page-inset: max(2rem, calc((100vw - 72rem) / 2 + 2rem)); }
@@ -66,7 +78,7 @@ body {
   background: var(--color-white);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 1.0625rem;
+  font-size: var(--t-body);
   line-height: 1.6;
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
@@ -80,7 +92,6 @@ p, li { text-wrap: pretty; }
 a { color: inherit; text-decoration: none; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 button { font: inherit; background: transparent; cursor: pointer; }
 video, canvas, svg { display: block; }
-table { font-variant-numeric: tabular-nums; }
 ::selection { background: var(--color-navy); color: var(--color-white); }
 :focus-visible { outline: 3px solid var(--color-navy); outline-offset: 2px; }
 
@@ -91,30 +102,44 @@ table { font-variant-numeric: tabular-nums; }
 .wrap, .section { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1.25rem; }
 @media (min-width: 48rem) { .wrap, .section { padding-inline: 2rem; } }
 .section { padding-top: clamp(3.25rem, 2.25rem + 4vw, 5.25rem); scroll-margin-top: var(--nav-height); }
+.section > * { min-width: 0; }
 .section[tabindex="-1"]:focus { outline: none; }   /* where "Skip animation" lands: focus moves there without a ring round the whole section */
 main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
-/* The hand's parts in pale sky, lying behind the rest of the page. The hand script draws them. */
+/* A few of the hand's parts in pale sky, in the open space of the page below the story: the
+   outer margins beside the content column, the gap above the first section and the gap below
+   the last. The hand script places them (placeLitter) and keeps each one whole and clear of
+   the content, so nothing needs a backing to cover them. There is no open space on a phone,
+   so there are none. */
 .litter { position: absolute; left: 0; right: 0; bottom: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 .litter canvas { position: absolute; opacity: .5; }
-/* The words, lists and tables below the story sit on white, a little wider than themselves, so
-   they cover the parts cleanly: a part shows in the open space around them and nowhere else.
-   Panels, the navy stage and the lime note are solid already. */
-.section :is(h2, h3, h4, p, ul, ol, dl, table):not(:where(.panel, .stat-panel, .stat-group, .close-note, .finger-stage, table) *) { background-color: var(--color-white); box-shadow: 0 0 0 0.375rem var(--color-white); }
+@media (max-width: 47.99rem) { .litter { display: none; } }
 
 .band { background: var(--color-navy); color: var(--color-white); }
 .band :is(h1, h2, h3) { color: var(--color-white); }
 .band ::selection { background: var(--color-sky); color: var(--color-navy); }
 .band :focus-visible { outline-color: var(--color-white); }
 
-.statement { max-width: 34ch; font-size: clamp(1.25rem, 1.08rem + 0.8vw, 1.625rem); font-weight: 700; line-height: 1.25; letter-spacing: -0.014em; color: var(--color-ink); text-wrap: balance; }
-.lede { max-width: 62ch; font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); line-height: 1.55; color: var(--color-ink); }
+/* The sentence that leads a section: it is the section's heading, and the small boxed label
+   above it only names the section. */
+.statement { max-width: 24ch; font-size: var(--t-statement); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--color-ink); text-wrap: balance; }
+/* Sentences keep a measure a reader can follow, whatever the width of the column they sit in. */
+.measure { max-width: 34.5rem; }
+/* Words that stay on one line, so a statement of two short sentences breaks between them. */
+.nowrap { white-space: nowrap; }
 
-/* section label: the poster's navy box with its rule. It is the heading of the section. */
-.section-label { display: flex; align-items: center; gap: 1.5rem; font-size: clamp(1.125rem, 1rem + 0.55vw, 1.375rem); font-weight: 600; line-height: 1; letter-spacing: 0.012em; text-transform: uppercase; text-wrap: nowrap; }
-.section-label > span { flex: 0 1 auto; min-width: 0; padding: 0.36em 0.6em 0.34em; background: var(--color-navy); color: var(--color-white); text-wrap: balance; white-space: normal; line-height: 1.15; }
-.section-label::after { content: ""; flex: 1 1 2rem; min-width: 1.5rem; height: 2px; background: var(--color-rule); transform-origin: left center; }
+/* section label: the poster's boxed label, small, a tab on the 1px rule that opens a section. */
+.section-label { display: flex; align-items: center; gap: 0.875rem; font-size: var(--t-label); font-weight: 600; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; text-wrap: nowrap; }
+.section-label > span { flex: 0 1 auto; min-width: 0; padding: 0.45em 0.7em 0.42em; background: var(--color-navy); color: var(--color-white); text-wrap: balance; white-space: normal; line-height: 1.15; }
+.section-label::after { content: ""; flex: 1 1 2rem; min-width: 1.5rem; height: 1px; background: var(--color-rule); transform-origin: left center; }
+.section-label + * { margin-top: 1.75rem; }
 
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 1.25rem; border: 1px solid transparent; font-size: 0.9375rem; font-weight: 600; line-height: 1.2; text-align: center; cursor: pointer; transition: background-color 160ms, color 160ms, border-color 160ms, transform 160ms var(--ease-out-expo); }
+/* A split section: the sentence and its words in the narrower left column, the thing they are
+   about in the wider right one. One column below a laptop. */
+.split { display: grid; gap: 2rem 4rem; align-items: start; }
+.split > * { min-width: 0; }
+@media (min-width: 64rem) { .split { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 1.25rem; border: 1px solid transparent; font-size: var(--t-small); font-weight: 600; line-height: 1.2; text-align: center; cursor: pointer; transition: background-color 160ms, color 160ms, border-color 160ms, transform 160ms var(--ease-out-expo); }
 .btn:active { transform: translateY(1px); }
 .btn svg { width: 0.875rem; height: 0.875rem; flex: none; }
 .btn-primary { background: var(--color-navy); color: var(--color-white); }
@@ -125,8 +150,6 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 .btn-on-navy:hover { background: color-mix(in oklab, white 88%, var(--color-sky)); }
 .btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
-.panel { background: var(--color-panel); padding: 1.5rem; }
-
 /* Columns split by hairlines, as on the poster. One column on a phone. */
 .columns { display: grid; gap: 2rem; }
 @media (min-width: 48rem) {
@@ -136,11 +159,14 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 }
 
 /* Top to bottom, as on the poster: caption, number, what it counts. A bar is drawn only
-   for a percentage, so these three have none. */
+   for a percentage, so these three have none. The theme prints the number a page argues
+   against in sky, and the one it argues for in white and bold (`stat-number-plain`): these
+   three are the kit's own, so they are white. */
 .stat-panel { display: flex; flex-direction: column; height: 100%; padding: 1.5rem 1.5rem 1.375rem; background: var(--color-navy); color: var(--color-white); }
-.stat-caption { margin-bottom: 1.25rem; font-size: 0.8125rem; font-weight: 700; line-height: 1.3; letter-spacing: 0.02em; text-transform: uppercase; }
-.stat-number { font-size: clamp(2.75rem, 2rem + 2.6vw, 4rem); font-weight: 600; line-height: 1; letter-spacing: -0.025em; color: var(--color-sky); font-variant-numeric: tabular-nums; }
-.stat-label { margin-top: 0.75rem; font-size: 1rem; font-weight: 600; line-height: 1.35; }
+.stat-caption { margin-bottom: 1.25rem; font-size: var(--t-label); font-weight: 700; line-height: 1.3; letter-spacing: 0.02em; text-transform: uppercase; }
+.stat-number { font-size: var(--t-display); font-weight: 600; line-height: 1; letter-spacing: -0.025em; color: var(--color-sky); font-variant-numeric: tabular-nums; }
+.stat-number-plain { font-weight: 700; color: var(--color-white); }
+.stat-label { margin-top: 0.75rem; font-size: var(--t-body); font-weight: 600; line-height: 1.35; }
 /* Several figures in one navy block, split by hairlines, like the two on the poster. */
 .stat-group { display: grid; background: var(--color-navy); }
 .stat-group > * + * { border-top: 1px solid var(--navy-line); }
@@ -149,14 +175,6 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
   .stat-group > * + * { border-top: 0; border-left: 1px solid var(--navy-line); }
 }
 
-.table-scroll { overflow-x: auto; }
-.result-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.45; }
-.result-table th, .result-table td { padding: 0.75rem 1rem; border: 1px solid var(--table-line); background: var(--color-white); text-align: left; vertical-align: top; }
-.result-table thead th { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-white); font-weight: 500; }
-.result-table thead th + th { border-left-color: var(--navy-line); }
-.result-table tbody th { font-weight: 500; color: var(--color-ink); }
-.result-table .result { background: var(--color-lime); }
-
 /* ---------- site nav: navy band (same as Nav.astro) ---------- */
 .site-nav { position: sticky; top: 0; z-index: 40; border-bottom: 1px solid var(--navy-line); }
 .site-nav-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; height: var(--nav-height); }
@@ -164,17 +182,17 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 .wordmark-text { display: inline-flex; align-items: baseline; gap: 0.75rem; }
 /* The HandiWorks mark, traced from the poster: white blocks and a sky link. Navy bands only. */
 .logo-mark { flex: none; width: auto; height: 2.375rem; }
-.wordmark-name { font-size: 1.3125rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
-.wordmark-co { padding-left: 0.75rem; border-left: 1px solid var(--navy-line); font-size: 0.8125rem; font-weight: 500; line-height: 1.2; color: var(--on-navy-soft); }
+.wordmark-name { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.wordmark-co { padding-left: 0.75rem; border-left: 1px solid var(--navy-line); font-size: var(--t-small); font-weight: 400; line-height: 1.2; color: var(--on-navy-soft); }
 .nav-links { display: none; align-items: center; gap: 0.125rem; }
-.nav-link { position: relative; display: inline-flex; align-items: center; height: var(--nav-height); padding: 0 0.875rem; font-size: 0.9375rem; font-weight: 500; white-space: nowrap; color: var(--on-navy-soft); transition: color 160ms; }
+.nav-link { position: relative; display: inline-flex; align-items: center; height: var(--nav-height); padding: 0 0.875rem; font-size: var(--t-small); font-weight: 600; white-space: nowrap; color: var(--on-navy-soft); transition: color 160ms; }
 .nav-link:hover { color: var(--color-white); }
 .nav-link::after { content: ""; position: absolute; left: 0.875rem; right: 0.875rem; bottom: -1px; height: 3px; background: var(--color-sky); transform: scaleX(0); transform-origin: left center; transition: transform 320ms var(--ease-out-expo); }
 .nav-link:hover::after { transform: scaleX(1); }
 .nav-link[hidden] { display: none; }
-.nav-cta { min-height: 2.25rem; margin-left: 0.75rem; padding: 0.25rem 1rem; font-size: 0.875rem; white-space: nowrap; }
-.nav-toggle { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.25rem 0.875rem; border: 1px solid var(--color-white); color: var(--color-white); font-size: 0.875rem; font-weight: 600; }
-/* The row holds six links and a button, "Teacher dashboard" at its widest: the company name
+.nav-cta { min-height: 2.25rem; margin-left: 0.75rem; padding: 0.25rem 1rem; white-space: nowrap; }
+.nav-toggle { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.25rem 0.875rem; border: 1px solid var(--color-white); color: var(--color-white); font-size: var(--t-small); font-weight: 600; }
+/* The row holds five links and a button, "Teacher dashboard" at its widest: the company name
    gives way first, then the links fold into the menu. "Switch role" is in the menu only; on
    a wide screen the dashboards carry it. Same numbers as global.css. */
 @media (max-width: 71.99rem) {
@@ -238,20 +256,23 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 .story-scene { grid-area: 1 / 1; align-self: start; visibility: hidden; }
 .story-scene:first-child { visibility: visible; }
 .story-scene h1, .story-scene h2 { font-size: clamp(2.375rem, 1.45rem + 3.6vw, 4.25rem); font-weight: 700; line-height: 1.04; letter-spacing: -0.022em; }
-.scene-tagline { margin-top: 0.875rem; color: var(--color-navy); font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem); font-weight: 500; line-height: 1.25; text-wrap: balance; }
-.scene-body { max-width: 36ch; margin-top: 1rem; font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem); line-height: 1.55; }
+.scene-tagline { margin-top: 0.875rem; color: var(--color-navy); font-size: var(--t-statement); font-weight: 600; line-height: 1.2; letter-spacing: -0.014em; text-wrap: balance; }
+.scene-body { max-width: 36ch; margin-top: 1rem; font-size: var(--t-lead); line-height: 1.5; }
 .scene-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+/* The four dashes and "Skip animation". They are there for the whole story and leave with it:
+   the hand script fades them out over the story's last steps, so they are gone before the
+   stage scrolls away under the nav. */
 .story-bar { display: flex; align-items: center; gap: 1.25rem; margin-top: 2rem; }
 .story-steps { display: flex; gap: 6px; }
-/* "Skip animation": small and quiet beside the dashes, and there for the whole story. It goes
-   straight to the first section after the story (the script at the foot of main does the jump). */
-.story-skip { position: relative; display: inline-flex; align-items: center; gap: 0.375rem; min-height: 2rem; padding: 0.25rem 0.625rem; border: 1px solid color-mix(in oklab, var(--color-navy) 38%, white); background: var(--color-white); color: var(--color-navy); font-size: 0.8125rem; font-weight: 600; line-height: 1.2; white-space: nowrap; transition: background-color 160ms, border-color 160ms; }
+/* "Skip animation": small and quiet beside the dashes. It goes straight to "The kit", the first
+   section after the story (the script at the foot of main does the jump). */
+.story-skip { position: relative; display: inline-flex; align-items: center; gap: 0.375rem; min-height: 2rem; padding: 0.25rem 0.625rem; border: 1px solid color-mix(in oklab, var(--color-navy) 38%, white); background: var(--color-white); color: var(--color-navy); font-size: var(--t-small); font-weight: 600; line-height: 1.2; white-space: nowrap; transition: background-color 160ms, border-color 160ms; }
 .story-skip::after { content: ""; position: absolute; inset: -0.375rem; }   /* a finger-sized target round a small label */
 .story-skip:hover { border-color: var(--color-navy); background: var(--navy-tint); }
 .story-skip svg { width: 0.875rem; height: 0.875rem; flex: none; }
 .story-steps i { width: 2rem; height: 5px; background: color-mix(in oklab, var(--color-navy) 16%, white); transition: background-color 320ms var(--ease-out-expo); }
 .story-steps i.on { background: var(--color-navy); }
-.story-hint { display: flex; align-items: center; gap: 0.375rem; margin-top: 0.875rem; color: var(--color-rule); font-size: 0.8125rem; font-weight: 500; transition: opacity 200ms linear; }
+.story-hint { display: flex; align-items: center; gap: 0.375rem; margin-top: 0.875rem; color: var(--color-rule); font-size: var(--t-small); font-weight: 400; transition: opacity 200ms linear; }
 .story-hint svg { width: 0.875rem; height: 0.875rem; flex: none; }
 
 @media (max-width: 55.99rem) {
@@ -260,8 +281,9 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
   .home-visual::after { left: 50%; width: 60%; }
   .storyboard { grid-row: 2; padding: 0 var(--page-inset) 1.375rem; }
   .story-scene h1, .story-scene h2 { font-size: clamp(1.875rem, 8.4vw, 2.5rem); }
-  .scene-tagline { margin-top: 0.5rem; font-size: 1.0625rem; }
-  .scene-body { margin-top: 0.5rem; font-size: 0.9375rem; line-height: 1.45; }
+  /* Under the hand the words are its caption, a step down the scale, so the hand keeps its room. */
+  .scene-tagline { margin-top: 0.5rem; font-size: var(--t-body); letter-spacing: -0.006em; }
+  .scene-body { margin-top: 0.5rem; font-size: var(--t-small); line-height: 1.45; }
   .scene-actions { gap: 0.5rem; margin-top: 0.75rem; }
   .scene-actions .btn { min-height: 2.5rem; padding-inline: 1rem; }
   .story-bar { margin-top: 1rem; }
@@ -270,60 +292,42 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
 }
 
 /* ---------- page sections ---------- */
-.section > .section-label { margin-bottom: 2rem; }
-
-
-.product-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
-.product-copy .lede { margin-top: 1rem; }
-.product-copy .btn { margin-top: 1.75rem; }
-/* The finger in the film is white, so it plays on a navy block. */
-.finger-stage { display: grid; place-items: center; overflow: hidden; aspect-ratio: 16 / 11; background: var(--color-navy); color: var(--color-white); text-align: center; }
+/* The kit: the sentence and its words beside one live finger, then the kit's three numbers as
+   one navy strip. */
+.kit-copy .measure { margin-top: 1.25rem; }
+.kit-copy .btn { margin-top: 1.75rem; }
+/* The finger's links are drawn white, so it plays on a navy block. */
+.finger-stage { display: grid; place-items: center; overflow: hidden; aspect-ratio: 16 / 9; background: var(--color-navy); color: var(--color-white); text-align: center; }
 .finger-stage canvas { width: 100%; height: 100%; }
-.card-grid { margin-top: clamp(2rem, 4vw, 3rem); }
-.card-grid h3 { font-size: 1.3125rem; }
-.card-grid p { margin-top: 0.625rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-rule); }
-.card-grid .card-lead { color: var(--color-ink); font-size: 1rem; font-weight: 600; line-height: 1.35; }
+#kit .stat-group { margin-top: clamp(2rem, 4vw, 3rem); }
 
-#learn .btn, #team .btn { margin-top: 1.75rem; }
-#try .btn { margin-top: 1.25rem; }
-#try .card-grid { margin-top: 1.75rem; }
-
-#team .lede { margin-top: 0.75rem; }
-.team-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: clamp(1.75rem, 4vw, 2.5rem); }
-.team-grid li { display: flex; align-items: center; gap: 0.875rem; padding: 1rem; }
-.initial { display: grid; place-items: center; flex: none; width: 3rem; height: 3rem; background: var(--color-navy); color: var(--color-white); font-size: 1rem; font-weight: 700; line-height: 1; }
-.team-grid h3 { font-size: 1.0625rem; }
-.team-grid .role { color: var(--color-rule); font-size: 0.875rem; line-height: 1.3; }
+/* Try it now: the two things that run in the browser, side by side. */
+.card-grid { margin-top: 1.75rem; }
+.card-grid h3 { font-size: var(--t-lead); }
+.card-grid p { margin-top: 0.625rem; color: var(--color-rule); }
+.card-grid .card-lead { color: var(--color-ink); font-weight: 600; line-height: 1.35; }
+.card-grid .btn { margin-top: 1.25rem; }
 
 /* closing callout: a lime block */
 .close-note { padding: clamp(2rem, 5vw, 3.5rem); background: var(--color-lime); }
-.close-note .statement { max-width: 16ch; color: var(--color-navy); font-size: clamp(1.875rem, 1.3rem + 2.4vw, 2.875rem); letter-spacing: -0.022em; line-height: 1.08; }
+.close-note .statement { max-width: 16ch; color: var(--color-navy); font-size: var(--t-display); letter-spacing: -0.022em; line-height: 1.08; }
 .close-note .btn-row { margin-top: 1.75rem; }
 
-@media (max-width: 55.99rem) {
-  .product-grid { grid-template-columns: minmax(0, 1fr); }
-  .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 35rem) {
-  .team-grid { grid-template-columns: minmax(0, 1fr); }
-  .result-table th, .result-table td { padding: 0.625rem; }
-}
-
 /* ---------- footer: navy band (same as Footer.astro) ---------- */
-.site-footer { border-top: 1px solid var(--navy-line); font-size: 0.9375rem; }
+.site-footer { border-top: 1px solid var(--navy-line); font-size: var(--t-small); }
 .footer-cols { display: grid; gap: 2.5rem; padding-block: 3.5rem; }
 /* The poster's lockup: the mark, "HandiWorks", and "Co." tucked under its end. */
 .lockup { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-white); }
 .lockup .logo-mark { height: 3.25rem; }
-.lockup-name { display: grid; justify-items: end; font-size: 1.5rem; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
-.lockup-name small { margin-top: 0.125rem; font-size: 0.875rem; letter-spacing: 0; }
+.lockup-name { display: grid; justify-items: end; font-size: var(--t-statement); font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+.lockup-name small { margin-top: 0.125rem; font-size: var(--t-small); letter-spacing: 0; }
 .footer-tagline { max-width: 20rem; margin-top: 1.25rem; }
 .site-footer .btn { margin-top: 1.5rem; }
-.footer-heading { color: var(--on-navy-soft); font-size: 0.75rem; font-weight: 700; line-height: 1.15; letter-spacing: 0.06em; text-transform: uppercase; }
+.footer-heading { color: var(--on-navy-soft); font-size: var(--t-label); font-weight: 700; line-height: 1.15; letter-spacing: 0.06em; text-transform: uppercase; }
 .footer-links { margin-top: 0.875rem; display: grid; gap: 0.5rem; }
 .footer-links a { color: var(--color-white); text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 160ms; overflow-wrap: anywhere; }
 .footer-links a:hover { text-decoration-color: currentColor; }
-.footer-base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1.125rem; border-top: 1px solid var(--navy-line); font-size: 0.8125rem; color: var(--on-navy-soft); }
+.footer-base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1.125rem; border-top: 1px solid var(--navy-line); color: var(--on-navy-soft); }
 @media (min-width: 48rem) {
   .footer-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.25fr); gap: 0; }
   .footer-cols > * + * { padding-left: 2.5rem; border-left: 1px solid var(--navy-line); }
@@ -385,7 +389,6 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
             <a href="kit/" class="nav-link">The Kit</a>
             <a href="lessons/beginner/" class="nav-link">Lessons</a>
             <a href="teachers/" class="nav-link">For teachers</a>
-            <a href="roadmap/" class="nav-link">Roadmap</a>
             <a href="team/" class="nav-link">Team</a>
             <a id="nav-switch" href="signin/" class="nav-link" hidden>Switch role</a>
             <a id="nav-auth" href="signin/" class="btn btn-on-navy nav-cta">Classroom demo</a>
@@ -445,10 +448,10 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
                 <p class="scene-body">Change a link, predict how the grip will move, then test it. Your next design starts with what you learn.</p>
               </article>
             </div>
-            <!-- The four dashes say where the story is; the link beside them leaves it. -->
+            <!-- The four dashes say where the story is; the link beside them leaves it, for "The kit". -->
             <div class="story-bar">
               <div class="story-steps" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-              <a class="story-skip" href="#about" data-skip>Skip animation <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+              <a class="story-skip" href="#kit" data-skip>Skip animation <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
             </div>
             <p class="story-hint" aria-hidden="true">Scroll to explore <svg viewBox="0 0 16 16"><path d="M8 3v10M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></p>
           </div>
@@ -458,76 +461,41 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
         </section>
       </div>
 
-      <section class="section" id="about">
-        <h2 class="section-label" data-reveal><span>The kit in numbers</span></h2>
-        <div class="stat-group">
-          <div class="stat-panel">
-            <p class="stat-caption">Parts for one hand</p>
-            <p class="stat-number">$153.41</p>
-            <p class="stat-label">Shared by a group of four students</p>
-          </div>
-          <div class="stat-panel">
-            <p class="stat-caption">Motors</p>
-            <p class="stat-number">6</p>
-            <p class="stat-label">DC motors, run from one Arduino board</p>
-          </div>
-          <div class="stat-panel">
-            <p class="stat-caption">Student ages</p>
-            <p class="stat-number">11+</p>
-            <p class="stat-label">Designed for guided first builds</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="product">
+      <!-- Below the story: three sections. "Skip animation" lands on the first. -->
+      <section class="section" id="kit">
         <h2 class="section-label" data-reveal><span>The kit</span></h2>
-        <div class="product-grid">
-          <div class="product-copy">
+        <div class="split">
+          <div class="kit-copy">
             <p class="statement">Engineered for hands-on learning.</p>
-            <p class="lede">HelpingHand is a modular robotic hand that students design, wire, and program themselves. They learn mechanics, circuits, and coding one lesson at a time, not by following a manual.</p>
+            <p class="measure">HelpingHand is a modular robotic hand that students design, wire, and program themselves. They learn mechanics, circuits, and coding one lesson at a time, not by following a manual.</p>
             <a class="btn btn-primary" href="kit/">See the kit</a>
           </div>
           <figure class="finger-stage" aria-label="Animated finger linkage">
             <canvas role="img" aria-label="One finger module curling and opening: the motor pulls a link, and the three segments follow"></canvas>
           </figure>
         </div>
-        <div class="columns card-grid">
-          <article>
-            <h3>Mechanics</h3>
-            <p class="card-lead">Small links. Coordinated movement.</p>
-            <p>Each finger is a chain of links. See how they carry one motor's motion to the fingertip.</p>
-          </article>
-          <article>
-            <h3>Electronics</h3>
-            <p class="card-lead">A little power. A lot to explore.</p>
-            <p>An Arduino, a small programmable board, runs six motors. Two push buttons drive them.</p>
-          </article>
-          <article>
-            <h3>Programming</h3>
-            <p class="card-lead">From your code to its fingertips.</p>
-            <p>Program the grasp, run it from the buttons, then change the program and watch the hand respond.</p>
-          </article>
+        <div class="stat-group">
+          <div class="stat-panel">
+            <p class="stat-caption">Parts for one hand</p>
+            <p class="stat-number stat-number-plain">$153.41</p>
+            <p class="stat-label">Shared by a group of four students</p>
+          </div>
+          <div class="stat-panel">
+            <p class="stat-caption">Motors</p>
+            <p class="stat-number stat-number-plain">6</p>
+            <p class="stat-label">DC motors, run from one Arduino board</p>
+          </div>
+          <div class="stat-panel">
+            <p class="stat-caption">Student ages</p>
+            <p class="stat-number stat-number-plain">11+</p>
+            <p class="stat-label">Designed for guided first builds</p>
+          </div>
         </div>
-      </section>
-
-      <section class="section" id="learn">
-        <h2 class="section-label" data-reveal><span>From a guided build to your own design</span></h2>
-        <div class="table-scroll">
-          <table class="result-table">
-            <thead><tr><th scope="col">Activity</th><th scope="col">With a guide</th><th scope="col">On your own</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Build</th><td>Assemble the finger.</td><td class="result">Redesign a link.</td></tr>
-              <tr><th scope="row">Program</th><td>Run the example program.</td><td class="result">Choose a new grip angle.</td></tr>
-              <tr><th scope="row">Test</th><td>Check that each joint moves.</td><td class="result">Compare two designs and explain the difference.</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <a class="btn btn-secondary" href="lessons/beginner/">Browse the lessons</a>
       </section>
 
       <section class="section" id="try">
         <h2 class="section-label" data-reveal><span>Try it now</span></h2>
-        <p class="statement">No kit needed. Both run in the browser.</p>
+        <p class="statement"><span class="nowrap">No kit needed.</span> <span class="nowrap">Both run in the browser.</span></p>
         <div class="columns card-grid">
           <article>
             <h3>The simulator</h3>
@@ -542,19 +510,6 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
             <a class="btn btn-secondary" href="signin/?as=teacher">See the teacher view</a>
           </article>
         </div>
-      </section>
-
-      <section class="section" id="team">
-        <h2 class="section-label" data-reveal><span>The team</span></h2>
-        <p class="statement">Meet HandiWorks.</p>
-        <p class="lede">Four engineers. One shared curiosity.</p>
-        <ul class="team-grid">
-          <li class="panel"><p class="initial" aria-hidden="true">BJ</p><div><h3>Billy Jin</h3><p class="role">Programming Lead</p></div></li>
-          <li class="panel"><p class="initial" aria-hidden="true">GK</p><div><h3>Golam Khan</h3><p class="role">Design Lead</p></div></li>
-          <li class="panel"><p class="initial" aria-hidden="true">CL</p><div><h3>Clarence Li</h3><p class="role">Circuitry Lead</p></div></li>
-          <li class="panel"><p class="initial" aria-hidden="true">LZ</p><div><h3>Lingbo Zhang</h3><p class="role">Project Manager</p></div></li>
-        </ul>
-        <a class="btn btn-secondary" href="team/">Meet the team</a>
       </section>
 
       <section class="section" id="start">
@@ -598,8 +553,8 @@ main { position: relative; padding-bottom: clamp(4rem, 3rem + 5vw, 6.5rem); }
     addEventListener('resize', onScroll);
     check();
 
-    // "Skip animation": land on the first section after the story at once. A smooth scroll
-    // would play the whole story on the way past, which is the thing being skipped.
+    // "Skip animation": land on "The kit", the first section after the story, at once. A smooth
+    // scroll would play the whole story on the way past, which is the thing being skipped.
     const skip = document.querySelector('[data-skip]');
     if (skip) skip.addEventListener('click', (event) => {
       const next = document.querySelector(skip.getAttribute('href'));
@@ -1067,7 +1022,7 @@ function turnBetween(from,to,share){
 // lifted out of the palm show beside it, and looked at `rise` mm further up the fingers,
 // because the parts travel further that way.
 const BURST_VIEW={zoom:.58,roll:-.42,lean:.12,rise:34};
-// The sky the parts take when they lie behind the rest of the page.
+// The sky the parts take when they lie in the open space of the rest of the page.
 const SKY=[.44,.82,.94];
 // Where a point of the hand (mm) lands on the stage, -1 to 1 each way, worked out the way the
 // shader does it for a flat drawing with the hand not turned on its palm.
@@ -1165,7 +1120,12 @@ for(let i=0;i<12;i++){
 }
 hero.prepend(scenery);
 const scenes=[...hero.querySelectorAll('.story-scene')];
-const steps=[...hero.querySelectorAll('.story-steps i')], hint=hero.querySelector('.story-hint');
+const steps=[...hero.querySelectorAll('.story-steps i')], hint=hero.querySelector('.story-hint'), bar=hero.querySelector('.story-bar');
+// The dashes and "Skip animation" leave before the story does. They fade between these two
+// shares of the scroll through the story, so they are gone while the stage still stands under
+// the nav and never slide up under it. They go by the scroll itself, not by the story's soft
+// lag behind it, because the stage moves with the scroll.
+const BAR_LEAVES=[.955,.98];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const starts=SCENES.map(step=>step/LENGTH);
 const mix=(a,b,t)=>a+(b-a)*t, smooth=x=>{x=clamp(x);return x*x*(3-2*x);};
@@ -1284,22 +1244,52 @@ function render(now=performance.now()){
  const current=starts.filter(start=>p>=start).length-1;
  steps.forEach((step,i)=>step.classList.toggle('on',i<=current));
  if(hint)hint.style.opacity=clamp(1-p/.02);
+ if(bar){
+   const there=clamp((BAR_LEAVES[1]-target)/(BAR_LEAVES[1]-BAR_LEAVES[0]));
+   bar.style.opacity=there;
+   bar.style.visibility=there?'visible':'hidden';   // gone from the keyboard's path too, once it cannot be seen
+ }
 }
-// ---- the parts, lying behind the rest of the page ----
-// Each part is drawn once, in sky, to a small picture of its own. Copies of the pictures are set
-// down the whole page, one to a cell of a grid, so no stretch of it is without them. They lie
-// behind the page: the words, tables and panels are solid and cover them, so a part shows only
-// in the open space around the content. Within its cell each part takes the spot with the most
-// open space around it. As the page scrolls each turns and drifts a few pixels.
-const KEEP_CLEAR='h2,h3,h4,p,ul,ol,dl,table,figure,.panel,.stat-panel,.close-note,.btn,canvas';
+// ---- a few of the parts, in the open space of the rest of the page ----
+// Each link of the four fingers (carriage, link, the three segments and the two bars) is drawn
+// once, in sky, to a picture of its own, seen from near its flat side so that its shape reads.
+// A few copies are set down the page below the story, and only where the page is open:
+//   in the outer margin on each side of the content column, one after another down the page
+//     with the two sides out of step, wherever the margin can hold a part whole;
+//   in the gap above the first section, where the story ends, and in the gap below the last,
+//     two small ones each. The gaps between sections are too shallow to give a part room.
+// A part is sized to its place with room to spare, so none is ever behind a word, a panel or
+// a button, and none is cut off by anything. A window narrower than LITTER.narrowest has no
+// open space, and gets no parts. As the page scrolls each turns and drifts a few pixels,
+// never out of its place.
+const LITTER={
+ narrowest:768,    // px of window width: below this there are no parts
+ edge:12,          // px kept clear between a part and the side of the window
+ clear:22,         // px kept clear between a part and the content column beside it
+ reach:280,        // px: how far out from the content column a part in a margin may lie
+ gapClear:22,      // px kept clear between a part in a gap and the content above or below it
+ least:40,         // px: a place that cannot hold a part this large is left empty, so nothing is a speck
+ most:104,         // px: the largest a part is drawn
+ pitch:320,        // px down the page from one part to the next in a margin
+ sway:[6,14],      // px a part in a margin drifts sideways and down as the page scrolls, at most
+ gapSway:[8,5],    // the same for a part in a gap
+ spin:50,          // degrees a part turns while it crosses the window
+ // Where the two parts lie across the gap above the first section and the gap below the last,
+ // as shares of the content column's width. Above, they keep to the right of the section's label.
+ above:[.58,.9], below:[.16,.64]
+};
 let litter=[], masters=[];
 function litterPage(){
  const perMm=1, ratio=Math.min(devicePixelRatio||1,2);
  const still=HAND_INFO.bodies.map(()=>IDENTITY), sky=HAND_INFO.bodies.map(()=>[...SKY,1]);
- masters=HAND_INFO.bodies.map((_,i)=>i).sort((a,b)=>chance(a,11)-chance(b,11)).map(body=>{
+ const isLink=body=>OF_FINGER[body]&&LINK_OF[body]>=0;
+ masters=HAND_INFO.bodies.map((_,i)=>i).filter(isLink).sort((a,b)=>chance(a,11)-chance(b,11)).map(body=>{
    const size=Math.ceil(RADII[body]*2*perMm), px=Math.ceil(size*ratio);
    canvas.width=canvas.height=px;handView.gl.viewport(0,0,px,px);
-   paint(handView,[HAND_INFO.chunks[body]],still,CENTRES[body],sky,NO_TINTS,chance(body,12)*6.28,(chance(body,13)-.5)*1.6,chance(body,14)*6.28,25.4/RADII[body]*.96,25.4/RADII[body]*.96);
+   // A link is a flat plate, and a roll of 0 or half a turn looks square at its face: each is
+   // seen from one side or the other, tilted a little so that it still has thickness.
+   const roll=(chance(body,15)<.5?0:Math.PI)+(chance(body,12)-.5)*1.1, lean=(chance(body,13)-.5)*.9;
+   paint(handView,[HAND_INFO.chunks[body]],still,CENTRES[body],sky,NO_TINTS,roll,lean,chance(body,14)*6.28,25.4/RADII[body]*.96,25.4/RADII[body]*.96);
    const picture=document.createElement('canvas');picture.width=picture.height=px;
    picture.getContext('2d').drawImage(canvas,0,0);
    return {picture,size};
@@ -1309,45 +1299,72 @@ function litterPage(){
  if(document.fonts)document.fonts.ready.then(placeLitter);   // the words may move once the font is in
 }
 // Lay the parts down the page. The litter starts where the scroll story ends. It is laid again
-// when the window changes size, because the page gets longer or shorter.
+// when the window changes size, because the page gets longer or shorter and its margins change.
 function placeLitter(){
  const main=track.parentElement, old=main.querySelector('.litter');
  if(old)old.remove();
- if(!masters.length)return;
+ litter=[];
+ if(!masters.length||innerWidth<LITTER.narrowest)return;
  const layer=document.createElement('div');layer.className='litter';layer.setAttribute('aria-hidden','true');
  layer.style.top=track.offsetTop+track.offsetHeight+'px';
  main.append(layer);
  const box=layer.getBoundingClientRect(), wide=box.width, tall=box.height;
- const blocks=[...main.querySelectorAll('.section :is('+KEEP_CLEAR+')')].map(el=>el.getBoundingClientRect()).filter(r=>r.width&&r.height)
-   .map(r=>[r.left-box.left,r.top-box.top,r.right-box.left,r.bottom-box.top]);
- const open=(x,y)=>Math.min(...blocks.map(([l,t,r,b])=>Math.hypot(Math.max(l-x,0,x-r),Math.max(t-y,0,y-b))));   // how far the nearest content is
- const cell=wide>=900?190:130, cols=Math.max(2,Math.round(wide/cell)), rows=Math.max(1,Math.round(tall/cell));
- litter=[];
- for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){
-   const k=row*cols+col, master=masters[(k*7+row)%masters.length];
-   let spot=null, best=-1;
-   for(let go=0;go<10;go++){
-     const x=(col+.12+chance(k,40+go*2)*.76)/cols*wide, y=(row+.12+chance(k,41+go*2)*.76)/rows*tall, room=open(x,y);
-     if(room>best){best=room;spot=[x,y];}
-   }
-   const size=Math.min(master.size,cell*1.05), picture=document.createElement('canvas');
+ // Each section's content: its sides, and where it starts and ends down the layer.
+ const sections=[...main.querySelectorAll(':scope > .section')].map(el=>{
+   const r=el.getBoundingClientRect(), style=getComputedStyle(el);
+   return {left:r.left-box.left+parseFloat(style.paddingLeft), right:r.right-box.left-parseFloat(style.paddingRight), top:r.top-box.top+parseFloat(style.paddingTop), bottom:r.bottom-box.top};
+ });
+ if(!sections.length)return;
+ const left=Math.min(...sections.map(s=>s.left)), right=Math.max(...sections.map(s=>s.right));
+ let next=0;
+ // Set one part down in a place `room` px across, middle at y, anywhere from x0 to x1. It is the
+ // next part in the shuffled order that is about that size, drawn no larger than the room.
+ function lay(x0,x1,y,room,sway,k){
+   let at=next%masters.length;
+   for(let go=0;go<masters.length;go++){const j=(next+go)%masters.length;if(masters[j].size<=room*1.3){at=j;break;}}
+   next=at+1;
+   const master=masters[at], size=Math.min(master.size,room,LITTER.most);
+   const x=x1-x0>size?x0+size/2+chance(k,40)*(x1-x0-size):(x0+x1)/2;
+   const picture=document.createElement('canvas'), turn=chance(k,19)*360;
    picture.width=master.picture.width;picture.height=master.picture.height;
    picture.getContext('2d').drawImage(master.picture,0,0);
-   picture.style.cssText='width:'+size+'px;height:'+size+'px;left:'+spot[0]+'px;top:'+spot[1]+'px';
+   picture.style.cssText='width:'+size+'px;height:'+size+'px;left:'+x+'px;top:'+y+'px;transform:translate(-50%,-50%) rotate('+turn+'deg)';
    layer.append(picture);
-   litter.push({picture,at:spot[1],turn:chance(k,19)*360,pace:(chance(k,20)-.5)*2});
+   litter.push({picture,at:y,turn,pace:(chance(k,20)-.5)*2,sway});
  }
+ // The margins. A part keeps clear of the window's side, of the content beside it and of the
+ // footer below, drift and all.
+ const [swayX,swayY]=LITTER.sway, strip=Math.min(left-LITTER.edge-LITTER.clear-2*swayX,LITTER.reach);
+ if(strip>=LITTER.least)for(const side of [0,1]){
+   const inner=side?right+LITTER.clear+swayX:left-LITTER.clear-swayX, outer=side?inner+strip:inner-strip;
+   const room=Math.min(strip,LITTER.most), most=tall-room/2-swayY-LITTER.gapClear;
+   for(let y=LITTER.pitch*(side?.86:.36), k=side*50;y<=most;k++){
+     if(y>=room/2+swayY+4)lay(Math.min(inner,outer),Math.max(inner,outer),y,room,LITTER.sway,k);
+     y+=LITTER.pitch*(.85+.3*chance(k,42));
+   }
+ }
+ // The two gaps. Above the first section there is only the end of the story over a part, so it
+ // lies high in its gap; below the last it lies midway between the section and the footer.
+ const bob=LITTER.gapSway[1], first=sections[0].top, last=sections.at(-1).bottom;
+ [[LITTER.above,bob+4,first-LITTER.gapClear-bob],[LITTER.below,last+LITTER.gapClear+bob,tall-LITTER.gapClear-bob]].forEach(([shares,from,to],g)=>{
+   const room=Math.min(to-from,LITTER.most);
+   if(room<LITTER.least)return;
+   shares.forEach((share,n)=>{
+     const x=left+(right-left)*share;
+     lay(x-room/2,x+room/2,(from+to)/2,room,LITTER.gapSway,200+g*10+n);
+   });
+ });
  driftLitter();
 }
 function driftLitter(){
- const tall=innerHeight, layer=track.parentElement.querySelector('.litter');
+ const tall=innerHeight, layer=litter.length&&track.parentElement.querySelector('.litter');
  if(!layer)return;
  const top=layer.getBoundingClientRect().top;
- for(const {picture,at,turn,pace} of litter){
+ for(const {picture,at,turn,pace,sway} of litter){
    const y=top+at;
    if(y<-300||y>tall+300)continue;
    const d=reduced.matches?0:clamp((y-tall/2)/tall+.5)-.5;   // -0.5 at the top of the window, 0.5 at the bottom
-   picture.style.transform='translate(-50%,-50%) translate('+pace*d*18+'px,'+d*26+'px) rotate('+(turn+pace*d*80)+'deg)';
+   picture.style.transform='translate(-50%,-50%) translate('+pace*d*2*sway[0]+'px,'+d*2*sway[1]+'px) rotate('+(turn+pace*d*LITTER.spin)+'deg)';
  }
 }
 let frame=0;
@@ -1402,7 +1419,6 @@ window.addEventListener('resize',scheduleFinger);reduced.addEventListener('chang
               <li><a href="kit/">The Kit</a></li>
               <li><a href="lessons/beginner/">Lessons</a></li>
               <li><a href="teachers/">For teachers</a></li>
-              <li><a href="roadmap/">Roadmap</a></li>
               <li><a href="team/">Team</a></li>
               <li><a href="signin/">Classroom demo</a></li>
             </ul>

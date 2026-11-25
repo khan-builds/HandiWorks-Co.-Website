@@ -20,25 +20,25 @@ const next = PORTIONS.find((pt) => me.progress[pt.key] !== 'done') ?? PORTIONS[P
   </PageHeader>
   <DemoBanner role="student" />
 
-  <section class="section grid gap-x-14 gap-y-12 pt-12! lg:grid-cols-[1.5fr_1fr] lg:items-start">
+  <section class="section with-aside pt-12!" style="--aside: 22rem">
     <div>
       <SectionLabel>Your progress</SectionLabel>
-      <h3 class="mt-8 text-2xl"><a class="hover:underline" href={p(LESSON_1.path)}>{LESSON_1.title}</a></h3>
+      <h3 class="statement"><a class="hover:underline" href={p(LESSON_1.path)}>{LESSON_1.title}</a></h3>
       <ol class="process-rail mt-8">
         {PORTIONS.map((pt) => {
           const status = me.progress[pt.key];
           return (
-            <li class:list={[status === 'not-started' && 'is-todo']}>
+            <li data-part={pt.key} class:list={[status === 'not-started' && 'is-todo']}>
               <span class="process-num" aria-hidden="true">{pt.step}</span>
               <h3><a class="hover:underline" href={p(`${LESSON_1.path}${pt.key}/`)}>{pt.label}</a></h3>
-              <p class="flex items-center gap-2 text-[0.9375rem]"><span class:list={['dot', DOT_CLASS[status]]} aria-hidden="true"></span>{STATUS_LABEL[status]}</p>
+              <p class="flex items-center gap-2 text-small"><span class:list={['dot', DOT_CLASS[status]]} aria-hidden="true"></span>{STATUS_LABEL[status]}</p>
             </li>
           );
         })}
       </ol>
 
-      {/* Lesson 1's own way into the simulator. The "Simulator" section further down says more about it. */}
-      <p class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.9375rem]">
+      {/* Lesson 1's own way into the simulator. "Practice" further down says more about it. */}
+      <p class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-small">
         <a class="link font-semibold" href={p('/dashboard/student/simulator/')}>Try Lesson 1 in the simulator</a>
         <span class="meta">Six steps, from a see-saw to the finger of the hand.</span>
       </p>
@@ -48,14 +48,14 @@ const next = PORTIONS.find((pt) => me.progress[pt.key] !== 'done') ?? PORTIONS[P
           <p class="meta">After Lesson 1</p>
           <p class="mt-1 font-semibold text-navy">Lesson 2 · Gears and managing multiple motors</p>
         </div>
-        <span class="badge badge-soon">Coming soon</span>
+        <span class="badge">Coming soon</span>
       </div>
     </div>
 
     <aside class="grid gap-10">
       <div>
-        <SectionLabel class="section-label-sm">Due next</SectionLabel>
-        <ul class="mt-1">
+        <SectionLabel>Due next</SectionLabel>
+        <ul class="mt-1!">
           {me.assigned.map((a) => (
             <li class="flex items-baseline justify-between gap-4 border-b border-edge py-3.5">
               <a class="font-semibold text-navy hover:underline" href={p(a.path)}>{a.title}</a>
@@ -65,8 +65,8 @@ const next = PORTIONS.find((pt) => me.progress[pt.key] !== 'done') ?? PORTIONS[P
         </ul>
       </div>
       <div>
-        <SectionLabel class="section-label-sm">Bookmarks</SectionLabel>
-        <ul class="mt-4 grid gap-2.5 text-[0.9375rem]">
+        <SectionLabel>Bookmarks</SectionLabel>
+        <ul class="mt-4! grid gap-2.5 text-small">
           {me.bookmarks.map((b) => (
             <li><a class="link" href={p(b.path)}>{b.title}</a></li>
           ))}
@@ -76,22 +76,18 @@ const next = PORTIONS.find((pt) => me.progress[pt.key] !== 'done') ?? PORTIONS[P
   </section>
 
   <section class="section">
-    <SectionLabel>Test your code</SectionLabel>
-    <div class="mt-8 grid gap-x-14 gap-y-6 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+    <SectionLabel>Practice</SectionLabel>
+    <div class="columns">
       <div>
-        <p class="max-w-prose">Plug in the hand and drive it from the browser: a slider for each motor, the tilt sensor's readings as they arrive, and the same hand moving on screen. With no hand connected, it moves the one on screen.</p>
+        <h3 class="text-lead">Test your code</h3>
+        <p class="mt-2 text-rule">Plug in the hand and drive it from the browser: a slider for each motor, the tilt sensor's readings as they arrive, and the same hand moving on screen. With no hand connected, it moves the one on screen.</p>
+        <a class="btn btn-primary mt-5" href={p('/dashboard/student/test-your-code/')}>Open Test your code <Arrow /></a>
       </div>
-      <div><a class="btn btn-primary" href={p('/dashboard/student/test-your-code/')}>Open Test your code <Arrow /></a></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <SectionLabel>Simulator</SectionLabel>
-    <div class="mt-8 grid gap-x-14 gap-y-6 lg:grid-cols-[1.5fr_1fr] lg:items-center">
       <div>
-        <p class="max-w-prose">Six short steps for Lesson 1. Start with a see-saw, join two with a rod, and build up, bar by bar, to the finger of the hand. Drag each one, then answer one question.</p>
+        <h3 class="text-lead">Simulator</h3>
+        <p class="mt-2 text-rule">Six short steps for Lesson 1. Start with a see-saw, join two with a rod, and build up, bar by bar, to the finger of the hand. Drag each one, then answer one question.</p>
+        <a class="btn btn-secondary mt-5" href={p('/dashboard/student/simulator/')}>Open the simulator <Arrow /></a>
       </div>
-      <div><a class="btn btn-primary" href={p('/dashboard/student/simulator/')}>Open the simulator <Arrow /></a></div>
     </div>
   </section>
 </Base>

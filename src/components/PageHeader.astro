@@ -3,13 +3,13 @@
     as one block, like the header of the poster.
     Slots: default (under the lede: buttons, a selector), "crumbs" (breadcrumb above the title),
     "aside" (right column on wide screens). `compact` is for working screens: smaller title,
-    less air. */
-interface Props { title: string; lede?: string; compact?: boolean }
-const { title, lede, compact = false } = Astro.props;
+    less air. `part` draws a strip under the band in that lesson part's colour. */
+interface Props { title: string; lede?: string; compact?: boolean; part?: 'cad' | 'hardware' | 'software' }
+const { title, lede, compact = false, part } = Astro.props;
 const hasAside = Astro.slots.has('aside');
 ---
 <header class="band">
-  <div class:list={['wrap grid gap-x-16 gap-y-6', compact ? 'py-8 md:py-10' : 'pt-10 pb-12 md:pt-14 md:pb-16', hasAside && 'lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end']}>
+  <div class:list={['wrap grid gap-x-16 gap-y-6', compact ? 'py-7 md:py-8' : 'pt-9 pb-10 md:pt-12 md:pb-12', hasAside && 'lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center']}>
     <div>
       <slot name="crumbs" />
       <h1 class:list={['page-title', compact && 'page-title-compact']}>{title}</h1>
@@ -19,3 +19,4 @@ const hasAside = Astro.slots.has('aside');
     {hasAside && <div><slot name="aside" /></div>}
   </div>
 </header>
+{part && <div class="part-strip" data-part={part} aria-hidden="true"></div>}

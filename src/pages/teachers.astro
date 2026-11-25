@@ -12,7 +12,7 @@ import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProcessRail from '../components/ProcessRail.astro';
 import Arrow from '../components/Arrow.astro';
-import { p, demo, KIT_REQUEST } from '../lib/url';
+import { p, asset, demo, KIT_REQUEST } from '../lib/url';
 import { PORTIONS } from '../lib/lessons';
 import { options, costTotals, money } from '../data/compare';
 import { needs, CLASS_SIZE, GROUP } from '../data/kit';
@@ -21,7 +21,7 @@ const LESSON_1 = 'beginner/01-finger-module';
 const parts = await getCollection('portions', (e) => e.id.startsWith(LESSON_1 + '/'));
 const minutes = (key: string) => parts.find((x) => x.data.portion === key)?.data.durationMinutes;
 const total = parts.reduce((n, x) => n + x.data.durationMinutes, 0);
-const steps = PORTIONS.map((pt) => ({ title: pt.label, body: `${pt.blurb}${minutes(pt.key) ? ` About ${minutes(pt.key)} minutes in Lesson 1.` : ''}` }));
+const steps = PORTIONS.map((pt) => ({ title: pt.label, part: pt.key, body: `${pt.blurb}${minutes(pt.key) ? ` About ${minutes(pt.key)} minutes in Lesson 1.` : ''}` }));
 
 const bill = costTotals();
 const hands = CLASS_SIZE / GROUP;
@@ -44,18 +44,20 @@ const questions = [
 <Base title="For teachers" description="HelpingHand in a classroom: how a lesson runs, what a class set costs, what you need, and a demo of the teacher view.">
   <PageHeader title="HelpingHand in your classroom." lede="How a lesson runs, what a class set costs, what you need, and how to see it for yourself.">
     <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
-      <span class="badge badge-demo">Prototype</span>
+      <span class="badge">Prototype</span>
       <span>Not yet used in a classroom.</span>
     </p>
     <div class="mt-7 flex flex-wrap gap-3">
       <a class="btn btn-primary" href={demo('teacher')}>See the teacher view <Arrow /></a>
       <a class="btn btn-secondary" href={KIT_REQUEST}>Request a kit</a>
     </div>
+    {/* A still of the Final v3 hand, rendered from public/models by scripts/model-stills.mjs. */}
+    <img slot="aside" class="hidden h-64 w-auto max-w-none lg:block" src={asset('/images/hand-final-v3.webp')} width="560" height="679" alt="The HelpingHand: four fingers and a thumb standing on a palm" />
   </PageHeader>
 
   <section class="section" id="class">
     <SectionLabel>In class</SectionLabel>
-    <p class="statement mt-6">Every lesson has three parts. Each part is one class session.</p>
+    <p class="statement">Every lesson has three parts. Each part is one class session.</p>
     <ProcessRail steps={steps} class="mt-10" />
     <div class="mt-10 flex flex-wrap gap-3">
       <a class="btn btn-primary" href={p('/lessons/beginner/01-finger-module/')}>Open Lesson 1 <Arrow /></a>
@@ -65,11 +67,11 @@ const questions = [
 
   <section class="section" id="cost">
     <SectionLabel>What it costs</SectionLabel>
-    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+    <div class="split">
       <div>
         <p class="statement">{money(bill.total * hands)} in parts for a class of {CLASS_SIZE}.</p>
-        <p class="mt-4">One hand is {money(bill.total)} in parts and is shared by a group of {GROUP}, so a class of {CLASS_SIZE} needs {hands}.</p>
-        <p class="mt-4 text-rule">Ours is the cost of the parts of a prototype, not a selling price. LEGO Education's is its list price.</p>
+        <p class="measure mt-5">One hand is {money(bill.total)} in parts and is shared by a group of {GROUP}, so a class of {CLASS_SIZE} needs {hands}.</p>
+        <p class="measure mt-4 text-rule">Ours is the cost of the parts of a prototype, not a selling price. LEGO Education's is its list price.</p>
       </div>
       <div>
         <div class="table-scroll">
@@ -91,7 +93,7 @@ const questions = [
             </tbody>
           </table>
         </div>
-        <p class="meta mt-3">
+        <p class="meta measure mt-3">
           <a class="link" href={p('/kit/#cost')}>Our cost table</a>.{' '}
           {lego.cost.src && <>LEGO's prices: <a class="link" href={lego.cost.src.url} target="_blank" rel="noopener">{lego.cost.src.label}</a>.</>}
           {' '}<a class="link" href={p('/problem/#compare')}>All five kits compared</a>.
@@ -102,17 +104,14 @@ const questions = [
 
   <section class="section" id="need">
     <SectionLabel>What you need</SectionLabel>
-    <div class="mt-8 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+    <div class="split">
       <div>
         <p class="statement">A 3D printer, a computer, and hex keys.</p>
-        <p class="mt-4"><a class="link" href={p('/kit/#parts')}>Every part of the hand</a>, printed and bought, is listed on The Kit.</p>
+        <p class="measure mt-5"><a class="link" href={p('/kit/#parts')}>Every part of the hand</a>, printed and bought, is listed on The Kit.</p>
       </div>
-      <ul class="border-t border-navy">
+      <ul class="rows" style="--rows-name: 10rem">
         {needs.map((n) => (
-          <li class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[11rem_1fr]">
-            <p class="font-semibold">{n.item}</p>
-            <p class="text-rule">{n.note}</p>
-          </li>
+          <li><p>{n.item}</p><p>{n.note}</p></li>
         ))}
       </ul>
     </div>
@@ -120,19 +119,19 @@ const questions = [
 
   <section class="section" id="demo">
     <SectionLabel>See it for yourself</SectionLabel>
-    <div class="columns mt-8">
+    <div class="columns">
       <div>
-        <h3 class="text-xl">The teacher view</h3>
+        <h3 class="text-lead">The teacher view</h3>
         <p class="mt-2 text-rule">A made-up class of 20: who has finished which part of Lesson 1, and what is assigned.</p>
         <a class="btn btn-primary mt-5" href={demo('teacher')}>See the teacher view</a>
       </div>
       <div>
-        <h3 class="text-xl">Teacher notes</h3>
+        <h3 class="text-lead">Teacher notes</h3>
         <p class="mt-2 text-rule">Lesson 1 has them on every part: timing, common mistakes, and an answer key.</p>
         <a class="btn btn-secondary mt-5" href={demo('teacher', '/lessons/beginner/01-finger-module/software/')}>Read a lesson with its notes</a>
       </div>
       <div>
-        <h3 class="text-xl">The simulator</h3>
+        <h3 class="text-lead">The simulator</h3>
         <p class="mt-2 text-rule">What a student does before the kit is on the table: six steps, from a see-saw to the finger.</p>
         <a class="btn btn-secondary mt-5" href={demo('student', '/dashboard/student/simulator/')}>Try the simulator</a>
       </div>
@@ -141,23 +140,20 @@ const questions = [
 
   <section class="section" id="questions">
     <SectionLabel>Questions</SectionLabel>
-    <dl class="mt-8 max-w-4xl border-t border-navy">
+    <dl class="rows" style="--rows-name: 20rem">
       {questions.map((x) => (
-        <div class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[18rem_1fr]">
-          <dt class="font-semibold">{x.q}</dt>
-          <dd class="text-rule">{x.a}</dd>
-        </div>
+        <div><dt>{x.q}</dt><dd>{x.a}</dd></div>
       ))}
     </dl>
   </section>
 
-  <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
-    <div class="wrap py-14 md:py-20">
+  <section class="band band-close">
+    <div class="wrap">
       <SectionLabel>Talk to us</SectionLabel>
-      <div class="mt-8 grid gap-x-16 gap-y-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
+      <div class="split">
         <p class="statement text-white">Kits are not for sale yet. Tell us your school, the grade and the class size.</p>
         <div>
-          <p class="text-(--on-navy-soft)">“Request a kit” starts an email to all four of us, with those questions already in it.</p>
+          <p class="measure text-(--on-navy-soft)">“Request a kit” starts an email to all four of us, with those questions already in it.</p>
           <a class="btn btn-primary mt-6" href={KIT_REQUEST}>Request a kit</a>
         </div>
       </div>

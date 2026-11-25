@@ -23,10 +23,10 @@ const pct = (n: number) => Math.round((n / students.length) * 100);
   </PageHeader>
   <DemoBanner role="teacher" />
 
-  <section class="section grid gap-x-14 gap-y-12 pt-12! lg:grid-cols-[1.7fr_1fr] lg:items-start">
+  <section class="section with-aside pt-12!" style="--aside: 22rem">
     <div>
       <SectionLabel>Roster</SectionLabel>
-      <p class="meta mt-5">{LESSON_1.title}. Each student’s progress through its three parts.</p>
+      <p class="meta">{LESSON_1.title}. Each student’s progress through its three parts.</p>
       <p class="meta mt-2 flex flex-wrap gap-x-5 gap-y-1" aria-hidden="true">
         {(['done', 'in-progress', 'not-started'] as const).map((k) => (
           <span class="inline-flex items-center gap-2"><span class:list={['dot', DOT_CLASS[k]]}></span>{STATUS_LABEL[k]}</span>
@@ -58,8 +58,8 @@ const pct = (n: number) => Math.round((n / students.length) * 100);
 
     <aside class="grid gap-10">
       <div>
-        <SectionLabel class="section-label-sm">Assigned</SectionLabel>
-        <ul class="mt-1">
+        <SectionLabel>Assigned</SectionLabel>
+        <ul class="mt-1!">
           {assignments.map((a) => (
             <li class="border-b border-edge py-4">
               <div class="flex items-baseline justify-between gap-4">
@@ -75,8 +75,8 @@ const pct = (n: number) => Math.round((n / students.length) * 100);
         </ul>
       </div>
       <div class="panel">
-        <h2 class="text-lg">Teacher notes</h2>
-        <p class="mt-2 text-[0.9375rem] text-rule">Each part of a lesson shows its teacher notes while you are here as a teacher.</p>
+        <h2 class="text-lead">Teacher notes</h2>
+        <p class="mt-2 text-small text-rule">Each part of a lesson shows its teacher notes while you are here as a teacher.</p>
         <a class="btn btn-secondary mt-5" href={p(LESSON_1.path)}>Open Lesson 1</a>
       </div>
     </aside>

@@ -3,35 +3,35 @@
     robotics, and the options they do have are bad. Figures are in src/data/evidence.ts, the
     comparison and its rules in src/data/compare.ts. Nothing on this page is stated without a
     source a reader can open, and every other maker's product is described from that maker's
-    own pages. The motion is Anime.js (src/scripts/problem/motion.ts), on this page only: the
-    page reads the same with scripting off and with reduced motion. */
+    own pages.
+    Since 2026-11-25 the main flow is short: the two figures in the header, three more, the
+    argument with its drawing, and a comparison of four plain columns with HelpingHand first.
+    What backs it is one click away and off the main flow: the ratings and the rules in the
+    "How we compare" window, and the figures, the research and the sources in three rows that
+    open. The motion is Anime.js (src/scripts/problem/motion.ts), on this page only: the page
+    reads the same with scripting off and with reduced motion. */
 import Base from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import Stat from '../components/Stat.astro';
 import { p } from '../lib/url';
 import { headline, sections, uncounted, notes, gap } from '../data/evidence';
-import { options, manual, research, guidance, market, strip, totals, GROUPS, LISTS, RATINGS, CHECKED, CONCEPT_COUNT, type Src, type Mark } from '../data/compare';
+import { options, manual, research, guidance, market, strip, totals, GROUPS, LISTS, RATINGS, CHECKED, CONCEPT_COUNT, type Option, type Src, type Mark } from '../data/compare';
 import { LEFT, RIGHT, SHAPES, pose, trace } from '../scripts/problem/linkage';
 
 /** A link on this site needs the base path; a link to another site does not. */
 const href = (url: string) => (url.startsWith('/') ? p(url) : url);
 const outside = (url: string) => !url.startsWith('/');
+/** The attributes of a link to a source: another site opens in a new tab. */
+const to = (src: Src) => ({ href: href(src.url), ...(outside(src.url) ? { target: '_blank', rel: 'noopener' } : {}) });
 
 const others = options.filter((o) => !o.ours);
-const byBuild = (kind: string) => others.filter((o) => o.build.kind === kind).map((o) => o.maker);
-const list = (names: string[]) => (names.length < 2 ? names.join('') : names.slice(0, -1).join(', ') + ' and ' + names.at(-1));
+/** HelpingHand first, then the others in the order of the data. */
+const rows = [...options.filter((o) => o.ours), ...others];
+/** What a row is called: ours by its own name, the others by their maker. */
+const called = (o: Option) => (o.ours ? o.name : o.maker);
+const stepped = others.filter((o) => o.build.kind === 'steps').length;
 const number = ['No', 'One', 'Two', 'Three', 'Four', 'Five'];
-
-const columns = [
-  { key: 'cost', label: 'Cost of one kit' },
-  { key: 'ages', label: 'Ages' },
-  { key: 'more', label: 'Cost to go further' },
-  { key: 'build', label: 'How the robot gets built' },
-  { key: 'mechanics', label: 'Mechanics' },
-  { key: 'circuits', label: 'Circuits' },
-  { key: 'code', label: 'Code' },
-] as const;
 
 const MARKS: Record<Mark, { letter: string; word: string }> = {
   E: { letter: 'E', word: 'Explained' },
@@ -73,122 +73,218 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
           </div>
         ))}
       </div>
-      <p class="stat-source pt-6!">{gap.detail} <a href={gap.url} target="_blank" rel="noopener">{gap.source}</a>, {gap.year}</p>
+      <p class="stat-source pt-6!">{gap.detail} From a national survey of schools: <a href={gap.url} target="_blank" rel="noopener">{gap.source}</a>, {gap.year}</p>
     </div>
   </PageHeader>
 
   <section class="section">
     <SectionLabel>Few schools have it</SectionLabel>
-    <p class="statement mt-6">Most middle schools have no team in any engineering competition, robotics included.</p>
+    <p class="statement">Most middle schools have no team in any engineering competition, robotics included.</p>
     <div class="stat-group mt-8" data-count>
       {headline.map((f) => <Stat figure={f} variant="panel" />)}
     </div>
-    <p class="meta mt-4">Every number on this page links to its source and carries its year. The school figures are from the 2018 NSSME+, a national survey of 1,273 schools and 7,600 teachers and the most recent of its kind. <a class="link" href="#all-figures">All {figures.length} other figures</a> are further down.</p>
+    <p class="meta measure mt-4">The school figures are from the 2018 NSSME+, a national survey of 1,273 schools and 7,600 teachers and the most recent of its kind.</p>
   </section>
 
   <section class="section">
     <SectionLabel>What schools can buy today</SectionLabel>
-    <p class="statement mt-6">Can you rebuild a LEGO set without the booklet?</p>
-    <p class="lede mt-3">A booklet gets you to a finished model. It does not say why the model works, so the next model needs another booklet. {number[byBuild('steps').length]} of the five options below hand the student a manual in the same way: supplied parts, numbered steps, a finished robot.</p>
-    <p class="lede mt-3">The trouble is not the steps. Beginners learn better with a guide than without one. The trouble is steps with no reasons: a manual shows where each part goes, not why the design works.</p>
-
-    {/* The drawing: follow the steps on the left, change the linkage on the right. */}
-    <div class="duo mt-10" data-duo>
-      <figure class="duo-panel">
-        <svg viewBox="0 0 280 190" role="img" aria-label="A robot assembled in five numbered steps. It is the same robot every time.">
-          <g class="duo-ticks">
-            {[1, 2, 3, 4, 5].map((n) => (
-              <g data-tick={n} transform={`translate(${20 + (n - 1) * 30} 22)`}>
-                <circle r="10" />
-                <text y="4" text-anchor="middle">{n}</text>
-              </g>
-            ))}
-          </g>
-          <g class="duo-robot">
-            <rect data-part="1" x="80" y="118" width="130" height="16" />
-            <g data-part="2"><circle cx="104" cy="146" r="14" /><circle cx="186" cy="146" r="14" /></g>
-            <rect data-part="3" x="94" y="66" width="14" height="52" />
-            <rect data-part="4" x="94" y="60" width="92" height="12" />
-            <g data-part="5"><rect x="186" y="50" width="26" height="8" /><rect x="186" y="74" width="26" height="8" /><rect x="180" y="50" width="8" height="32" /></g>
-          </g>
-        </svg>
-        <figcaption><strong>Follow the steps.</strong> The same robot every time.</figcaption>
-      </figure>
-      <figure class="duo-panel">
-        <svg viewBox="0 0 280 190" role="img" aria-label="A four-bar linkage with a fingertip. When the length of a bar changes, the path of the fingertip changes.">
-          <polyline class="duo-trace" data-trace points={trace(SHAPES[0])} />
-          <line class="duo-frame" x1={LEFT[0]} y1={LEFT[1]} x2={RIGHT[0]} y2={RIGHT[1]} />
-          <polyline class="duo-rod" data-rod points={`${pt(still.b)} ${pt(still.c)} ${pt(still.tip)}`} />
-          <line class="duo-crank" data-crank x1={LEFT[0]} y1={LEFT[1]} x2={still.b[0].toFixed(1)} y2={still.b[1].toFixed(1)} />
-          <line class="duo-rocker" data-rocker x1={RIGHT[0]} y1={RIGHT[1]} x2={still.c[0].toFixed(1)} y2={still.c[1].toFixed(1)} />
-          <circle class="duo-fixed" cx={LEFT[0]} cy={LEFT[1]} r="6" /><circle class="duo-fixed" cx={RIGHT[0]} cy={RIGHT[1]} r="6" />
-          <circle class="duo-pin" data-pin-b cx={still.b[0].toFixed(1)} cy={still.b[1].toFixed(1)} r="4" />
-          <circle class="duo-pin" data-pin-c cx={still.c[0].toFixed(1)} cy={still.c[1].toFixed(1)} r="4" />
-          <circle class="duo-tip" data-tip cx={still.tip[0].toFixed(1)} cy={still.tip[1].toFixed(1)} r="6" />
-        </svg>
-        <figcaption><strong>Change one bar.</strong> A different motion every time. <a class="link" href={p('/dashboard/student/simulator/')}>Try it in the Simulator</a> (a demo: sign in as a student).</figcaption>
-      </figure>
-    </div>
-
-    <div class="mt-12 grid items-start gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+    <div class="split">
       <div>
-        <h3 class="text-xl">What a competition kit starts with</h3>
-        <p class="mt-3">This season’s starter robot for the VEX V5 competition is called Flex, and it is built from the V5 Competition Starter Kit. Its manual is <strong>{manual.pages} pages</strong>, one assembly picture to a page.</p>
-        <p class="mt-3">VEX’s own guide recommends “to start with a set of instructions” before “assembling your first custom-designed robot”, and adds that “the next adventure will be designing your own robot”. The manual gets a team to a working robot. Designing the next one is left for later.</p>
-        <p class="meta mt-4">Sources: <a class="link" href={manual.about.url} target="_blank" rel="noopener">{manual.about.label}</a>; <a class="link" href={manual.advice.url} target="_blank" rel="noopener">{manual.advice.label}</a>. Checked 24 Nov 2026.</p>
+        <p class="statement">Can you rebuild a LEGO set without the booklet?</p>
+        <p class="lede mt-5">A booklet gets you to a finished model but does not say why it works, so the next model needs another booklet. {number[stepped]} of the {number[others.length].toLowerCase()} options below hand the student a manual in the same way. The trouble is not the steps: it is steps with no reasons.</p>
       </div>
-      <div class="manual" data-manual={manual.pdf}>
-        <div class="manual-frame" data-manual-frame hidden></div>
-        <div class="manual-bar">
-          <button type="button" class="btn btn-primary manual-open" data-manual-open hidden>Open the manual here</button>
-          <a class="btn btn-secondary" href={manual.pdf} target="_blank" rel="noopener">Open it on VEX’s site</a>
-        </div>
-        <p class="meta mt-3">{manual.pages} pages, 18 MB, loaded from VEX’s own server when you ask for it. Build instructions © VEX Robotics, Inc. We show them as VEX publishes them and keep no copy.</p>
+
+      {/* The drawing: follow the steps on the left, change the linkage on the right. */}
+      <div class="duo" data-duo>
+        <figure class="duo-panel">
+          <svg viewBox="0 0 280 190" role="img" aria-label="A robot assembled in five numbered steps. It is the same robot every time.">
+            <g class="duo-ticks">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <g data-tick={n} transform={`translate(${22 + (n - 1) * 34} 22)`}>
+                  <circle r="13" />
+                  <text y="6" text-anchor="middle">{n}</text>
+                </g>
+              ))}
+            </g>
+            <g class="duo-robot">
+              <rect data-part="1" x="80" y="118" width="130" height="16" />
+              <g data-part="2"><circle cx="104" cy="146" r="14" /><circle cx="186" cy="146" r="14" /></g>
+              <rect data-part="3" x="94" y="66" width="14" height="52" />
+              <rect data-part="4" x="94" y="60" width="92" height="12" />
+              <g data-part="5"><rect x="186" y="50" width="26" height="8" /><rect x="186" y="74" width="26" height="8" /><rect x="180" y="50" width="8" height="32" /></g>
+            </g>
+          </svg>
+          <figcaption><strong>Follow the steps.</strong> The same robot every time.</figcaption>
+        </figure>
+        <figure class="duo-panel">
+          <svg viewBox="0 0 280 190" role="img" aria-label="A four-bar linkage with a fingertip. When the length of a bar changes, the path of the fingertip changes.">
+            <polyline class="duo-trace" data-trace points={trace(SHAPES[0])} />
+            <line class="duo-frame" x1={LEFT[0]} y1={LEFT[1]} x2={RIGHT[0]} y2={RIGHT[1]} />
+            <polyline class="duo-rod" data-rod points={`${pt(still.b)} ${pt(still.c)} ${pt(still.tip)}`} />
+            <line class="duo-crank" data-crank x1={LEFT[0]} y1={LEFT[1]} x2={still.b[0].toFixed(1)} y2={still.b[1].toFixed(1)} />
+            <line class="duo-rocker" data-rocker x1={RIGHT[0]} y1={RIGHT[1]} x2={still.c[0].toFixed(1)} y2={still.c[1].toFixed(1)} />
+            <circle class="duo-fixed" cx={LEFT[0]} cy={LEFT[1]} r="6" /><circle class="duo-fixed" cx={RIGHT[0]} cy={RIGHT[1]} r="6" />
+            <circle class="duo-pin" data-pin-b cx={still.b[0].toFixed(1)} cy={still.b[1].toFixed(1)} r="4" />
+            <circle class="duo-pin" data-pin-c cx={still.c[0].toFixed(1)} cy={still.c[1].toFixed(1)} r="4" />
+            <circle class="duo-tip" data-tip cx={still.tip[0].toFixed(1)} cy={still.tip[1].toFixed(1)} r="6" />
+          </svg>
+          <figcaption><strong>Change one bar.</strong> A different motion every time. <a class="link" href={p('/dashboard/student/simulator/')}>Try it in the Simulator</a> (a demo: sign in as a student).</figcaption>
+        </figure>
       </div>
     </div>
 
-    <h3 class="mt-12 text-xl">What researchers say about building from steps</h3>
-    <div class="mt-4 grid items-start gap-x-12 gap-y-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-      <ul class="quotes">
-        {research.map((r) => (
-          <li><span class="quote-text">“{r.quote}”</span> <span class="meta"><a class="link" href={r.src.url} target="_blank" rel="noopener">{r.who}</a>. {r.note}</span></li>
-        ))}
-      </ul>
-      <p class="note"><strong>The other side.</strong> “{guidance.quote}” (<a class="link" href={guidance.src.url} target="_blank" rel="noopener">Kirschner, Sweller and Clark, 2006</a>). Nobody has counted how many kits are built from steps, and no study shows that steps harm learning. What the research supports is narrower: steps alone do not teach why.</p>
-    </div>
-
-    <h3 id="compare" class="mt-12 scroll-mt-24 text-xl">Five widely used options</h3>
-    <p class="lede mt-3">{list(byBuild('steps'))} ship a manual for a set robot. {list(byBuild('none'))} has nothing to build. {list(byBuild('own'))} asks students to design their own, and costs about $1,850 to start. HelpingHand is the last row: a prototype, rated by the same rules.</p>
-
-    <div class="cmp mt-8" data-cmp>
-      <table class="cmp-table">
-        <colgroup><col style="width:14%" /><col style="width:10.5%" /><col style="width:8%" /><col style="width:11%" /><col style="width:15.5%" /><col style="width:12.5rem" /><col /><col /></colgroup>
+    {/* The comparison: four plain columns, ours first, one link a row. The ratings that used
+        to sit beside these are in the "How we compare" window. */}
+    <h3 id="compare" class="mt-14 text-lead">HelpingHand and {number[others.length].toLowerCase()} widely used options</h3>
+    <div class="cmp mt-5" data-cmp>
+      <table class="result-table cmp-table">
+        <colgroup><col class="cmp-col-option" /><col class="cmp-col-cost" /><col class="cmp-col-ages" /><col /></colgroup>
         <thead>
           <tr>
             <th scope="col">Option</th>
-            {columns.map((c) => <th scope="col">{c.label}</th>)}
+            <th scope="col">Cost</th>
+            <th scope="col">Ages</th>
+            <th scope="col">How it gets built</th>
           </tr>
         </thead>
         <tbody>
-          {options.map((o) => {
-            const cells = strip(o.key), t = totals(o.key);
+          {rows.map((o) => {
+            const mine = o.ours && 'result';
             return (
               <tr class:list={['cmp-row', o.ours && 'cmp-ours']}>
-                <th scope="row">
-                  <span class="cmp-maker">{o.maker}</span>
-                  <span class="cmp-name">{o.name}</span>
-                  <span class="cmp-reach" title={o.reach.detail}>{o.reach.src ? <a class="link" href={href(o.reach.src.url)} target="_blank" rel="noopener">{o.reach.text}</a> : o.reach.text}</span>
+                <th scope="row" class:list={[mine]}>
+                  <span class="cmp-lead">{called(o)}</span>
+                  <span class="cmp-sub">{o.ours
+                    ? <>{o.reach.text}. {o.cost.src && <a class="link" {...to(o.cost.src)}>Our cost table</a>}</>
+                    : o.cost.src ? <a class="link" {...to(o.cost.src)}>{o.name}</a> : o.name}</span>
                 </th>
-                {(['cost', 'ages', 'more'] as const).map((k, i) => (
-                  <td data-label={columns[i].label}>
-                    <p class:list={['cmp-value', o[k].tbc && 'cmp-tbc']}>{o[k].src ? <a class="link" href={href(o[k].src!.url)} target={outside(o[k].src!.url) ? '_blank' : undefined} rel="noopener">{o[k].text}</a> : o[k].text}</p>
-                    {o[k].detail && <p class="cmp-detail">{o[k].detail}</p>}
+                {([['cost', 'Cost'], ['ages', 'Ages']] as const).map(([k, label]) => (
+                  <td data-label={label} class:list={[mine]}>
+                    {o[k].tbc
+                      ? <p class="cmp-tbc">To be confirmed</p>
+                      : <><p class="cmp-lead">{o[k].text}</p>{o[k].detail && <p class="cmp-sub">{o[k].detail}</p>}</>}
                   </td>
                 ))}
-                <td data-label="How the robot gets built">
-                  <p class:list={['cmp-tag', `cmp-tag-${o.build.kind}`]}>{o.build.tag}</p>
-                  <p class="cmp-detail">{o.build.src ? <a class="link" href={href(o.build.src.url)} target={outside(o.build.src.url) ? '_blank' : undefined} rel="noopener">{o.build.text}</a> : o.build.text}</p>
+                <td data-label="How it gets built" class:list={[mine]}>
+                  <p class="cmp-lead">{o.build.tag}</p>
+                  <p class="cmp-sub">{o.build.text}</p>
                 </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <div class="cmp-foot mt-5">
+      <a class="btn btn-secondary" href="#how-we-compare" data-method-open>How we compare</a>
+      <p class="meta measure">Read on each maker’s own pages on 24 Nov 2026, one of them linked in each row.</p>
+    </div>
+  </section>
+
+  {/* What backs the page, for the reader who wants it: three rows that open. A link to
+      #all-figures, #research or #sources opens its row (the script below). */}
+  <section class="section more-list">
+    <details class="more" id="all-figures">
+      <summary><span class="more-title">All the figures</span><span class="meta">{figures.length} more, each with its source and its year.</span></summary>
+      {sections.map((s, i) => (
+        <div class:list={[i > 0 && 'mt-12']}>
+          <SectionLabel as="h3">{s.label}</SectionLabel>
+          <p class="statement">{s.title}</p>
+          <p class="lede mt-3">{s.intro}</p>
+          <div class="figure-list mt-6">
+            {s.figures.map((f) => <Stat figure={f} />)}
+          </div>
+        </div>
+      ))}
+      <div class="mt-12">
+        <SectionLabel as="h3">What nobody counts</SectionLabel>
+        <p class="statement">How many schools teach robotics specifically? Nobody knows for sure.</p>
+        <p class="lede mt-3">The last national count of robotics courses is more than a decade old. The school survey this page leans on is from 2018, and <a class="link" href={notes.nextSurvey.url} target="_blank" rel="noopener">the next one was announced for 2027</a>. The national test of technology and engineering skills <a class="link" href={notes.retired.url} target="_blank" rel="noopener">was retired in 2023</a>. We show each figure with its date rather than pretend a newer number exists.</p>
+        <div class="figure-list mt-6">{uncounted.map((f) => <Stat figure={f} />)}</div>
+      </div>
+    </details>
+
+    <details class="more" id="research">
+      <summary><span class="more-title">The research, and VEX’s own manual</span><span class="meta">Three papers on building from steps, the other side, and the {manual.pages}-page manual.</span></summary>
+      <div class="split">
+        <div>
+          <h3 class="statement">What a competition kit starts with</h3>
+          <p class="measure mt-5">This season’s starter robot for the VEX V5 competition is called Flex, and it is built from the V5 Competition Starter Kit. Its manual is <strong>{manual.pages} pages</strong>, one assembly picture to a page.</p>
+          <p class="measure mt-3">VEX’s own guide recommends “to start with a set of instructions” before “assembling your first custom-designed robot”, and adds that “the next adventure will be designing your own robot”. The manual gets a team to a working robot. Designing the next one is left for later.</p>
+          <p class="meta measure mt-4">Sources: <a class="link" href={manual.about.url} target="_blank" rel="noopener">{manual.about.label}</a>; <a class="link" href={manual.advice.url} target="_blank" rel="noopener">{manual.advice.label}</a>. Checked 24 Nov 2026.</p>
+        </div>
+        <div class="manual" data-manual={manual.pdf}>
+          <div class="manual-frame" data-manual-frame hidden></div>
+          <div class="manual-bar">
+            <button type="button" class="btn btn-primary manual-open" data-manual-open hidden>Open the manual here</button>
+            <a class="btn btn-secondary" href={manual.pdf} target="_blank" rel="noopener">Open it on VEX’s site</a>
+          </div>
+          <p class="meta measure mt-3">{manual.pages} pages, 18 MB, loaded from VEX’s own server when you ask for it. Build instructions © VEX Robotics, Inc. We show them as VEX publishes them and keep no copy.</p>
+        </div>
+      </div>
+
+      <div class="split mt-14">
+        <h3 class="statement">What researchers say about building from steps</h3>
+        <ul class="quotes">
+          {research.map((r) => (
+            <li>
+              <p class="measure">“{r.quote}”</p>
+              <p class="meta measure mt-2"><a class="link" href={r.src.url} target="_blank" rel="noopener">{r.who}</a>. {r.note}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="split mt-14">
+        <h3 class="statement">The other side</h3>
+        <div>
+          <p class="measure">“{guidance.quote}”</p>
+          <p class="meta measure mt-2"><a class="link" href={guidance.src.url} target="_blank" rel="noopener">Kirschner, Sweller and Clark, 2006</a>.</p>
+          <p class="measure mt-4">Nobody has counted how many kits are built from steps, and no study shows that steps harm learning. What the research supports is narrower: steps alone do not teach why.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="more" id="sources">
+      <summary><span class="more-title">Sources</span><span class="meta">{sources.size} documents and pages, checked in October and November 2026.</span></summary>
+      <p class="measure">Vendor prices change, so each one carries the year it was read.</p>
+      <ol class="sources mt-6">
+        {[...sources.entries()].map(([name, url]) => (
+          <li><a class="link" href={url} target="_blank" rel="noopener">{name}</a></li>
+        ))}
+      </ol>
+    </details>
+  </section>
+
+  {/* "How we compare": the ratings that left the page, and the rules behind every cell, in a
+      window that opens over the page. With scripting off it is an ordinary section here,
+      above the band that closes the page. */}
+  <dialog class="method" id="how-we-compare" aria-labelledby="method-title">
+    <div class="method-head">
+      <h2 id="method-title" class="text-lead">How we compare</h2>
+      <button type="button" class="btn btn-secondary method-close" data-method-close>Close</button>
+    </div>
+    <div class="method-body">
+      <p>Checked on 24 Nov 2026. Say so if a cell is wrong: <a class="link" href={p('/team/')}>the team’s addresses are on the Team page</a>.</p>
+
+      <h3>Mechanics, circuits and code</h3>
+      <p>What each option teaches, read from its maker’s own lessons and help pages.</p>
+      <table class="result-table cmp-table cmp-over mt-4">
+        <colgroup><col style="width:20%" /><col style="width:19.5rem" /><col /><col /></colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Option</th>
+            <th scope="col">Mechanics</th>
+            <th scope="col">Circuits</th>
+            <th scope="col">Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((o) => {
+            const cells = strip(o.key), t = totals(o.key);
+            return (
+              <tr>
+                <th scope="row" class:list={[o.ours && 'result']}>{called(o)}<span class="cmp-sub">{o.ours ? o.maker : o.name}</span></th>
                 <td data-label="Mechanics">
                   <div class="strip" role="img" aria-label={`Mechanics: ${t.explained} of ${CONCEPT_COUNT} concepts explained, ${t.made} made by the student${t.wip ? `, ${t.wip} planned` : ''}`}>
                     {cells.map((c) => (
@@ -197,153 +293,94 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
                       </span>
                     ))}
                   </div>
-                  <p class="cmp-detail">{t.explained} of {CONCEPT_COUNT} explained, {t.made} made by the student{t.wip > 0 && <>, {t.wip} more * (WIP)</>}{o.mechanicsNote && <>. {o.mechanicsNote}</>}</p>
+                  <p class="cmp-sub">{t.explained} of {CONCEPT_COUNT} explained, {t.made} made by the student{t.wip > 0 && <>, {t.wip} more * (WIP)</>}{o.mechanicsNote && <>. {o.mechanicsNote}</>}</p>
                 </td>
-                {(['circuits', 'code'] as const).map((k) => (
-                  <td data-label={k === 'circuits' ? 'Circuits' : 'Code'}>
-                    <p class="cmp-detail cmp-plain">{o[k].src ? <a class="link" href={href(o[k].src!.url)} target={outside(o[k].src!.url) ? '_blank' : undefined} rel="noopener">{o[k].text}</a> : o[k].text}</p>
-                  </td>
+                {([['circuits', 'Circuits'], ['code', 'Code']] as const).map(([k, label]) => (
+                  <td data-label={label}><p>{o[k].src ? <a class="link" {...to(o[k].src!)}>{o[k].text}</a> : o[k].text}</p></td>
                 ))}
               </tr>
             );
           })}
         </tbody>
       </table>
-    </div>
-    <div class="cmp-key mt-4">
-      <p class="meta"><span class="strip-cell key-cell" style="--share:0.6"><span>3</span></span> One square for each group of mechanics concepts, in this order: {GROUPS.map((g) => g.short.toLowerCase()).join('; ')}. The number is how many of that group’s concepts an official lesson explains.</p>
-      <p class="meta"><span class="strip-cell key-cell is-made" style="--share:0.6"><span>3</span></span> The student makes at least one of them: draws or designs it, not only assembles it.</p>
-      <p class="meta"><span class="strip-cell key-cell is-wip" style="--share:0"><span>*</span></span> Planned for HelpingHand, with no lesson on this site yet: * (WIP).</p>
-    </div>
-    <p class="mt-5"><a class="btn btn-secondary" href="#how-we-compare" data-method-open>How we compare</a></p>
-    <p class="meta mt-3">Each cell links to the maker’s page it was read on. “To be confirmed” marks what nobody on the team has read there yet. The four makers are the ones <a class="link" href={market.url} target="_blank" rel="noopener">a market-research firm’s estimate</a> names as the largest in schools.</p>
-  </section>
-
-  <section class="band mt-[clamp(3.25rem,2.25rem+4vw,5.25rem)]">
-    <div class="wrap py-14 md:py-20">
-      <SectionLabel>What HelpingHand changes</SectionLabel>
-      <div class="mt-8 grid gap-x-16 gap-y-10 lg:grid-cols-2 lg:items-start">
-        <div>
-          <p class="statement text-white">Every student deserves the chance to build a foundation in robotics.</p>
-          <p class="mt-4 text-(--on-navy-soft)">We are not trying to replace competition robotics. We are going after what comes before it: the kits and the curriculum students start with. This is our first prototype aimed at solving this issue.</p>
-          {/* The poster's goal, bold on the same words. */}
-          <p class="mt-4 text-(--on-navy-soft)">Our goal is to <strong class="text-white">transform</strong> how robotics is taught in the classroom, fostering the highest level of creativity while prioritizing accessibility.</p>
-        </div>
-        <ol class="numbered on-navy">
-          <li>Provide a <strong>scalable</strong> framework that evolves alongside the learner.</li>
-          <li>Offer an <strong>affordable</strong> and <strong>accessible</strong> alternative to traditional robotics kits (FIRST, VEX, LEGO, etc.)</li>
-        </ol>
+      <div class="cmp-key mt-4">
+        <p class="meta"><span class="strip-cell" style="--share:0.6"><span>3</span></span> <span>One square for each group of mechanics concepts, in this order: {GROUPS.map((g) => g.short.toLowerCase()).join('; ')}. The number is how many of that group’s concepts an official lesson explains.</span></p>
+        <p class="meta"><span class="strip-cell is-made" style="--share:0.6"><span>3</span></span> <span>The student makes at least one of them: draws or designs it, not only assembles it.</span></p>
+        <p class="meta"><span class="strip-cell is-wip" style="--share:0"><span>*</span></span> <span>Planned for HelpingHand, with no lesson on this site yet: * (WIP).</span></p>
       </div>
-      <div class="columns mt-12">
-        <div>
-          <h3 class="text-xl">Printed, not bought</h3>
-          <p class="mt-2 text-(--on-navy-soft)">3D printers provide an affordable alternative that allows multiple students to print an unlimited number of parts.</p>
-        </div>
-        <div>
-          <h3 class="text-xl">A standard controller</h3>
-          <p class="mt-2 text-(--on-navy-soft)">The hand runs on an Arduino Mega 2560, <a class="link" href={p('/kit/#cost')}>$22.99 in our cost table</a>.</p>
-        </div>
-        <div>
-          <h3 class="text-xl">One lesson at a time</h3>
-          <p class="mt-2 text-(--on-navy-soft)">Students learn mechanics, circuits, and coding one lesson at a time, not by following a manual.</p>
-        </div>
-      </div>
-      <div class="mt-10 flex flex-wrap gap-3">
-        <a class="btn btn-primary" href={p('/kit/')}>See the kit</a>
-        <a class="btn btn-secondary" href={p('/lessons/beginner/')}>Browse the lessons</a>
-      </div>
-    </div>
-  </section>
 
-  <section class="section" id="all-figures">
-    <details class="more" data-more>
-      <summary><span class="more-title">All the figures</span><span class="meta">{figures.length} more, each with its source: access, hands-on work in class, kit prices, teachers, evidence, and what nobody counts</span></summary>
-      {sections.map((s) => (
-        <div class="mt-10">
-          <SectionLabel as="h3" class="section-label-sm">{s.label}</SectionLabel>
-          <p class="statement mt-5">{s.title}</p>
-          <p class="lede mt-3">{s.intro}</p>
-          <div class="figure-list mt-6">
-            {s.figures.map((f) => <Stat figure={f} />)}
-          </div>
-        </div>
-      ))}
-      <div class="mt-10">
-        <SectionLabel as="h3" class="section-label-sm">What nobody counts</SectionLabel>
-        <p class="statement mt-5">How many schools teach robotics specifically? Nobody knows for sure.</p>
-        <p class="lede mt-3">The last national count of robotics courses is more than a decade old. The school survey this page leans on is from 2018, and <a class="link" href={notes.nextSurvey.url} target="_blank" rel="noopener">the next one was announced for 2027</a>. The national test of technology and engineering skills <a class="link" href={notes.retired.url} target="_blank" rel="noopener">was retired in 2023</a>. We show each figure with its date rather than pretend a newer number exists.</p>
-        <div class="figure-list mt-6">{uncounted.map((f) => <Stat figure={f} />)}</div>
-      </div>
-    </details>
-  </section>
+      <h3>How widely each is used, and the cost to go further</h3>
+      <table class="result-table cmp-table mt-4">
+        <colgroup><col style="width:20%" /><col /><col /></colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Option</th>
+            <th scope="col">How widely it is used</th>
+            <th scope="col">Cost to go further</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((o) => (
+            <tr>
+              <th scope="row" class:list={[o.ours && 'result']}>{called(o)}<span class="cmp-sub">{o.ours ? o.maker : o.name}</span></th>
+              {([['reach', 'How widely it is used'], ['more', 'Cost to go further']] as const).map(([k, label]) => (
+                <td data-label={label}>
+                  <p class:list={[o[k].tbc && 'cmp-tbc']}>{o[k].src ? <a class="link" {...to(o[k].src!)}>{o[k].text}</a> : o[k].text}</p>
+                  {o[k].detail && <p class="cmp-sub">{o[k].detail}</p>}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-  <section class="section more-next" id="sources">
-    <details class="more">
-      <summary><span class="more-title">Sources</span><span class="meta">{sources.size} documents and pages. Figures were checked against them in October and November 2026.</span></summary>
-      <p class="lede mt-6">Vendor prices change, so each one carries the year it was read.</p>
-      <ol class="mt-6 list-decimal gap-x-16 pl-6 text-[0.9375rem] marker:font-semibold marker:text-navy md:columns-2">
-        {[...sources.entries()].map(([name, url]) => (
-          <li class="mb-2 break-inside-avoid pl-1"><a class="link" href={url} target="_blank" rel="noopener">{name}</a></li>
-        ))}
-      </ol>
-    </details>
-  </section>
-
-  {/* "How we compare": the rules behind the table and every rating, in a window that opens
-      over the page. With scripting off it is an ordinary section at the foot of the page. */}
-  <dialog class="method" id="how-we-compare" aria-labelledby="method-title">
-    <div class="method-head">
-      <h2 id="method-title" class="text-xl">How we compare</h2>
-      <button type="button" class="btn btn-secondary method-close" data-method-close>Close</button>
-    </div>
-    <div class="method-body">
-      <p>Checked on 24 Nov 2026. Say so if a cell is wrong: <a class="link" href={p('/team/')}>the team’s addresses are on the Team page</a>.</p>
-
-      <h3 class="mt-7 text-lg">The rules</h3>
-      <ul class="method-rules mt-3">
-        <li><strong>Other makers’ products</strong> are described only from the maker’s or organizer’s own pages. Each cell links to the page it was read on. A blank means we found nothing there, not that nothing exists.</li>
-        <li><strong>Cost of one kit</strong> is the price on the maker’s page on the day we checked, with the number of students the maker says one kit serves. <strong>Cost to go further</strong> is the maker’s cheapest official add-on that gives the student something new to build.</li>
-        <li><strong>How the robot gets built</strong> is what the maker ships: step-by-step instructions for a set robot, nothing to build, or the student’s own design.</li>
+      <h3>The rules</h3>
+      <ul class="method-rules">
+        <li><strong>Other makers’ products</strong> are described only from the maker’s or organizer’s own pages. In this window each cell links to the page it was read on; the table on the page keeps one link a row. A blank means we found nothing there, not that nothing exists.</li>
+        <li><strong>“To be confirmed”</strong> marks what nobody on the team has read at its source yet. VEX’s store blocks our price check, and its ages are not on the pages we could open.</li>
+        <li><strong>Cost</strong> is the price on the maker’s page on the day we checked, with the number of students the maker says one kit serves. <strong>Cost to go further</strong> is the maker’s cheapest official add-on that gives the student something new to build.</li>
+        <li><strong>How it gets built</strong> is what the maker ships: step-by-step instructions for a set robot, nothing to build, or the student’s own design.</li>
         <li><strong>HelpingHand is rated by the same rules</strong>, from this site as it stands. Anything no lesson here teaches today is marked * (WIP), even where the hand already has the part.</li>
+        <li><strong>The four makers</strong> are the ones <a class="link" href={market.url} target="_blank" rel="noopener">a market-research firm’s estimate</a> names as the largest in schools.</li>
       </ul>
 
-      <h3 class="mt-7 text-lg">What each one does well</h3>
-      <ul class="method-rules mt-3">
+      <h3>What each one does well</h3>
+      <ul class="method-rules">
         {others.map((o) => <li><strong>{o.maker}, {o.name}.</strong> {o.good}</li>)}
       </ul>
 
-      <h3 class="mt-7 text-lg">Mechanics: {CONCEPT_COUNT} concepts from seven public lists</h3>
-      <p class="mt-3">We did not write the list of what there is to learn. It is merged from seven lists that robotics teams and teachers already use. The number after a concept says which lists name it.</p>
-      <ol class="method-lists mt-3">
+      <h3>Mechanics: {CONCEPT_COUNT} concepts from seven public lists</h3>
+      <p>We did not write the list of what there is to learn. It is merged from seven lists that robotics teams and teachers already use. The number after a concept says which lists name it.</p>
+      <ol class="method-lists">
         {LISTS.map((l) => <li><a class="link" href={l.url} target="_blank" rel="noopener">{l.label}</a></li>)}
       </ol>
-      <p class="mt-4">A concept can earn three marks for each option:</p>
-      <ul class="method-marks mt-3">
-        <li><span class="mark mark-E">E</span> <strong>Explained.</strong> An official lesson or help page teaches it by name.</li>
-        <li><span class="mark mark-S">S</span> <strong>Built from steps.</strong> The official build instructions for a set robot have the student assemble it.</li>
-        <li><span class="mark mark-M">M</span> <strong>Made by the student.</strong> Official material asks the student to draw or design their own.</li>
-        <li><span class="mark mark-W">*</span> <strong>Planned (WIP).</strong> HelpingHand only: the hand has it or a lesson is planned, and nothing on this site teaches it yet.</li>
+      <p>A concept can earn three marks for each option:</p>
+      <ul class="method-marks">
+        <li><span class="mark mark-E">E</span> <span><strong>Explained.</strong> An official lesson or help page teaches it by name.</span></li>
+        <li><span class="mark mark-S">S</span> <span><strong>Built from steps.</strong> The official build instructions for a set robot have the student assemble it.</span></li>
+        <li><span class="mark mark-M">M</span> <span><strong>Made by the student.</strong> Official material asks the student to draw or design their own.</span></li>
+        <li><span class="mark mark-W">*</span> <span><strong>Planned (WIP).</strong> HelpingHand only: the hand has it or a lesson is planned, and nothing on this site teaches it yet.</span></li>
       </ul>
-      <p class="mt-4">Three of the seven lists are written around VEX and FIRST parts, so the list leans toward competition robots. A hand has no drivetrain and no launcher, and about twenty of the concepts will never apply to it.</p>
-      <p class="mt-4">We marked the others generously. A short mention still earns “explained”, and for VEX and FIRST, guidance on designing a custom robot counts as “made by the student”. Some of FIRST’s marks rest on its 2021–22 Class Pack lesson guides. LEGO’s rest on the one lesson of its 30 that opens without signing in. Sphero’s lessons did not open for our tools, so its column is not checked.</p>
-      <p class="mt-4">Of the {CHECKED.quoted} marks that quote a page, {CHECKED.found} were found on their pages on 24 Nov 2026. The other {CHECKED.quoted - CHECKED.found} rest on VEX STEM Lab pages that do not open for our checker. {CHECKED.pictures} more describe a picture in a set of build instructions.</p>
+      <p>Three of the seven lists are written around VEX and FIRST parts, so the list leans toward competition robots. A hand has no drivetrain and no launcher, and about twenty of the concepts will never apply to it.</p>
+      <p>We marked the others generously. A short mention still earns “explained”, and for VEX and FIRST, guidance on designing a custom robot counts as “made by the student”. Some of FIRST’s marks rest on its 2021–22 Class Pack lesson guides. LEGO’s rest on the one lesson of its 30 that opens without signing in. Sphero’s lessons did not open for our tools, so its column is not checked.</p>
+      <p>Of the {CHECKED.quoted} marks that quote a page, {CHECKED.found} were found on their pages on 24 Nov 2026. The other {CHECKED.quoted - CHECKED.found} rest on VEX STEM Lab pages that do not open for our checker. {CHECKED.pictures} more describe a picture in a set of build instructions.</p>
 
       <div class="table-scroll mt-6">
         <table class="result-table result-table-compact method-grid">
           <thead>
             <tr>
               <th scope="col">Concept</th>
-              {options.map((o) => <th scope="col">{o.maker}</th>)}
+              {rows.map((o) => <th scope="col">{called(o)}</th>)}
             </tr>
           </thead>
           <tbody>
             {GROUPS.map((g) => (
               <>
-                <tr class="method-group"><th scope="colgroup" colspan={options.length + 1}>{g.name}</th></tr>
+                <tr class="method-group"><th scope="colgroup" colspan={rows.length + 1}>{g.name}</th></tr>
                 {g.concepts.map((c) => (
                   <tr>
                     <th scope="row">{c.name} <span class="method-lists-of" title={`Named by lists ${c.lists.join(', ')}`}>{c.lists.join(' ')}</span></th>
-                    {options.map((o) => (
+                    {rows.map((o) => (
                       <td>
                         {(RATINGS[o.key][c.n] ?? []).map((r) => r.url
                           ? <a class:list={['mark', `mark-${r.m}`]} href={href(r.url)} target={outside(r.url) ? '_blank' : undefined} rel="noopener" title={`${MARKS[r.m].word}${r.q ? `: “${r.q}”` : r.seen ? `. ${r.seen}` : ''}`}>{MARKS[r.m].letter}<span class="sr-only"> {MARKS[r.m].word}</span></a>
@@ -360,17 +397,43 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
       <p class="meta mt-3">Each letter links to the page it rests on. Hover over one to read that page’s words.</p>
     </div>
   </dialog>
+
+  <section class="band band-close">
+    <div class="wrap">
+      <SectionLabel>What HelpingHand changes</SectionLabel>
+      <div class="split">
+        <div>
+          <p class="statement text-white">Every student deserves the chance to build a foundation in robotics.</p>
+          <p class="measure mt-5 text-(--on-navy-soft)">We are not trying to replace competition robotics: we are going after what comes before it, the kits and the curriculum students start with.</p>
+          {/* The team's goal, in the poster's words (docs/README.md, "Words from the poster"). */}
+          <p class="measure mt-4 text-(--on-navy-soft)">Our goal is to <strong class="text-white">transform</strong> how robotics is taught in the classroom, fostering the highest level of creativity while prioritizing accessibility.</p>
+        </div>
+        <ol class="numbered on-navy">
+          <li>Provide a <strong>scalable</strong> framework that evolves alongside the learner.</li>
+          <li>Offer an <strong>affordable</strong> and <strong>accessible</strong> alternative to traditional robotics kits (FIRST, VEX, LEGO, etc.)</li>
+        </ol>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a class="btn btn-primary" href={p('/kit/')}>See the kit</a>
+        <a class="btn btn-secondary" href={p('/lessons/beginner/')}>Browse the lessons</a>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <style is:global>
-  /* ---------- The Problem: the drawing ---------- */
-  .duo { display: grid; gap: 1.5rem; }
-  @media (min-width: 48rem) { .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; } .duo-panel + .duo-panel { border-left: 1px solid var(--color-edge); } }
-  .duo-panel { padding: 1.25rem; background: var(--color-panel); }
+  /* Every size here is one of the theme's tokens (--t-*), and every colour one of its eight
+     or the hand's own four in the drawing. */
+
+  /* ---------- The drawing ---------- */
+  .duo { display: grid; gap: 0.5rem; }
+  @media (min-width: 48rem) { .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .duo-panel { display: flex; flex-direction: column; padding: 1.25rem; background: var(--color-panel); }
   .duo-panel svg { display: block; width: 100%; height: auto; max-height: 17rem; }
-  .duo-panel figcaption { margin-top: 0.75rem; font-size: 0.9375rem; line-height: 1.45; }
+  .duo-panel figcaption { margin-top: 0.75rem; font-size: var(--t-small); line-height: 1.45; }
   .duo-ticks circle { fill: var(--color-white); stroke: var(--color-navy); stroke-width: 1.5; }
-  .duo-ticks text { font-size: 11px; font-weight: 600; fill: var(--color-navy); }
+  /* In the drawing's own units: the numerals stay above 13px at every width it is shown at. */
+  .duo-ticks text { font-size: var(--t-body); font-weight: 600; fill: var(--color-navy); }
   .duo-ticks .is-done circle { fill: var(--color-navy); }
   .duo-ticks .is-done text { fill: var(--color-white); }
   html:not(.duo-live) .duo-ticks circle { fill: var(--color-navy); }
@@ -387,107 +450,128 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
   .duo-pin { fill: var(--color-white); stroke: var(--color-navy); stroke-width: 2; }
   .duo-tip { fill: var(--color-sky); stroke: var(--color-navy); stroke-width: 2; }
 
-  /* ---------- The manual ---------- */
+  /* ---------- The comparison ----------
+     The theme's result table, with a first line that leads each cell and a quieter line under
+     it. Ours is the lime row in bold. The two tables in the window use the same rules. */
+  .cmp-table { table-layout: fixed; }
+  .cmp-col-option { width: 27%; }
+  .cmp-col-cost { width: 24%; }
+  .cmp-col-ages { width: 15.5%; }
+  /* On a tablet the narrowest column still has to hold "To be confirmed". */
+  @media (max-width: 63.99rem) { .cmp-col-option { width: 25%; } .cmp-col-ages { width: 19%; } }
+  .cmp-table th, .cmp-table td { overflow-wrap: break-word; }
+  .cmp-lead, .cmp-sub { display: block; }
+  .cmp-lead { font-size: var(--t-body); line-height: 1.3; }
+  .cmp-sub { margin-top: 0.125rem; font-weight: 400; color: var(--color-rule); }
+  .cmp-tbc { color: var(--color-rule); }
+  [data-cmp] .cmp-tbc { font-size: var(--t-body); line-height: 1.3; }
+  .cmp-ours .cmp-lead { font-weight: 700; }
+  /* On lime the second line is ink, not grey. */
+  .cmp-table .result .cmp-sub { color: var(--color-ink); }
+  .cmp-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; }
+  @media (max-width: 47.99rem) {
+    /* Each option becomes its own block: the heading row goes and every line says what it is. */
+    .cmp-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .cmp-table colgroup { display: none; }
+    .cmp-table, .cmp-table tbody, .cmp-table tr, .cmp-table th, .cmp-table td { display: block; }
+    .cmp-table tr { border: 1px solid var(--table-line); }
+    .cmp-table tr + tr { margin-top: 0.75rem; }
+    .cmp-table th, .cmp-table td { padding: 0.625rem 0.875rem; border: 0; border-bottom: 1px solid var(--color-edge); }
+    .cmp-table tbody th { background: var(--color-panel); }
+    .cmp-table tbody th.result { background: var(--color-lime); }
+    .cmp-table tr > :last-child { border-bottom: 0; }
+    .cmp-table td { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: 0.75rem; align-items: baseline; }
+    .cmp-table td::before { content: attr(data-label); grid-row: 1 / span 2; font-weight: 600; color: var(--color-rule); }
+    .cmp-table td.result::before { color: var(--color-ink); }
+    .cmp-table td > * { grid-column: 2; }
+    /* Where a cell holds a drawing, its name goes above it. */
+    .cmp-over td { grid-template-columns: minmax(0, 1fr); row-gap: 0.25rem; }
+    .cmp-over td::before { grid-row: auto; }
+    .cmp-over td > * { grid-column: 1; }
+  }
+
+  /* ---------- The rows that open ----------
+     A title too long for a phone wraps beside its mark, not under it, and the note sits under
+     the title. On a wide screen the three notes start on one line, the one the right column
+     of a split starts on. */
+  .more-list .more-title { flex: 1 1 0; min-width: 0; line-height: 1.25; }
+  .more-list .more > summary > .meta { flex: 0 0 100%; padding-left: 2.75rem; }
+  @media (min-width: 64rem) {
+    .more-list .more-title { flex: 0 0 calc((100% - 4rem) * 5 / 12); }
+    .more-list .more > summary > .meta { flex: 1 1 0; min-width: 0; max-width: 34.5rem; padding-left: 0; }
+  }
   .manual-frame { margin-bottom: 1rem; border: 1px solid var(--color-navy); background: var(--color-panel); }
   .manual-frame iframe { display: block; width: 100%; height: min(70vh, 34rem); border: 0; }
   .manual-bar { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   /* A phone does not show a PDF inside a page: there the link is the only way in. */
   @media (max-width: 47.99rem) { .manual-open { display: none; } }
-
-  /* ---------- Quotes ---------- */
-  .quotes { display: grid; gap: 0.75rem; }
-  .quotes > li { padding-left: 0.875rem; border-left: 3px solid var(--color-navy); font-size: 0.9375rem; line-height: 1.5; }
-  .quotes .meta { display: block; margin-top: 0.125rem; }
-
-  /* ---------- The comparison table ---------- */
-  .cmp-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 0.875rem; line-height: 1.35; }
-  .cmp-table th, .cmp-table td { padding: 0.625rem 0.625rem; border: 1px solid var(--table-line); text-align: left; vertical-align: top; overflow-wrap: break-word; }
-  .cmp-table thead th { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-white); font-weight: 500; }
-  .cmp-table thead th + th { border-left-color: var(--navy-line); }
-  .cmp-table tbody th { font-weight: 400; }
-  .cmp-maker, .cmp-name, .cmp-reach { display: block; }
-  .cmp-maker { font-size: 1rem; font-weight: 700; color: var(--color-navy); }
-  .cmp-name { font-weight: 600; }
-  .cmp-reach { margin-top: 0.25rem; font-size: 0.8125rem; color: var(--color-rule); }
-  .cmp-reach .link, .cmp-detail .link { color: inherit; }
-  .cmp-value { font-size: 1.0625rem; font-weight: 700; color: var(--color-navy); font-variant-numeric: tabular-nums; }
-  .cmp-tbc { font-size: 0.8125rem; font-weight: 600; color: var(--color-rule); overflow-wrap: normal; }
-  .cmp-detail { margin-top: 0.25rem; font-size: 0.8125rem; color: var(--color-rule); }
-  .cmp-plain { margin-top: 0; color: var(--color-ink); }
-  .cmp-tag { display: inline-block; padding: 0.15rem 0.5rem; border: 1px solid var(--color-navy); font-size: 0.8125rem; font-weight: 600; color: var(--color-navy); }
-  .cmp-tag-steps { background: var(--color-panel); border-style: dashed; border-color: var(--color-rule); color: var(--color-ink); }
-  .cmp-tag-none { background: var(--color-panel); border-color: var(--color-edge); color: var(--color-rule); }
-  .cmp-tag-own, .cmp-tag-guided { background: var(--color-lime); border-color: var(--lime-edge); }
-  .cmp-ours > * { background: var(--navy-tint); }
-  .cmp-ours > th { box-shadow: inset 4px 0 0 var(--color-navy); }
-  .cmp-key { display: grid; gap: 0.375rem; }
-  .cmp-key .meta { display: flex; align-items: flex-start; gap: 0.625rem; }
-  .key-cell { flex: none; }
-  @media (max-width: 63.99rem) {
-    /* Each option becomes its own card: the heading row goes and every cell says what it is. */
-    .cmp-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-    .cmp-table colgroup { display: none; }
-    .cmp-table, .cmp-table tbody, .cmp-table tr, .cmp-table th, .cmp-table td { display: block; }
-    .cmp-table tr { margin-bottom: 1rem; border: 1px solid var(--table-line); }
-    .cmp-table th, .cmp-table td { padding: 0.4375rem 0.75rem; border: 0; border-bottom: 1px solid var(--color-edge); }
-    .cmp-table tbody th { padding-block: 0.625rem; background: var(--color-panel); }
-    .cmp-table .cmp-ours > th { background: var(--navy-tint); }
-    .cmp-table tr > :last-child { border-bottom: 0; }
-    .cmp-table td { display: grid; grid-template-columns: 6.75rem minmax(0, 1fr); column-gap: 0.75rem; align-items: baseline; }
-    .cmp-table td::before { content: attr(data-label); grid-row: 1 / span 3; font-size: 0.75rem; font-weight: 600; line-height: 1.5; color: var(--color-rule); }
-    .cmp-table td > * { grid-column: 2; }
-    .cmp-value { font-size: 0.9375rem; }
-  }
-
-  /* The strip: nine squares, one for each group of concepts. */
-  .strip { display: grid; grid-template-columns: repeat(9, 1.125rem); gap: 2px; }
-  .strip-cell { position: relative; display: grid; place-items: center; width: 1.125rem; height: 1.125rem; border: 1px solid var(--table-line); background: linear-gradient(to top, color-mix(in oklab, var(--color-navy) 22%, white) calc(var(--share, 0) * 100%), var(--color-white) 0); font-size: 0.625rem; font-weight: 600; line-height: 1; color: var(--color-navy); font-variant-numeric: tabular-nums; }
-  .strip-cell.is-made { background: var(--color-lime); border-color: var(--lime-edge); }
-  .strip-cell.is-wip { border-style: dashed; border-color: var(--color-navy); }
-  .cmp-ours .strip-cell:not(.is-made) { background-color: var(--color-white); }
-
-  /* ---------- "All the figures" ---------- */
-  .more { border-top: 2px solid var(--color-navy); border-bottom: 1px solid var(--color-edge); }
-  .more > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1.25rem; padding: 1.125rem 0; cursor: pointer; list-style: none; }
-  .more > summary::-webkit-details-marker { display: none; }
-  .more > summary::before { content: '+'; flex: none; width: 1.5rem; font-size: 1.5rem; font-weight: 600; line-height: 1; color: var(--color-navy); }
-  .more[open] > summary::before { content: '\2212'; }
-  .more-title { font-size: 1.25rem; font-weight: 700; color: var(--color-navy); }
-  .more[open] { padding-bottom: 2rem; }
-  .more-next { padding-top: 0; }
-  .more-next > .more { border-top: 0; }
+  .quotes { border-top: 1px solid var(--color-navy); }
+  .quotes > li { padding: 1rem 0; border-bottom: 1px solid var(--color-edge); }
+  .sources { padding-left: 1.5rem; list-style: decimal; font-size: var(--t-small); line-height: 1.45; }
+  .sources > li { margin-bottom: 0.5rem; padding-left: 0.25rem; break-inside: avoid; }
+  .sources > li::marker { font-weight: 600; color: var(--color-navy); }
+  @media (min-width: 48rem) { .sources { columns: 2; column-gap: 4rem; } }
 
   /* ---------- Numbered points on a navy band ---------- */
   .numbered.on-navy > li { background: color-mix(in oklab, white 10%, var(--color-navy)); color: var(--color-white); }
   .numbered.on-navy > li::before { background: var(--color-white); color: var(--color-navy); }
 
-  /* ---------- "How we compare" ---------- */
-  .method { width: min(64rem, calc(100vw - 2rem)); max-width: none; max-height: calc(100vh - 3rem); margin: auto; padding: 0; border: 2px solid var(--color-navy); background: var(--color-white); color: var(--color-ink); }
+  /* ---------- "How we compare" ----------
+     Sentences are body size, tables small, and the letters and numerals in boxes are the
+     label size: nothing in the window is under 13px. */
+  /* Only the body of the window scrolls: its heading and its Close button stay put. */
+  .method { width: min(64rem, calc(100vw - 2rem)); max-width: none; max-height: calc(100vh - 3rem); max-height: calc(100dvh - 2rem); margin: auto; padding: 0; overflow: hidden; border: 2px solid var(--color-navy); background: var(--color-white); color: var(--color-ink); }
   .method::backdrop { background: color-mix(in oklab, var(--color-navy) 55%, transparent); }
   .method[open] { display: flex; flex-direction: column; }
-  .method-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.875rem 1.25rem; background: var(--color-navy); }
+  .method-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 1.25rem; background: var(--color-navy); }
   .method-head h2 { color: var(--color-white); }
-  .method-close { min-height: 2.25rem; border-color: var(--color-white); color: var(--color-white); }
+  .method-close { border-color: var(--color-white); color: var(--color-white); }
   .method-close:hover { background: color-mix(in oklab, white 14%, var(--color-navy)); }
-  .method-body { overflow-y: auto; padding: 1.25rem; font-size: 0.9375rem; line-height: 1.5; }
-  .method-rules, .method-marks { display: grid; gap: 0.625rem; }
+  .method-close:focus-visible { outline-color: var(--color-white); }
+  /* `relative`, so the words kept for screen readers scroll with the body and do not stretch the window. */
+  .method-body { position: relative; overflow-y: auto; overscroll-behavior: contain; padding: 1.25rem 1.25rem 2rem; }
+  @media (min-width: 48rem) { .method-head { padding-inline: 2rem; } .method-body { padding: 1.75rem 2rem 2.5rem; } }
+  .method-body > :is(p, ul, ol) { max-width: 34.5rem; }
+  .method-body > :is(p, ul, ol) + :is(p, ul, ol) { margin-top: 1rem; }
+  .method-body > h3 { margin-top: 3rem; font-size: var(--t-lead); }
+  .method-body > h3 + * { margin-top: 0.75rem; }
+  /* A link in the window is taller than its line of text, so it is easy to hit. */
+  .method-body .link { padding-block: 0.3em; }
+  .method-rules, .method-marks, .method-lists { display: grid; gap: 0.625rem; }
   .method-rules { padding-left: 1.125rem; list-style: square; }
   .method-rules > li::marker { color: var(--color-navy); }
-  .method-lists { display: grid; gap: 0.25rem; padding-left: 1.5rem; list-style: decimal; }
+  .method-lists { padding-left: 1.5rem; list-style: decimal; }
   .method-lists > li::marker { font-weight: 600; color: var(--color-navy); }
-  .method-grid { font-size: 0.8125rem; }
+  .method-marks > li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 0.75rem; align-items: start; }
   .method-grid tbody th { font-weight: 400; }
   .method-grid .method-group th { background: var(--color-panel); font-weight: 700; color: var(--color-navy); }
   .method-grid td { white-space: nowrap; }
-  .method-lists-of { margin-left: 0.25rem; font-size: 0.6875rem; color: var(--color-rule); }
-  .mark { display: inline-grid; place-items: center; min-width: 1.25rem; height: 1.25rem; margin-right: 2px; padding: 0 0.2rem; border: 1px solid var(--color-navy); font-size: 0.6875rem; font-weight: 700; line-height: 1; color: var(--color-navy); text-decoration: none; }
-  a.mark:hover { outline: 2px solid var(--color-navy); outline-offset: 1px; }
+  .method-grid th:first-child { min-width: 9.5rem; }
+  @media (min-width: 48rem) { .method-grid th:first-child { min-width: 14rem; } }
+  .method-lists-of { margin-left: 0.25rem; font-size: var(--t-label); color: var(--color-rule); }
+  /* A mark: a letter in a box big enough to click. */
+  .mark { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid var(--color-navy); font-size: var(--t-label); font-weight: 700; line-height: 1; color: var(--color-navy); text-decoration: none; }
+  .mark + .mark { margin-left: 0.25rem; }
+  a.mark { transition: background-color 120ms, color 120ms; }
+  a.mark:hover { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-white); }
   .mark-E { background: color-mix(in oklab, var(--color-navy) 14%, white); }
-  .mark-S { background: var(--color-panel); border-style: dashed; border-color: var(--color-rule); color: var(--color-ink); }
+  .mark-S { background: var(--color-panel); border-color: var(--table-line); color: var(--color-ink); }
   .mark-M { background: var(--color-lime); border-color: var(--lime-edge); }
   .mark-W { border-style: dashed; background: var(--color-white); }
-  /* With scripting off the window is a plain section at the foot of the page. */
-  html:not(.js) .method { display: block; position: static; width: auto; max-height: none; margin: 4rem auto 0; max-width: 72rem; }
+
+  /* The strip: nine squares, one for each group of concepts, filled as far as the group is
+     explained. */
+  .strip { display: grid; grid-template-columns: repeat(9, 1.75rem); gap: 2px; }
+  .strip-cell { display: grid; flex: none; place-items: center; width: 1.75rem; height: 1.75rem; border: 1px solid var(--table-line); background: linear-gradient(to top, color-mix(in oklab, var(--color-navy) 22%, white) calc(var(--share, 0) * 100%), var(--color-white) 0); font-size: var(--t-label); font-weight: 600; line-height: 1; color: var(--color-navy); font-variant-numeric: tabular-nums; }
+  .strip-cell.is-made { background: var(--color-lime); border-color: var(--lime-edge); }
+  .strip-cell.is-wip { border-style: dashed; border-color: var(--color-navy); }
+  .strip + .cmp-sub { margin-top: 0.375rem; }
+  .cmp-key { display: grid; gap: 0.5rem; max-width: 40rem; }
+  .cmp-key .meta { display: flex; align-items: flex-start; gap: 0.75rem; }
+
+  /* With scripting off the window is a plain section of the page. */
+  html:not(.js) .method { display: block; position: static; width: min(68rem, calc(100% - 2.5rem)); max-height: none; margin: clamp(3.25rem, 2.25rem + 4vw, 5.25rem) auto 0; }
+  @media (min-width: 48rem) { html:not(.js) .method { width: min(68rem, calc(100% - 4rem)); } }
   html:not(.js) .method-close, html:not(.js) [data-manual-open] { display: none; }
   html:not(.js) .method-body { overflow: visible; }
   @media print { .method { display: none; } }
@@ -505,6 +589,18 @@ const pt = (q: number[]) => q.map((v) => v.toFixed(1)).join(',');
   });
   method?.querySelector('[data-method-close]')?.addEventListener('click', () => method.close());
   method?.addEventListener('click', (event) => { if (event.target === method) method.close(); });
+
+  // A link to a row that is closed (#all-figures, #research, #sources) opens it, and a link to
+  // the window opens the window.
+  const arrive = () => {
+    const target = location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+    if (!target) return;
+    if (target === method) { if (!method.open && method.showModal) method.showModal(); return; }
+    const row = target.closest<HTMLDetailsElement>('details.more');
+    if (row && !row.open) { row.open = true; target.scrollIntoView(); }
+  };
+  addEventListener('hashchange', arrive);
+  arrive();
 
   // The manual loads from VEX only when asked for, and goes away again the same way.
   const manual = document.querySelector<HTMLElement>('[data-manual]');

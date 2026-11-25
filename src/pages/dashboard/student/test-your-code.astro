@@ -30,7 +30,7 @@ const senses = [
       <a href={p('/dashboard/student/')}>Student dashboard</a> <span class="mx-1" aria-hidden="true">/</span> Test your code
     </nav>
     <p class="meta mt-4 flex max-w-3xl flex-wrap items-baseline gap-x-3 gap-y-2">
-      <span class="badge badge-demo">Demo</span>
+      <span class="badge">Demo</span>
       <span>A rough first version. Plug in the hand, press Connect and drive it from here. With no hand connected, it moves the one on screen.</span>
     </p>
   </PageHeader>
@@ -152,21 +152,21 @@ const senses = [
   .bench-stage { position: relative; background: var(--color-panel); border: 1px solid var(--color-edge); }
   .bench-stage canvas { display: block; width: 100%; aspect-ratio: 1 / 1; max-height: min(72svh, 38rem); cursor: grab; touch-action: none; }
   .bench-stage canvas:active { cursor: grabbing; }
-  .bench-stage-note { position: absolute; inset: 0; display: grid; place-items: center; padding: 1.5rem; text-align: center; font-size: 0.9375rem; font-weight: 500; color: var(--color-rule); pointer-events: none; }
+  .bench-stage-note { position: absolute; inset: 0; display: grid; place-items: center; padding: 1.5rem; text-align: center; font-size: var(--t-small); font-weight: 400; color: var(--color-rule); pointer-events: none; }
 
   .bench-group { padding-block: 1.5rem; border-top: 1px solid var(--table-line); }
   .bench-group:first-child { padding-top: 0; border-top: 0; }
-  .bench-heading { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.006em; color: var(--color-navy); }
+  .bench-heading { font-size: var(--t-body); font-weight: 600; line-height: 1.3; letter-spacing: -0.006em; color: var(--color-navy); }
   .bench-heading:focus { outline: none; }
-  .bench-status { display: flex; align-items: baseline; gap: 0.625rem; flex: 1 1 16rem; font-size: 0.9375rem; font-weight: 500; line-height: 1.45; }
+  .bench-status { display: flex; align-items: baseline; gap: 0.625rem; flex: 1 1 16rem; font-size: var(--t-small); font-weight: 400; line-height: 1.45; }
   .bench-status .dot { position: relative; top: 0.0625rem; }
   .bench[data-link="trouble"] .bench-status { color: var(--color-navy); }
 
-  .bench-num { font-family: var(--font-mono); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+  .bench-num { font-family: var(--font-mono); font-size: var(--t-small); font-variant-numeric: tabular-nums; }
   .bench-row { display: grid; grid-template-columns: 6.25rem minmax(0, 1fr) 2.5rem 3rem; align-items: center; column-gap: 0.875rem; }
-  .bench-row > label { font-size: 0.9375rem; font-weight: 500; }
+  .bench-row > label { font-size: var(--t-small); font-weight: 600; }
   .bench-row > :is(output, .bench-num) { text-align: right; }
-  .bench-row-head { margin-top: 0.75rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; color: var(--color-rule); }
+  .bench-row-head { margin-top: 0.75rem; font-size: var(--t-label); font-weight: 600; letter-spacing: 0.02em; color: var(--color-rule); }
   .bench-row-head > span { text-align: right; }
   .bench-guess { color: var(--color-rule); }
 
@@ -181,30 +181,30 @@ const senses = [
   .bench input[type="range"]:disabled { cursor: not-allowed; opacity: 0.4; }
 
   .bench .btn:disabled { cursor: not-allowed; border: 1px dashed var(--color-rule); background: var(--color-panel); color: var(--color-rule); transform: none; }
-  .bench-check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; font-weight: 500; cursor: pointer; }
+  .bench-check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: var(--t-small); font-weight: 400; cursor: pointer; }
   .bench-check input { width: 1.0625rem; height: 1.0625rem; margin: 0; accent-color: var(--color-navy); }
   .bench-check:has(input:disabled) { cursor: not-allowed; color: var(--color-rule); }
-  .bench-field { width: 4.25rem; min-height: 2.25rem; padding: 0.25rem 0.5rem; border: 1px solid var(--color-navy); background: var(--color-white); font-family: var(--font-mono); font-size: 0.875rem; font-variant-numeric: tabular-nums; color: var(--color-ink); }
+  .bench-field { width: 4.25rem; min-height: 2.25rem; padding: 0.25rem 0.5rem; border: 1px solid var(--color-navy); background: var(--color-white); font-family: var(--font-mono); font-size: var(--t-small); font-variant-numeric: tabular-nums; color: var(--color-ink); }
   .bench-field:focus-visible { outline: 2px solid var(--color-navy); outline-offset: 2px; }
 
-  .bench-steps { margin-top: 0.75rem; padding-left: 1.25rem; list-style: decimal; font-size: 0.9375rem; line-height: 1.5; max-width: 34rem; }
+  .bench-steps { margin-top: 0.75rem; padding-left: 1.25rem; list-style: decimal; font-size: var(--t-small); line-height: 1.5; max-width: 34rem; }
   .bench-steps li + li { margin-top: 0.25rem; }
-  .bench-jog { display: grid; grid-template-columns: 6.25rem auto auto; justify-content: start; align-items: center; column-gap: 0.75rem; font-size: 0.9375rem; font-weight: 500; }
+  .bench-jog { display: grid; grid-template-columns: 6.25rem auto auto; justify-content: start; align-items: center; column-gap: 0.75rem; font-size: var(--t-small); font-weight: 600; }
   .bench-jog .btn { min-height: 2.5rem; min-width: 5rem; padding-block: 0.25rem; touch-action: none; user-select: none; }
 
   /* The readout: the lines that cross the cable, and the latest sensor reading. */
   .bench-readout { margin-top: 3rem; }
   .bench-readout-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.875rem 2rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--navy-line); }
-  .bench-readout-head h2 { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.006em; }
-  .bench-sense { display: flex; flex-wrap: wrap; gap: 0.375rem 1.25rem; margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+  .bench-readout-head h2 { font-size: var(--t-body); font-weight: 600; letter-spacing: -0.006em; }
+  .bench-sense { display: flex; flex-wrap: wrap; gap: 0.375rem 1.25rem; margin: 0; font-family: var(--font-mono); font-size: var(--t-label); font-variant-numeric: tabular-nums; }
   .bench-sense > div { display: flex; gap: 0.5rem; }
   .bench-sense dt, .bench-unit { color: var(--on-navy-soft); }
   .bench-sense dd { margin: 0; min-width: 5.5ch; }
   .bench-readout-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; margin-left: auto; }
-  .bench-readout .btn-ghost { color: var(--color-white); font-size: 0.875rem; }
-  .bench-readout .bench-check { font-size: 0.875rem; }
+  .bench-readout .btn-ghost { color: var(--color-white); font-size: var(--t-small); }
+  .bench-readout .bench-check { font-size: var(--t-small); }
   .bench-readout .bench-check input { accent-color: var(--color-sky); }
-  .bench-log { height: 15rem; overflow-y: auto; padding: 0.875rem 1.25rem; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.6; font-variant-numeric: tabular-nums; white-space: pre-wrap; overflow-wrap: anywhere; scrollbar-color: var(--navy-line) transparent; scrollbar-width: thin; }
+  .bench-log { height: 15rem; overflow-y: auto; padding: 0.875rem 1.25rem; font-family: var(--font-mono); font-size: var(--t-label); line-height: 1.6; font-variant-numeric: tabular-nums; white-space: pre-wrap; overflow-wrap: anywhere; scrollbar-color: var(--navy-line) transparent; scrollbar-width: thin; }
   .bench-log:focus-visible { outline: 2px solid var(--color-white); outline-offset: -2px; }
   .bench-line-in { color: var(--on-navy-soft); }
   .bench-line-note { color: var(--color-sky); }

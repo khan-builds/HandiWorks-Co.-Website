@@ -10,7 +10,7 @@ import PageHeader from '../../../components/PageHeader.astro';
 import SectionLabel from '../../../components/SectionLabel.astro';
 import TrackSelector from '../../../components/TrackSelector.astro';
 import Arrow from '../../../components/Arrow.astro';
-import { p, demo } from '../../../lib/url';
+import { p, asset, demo } from '../../../lib/url';
 import { DEMO_LABEL, PORTIONS, TRACKS, splitLessonId, type TrackKey } from '../../../lib/lessons';
 
 // A track gets a page once it has a lesson to read. (getStaticPaths runs on its own and sees
@@ -36,17 +36,19 @@ const untitled = (l: (typeof lessons)[number]) => l.data.title === `Lesson ${l.d
 <Base title={TRACKS[track].label} description="HelpingHand lessons. Every lesson has three parts: CAD, hardware and software.">
   <PageHeader title="Design it. Build it. Code it." lede={TRACKS[track].tagline}>
     {tracks.length > 1 && <div class="mt-8"><TrackSelector current={track} /></div>}
+    {/* A still of the Final v3 finger, rendered from public/models by scripts/model-stills.mjs. */}
+    <img slot="aside" class="hidden w-[24rem] max-w-none lg:block" src={asset('/images/finger-final-v3.webp')} width="1040" height="266" alt="One finger module of the hand: a three-segment finger on a long motor housing" />
   </PageHeader>
 
   {ready.map((l) => (
     <section class="section">
       <SectionLabel>Lesson {l.data.number}</SectionLabel>
-      <div class="mt-8 grid items-start gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      <div class="split">
         <div>
           <h3 class="statement">{l.data.title}</h3>
-          <p class="lede mt-3">{l.data.summary}</p>
+          <p class="measure mt-5">{l.data.summary}</p>
           <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
-            <span class:list={['badge', l.data.reviewed ? 'badge-live' : 'badge-demo']}>{l.data.reviewed ? 'Live' : DEMO_LABEL}</span>
+            <span class:list={['badge', l.data.reviewed && 'badge-live']}>{l.data.reviewed ? 'Live' : DEMO_LABEL}</span>
             <span>3 parts{minutesOf(l.id) ? ` · about ${minutesOf(l.id)} minutes in all` : ''}</span>
           </p>
           <div class="mt-7 flex flex-wrap gap-3">
@@ -57,12 +59,12 @@ const untitled = (l: (typeof lessons)[number]) => l.data.title === `Lesson ${l.d
         </div>
         <ol class="numbered">
           {partsOf(l.id).map(({ pt, part }) => (
-            <li class:list={[part && 'transition-colors hover:bg-(--navy-tint)']}>
+            <li data-part={pt.key} class:list={[part && 'transition-colors hover:bg-(--navy-tint)']}>
               <h4 class="numbered-title">
                 {part ? <a class="after:absolute after:inset-0" href={p(`${href(l.id)}/${pt.key}/`)}>{pt.label}: {part.data.title}</a> : pt.label}
               </h4>
-              <p class="mt-1 text-[0.9375rem] text-rule">{pt.blurb}</p>
-              {part && <p class="meta mt-2">{part.data.durationMinutes} min</p>}
+              <p class="mt-1">{pt.blurb}</p>
+              {part && <p class="mt-2">{part.data.durationMinutes} min</p>}
             </li>
           ))}
         </ol>
@@ -73,11 +75,11 @@ const untitled = (l: (typeof lessons)[number]) => l.data.title === `Lesson ${l.d
   {coming.length > 0 && (
     <section class="section">
       <SectionLabel>Coming next</SectionLabel>
-      <ul class="mt-8 max-w-4xl border-t border-navy">
+      <ul class="rows" style="--rows-name: 20rem">
         {coming.map((l) => (
-          <li class="grid gap-x-8 gap-y-1 border-b border-edge py-3.5 md:grid-cols-[20rem_1fr]">
-            <p class="font-semibold">Lesson {l.data.number}{!untitled(l) && `: ${l.data.title}`}</p>
-            <p class="text-rule">{l.data.summary}</p>
+          <li>
+            <p>Lesson {l.data.number}{!untitled(l) && `: ${l.data.title}`}</p>
+            <p>{l.data.summary}</p>
           </li>
         ))}
       </ul>
@@ -87,10 +89,10 @@ const untitled = (l: (typeof lessons)[number]) => l.data.title === `Lesson ${l.d
 
   <section class="section">
     <SectionLabel>Teaching it</SectionLabel>
-    <div class="mt-8 grid items-start gap-x-14 gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+    <div class="split">
       <p class="statement">Every part comes with teacher notes: timing, common mistakes, and answers.</p>
       <div>
-        <p>The classroom demo shows a made-up class of 20: who has finished which part, and what is assigned.</p>
+        <p class="measure">The classroom demo shows a made-up class of 20: who has finished which part, and what is assigned.</p>
         <div class="mt-6 flex flex-wrap gap-3">
           <a class="btn btn-primary" href={demo('teacher')}>See the teacher view <Arrow /></a>
           <a class="btn btn-secondary" href={p('/teachers/')}>For teachers</a>

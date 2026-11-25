@@ -1,28 +1,8 @@
 ---
-/** The four next steps from the team's final prototype poster (24 Nov 2026), in the poster's
-    own words and order. Nothing here is invented: no dates, no owners, no detail the poster
-    does not give.
-    From 2026-11-21 until that poster the page was empty on purpose. A fuller roadmap is still
-    Lingbo's to write; the four phases and the "On this site today" table that stood here
-    before that are in the history: see this file at commit 5d5da49. */
-import Base from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import SectionLabel from '../components/SectionLabel.astro';
-
-const nextSteps = [
-  'Feedback on Lesson 1 and Design',
-  'Scale size of hand down by ~50%',
-  'Finalize website backend',
-  'Draft next lessons 2-4',
-];
+/** The Roadmap is a section of the Team page since 2026-11-25: "What is next", the four next
+    steps from the team's final prototype poster. This address is kept so old links still
+    arrive. The four phases and the "On this site today" table that stood here before
+    2026-11-21 are in the history: see this file at commit 5d5da49. */
+import { p } from '../lib/url';
+return Astro.redirect(p('/team/#next'), 301);
 ---
-<Base title="Roadmap" description="What the HelpingHand team does next.">
-  <PageHeader title="Roadmap" lede="What the team does next." />
-
-  <section class="section">
-    <SectionLabel>Next steps</SectionLabel>
-    <ol class="numbered mt-10 max-w-2xl">
-      {nextSteps.map((step) => <li>{step}</li>)}
-    </ol>
-  </section>
-</Base>

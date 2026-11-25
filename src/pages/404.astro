@@ -10,7 +10,6 @@ const pages = [
   { href: p('/kit/'), label: 'The Kit' },
   { href: p('/lessons/beginner/'), label: 'Lessons' },
   { href: p('/teachers/'), label: 'For teachers' },
-  { href: p('/roadmap/'), label: 'Roadmap' },
   { href: p('/team/'), label: 'Team' },
 ];
 ---
@@ -20,7 +19,7 @@ const pages = [
   </PageHeader>
   <section class="section">
     <SectionLabel>Where to go</SectionLabel>
-    <ul class="mt-8 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+    <ul class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
       {pages.map((l) => <li><a class="panel font-semibold text-navy" href={l.href}>{l.label}</a></li>)}
     </ul>
   </section>

@@ -52,7 +52,6 @@ const DEMO_PATH = [
   '/dashboard/student/',
   '/dashboard/student/test-your-code/',
   '/dashboard/student/simulator/',
-  '/roadmap/',
   '/team/',
 ];
 

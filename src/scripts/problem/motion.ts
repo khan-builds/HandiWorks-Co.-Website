@@ -1,6 +1,6 @@
 /** The Problem's motion, made with Anime.js. Three things move: the lead numbers count up
-    as they come into view, the comparison's rows and squares arrive one after another, and
-    the drawing plays "follow the steps" against "change one bar".
+    as they come into view, the comparison's rows arrive one after another, and the drawing
+    plays "follow the steps" against "change one bar".
     None of it runs for a visitor who has asked for less motion, and the page is whole
     without it: every number, row and drawing is in the HTML in its finished state, and this
     script only takes them back to a start and plays them forward. */
@@ -43,12 +43,10 @@ function countUp(el: HTMLElement) {
   }, 0.6);
 }
 
-// ---- 2. the comparison arrives row by row, then its squares ----
+// ---- 2. the comparison arrives row by row, ours first ----
 function arrive(table: HTMLElement) {
   const rows = [...table.querySelectorAll<HTMLElement>('.cmp-row')];
-  const squares = rows.map((row) => [...row.querySelectorAll<HTMLElement>('.strip-cell')]);
   for (const row of rows) row.style.opacity = '0';
-  for (const cell of squares.flat()) cell.style.opacity = '0';
   whenSeen(table, () => {
     animate(rows, {
       opacity: [0, 1],
@@ -57,16 +55,6 @@ function arrive(table: HTMLElement) {
       delay: stagger(110),
       ease: 'outExpo',
       onComplete: () => rows.forEach((row) => row.removeAttribute('style')),
-    });
-    squares.forEach((cells, i) => {
-      animate(cells, {
-        opacity: [0, 1],
-        scale: [0.3, 1],
-        duration: 420,
-        delay: stagger(45, { start: 420 + i * 110 }),
-        ease: 'outBack',
-        onComplete: () => cells.forEach((cell) => { cell.style.removeProperty('opacity'); cell.style.removeProperty('transform'); }),
-      });
     });
   }, 0.08);
 }

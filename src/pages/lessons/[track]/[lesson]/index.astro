@@ -32,8 +32,8 @@ const base = `/lessons/${track}/${slug}`;
       <a href={p(`/lessons/${track}/`)}>{TRACKS[track].label}</a> <span class="mx-1" aria-hidden="true">/</span> Lesson {entry.data.number}
     </nav>
     <p class="meta mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
-      {!live && <span class="badge badge-soon">Coming soon</span>}
-      {live && !entry.data.reviewed && <span class="badge badge-demo">{DEMO_LABEL}</span>}
+      {!live && <span class="badge">Coming soon</span>}
+      {live && !entry.data.reviewed && <span class="badge">{DEMO_LABEL}</span>}
       {live && entry.data.reviewed && <span class="badge badge-live">Live</span>}
       <span>3 parts{totalMinutes ? ` · about ${totalMinutes} minutes in all` : ''}</span>
     </p>
@@ -46,45 +46,45 @@ const base = `/lessons/${track}/${slug}`;
     )}
   </PageHeader>
 
-  <section class="section grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1fr)_17rem] lg:items-start">
+  <section class="section with-aside">
     <div>
       <SectionLabel>The three parts</SectionLabel>
-      <ol class="numbered mt-8">
+      <ol class="numbered">
         {PORTIONS.map((pt) => {
           const x = byKey.get(pt.key);
           return (
-            <li class:list={[x && 'transition-colors hover:bg-(--navy-tint)']}>
+            <li data-part={pt.key} class:list={[x && 'transition-colors hover:bg-(--navy-tint)']}>
               <div class="flex flex-wrap items-center gap-2">
                 <h3>
                   {x
                     ? <a class="after:absolute after:inset-0" href={p(`${base}/${pt.key}/`)}>{x.data.title}</a>
                     : pt.label}
                 </h3>
-                {!x && <span class="badge badge-soon">Coming soon</span>}
-                {x && x.data.status === 'placeholder' && <span class="badge badge-draft">Draft</span>}
+                {!x && <span class="badge">Coming soon</span>}
+                {x && x.data.status === 'placeholder' && <span class="badge">Coming soon</span>}
               </div>
-              <p class="mt-1 text-[0.9375rem] text-rule">{pt.blurb}</p>
-              {x && <p class="meta mt-2">{x.data.objectives.length} {x.data.objectives.length === 1 ? 'objective' : 'objectives'} · {x.data.durationMinutes} min</p>}
+              <p class="mt-1">{pt.blurb}</p>
+              {x && <p class="mt-2">{x.data.objectives.length} {x.data.objectives.length === 1 ? 'objective' : 'objectives'} · {x.data.durationMinutes} min</p>}
             </li>
           );
         })}
       </ol>
 
-      <article class="prose-hh mt-12"><Content components={{ h2: SectionLabel }} /></article>
+      <article class="prose-hh mt-12"><Content /></article>
     </div>
 
     <aside class="grid gap-10">
       {entry.data.modelSrc && <ModelViewer src={entry.data.modelSrc} alt={`3D model for ${entry.data.title}`} label={entry.data.modelCaption} height="h-72" />}
       {entry.data.concepts.length > 0 && (
         <div>
-          <SectionLabel class="section-label-sm">Concepts</SectionLabel>
-          <ul class="mt-4 flex flex-wrap gap-2">{entry.data.concepts.map((c) => <li class="bg-panel px-2.5 py-1 text-sm">{c}</li>)}</ul>
+          <SectionLabel>Concepts</SectionLabel>
+          <ul class="mt-4 flex flex-wrap gap-2">{entry.data.concepts.map((c) => <li class="bg-panel px-2.5 py-1 text-small">{c}</li>)}</ul>
         </div>
       )}
       {entry.data.materials.length > 0 && (
         <div>
-          <SectionLabel class="section-label-sm">Materials</SectionLabel>
-          <MaterialsList materials={entry.data.materials} class="mt-4 text-[0.9375rem]" />
+          <SectionLabel>Materials</SectionLabel>
+          <MaterialsList materials={entry.data.materials} class="mt-4 text-small" />
         </div>
       )}
     </aside>
